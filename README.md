@@ -1,13 +1,13 @@
 Slate
 ========
 
-[![Build Status](https://travis-ci.org/tripit/slate.png?branch=master)](https://travis-ci.org/tripit/slate) [![Dependency Status](https://gemnasium.com/tripit/slate.png)](https://gemnasium.com/tripit/slate)
+[![Build Status](https://travis-ci.org/cloudant-labs/slate.png?branch=master)](https://travis-ci.org/cloudant-labs/slate) [![Dependency Status](https://gemnasium.com/cloudant-labs/slate.png)](https://gemnasium.com/cloudant-labs/slate)
 
 Slate helps you create beautiful single-page API documentation. Think of it as an intelligent, modern documentation template for your API.
 
 <img src="https://dl.dropboxusercontent.com/u/95847291/github%20images/slate/slate_screenshot.png" width=700 alt="Screenshot of Example Documentation created with Slate">
 
-*The example above was created with Slate. Check it out at [tripit.github.io/slate](http://tripit.github.io/slate).*
+*The example above was created with Slate. Check it out at [cloudant-labs.github.io/slate](http://cloudant-labs.github.io/slate).*
 
 Features
 ------------
@@ -26,9 +26,9 @@ Features
 
 * **Let your users update your documentation for you** — by default, your Slate-generated documentation is hosted in a public Github repository. Not only does this mean you get free hosting for your docs with Github Pages, but it also makes it's simple for other developers to make pull requests to your docs if they find typos or other problems. Of course, if you don't want to, you're welcome to not use Github and host your docs elsewhere!
 
-Getting starting with Slate is super easy! Simply fork this repository, and then follow the instructions below. Or, if you'd like to check out what Slate is capable of, take a look at the [sample docs](http://tripit.github.io/slate).
+Getting starting with Slate is super easy! Simply fork this repository, and then follow the instructions below. Or, if you'd like to check out what Slate is capable of, take a look at the [sample docs](http://cloudant-labs.github.io/slate).
 
-<!--As an example, you can check out the [TripIt API docs](http://tripit.github.io/api), which we create with Slate. You can also view the source of the [markdown file used to generate it](http://github.com/tripit/api/blob/master/source/index.md).-->
+<!--As an example, you can check out the [TripIt API docs](http://cloudant-labs.github.io/api), which we create with Slate. You can also view the source of the [markdown file used to generate it](http://github.com/cloudant-labs/api/blob/master/source/index.md).-->
 
 Getting Started with Slate
 ------------------------------
@@ -50,7 +50,7 @@ You're going to need:
 
 You can now see the docs at <http://localhost:4567>. And as you edit `source/index.md`, your server should automatically update! Whoa! That was fast!
 
-Now that Slate is all set up your machine, you'll probably want to learn more about [editing Slate markdown](https://github.com/tripit/slate/wiki/Markdown-Syntax), or [how to publish your docs](https://github.com/tripit/slate/wiki/Deploying-Slate).
+Now that Slate is all set up your machine, you'll probably want to learn more about [editing Slate markdown](https://github.com/cloudant-labs/slate/wiki/Markdown-Syntax), or [how to publish your docs](https://github.com/cloudant-labs/slate/wiki/Deploying-Slate).
 
 Examples of Slate in the Wild
 ---------------------------------
@@ -65,7 +65,7 @@ Examples of Slate in the Wild
 Need Help? Found a bug?
 --------------------
 
-Just [submit a issue](https://github.com/tripit/slate/issues) to the Slate Github if you need any help. And, of course, feel free to submit pull requests with bug fixes or changes.
+Just [submit a issue](https://github.com/cloudant-labs/slate/issues) to the Slate Github if you need any help. And, of course, feel free to submit pull requests with bug fixes or changes.
 
 
 Special Thanks
