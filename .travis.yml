@@ -12,6 +12,8 @@ env:
 
 script: 
   - bundle exec rake build
+  - cp -r build couchapp/_attachments
+  - ./scripts/deploy.sh
 
 after_success: 
   - sudo apt-get update
