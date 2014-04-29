@@ -10,13 +10,15 @@ env:
     - secure: "KbkY9D7ZMI+vNHO97f/IM/NXyzEBcux4usxzHQ4g75NqoIzGnuuwmMCPkZeVWlgeUzVLzsRSswexTbQ95In13b5qhY8XC4KJxFgkqCfGY455DZ1DsUg/62EvPMkPzX5gq2l6LyLMaKnDXefiT6zb+4lO7YX7oqgsrzRyBBsdl7M="
     - secure: "I0A5Ubrr4IsWXhmnW9qH8SmRQSDDFfrIyjiDPg1DOjJGvcweBDWqHEGdeQNGmiMhEm9jeWgQeUU58RVcpnuQmYs4ub1ymPqgcj/cVbkw5e3oyKvXEuWceoqO/CgGP2JmSXjeCULNPbNk3EMNy8z6ICGN5SiUFhbtL+Y8O3iKDoM="
 
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install python python-pip
+  - pip install couchapp
+
 script: 
   - bundle exec rake build
   - cp -r build couchapp/_attachments
   - ./scripts/deploy.sh
 
-after_success: 
-  - sudo apt-get update
-  - sudo apt-get install python python-pip
-  - pip install couchapp
+after_success:
   - ./scripts/deploy-master.sh $USERNAME $PASSWORD
