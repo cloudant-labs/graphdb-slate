@@ -18,6 +18,7 @@ before_install:
 script: 
   - bundle exec rake build
   - cp -r build/ couchapp/_attachments
+  - ls couchapp/_attachments
   - ./scripts/deploy.sh
 
 after_success:
