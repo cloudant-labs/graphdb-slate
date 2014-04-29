@@ -4,5 +4,5 @@ rvm:
 
 script: bundle exec rake build
 after_success: 
-  - git clean -dxf
+  - rm -rf build # clean out the results of the build
   - bundle exec rake publish
