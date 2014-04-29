@@ -2,7 +2,19 @@ rvm:
   - 1.9.3
   - 2.0.0
 
-script: bundle exec rake build
+services:
+  - couchdb
+
+env:
+  global:
+    - secure: "KbkY9D7ZMI+vNHO97f/IM/NXyzEBcux4usxzHQ4g75NqoIzGnuuwmMCPkZeVWlgeUzVLzsRSswexTbQ95In13b5qhY8XC4KJxFgkqCfGY455DZ1DsUg/62EvPMkPzX5gq2l6LyLMaKnDXefiT6zb+4lO7YX7oqgsrzRyBBsdl7M="
+    - secure: "I0A5Ubrr4IsWXhmnW9qH8SmRQSDDFfrIyjiDPg1DOjJGvcweBDWqHEGdeQNGmiMhEm9jeWgQeUU58RVcpnuQmYs4ub1ymPqgcj/cVbkw5e3oyKvXEuWceoqO/CgGP2JmSXjeCULNPbNk3EMNy8z6ICGN5SiUFhbtL+Y8O3iKDoM="
+
+script: 
+  - bundle exec rake build
+
 after_success: 
-  - rm -rf build # clean out the results of the build
-  - bundle exec rake publish
+  - sudo apt-get update
+  - sudo apt-get install python python-pip
+  - pip install couchapp
+  - ./scripts/deploy-master.sh $USERNAME $PASSWORD

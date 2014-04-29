@@ -19,3 +19,6 @@ build/
 .yardoc
 _yardoc
 doc/
+
+# couchapp!
+couchapp/_attachments
