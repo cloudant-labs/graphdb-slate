@@ -3,4 +3,6 @@ rvm:
   - 2.0.0
 
 script: bundle exec rake build
-after_success: bundle exec rake publish ALLOW_DIRTY=true
+after_success: 
+  - git clean -dxf
+  - bundle exec rake publish
