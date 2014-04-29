@@ -2,5 +2,5 @@ rvm:
   - 1.9.3
   - 2.0.0
 
-script: rake build
-after_success: rake publish
+script: bundle exec rake build
+after_success: bundle exec rake publish
