@@ -1,4 +1,4 @@
-# Errors
+## Errors
 
 The Cloudant API uses the following error codes:
 
