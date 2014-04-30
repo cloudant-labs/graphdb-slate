@@ -1,5 +1,5 @@
 ---
-title: API Reference
+title: Documentation
 
 language_tabs:
   - shell
@@ -16,7 +16,8 @@ toc_footers:
   - <a href="https://github.com/cloudant-labs/slate">Documentation Source</a>
 
 includes:
-  <!-- - errors -->
+  - api
+  - errors
 
 ---
 
@@ -30,4 +31,4 @@ Contributions to this documentation can be made through [GitHub](https://github.
 
 ## Why Cloudant?
 
-## API Reference
+Cloudant is the name of both the provider and the service, in this case a database-as-a-service (commonly known as DBaaS). It does not use SQL as it’s query language and it’s distributed over the web, all features which you can read about in more depth here. You can use Cloudant for almost any purpose in any scale of application.
