@@ -16,7 +16,7 @@ before_install:
   - sudo pip install couchapp
 
 script: 
-  - bundle exec rake build
+  - bundle exec middleman build --verbose
   - cp -r build/* couchapp/_attachments
   - ./scripts/deploy.sh
 
