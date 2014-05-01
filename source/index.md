@@ -32,7 +32,7 @@ includes:
 
 # Documentation and Support
 
-## Introduction
+# Introduction
 
 Cloudant provides reliable [database](#define_database) hosting and support for applications of any scale. It’s available to users within minutes of [creating an account](https://cloudant.com/sign-up/) because there’s nothing to install. This documentation contains [more detail about Cloudant](#why_cloudant), [the technology which supports it](#no_SQL), and [API reference](#api-reference) for developers.
 
@@ -42,7 +42,7 @@ Contributions to this documentation can be made through [GitHub](https://github.
 
 Cloudant is a Massachusetts-based company, with offices in Seattle and Bristol, UK. Cloudant is a division of IBM. You can get in touch with us via [email](mailto:support@cloudant.com) or check out our [calendar](#) of conferences and events to start a conversation in person.
 
-## Why Cloudant?
+# Why Cloudant?
 
 <div id="why_cloudant"></div>
 
@@ -66,7 +66,7 @@ All requests to Cloudant go over the web, which means any system that can speak 
 
 Cloudant's API represents the collaboration of numerous machines, called a cluster, which may live in different physical locations. Clustering means that when you need more horsepower, you just add more machines, which is more cost-effective and fault-tolerant than scaling up a single machine.
 
-## The CAP Theorem
+### The CAP Theorem
 
 <div id="cap_theorem"></div>
 
