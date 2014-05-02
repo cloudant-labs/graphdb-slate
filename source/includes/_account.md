@@ -1,8 +1,8 @@
-## Account
+# Account
 
 Your account, which lives at `https://YOUR_USERNAME.cloudant.com`, is your entry point for Cloudant's API.
 
-### Ping
+## Ping
 
 To see if your Cloudant account is accessible, make a `HEAD` against `https://YOUR_USERNAME.cloudant.com`.
 

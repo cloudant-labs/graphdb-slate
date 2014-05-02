@@ -23,6 +23,7 @@ includes:
   - database
   - document
   - attachments
+  - design_documents
   - search
   - mapreduce
   - replication
