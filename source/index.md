@@ -26,6 +26,7 @@ includes:
   - search
   - mapreduce
   - replication
+  - advanced
   - errors
 
 ---
