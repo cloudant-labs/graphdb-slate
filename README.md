@@ -13,7 +13,7 @@ If you want to work on the docs locally, do this:
     bundle install
     bundle exec middleman server
 
-Now, your docs are live at [http://localhost:4567/][].
+Now, your docs are live at <http://localhost:4567/>.
 
 ## Contribute
 
