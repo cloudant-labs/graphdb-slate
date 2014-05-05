@@ -36,10 +36,6 @@ curl -X POST https://cloudant.com/api/generate_api_key
   -u $USERNAME
 ```
 
-```session
-TODO
-```
-
 ```python
 TODO
 ```
