@@ -34,9 +34,7 @@ includes:
 
 # Documentation and Support
 
-# Introduction
-
-Cloudant provides reliable [database](#define_database) hosting and support for applications of any scale. It’s available to users within minutes of [creating an account](https://cloudant.com/sign-up/) because there’s nothing to install. This documentation contains [more detail about Cloudant](#why_cloudant), [the technology which supports it](#no_SQL), and [API reference](#api-reference) for developers.
+Cloudant provides reliable [database](#databases) hosting and support for applications of any scale. It’s available to users within minutes of [creating an account](https://cloudant.com/sign-up/) because there’s nothing to install. This documentation contains [more detail about Cloudant](#why_cloudant), [the technology which supports it](#no_SQL), and [API reference](#api-reference) for developers.
 
 Contributions to this documentation can be made through [GitHub](https://github.com/cloudant-labs/slate). Support is available to users through their dashboard and within a dedicated community on [StackOverflow](http://stackoverflow.com/questions/tagged/cloudant).
 
