@@ -6,20 +6,6 @@ Attachments are [blob](http://en.wikipedia.org/wiki/Binary_large_object) files c
 
 To create or update an attachment, make a PUT request to `https://$USERNAME.cloudant.com/$DATABASE/$DOC/$ATTACHMENT` where `$ATTACHMENT` is the name of the attachment, and the `rev` query argument is the document's latest revision. The attachment's [content type][mime] must be specified using the `Content-Type` header.
 
-### Query String
-
-Argument | Description | Optional | Type
----------|-------------|----------|------
-rev | Current document revision | no | string
-
-### HTTP Headers
-
-Header | Description | Optional
--------|-------------|----------
-Content-Length | Length (bytes) of the attachment being uploaded | no
-Content-Type | MIME type for the uploaded attachment | no
-If-Match | Current revision of the document for validation | yes
-
 ```shell
 TODO
 ```
