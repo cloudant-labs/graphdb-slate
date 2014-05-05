@@ -15,3 +15,7 @@ These endpoints provide information about the state of the cluster, details abou
 ## PUT /$DB/_revs_limit
 
 ## POST /$DB/_view_cleanup
+
+## GET /_membership
+
+## GET /_uuids

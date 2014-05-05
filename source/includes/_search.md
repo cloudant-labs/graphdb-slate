@@ -2,8 +2,8 @@
 
 ## Creating the Index
 
-## Faceting
+### Faceting
 
-## Analyzers
+### Analyzers
 
 ## Queries
