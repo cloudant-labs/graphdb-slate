@@ -4,7 +4,6 @@ title: Documentation
 language_tabs:
   - shell
   - python
-  - node.js
 
 toc_footers:
   - <a href="https://cloudant.com/">Cloudant</a>
