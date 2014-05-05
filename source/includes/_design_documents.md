@@ -12,43 +12,6 @@ All queries, whether [Search](#search), [MapReduce](#mapreduce), or [Geo](#geo),
 
 ## List Functions
 
-List functions customize the format of [MapReduce](#mapreduce) query results.
-
-List functions receive two arguments: `head` and `req`.
-
-Once you've defined a list function, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT/_list/$LIST_FUNCTION/$MAPREDUCE_INDEX`, where `$LIST_FUNCTION` is the function's name, and `$MAPREDUCE_INDEX` is the name of the index whose query results you want to format. This request takes the same query parameters as a regular [MapReduce query](#queries53).
-
-### head
-
-Field | Description
-------|-------------
-total_rows | Number of documents in the view
-offset | Offset where the document list started
-
-### req
-
-Field | Description
-------|-------------
-body | Request body data as string. If the request method is GET this field contains the value "undefined". If the method is DELETE or HEAD the value is "" (empty string).
-cookie | Cookies object.
-form | Form data object. Contains the decoded body as key-value pairs if the Content-Type header was `application/x-www-form-urlencoded`.
-headers | Request headers object.
-id | Requested document id string if it was specified or null otherwise.
-info | Database information
-method | Request method as string or array. String value is a method as one of: HEAD, GET, POST, PUT, DELETE, OPTIONS, and TRACE. Otherwise it will be represented as an array of char codes.
-path | List of requested path sections.
-peer | Request source IP address.
-query | URL query parameters object. Note that multiple keys are not supported and the last key value suppresses others.
-requested_path | List of actual requested path section.
-raw_path | Raw requested path string.
-secObj | The database's [security object](#reading-permissions)
-userCtx | Context about the currently authenticated user, specifically their `name` and `roles` within the current database.
-uuid | A generated UUID
-
-### Built-in Functions
-
-TODO
-
 > Design doc with a list function:
 
 ```json
@@ -96,17 +59,44 @@ TODO
 TODO
 ```
 
-```node.js
+List functions customize the format of [MapReduce](#mapreduce) query results.
+
+List functions receive two arguments: `head` and `req`.
+
+Once you've defined a list function, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT/_list/$LIST_FUNCTION/$MAPREDUCE_INDEX`, where `$LIST_FUNCTION` is the function's name, and `$MAPREDUCE_INDEX` is the name of the index whose query results you want to format. This request takes the same query parameters as a regular [MapReduce query](#queries53).
+
+### head
+
+Field | Description
+------|-------------
+total_rows | Number of documents in the view
+offset | Offset where the document list started
+
+### req
+
+Field | Description
+------|-------------
+body | Request body data as string. If the request method is GET this field contains the value "undefined". If the method is DELETE or HEAD the value is "" (empty string).
+cookie | Cookies object.
+form | Form data object. Contains the decoded body as key-value pairs if the Content-Type header was `application/x-www-form-urlencoded`.
+headers | Request headers object.
+id | Requested document id string if it was specified or null otherwise.
+info | Database information
+method | Request method as string or array. String value is a method as one of: HEAD, GET, POST, PUT, DELETE, OPTIONS, and TRACE. Otherwise it will be represented as an array of char codes.
+path | List of requested path sections.
+peer | Request source IP address.
+query | URL query parameters object. Note that multiple keys are not supported and the last key value suppresses others.
+requested_path | List of actual requested path section.
+raw_path | Raw requested path string.
+secObj | The database's [security object](#reading-permissions)
+userCtx | Context about the currently authenticated user, specifically their `name` and `roles` within the current database.
+uuid | A generated UUID
+
+### Built-in Functions
+
 TODO
-```
 
 ## Show Functions
-
-Show functions are like [list functions](#list-functions) but for formatting individual documents.
-
-Show functions receive two arguments: `doc`, and [req](#req). `doc` is the document requested by the show function.
-
-Once you've defined a show function, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT/_show/$SHOW_FUNCTION/$DOCUMENT_ID`, where `$SHOW_FUNCTION` is the function's name, and `$DOCUMENT_ID` is the `_id` of the document you want to run the show function on.
 
 > Design doc with a show function:
 
@@ -141,26 +131,13 @@ TODO
 TODO
 ```
 
-```node.js
-TODO
-```
+Show functions are like [list functions](#list-functions) but for formatting individual documents.
+
+Show functions receive two arguments: `doc`, and [req](#req). `doc` is the document requested by the show function.
+
+Once you've defined a show function, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT/_show/$SHOW_FUNCTION/$DOCUMENT_ID`, where `$SHOW_FUNCTION` is the function's name, and `$DOCUMENT_ID` is the `_id` of the document you want to run the show function on.
 
 ## Update Handlers
-
-Update handlers are functions that invoke server-side logic that will create or update a document. This feature allows a range of use cases such as providing a server-side last modified timestamp, updating individual fields in a document without first getting the latest revision, etc.
-
-Update handlers receive two arguments: `doc` and [req](#req). If a document ID is provided in the request to the update handler, then `doc` will be the document corresponding with that ID. If no ID was provided, `doc` will be `null`.
-
-Update handler functions must return an array of two elements, the first being the document to save (or null, if you don't want to save anything), and the second being the response body.
-
-Here's how to query update handlers:
-
-Method | URL
--------|------
-POST | `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_DOCUMENT/_update/$UPDATE_HANDLER`
-PUT | `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_DOCUMENT/_update/$UPDATE_HANDLER/$DOCUMENT_ID`
-
-Where `$DESIGN_DOCUMENT` is the `_id` of the document defining the update handler, `$UPDATE_HANDLER` is the name of the update handler, and `$DOCUMENT_ID` is the `_id` of the document you want the handler to, well, handle.
 
 > Example design doc:
 
@@ -201,17 +178,22 @@ TODO
 TODO
 ```
 
-```node.js
-TODO
-```
+Update handlers are functions that invoke server-side logic that will create or update a document. This feature allows a range of use cases such as providing a server-side last modified timestamp, updating individual fields in a document without first getting the latest revision, etc.
+
+Update handlers receive two arguments: `doc` and [req](#req). If a document ID is provided in the request to the update handler, then `doc` will be the document corresponding with that ID. If no ID was provided, `doc` will be `null`.
+
+Update handler functions must return an array of two elements, the first being the document to save (or null, if you don't want to save anything), and the second being the response body.
+
+Here's how to query update handlers:
+
+Method | URL
+-------|------
+POST | `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_DOCUMENT/_update/$UPDATE_HANDLER`
+PUT | `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_DOCUMENT/_update/$UPDATE_HANDLER/$DOCUMENT_ID`
+
+Where `$DESIGN_DOCUMENT` is the `_id` of the document defining the update handler, `$UPDATE_HANDLER` is the name of the update handler, and `$DOCUMENT_ID` is the `_id` of the document you want the handler to, well, handle.
 
 ## Filter Functions
-
-Filter functions format the [changes feed](#list-changes), removing changes you don't want to monitor. The filter function is run over every change in the changes feed, and only those for which the function returns `true` are returned to the client in the response.
-
-Filter functions receive two arguments: `doc` and [req](#req). `doc` represents the document currently being filtered.
-
-To use a filter function on the changes feed, specify the function in the `_changes` query. See the examples for more details.
 
 > Example design document:
 
@@ -235,22 +217,13 @@ TODO
 TODO
 ```
 
-```node.js
-TODO
-```
+Filter functions format the [changes feed](#list-changes), removing changes you don't want to monitor. The filter function is run over every change in the changes feed, and only those for which the function returns `true` are returned to the client in the response.
+
+Filter functions receive two arguments: `doc` and [req](#req). `doc` represents the document currently being filtered.
+
+To use a filter function on the changes feed, specify the function in the `_changes` query. See the examples for more details.
 
 ## Update Validators
-
-Update validators run whenever a document would be inserted or updated in the database, evaluating whether that document should actually be written to disk. If a change is rejected, the update validator will send the requesting
-
-Update validators get four arguments:
-
-* `newDoc`: the version of the document passed in the request.
-* `oldDoc`: the version of the document currently in the database, or `null` if there is none.
-* `userCtx`: context about the currently authenticated user, specifically their `name` and `roles` within the current database.
-* `secObj`: the database's [security object](#reading-permissions)
-
-Update validators run implicitly during every insertion and update, so there's no special query to access them.
 
 > Example design document:
 
@@ -279,3 +252,14 @@ function(newDoc, oldDoc, userCtx, secObj) {
   "reason": "Document must have an address."
 }
 ```
+
+Update validators run whenever a document would be inserted or updated in the database, evaluating whether that document should actually be written to disk. If a change is rejected, the update validator will send the requesting
+
+Update validators get four arguments:
+
+* `newDoc`: the version of the document passed in the request.
+* `oldDoc`: the version of the document currently in the database, or `null` if there is none.
+* `userCtx`: context about the currently authenticated user, specifically their `name` and `roles` within the current database.
+* `secObj`: the database's [security object](#reading-permissions)
+
+Update validators run implicitly during every insertion and update, so there's no special query to access them.

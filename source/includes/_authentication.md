@@ -4,8 +4,6 @@ Clients can authenticate with Cloudant one of two ways: Basic or Cookie.
 
 ## Basic Authentication
 
-With Basic authentication, you pass along your credentials as part of every request.
-
 ```shell
 curl -X HEAD -u $USERNAME https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com
 ```
@@ -20,13 +18,9 @@ print ping.status_code
 # 200
 ```
 
-```node.js
-TODO
-```
+With Basic authentication, you pass along your credentials as part of every request.
 
 ## Cookies
-
-With Cookie authentication, you use your credentials to acquire a cookie, which you send as part of future requests. This cookie expires automatically after 24 hours.
 
 ```shell
 TODO
@@ -39,28 +33,14 @@ account = cloudant.Account(USERNAME)
 login = account.login(USERNAME, PASSWORD)
 print login.status_code
 # 200
-```
-
-```node.js
-TODO
-```
-
-Logging out causes the cookie to expire immediately.
-
-```shell
-TODO
-```
-
-```python
-import cloudant
-
-account = cloudant.Account(USERNAME)
-account.login(USERNAME, PASSWORD).raise_for_status()
 logout = account.logout()
 print logout.status_code
 # 200
+ping = account.ping()
+print ping.status_code
+# 401
 ```
 
-```node.js
-TODO
-```
+With Cookie authentication, you use your credentials to acquire a cookie, which you send as part of future requests. This cookie expires automatically after 24 hours.
+
+Logging out causes the cookie to expire immediately.

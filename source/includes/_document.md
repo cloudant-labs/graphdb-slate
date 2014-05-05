@@ -6,17 +6,11 @@ All documents have a unique `_id` field, either assigned by you or generated as 
 
 ## Create
 
-To create a document, make a POST request to `https://$USERNAME.cloudant.com/$DATABASE`, where the document's JSON is the request body. If you don't provide an `_id` field as part of the document, Cloudant will generate a UUID and make that the document's `_id`.
-
 ```shell
 TODO
 ```
 
 ```python
-TODO
-```
-
-```node.js
 TODO
 ```
 
@@ -44,19 +38,15 @@ TODO
 }
 ```
 
-## Read
+To create a document, make a POST request to `https://$USERNAME.cloudant.com/$DATABASE`, where the document's JSON is the request body. If you don't provide an `_id` field as part of the document, Cloudant will generate a UUID and make that the document's `_id`.
 
-To retrieve a document, make a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOC` where `$DOC` is the document's `_id`.
+## Read
 
 ```shell
 TODO
 ```
 
 ```python
-TODO
-```
-
-```node.js
 TODO
 ```
 
@@ -75,25 +65,19 @@ TODO
 }
 ```
 
+To retrieve a document, make a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOC` where `$DOC` is the document's `_id`.
+
 ## List
 
 To fetch many documents at once, see [Database: List Documents](#list-documents).
 
 ## Update
 
-To update a document, make a PUT request to `https://$USERNAME.cloudant.com/$DATABASE/$DOC` where `$DOC` is the document's `_id`, and the updated document JSON is the request body, including the document's latest `_rev` value.
-
-<aside>If you don't provide the latest `_rev`, or provide an outdated `_rev`, Cloudant will respond with a 409 error, to prevent overwriting data changed by other clients.</aside>
-
 ```shell
 TODO
 ```
 
 ```python
-TODO
-```
-
-```node.js
 TODO
 ```
 
@@ -123,21 +107,17 @@ TODO
 }
 ```
 
-## Delete
-
-To delete a document, make a DELETE request to `https://$USERNAME.cloudant.com/$DATABASE/$DOC` with the document's latest `_rev` in the querystring.
+To update a document, make a PUT request to `https://$USERNAME.cloudant.com/$DATABASE/$DOC` where `$DOC` is the document's `_id`, and the updated document JSON is the request body, including the document's latest `_rev` value.
 
 <aside>If you don't provide the latest `_rev`, or provide an outdated `_rev`, Cloudant will respond with a 409 error, to prevent overwriting data changed by other clients.</aside>
+
+## Delete
 
 ```shell
 TODO
 ```
 
 ```python
-TODO
-```
-
-```node.js
 TODO
 ```
 
@@ -151,19 +131,17 @@ TODO
 }
 ```
 
-## Bulk Operations
+To delete a document, make a DELETE request to `https://$USERNAME.cloudant.com/$DATABASE/$DOC` with the document's latest `_rev` in the querystring.
 
-To make many insertions, updates, and/or deletes simultaneously, make a POST request to `https://$USERNAME.cloudant.com/$DATABASE/_bulk_docs`. Cloudant will process each contained action, and return a list of results for each.
+<aside>If you don't provide the latest `_rev`, or provide an outdated `_rev`, Cloudant will respond with a 409 error, to prevent overwriting data changed by other clients.</aside>
+
+## Bulk Operations
 
 ```shell
 TODO
 ```
 
 ```python
-TODO
-```
-
-```node.js
 TODO
 ```
 
@@ -210,3 +188,5 @@ TODO
   "rev": "2-cbdef49ef3ddc127eff86350844a6108"
 }]
 ```
+
+To make many insertions, updates, and/or deletes simultaneously, make a POST request to `https://$USERNAME.cloudant.com/$DATABASE/_bulk_docs`. Cloudant will process each contained action, and return a list of results for each.

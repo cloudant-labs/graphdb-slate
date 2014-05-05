@@ -4,8 +4,6 @@ Databases contain [documents](#documents), the JSON objects Cloudant revolves ar
 
 ## Create
 
-To create a database, make a PUT request to `https://$USERNAME.cloudant.com/$DATABASE`.
-
 ```shell
 curl -X PUT https://$USERNAME.cloudant.com/$DATABASE
   -u $USERNAME
@@ -21,10 +19,6 @@ print response.status_code
 # 201
 ```
 
-```node.js
-TODO
-```
-
 > Example response:
 
 ```
@@ -33,19 +27,15 @@ TODO
 }
 ```
 
-## Info
+To create a database, make a PUT request to `https://$USERNAME.cloudant.com/$DATABASE`.
 
-Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE` will return information about the database, such as how many documents it contains.
+## Info
 
 ```shell
 TODO
 ```
 
 ```python
-TODO
-```
-
-```node.js
 TODO
 ```
 
@@ -68,19 +58,15 @@ TODO
 }
 ```
 
-## List Databases
+Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE` will return information about the database, such as how many documents it contains.
 
-To list all the databases in an account, make a GET request against `https://$USERNAME.cloudant.com/_all_dbs`.
+## List Databases
 
 ```shell
 TODO
 ```
 
 ```python
-TODO
-```
-
-```node.js
 TODO
 ```
 
@@ -96,32 +82,15 @@ TODO
 ]
 ```
 
+To list all the databases in an account, make a GET request against `https://$USERNAME.cloudant.com/_all_dbs`.
+
 ## List Documents
-
-To list all the documents in a database, make a GET request against `https://$USERNAME.cloudant.com/$DATABASE/_all_docs`.
-
-The method accepts these query arguments:
-
-Argument | Description | Optional | Type | Default
----------|-------------|----------|------|--------
-`descending` | Return the documents in descending by key order | yes | boolean | false
-`endkey | Stop returning records when the specified key is reached | yes | string |  
-`include_docs` | Include the full content of the documents in the return | yes | boolean | false
-`inclusive_end` | Include rows whose key equals the endkey | yes | boolean | true
-`key` | Return only documents that match the specified key | yes | string |  
-`limit` | Limit the number of the returned documents to the specified number | yes | numeric | 
-`skip | Skip this number of records before starting to return the results | yes | numeric | 0
-`startkey | Return records starting with the specified key | yes | string |
 
 ```shell
 TODO
 ```
 
 ```python
-TODO
-```
-
-```node.js
 TODO
 ```
 
@@ -153,33 +122,28 @@ TODO
 }
 ```
 
+To list all the documents in a database, make a GET request against `https://$USERNAME.cloudant.com/$DATABASE/_all_docs`.
+
+The method accepts these query arguments:
+
+Argument | Description | Optional | Type | Default
+---------|-------------|----------|------|--------
+`descending` | Return the documents in descending by key order | yes | boolean | false
+`endkey | Stop returning records when the specified key is reached | yes | string |  
+`include_docs` | Include the full content of the documents in the return | yes | boolean | false
+`inclusive_end` | Include rows whose key equals the endkey | yes | boolean | true
+`key` | Return only documents that match the specified key | yes | string |  
+`limit` | Limit the number of the returned documents to the specified number | yes | numeric | 
+`skip | Skip this number of records before starting to return the results | yes | numeric | 0
+`startkey | Return records starting with the specified key | yes | string |
+
 ## List Changes
-
-Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE/_changes` returns a list of changes made to documents in the database, including insertions, updates, and deletions. The changes feed may not return changes in chronological order, but usually gets pretty close.
-
-`_changes` accepts these query arguments:
-
-Argument | Description | Optional | Type | Default | Supported Values
----------|-------------|----------|------|---------|-----------------
-`doc_ids` | List of documents IDs to use to filter updates | yes | array of strings
-`feed` | Type of feed | yes | string | normal | `continuous`: Continuous mode, `longpoll`: Long polling mode, `normal`: Polling mode
-`filter` | Name of filter function from a design document to get updates | yes | string | |
-`heartbeat` Time in milliseconds after which an empty line is sent during longpoll or continuous if there have been no changes | yes | numeric | 60000 | 
-`include_docs` | Include the document with the result | yes | boolean | false |
-`limit` Maximum number of rows to return | yes | numeric | none |  
-`since` Start the results from changes immediately after the specified sequence number. If since is 0 (the default), the request will return all changes from the creation of the database. | yes | string | 0 | 
-`descending` | Return the changes in descending (by seq) order | yes | boolean | false | 
-`timeout` Number of milliseconds to wait for data in a longpoll or continuous feed before terminating the response. If both heartbeat and timeout are suppled, heartbeat supersedes timeout. | yes | numeric | |
 
 ```shell
 TODO
 ```
 
 ```python
-TODO
-```
-
-```node.js
 TODO
 ```
 
@@ -199,13 +163,7 @@ TODO
 }
 ```
 
-The `feed` argument changes how Cloudant sends the response. By default, Cloudant sends the current changes feed in its entirety and then closes the connection.
-
-If you set `feed=longpoll`, the request to the server will remain open until a change is made on the database, when the changes will be reported, and then the connection will close. The long poll is useful when you want to monitor for changes for a specific purpose without wanting to monitoring continuously for changes.
-
-If you set `feed=continuous`, Cloudant will send all new changes back to the client immediately, without closing the connection. In continuous mode the format of the changes is slightly different to accommodate the continuous nature while ensuring that the JSON output is still valid for each change notification.
-
-Specifically, it looks like this:
+> Example response, continuous changes feed:
 
 ```
 {
@@ -240,23 +198,37 @@ Specifically, it looks like this:
 }
 ```
 
-Notice how that's not a JSON object. Instead, each line of the response is a JSON object unto itself.
+Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE/_changes` returns a list of changes made to documents in the database, including insertions, updates, and deletions. The changes feed may not return changes in chronological order, but usually gets pretty close.
+
+`_changes` accepts these query arguments:
+
+Argument | Description | Optional | Type | Default | Supported Values
+---------|-------------|----------|------|---------|-----------------
+`doc_ids` | List of documents IDs to use to filter updates | yes | array of strings
+`feed` | Type of feed | yes | string | normal | `continuous`: Continuous mode, `longpoll`: Long polling mode, `normal`: Polling mode
+`filter` | Name of filter function from a design document to get updates | yes | string | |
+`heartbeat` Time in milliseconds after which an empty line is sent during longpoll or continuous if there have been no changes | yes | numeric | 60000 | 
+`include_docs` | Include the document with the result | yes | boolean | false |
+`limit` Maximum number of rows to return | yes | numeric | none |  
+`since` Start the results from changes immediately after the specified sequence number. If since is 0 (the default), the request will return all changes from the creation of the database. | yes | string | 0 | 
+`descending` | Return the changes in descending (by seq) order | yes | boolean | false | 
+`timeout` Number of milliseconds to wait for data in a longpoll or continuous feed before terminating the response. If both heartbeat and timeout are suppled, heartbeat supersedes timeout. | yes | numeric | |
+
+The `feed` argument changes how Cloudant sends the response. By default, Cloudant sends the current changes feed in its entirety and then closes the connection.
+
+If you set `feed=longpoll`, the request to the server will remain open until a change is made on the database, when the changes will be reported, and then the connection will close. The long poll is useful when you want to monitor for changes for a specific purpose without wanting to monitoring continuously for changes.
+
+If you set `feed=continuous`, Cloudant will send all new changes back to the client immediately, without closing the connection. In continuous mode the format of the changes is slightly different to accommodate the continuous nature while ensuring that the JSON output is still valid for each change notification.
 
 The `filter` parameter designates a pre-defined function to filter the changes feed. See [Design Documents: Filter Functions](#filter-functions) for more information.
 
 ## Delete
-
-To delete a request, and all the documents it contains, make a DELETE request to `https://$USERNAME.cloudant.com/$DATABASE`.
 
 ```shell
 TODO
 ```
 
 ```python
-TODO
-```
-
-```node.js
 TODO
 ```
 
@@ -267,6 +239,8 @@ TODO
   "ok": true
 }
 ```
+
+To delete a request, and all the documents it contains, make a DELETE request to `https://$USERNAME.cloudant.com/$DATABASE`.
 
 ## Reading Permissions
 

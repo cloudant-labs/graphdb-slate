@@ -6,8 +6,6 @@ Your dashboard is always `https://YOUR_USERNAME.cloudant.com/dashboard.html` unl
 
 ## Ping
 
-To see if your Cloudant account is accessible, make a `HEAD` against `https://YOUR_USERNAME.cloudant.com`.
-
 ```shell
 curl -X HEAD -u $USERNAME https://$USERNAME.cloudant.com
 ```
@@ -21,6 +19,4 @@ print ping.status_code
 # 200
 ```
 
-```node.js
-TODO
-```
+To see if your Cloudant account is accessible, make a `HEAD` against `https://YOUR_USERNAME.cloudant.com`.

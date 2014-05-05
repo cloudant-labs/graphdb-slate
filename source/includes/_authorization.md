@@ -14,10 +14,6 @@ The credentials you use to log in to the dashboard automatically have `_admin` p
 
 ## Managing Permissions
 
-To modify a user's permissions, use `https://cloudant.com/api/set_permissions`.
-
-<aside>Unlike most Cloudant endpoints, `/api/set_permissions` accepts form-encoded data rather than a JSON object in the request body.</aside>
-
 ```shell
 curl -X POST https://cloudant.com/api/set_permissions
   -H "Content-Type: application/x-www-form-urlencoded"
@@ -29,13 +25,11 @@ curl -X POST https://cloudant.com/api/set_permissions
 TODO
 ```
 
-```node.js
-TODO
-```
+To modify a user's permissions, use `https://cloudant.com/api/set_permissions`.
+
+<aside>Unlike most Cloudant endpoints, `/api/set_permissions` accepts form-encoded data rather than a JSON object in the request body.</aside>
 
 ## Creating API Keys
-
-To generate an API key, use `https://cloudant.com/api/generate_api_key`. The created API key has no permissions to anything by default, and must be given permissions explicitly.
 
 ```shell
 curl -X POST https://cloudant.com/api/generate_api_key
@@ -59,6 +53,8 @@ TODO
    "key": "generatedKey"
 }
 ```
+
+To generate an API key, use `https://cloudant.com/api/generate_api_key`. The created API key has no permissions to anything by default, and must be given permissions explicitly.
 
 ## CORS
 
