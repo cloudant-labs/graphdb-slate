@@ -66,8 +66,8 @@ TODO
 function (head, req){
   // specify our headers
   start({
-    'headers': {
-      'Content-Type': 'text/html'
+    headers: {
+      "Content-Type": 'text/html'
     }
   });
   // send the respond, line by line
