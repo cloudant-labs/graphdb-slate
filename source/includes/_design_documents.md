@@ -144,7 +144,7 @@ Once you've defined a show function, you can query it with a GET request to `htt
 ```json
 {
   "_id": "_design/update_example",
-  updates: {
+  "updates": {
     "UPDATE_HANDLER_NAME": "function (doc, req) { ... }"
   }
 }
