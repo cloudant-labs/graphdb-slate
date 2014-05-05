@@ -107,7 +107,9 @@ To update a document, make a PUT request to `https://$USERNAME.cloudant.com/$DAT
 
 ## Delete
 
-To delete a document, make a DELETE request to `https://$USERNAME.cloudant.com/$DATABASE/$DOC` with the document's latest `_rev` in the querystring. If the provided `_rev` is not the latest, Cloudant will return a 409 error.
+To delete a document, make a DELETE request to `https://$USERNAME.cloudant.com/$DATABASE/$DOC` with the document's latest `_rev` in the querystring.
+
+<aside>If you don't provide the latest `_rev`, or provide an outdated `_rev`, Cloudant will respond with a 409 error, to prevent overwriting data changed by other clients.</aside>
 
 ```shell
 ```
