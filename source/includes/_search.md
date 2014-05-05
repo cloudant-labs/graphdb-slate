@@ -4,6 +4,18 @@ Search indexes allow databases to be queried using [Lucene Query Parser Syntax](
 
 ## Creating the Index
 
+> Example design document:
+
+```json
+TODO
+```
+
+> Example search index:
+
+```javascript
+TODO
+```
+
 TODO
 
 ### Faceting
@@ -15,5 +27,13 @@ TODO
 TODO
 
 ## Queries
+
+```shell
+TODO
+```
+
+```python
+TODO
+```
 
 TODO
