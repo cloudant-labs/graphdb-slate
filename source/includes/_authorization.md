@@ -25,6 +25,14 @@ curl -X POST https://cloudant.com/api/set_permissions
   -u $USERNAME
 ```
 
+```python
+TODO
+```
+
+```node.js
+TODO
+```
+
 ## Creating API Keys
 
 To generate an API key, use `https://cloudant.com/api/generate_api_key`. The created API key has no permissions to anything by default, and must be given permissions explicitly.
@@ -32,6 +40,14 @@ To generate an API key, use `https://cloudant.com/api/generate_api_key`. The cre
 ```shell
 curl -X POST https://cloudant.com/api/generate_api_key
   -u $USERNAME
+```
+
+```session
+TODO
+```
+
+```python
+TODO
 ```
 
 > Response body:

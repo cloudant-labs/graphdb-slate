@@ -21,6 +21,10 @@ print response.status_code
 # 201
 ```
 
+```node.js
+TODO
+```
+
 > Example response:
 
 ```
@@ -38,6 +42,10 @@ TODO
 ```
 
 ```python
+TODO
+```
+
+```node.js
 TODO
 ```
 
@@ -69,6 +77,10 @@ TODO
 ```
 
 ```python
+TODO
+```
+
+```node.js
 TODO
 ```
 
@@ -106,6 +118,10 @@ TODO
 ```
 
 ```python
+TODO
+```
+
+```node.js
 TODO
 ```
 
@@ -160,6 +176,10 @@ TODO
 ```
 
 ```python
+TODO
+```
+
+```node.js
 TODO
 ```
 
@@ -236,6 +256,10 @@ TODO
 TODO
 ```
 
+```node.js
+TODO
+```
+
 > Example response:
 
 ```
@@ -248,6 +272,10 @@ TODO
 
 `GET /$DB/_security`
 
+TODO
+
 ## Modifying Permissions
 
 `PUT /$DB/_security`
+
+TODO

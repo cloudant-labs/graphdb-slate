@@ -20,9 +20,17 @@ print ping.status_code
 # 200
 ```
 
+```node.js
+TODO
+```
+
 ## Cookies
 
 With Cookie authentication, you use your credentials to acquire a cookie, which you send as part of future requests. This cookie expires automatically after 24 hours.
+
+```shell
+TODO
+```
 
 ```python
 import cloudant
@@ -33,10 +41,17 @@ print login.status_code
 # 200
 ```
 
+```node.js
+TODO
+```
+
 Logging out causes the cookie to expire immediately.
 
-```python
+```shell
+TODO
+```
 
+```python
 import cloudant
 
 account = cloudant.Account(USERNAME)
@@ -44,4 +59,8 @@ account.login(USERNAME, PASSWORD).raise_for_status()
 logout = account.logout()
 print logout.status_code
 # 200
+```
+
+```node.js
+TODO
 ```
