@@ -1,6 +1,6 @@
 # Databases
 
-Databases contain documents, the JSON objects Cloudant revolves around. All documents need a database to contain them.
+Databases contain [documents](#documents), the JSON objects Cloudant revolves around. All documents need a database to contain them.
 
 ## Create
 
