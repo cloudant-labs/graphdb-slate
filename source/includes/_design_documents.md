@@ -63,7 +63,7 @@ TODO
 > Example list function:
 
 ```javascript
-function (head, req){
+function (head, req) {
   // specify our headers
   start({
     headers: {
@@ -104,17 +104,25 @@ TODO
 
 Show functions are like [list functions](#list-functions) but for formatting individual documents.
 
-Show functions receive two arguments: `doc`, and `req`. `doc` is the document requested by the show function
+Show functions receive two arguments: `doc`, and [req](#req). `doc` is the document requested by the show function.
+
+Once you've defined a show function, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT/_show/$SHOW_FUNCTION/$DOCUMENT_ID`, where `$SHOW_FUNCTION` is the function's name, and `$DOCUMENT_ID` is the `_id` of the document you want to run the show function on.
 
 > Design doc with a show function:
 
 ```json
+{
+  "_id": "_design/show_example",
+  "shows": {
+    "FUNCTION_NAME": "function (doc, req) { ... }"
+  }
+}
 ```
 
 > Example show function:
 
 ```javascript
-function(doc, req){
+function (doc, req) {
   if (doc) {
     return "Hello from " + doc._id + "!";
   } else {
@@ -123,14 +131,151 @@ function(doc, req){
 }
 ```
 
+> Example queries:
+
+```shell
+TODO
+```
+
+```python
+TODO
+```
+
+```node.js
+TODO
+```
+
 ## Update Handlers
 
+Update handlers are functions that invoke server-side logic that will create or update a document. This feature allows a range of use cases such as providing a server-side last modified timestamp, updating individual fields in a document without first getting the latest revision, etc.
+
+Update handlers receive two arguments: `doc` and [req](#req). If a document ID is provided in the request to the update handler, then `doc` will be the document corresponding with that ID. If no ID was provided, `doc` will be `null`.
+
+Update handler functions must return an array of two elements, the first being the document to save (or null, if you don't want to save anything), and the second being the response body.
+
+Here's how to query update handlers:
+
+Method | URL
+-------|------
+POST | `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_DOCUMENT/_update/$UPDATE_HANDLER`
+PUT | `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_DOCUMENT/_update/$UPDATE_HANDLER/$DOCUMENT_ID`
+
+Where `$DESIGN_DOCUMENT` is the `_id` of the document defining the update handler, `$UPDATE_HANDLER` is the name of the update handler, and `$DOCUMENT_ID` is the `_id` of the document you want the handler to, well, handle.
+
+> Example design doc:
+
+```json
+{
+  "_id": "_design/update_example",
+  updates: {
+    "UPDATE_HANDLER_NAME": "function (doc, req) { ... }"
+  }
+}
+```
+
+> Example update handler:
+
+```javascript
+function(doc, req){
+  if (!doc){
+    if ('id' in req && req.id){
+      // create new document
+      return [{_id: req.id}, 'New World']
+    }
+    // change nothing in database
+    return [null, 'Empty World']
+  }
+  doc.world = 'hello';
+  doc.edited_by = req.userCtx.name
+  return [doc, 'Edited World!']
+}
+```
+
+> Example queries:
+
+```shell
 TODO
+```
+
+```python
+TODO
+```
+
+```node.js
+TODO
+```
 
 ## Filter Functions
 
+Filter functions format the [changes feed](#list-changes), removing changes you don't want to monitor. The filter function is run over every change in the changes feed, and only those for which the function returns `true` are returned to the client in the response.
+
+Filter functions receive two arguments: `doc` and [req](#req). `doc` represents the document currently being filtered.
+
+To use a filter function on the changes feed, specify the function in the `_changes` query. See the examples for more details.
+
+> Example design document:
+
+```json
 TODO
+```
+
+> Example filter function:
+
+```javascript
+TODO
+```
+
+> Example queries:
+
+```shell
+TODO
+```
+
+```python
+TODO
+```
+
+```node.js
+TODO
+```
 
 ## Update Validators
 
-TODO
+Update validators run whenever a document would be inserted or updated in the database, evaluating whether that document should actually be written to disk. If a change is rejected, the update validator will send the requesting
+
+Update validators get four arguments:
+
+* `newDoc`: the version of the document passed in the request.
+* `oldDoc`: the version of the document currently in the database, or `null` if there is none.
+* `userCtx`: context about the currently authenticated user, specifically their `name` and `roles` within the current database.
+* `secObj`: the database's [security object](#reading-permissions)
+
+Update validators run implicitly during every insertion and update, so there's no special query to access them.
+
+> Example design document:
+
+```json
+{
+  "_id": "_design/validator_example",
+  "validate_doc_update": "function(newDoc, oldDoc, userCtx, secObj) { ... }"
+}
+```
+
+> Example update validator:
+
+```javascript
+function(newDoc, oldDoc, userCtx, secObj) {
+  if (newDoc.address === undefined) {
+     throw({forbidden: 'Document must have an address.'});
+  }
+}
+```
+
+> Example response:
+
+```json
+{
+  "error": "forbidden",
+  "reason": "Document must have an address."
+}
+```
