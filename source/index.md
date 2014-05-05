@@ -76,7 +76,7 @@ Developers early in the design process might want to consider the complexities r
 * Availability: every request receives a response indicating success or failure.
 * Partition Tolerance: the system continues to operate despite arbitrary message loss or failure of part of the system.
 
-For example, a database prioritizing consistency and availability is simple: a single node storing a single copy of your data. But scaling necessarily involves a performance increase in the node rather than the leverage of additional nodes, so that even a minor system failure can shut down a single-node system. To endure, the system must become more sophisticated.
+For example, a database prioritizing consistency and availability is simple: a single node storing a single copy of your data. But scaling necessarily involves a performance increase in the node rather than the leverage of additional nodes, which can mean that a minor system failure can shut down a single-node system. To endure, the system must become more sophisticated. Cloudant's ease of scalability makes it adaptable to this problem.
 
 The formal proof for the CAP theroem is available [here](http://lpd.epfl.ch/sgilbert/pubs/BrewersConjecture-SigAct.pdf) for a more in depth view.
 
