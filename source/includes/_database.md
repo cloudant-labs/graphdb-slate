@@ -34,9 +34,11 @@ print response.status_code
 Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE` will return information about the database, such as how many documents it contains.
 
 ```shell
+TODO
 ```
 
 ```python
+TODO
 ```
 
 > Example response:
@@ -63,9 +65,11 @@ Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE` will ret
 To list all the databases in an account, make a GET request against `https://$USERNAME.cloudant.com/_all_dbs`.
 
 ```shell
+TODO
 ```
 
 ```python
+TODO
 ```
 
 > Example response:
@@ -98,9 +102,11 @@ Argument | Description | Optional | Type | Default
 `startkey | Return records starting with the specified key | yes | string |
 
 ```shell
+TODO
 ```
 
 ```python
+TODO
 ```
 
 > Example response:
@@ -150,9 +156,11 @@ Argument | Description | Optional | Type | Default | Supported Values
 `timeout` Number of milliseconds to wait for data in a longpoll or continuous feed before terminating the response. If both heartbeat and timeout are suppled, heartbeat supersedes timeout. | yes | numeric | |
 
 ```shell
+TODO
 ```
 
 ```python
+TODO
 ```
 
 > Example response:
@@ -221,9 +229,11 @@ The `filter` parameter designates a pre-defined function to filter the changes f
 To delete a request, and all the documents it contains, make a DELETE request to `https://$USERNAME.cloudant.com/$DATABASE`.
 
 ```shell
+TODO
 ```
 
 ```python
+TODO
 ```
 
 > Example response:
