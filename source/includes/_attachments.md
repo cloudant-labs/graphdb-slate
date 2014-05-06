@@ -1,6 +1,6 @@
 # Attachments
 
-Attachments are [blob](http://en.wikipedia.org/wiki/Binary_large_object) files contained within documents. All attachments have a name and a content type, corresponding to a [MIME type][mime]. If you need to store raw files, use attachments.
+Attachments are [blob](http://en.wikipedia.org/wiki/Binary_large_object) files contained within documents. Examples of blob files would be images and multimedia. All attachments have a name and a content type, corresponding to a [MIME type][mime]. If you need to store raw files, use attachments.
 
 ## Create / Update
 
