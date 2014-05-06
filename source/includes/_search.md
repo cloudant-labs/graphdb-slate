@@ -146,7 +146,7 @@ return true;
 }
 ```
 
-Sometimes a single analyzer isn't enough. You can use the `perfield` analyzer to configure different analyzers for different field names.
+The `perfield` analyzer configures multiple analyzers for different fields.
 
 ### Stop Words
 
@@ -169,7 +169,7 @@ Sometimes a single analyzer isn't enough. You can use the `perfield` analyzer to
 }
 ```
 
-You may want to define a set of words that do not get indexed. These are called stop words. You define stop words in the design document by turning the analyzer string into an object.
+Stop words are words that do not get indexed. You define them within a design document by turning the analyzer string into an object.
 
 <aside>The `keyword`, `simple` and `whitespace` analyzers do not support stop words.</aside>
 
