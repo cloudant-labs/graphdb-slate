@@ -1,6 +1,6 @@
 # Replication
 
-Cloudant replication syncs the state of two databases, so that any change which occurs to the source database, also occurs to the target database. You can create replications between any number of databases, whether continuous or not, to share state and aggregate information as best suits your application.
+Cloudant replication syncs the state of two databases. Any change which occurs to the source database will occur to the target database. You can create replications between any number of databases, whether continuous or not, to share state and aggregate information as best suits your application.
 
 Replications are represented as [documents](#documents) in the `_replicator` database, so working with replications is just like working with documents.
 
