@@ -1,22 +1,20 @@
 # Geo
 
-TODO
-
-## Creating the Index
-
 > Example design document:
 
 ```json
 TODO
 ```
 
-> Example search index:
+> Example geo index:
 
 ```javascript
 TODO
 ```
 
-TODO
+TODO what is geo indexing, when would i use it
+
+TOOD anatomy of an index
 
 ## Queries
 

@@ -1,9 +1,5 @@
 # MapReduce
 
-TODO
-
-## Creating the Index
-
 > Example design document:
 
 ```json
@@ -16,7 +12,9 @@ TODO
 TODO
 ```
 
-TODO
+TODO what is mapreduce, when would i use it
+
+TODO anatomy of an index
 
 ## Queries
 

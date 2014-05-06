@@ -10,6 +10,8 @@ All queries, whether [Search](#search), [MapReduce](#mapreduce), or [Geo](#geo),
 * [MapReduce](#mapreduce)
 * [Geo](#geo)
 
+Because design documents are just [documents](#documents), you can add a search index by [updating](#update) the document with the appropriate field, or by [inserting](#create29) a new document with it. As soon as the design document with your index is written, Cloudant will begin building the index and you can make queries against it.
+
 ## List Functions
 
 > Design doc with a list function:
