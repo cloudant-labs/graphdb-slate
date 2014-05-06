@@ -1,6 +1,6 @@
 # Authentication
 
-Clients can authenticate with Cloudant one of two ways: Basic or Cookie.
+Authentication just means verifying user credentials. There are two ways that clients can authenticate with Cloudant: Basic and Cookie. Basic is like showing an ID to be let through a door and Cookie is more like borrowing a key to the door.
 
 ## Basic Authentication
 
@@ -41,6 +41,6 @@ print ping.status_code
 # 401
 ```
 
-With Cookie authentication, you use your credentials to acquire a cookie, which you send as part of future requests. This cookie expires automatically after 24 hours.
+With Cookie authentication, you use your credentials to acquire a cookie which remains active for twenty four hours. You send the cookie with all requests until it expires.
 
 Logging out causes the cookie to expire immediately.
