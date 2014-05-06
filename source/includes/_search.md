@@ -55,11 +55,13 @@ facet | creates a faceted index. See [Faceting](#faceting) for more info. | `tru
 }
 ```
 
-Analyzers define how to extract index terms from text, which you might need to do if, for example, your application needs to index Chinese. Here's the list of generic analyzers supported by Cloudant search. See further down for language-specific analyzers.
+Analyzers are settings which define how to recognize terms within text. This can be helpful if you need to [index multiple languages](#language-specific-analyzers). 
+
+Here's the list of generic analyzers supported by Cloudant search:
 
 Analyzer | Description
 ---------|------------
-standard | This is the default analyzer and implements the Word Break rules from the Unicode Text Segmentation algorithm, as specified in Unicode Standard Annex #29.
+standard | Default analyzer; implements the Word Break rules from the [Unicode Text Segmentation algorithm](#http://www.unicode.org/reports/tr29/)
 email | Like standard but tries harder to match an email address as a complete token.
 keyword | Input is not tokenized at all.
 simple | Divides text at non-letters.
@@ -68,7 +70,7 @@ classic | The standard Lucene analyzer circa release 3.1. You'll know if you nee
 
 ### Language-Specific Analyzers
 
-These analyzers will omit very common words in the specific language, as these tend to make poor search queries and cause considerable index bloat. Many of these also perform stemming, where common word prefixes or suffixes are removed.
+These analyzers will omit very common words in the specific language, and many also [remove prefixes and suffixes](http://en.wikipedia.org/wiki/Stemming). The name of the language is also the name of the analyzer.
 
 <script type="text/javascript">
 function toggleMe(a){
