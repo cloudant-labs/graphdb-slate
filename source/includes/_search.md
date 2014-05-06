@@ -86,6 +86,7 @@ return true;
 
 <input type="button" onclick="return toggleMe('lang')" value="Languages">
 <div id="lang" style="display:none">
+
 * arabic
 * armenian
 * basque
