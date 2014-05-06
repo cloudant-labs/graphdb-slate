@@ -70,6 +70,22 @@ classic | The standard Lucene analyzer circa release 3.1. You'll know if you nee
 
 These analyzers will omit very common words in the specific language, as these tend to make poor search queries and cause considerable index bloat. Many of these also perform stemming, where common word prefixes or suffixes are removed.
 
+<script type="text/javascript">
+function toggleMe(a){
+var e=document.getElementById(a);
+if(!e)return true;
+if(e.style.display=="none"){
+e.style.display="block"
+}
+else{
+e.style.display="none"
+}
+return true;
+}
+</script>
+
+<input type="button" onclick="return toggleMe('lang')" value="Languages">
+<div id="lang" style="display:none">
 * arabic
 * armenian
 * basque
@@ -104,6 +120,7 @@ These analyzers will omit very common words in the specific language, as these t
 * swedish
 * thai
 * turkish
+</div>
 
 ### Per-Field Analyzers
 
