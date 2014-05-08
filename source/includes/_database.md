@@ -244,12 +244,82 @@ To delete a databases and its contents, make a DELETE request to `https://$USERN
 
 ## Reading Permissions
 
-`GET /$DB/_security`
-
+```shell
 TODO
+```
+
+```python
+TODO
+```
+
+> Example response:
+
+```json
+{
+  "cloudant": {
+    "antsellseadespecteposene": [
+      "_reader",
+      "_writer",
+      "_admin"
+    ],
+    "garbados": [
+      "_reader",
+      "_writer",
+      "_admin"
+    ],
+    "nobody": [
+      "_reader"
+    ]
+  },
+  "ok": true,
+  "_id": "_security"
+}
+```
+
+To see who has permissions to read, write, and manage the database, make a GET request against `https://$USERNAME.cloudant.com/$DB/_security`. The response object's `cloudant` field contains an object whose keys are usernames with permissions to interact with the database. The `nobody` username indicates what rights are available to unauthenticated users -- that is, anybody. In the example response, for instance, `nobody` has `_reader` permissions, making the database publicly readable.
 
 ## Modifying Permissions
 
+```shell
+TODO
+```
+
+```python
+TODO
+```
+
+> Example request:
+
+```json
+{
+  "cloudant": {
+    "antsellseadespecteposene": [
+      "_reader",
+      "_writer",
+      "_admin"
+    ],
+    "garbados": [
+      "_reader",
+      "_writer",
+      "_admin"
+    ],
+    "nobody": [
+      "_reader"
+    ]
+  }
+}
+```
+
+> Example response:
+
+```json
+{
+  "ok" : true
+}
+```
+
 `PUT /$DB/_security`
 
-TODO
+To modify who has permissions to read, write, and manage the database, make a PUT request against `https://$USERNAME.cloudant.com/$DB/_security`. To see what roles you can assign, see [Roles](#roles).
+
+The request object's `cloudant` field contains an object whose keys are usernames with permissions to interact with the database. The `nobody` username indicates what rights are available to unauthenticated users -- that is, anybody. In the example request, for instance, `nobody` has `_reader` permissions, making the database publicly readable.
