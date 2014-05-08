@@ -17,7 +17,7 @@ Replications are represented as [documents](#documents) in the `_replicator` dat
 }
 ```
 
-To start a replication, add a document to the `_replicator` database. To add documents, see [Creating a Document](#create29).
+To start a replication, [add a document](#create29) to the `_replicator` database.
 
 Replication documents can have the following fields:
 
@@ -88,4 +88,4 @@ target | An obfuscated URL indicating the database to which the task is replicat
 
 ## Delete
 
-To halt a replication, simply delete its document from the `_replicator` database. To do that, see [Deleting documents](#delete33).
+To halt a replication, simply [delete its document](#delete33) from the `_replicator` database.
