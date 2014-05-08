@@ -182,7 +182,7 @@ TODO
 TODO
 ```
 
-Update handlers are functions that invoke server-side logic that will create or update a document. This feature allows a range of use cases such as providing a server-side last modified timestamp, updating individual fields in a document without first getting the latest revision, etc.
+Update handlers are custom functions that live on Cloudant's server that will create or update a document. This can, for example, provide server-side modifcation timestamps, and document updates to individual fields without the latest revision. 
 
 Update handlers receive two arguments: `doc` and [req](#req). If a document ID is provided in the request to the update handler, then `doc` will be the document corresponding with that ID. If no ID was provided, `doc` will be `null`.
 
