@@ -183,7 +183,7 @@ TODO
 
 Once you've got an index written, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT/_search/$INDEX_NAME`. Specify your search query in the `query` query parameter.
 
-**Query Parameters**
+### Query Parameters
 
 Argument | Description | Optional | Type | Supported Values
 ---------|-------------|----------|------|------------------

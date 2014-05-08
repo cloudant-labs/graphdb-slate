@@ -3,18 +3,82 @@
 > Example design document:
 
 ```json
-TODO
+{
+  "_id": "_design/name",
+  "views": {
+    "VIEW_NAME": {
+      "map":"function(doc){ emit(doc.field, 1); }",
+      "reduce": "_sum"
+    }
+  }
+}
 ```
 
-> Example search index:
+> Example mapreduce index:
 
 ```javascript
-TODO
+{
+  map: function (doc) {
+    if (doc.kingdom === 'animal') {
+      emit(doc.order, doc.species);
+    }
+  },
+  reduce: '_count'
+}
 ```
 
-TODO what is mapreduce, when would i use it
+MapReduce indexes are used for...
 
-TODO anatomy of an index
+* Filtering the documents in your database to find those relevant to a particular process.
+* Extracting data from your documents and presenting it in a specific order.
+* Building efficient indexes to find documents by any value or structure that resides in them.
+* Use these indexes to represent relationships among documents.
+* Finally, with views you can make all sorts of calculations on the data in your documents. For example, if documents represent your company’s financial transactions, a view can answer the question of what the spending was in the last week, month, or year.
+
+MapReduce indexes are composed of a `map` function that `emit`s keys and values to index (such as sales and who closed them) and a `reduce` function that performs a summary operation (such as closed deals per sales rep). In Cloudant, the `_reduce` function is optional.
+
+`map` functions run once for every document in the database, which appears as the `doc` parameter. The `reduce` field can either be one of the following pre-defined function names, or a custom function. See [Custom Reduces](#custom-reduces) for more details.
+
+Function Name | Description
+--------------|-------------
+`_sum` | Produces the sum of all values for a key. Values must be numeric.
+`_count` | Produces the row count for a given key. Values can be any valid JSON.
+`_stats` | Produces a JSON structure containing sum, count, min, max and sum squared. Values must be numeric.
+
+### Custom Reduces
+
+> Example reduce function:
+
+```javascript
+// manually count unique keys
+function (keys, values, rereduce) {
+  if (rereduce){
+    // Given an array of counts, sum them
+    return values.reduce(function (a, b) {
+      return a + b;
+    }, 0);
+  } else {
+    // Given an array of keys, count them
+    return values.length;
+  }
+}
+```
+
+Although we strongly recommend using the built-in reduce functions (`_sum`, `_count`, `_stats`), you can define your own.
+
+Reduces are called with three parameters: `key`, `values` and `rereduce`. Keys will be a list of keys as emitted by the `map` function, or null; `values` will be a list of values for each element in `keys`; and `rereduce` will be `true` or `false`.
+
+When `rereduce` is `false`, `keys` will be an array of arrays representing unique key and document ID pairs emitted by the index's `map` function, while `values` will be an array of values emitted by the index's `map` function. For example:
+
+* keys: `[[key1, idA], [key1, idB], [key1, idC], [key2, idA], [key2, idD], [key3, idA]`
+* values: `[key1value1, key1value2. key1value3, key2value1, key2value2, key3value1]`
+
+When `rereduce` is `true`, `keys` will be `null`, while `values` will be an array of values returned by past iterations of the `reduce` function. For example:
+
+* keys: `null`
+* values: `[6, 3, 7]`
+
+By feeding the results of `reduce` functions back into the `reduce` function, MapReduce is able to split up the analysis of huge datasets into discrete, parallelized tasks, which can be completed much faster.
 
 ## Queries
 
@@ -26,4 +90,23 @@ TODO
 TODO
 ```
 
-TODO
+Once you've got an index written, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT/_view/$INDEX_NAME`.
+
+### Query Parameters
+
+Argument | Description | Optional | Type | Default | Supported Values
+---------|------------|----------|------|---------|-----------------
+descending | Return the documents in descending by key order | yes | boolean | false | 
+endkey | Stop returning records when the specified key is reached | yes | string or JSON array |  |  
+endkey_docid | Stop returning records when the specified document ID is reached | yes | string |  |  
+group Group the results using the reduce function to a group or single row | yes | boolean | false | 
+group_level Only applicable if the view uses complex keys, i.e. keys that are JSON arrays. Groups reduce results for the specified number of array fields. | yes | numeric |  | 
+include_docs | Include the full content of the documents in the response | yes | boolean | false | 
+inclusive_end included rows with the specified endkey | yes | boolean | true |  
+key Return only documents that match the specified key. Note that keys are JSON values and must be URL-encoded. | yes | string |  |  
+limit Limit the number of the returned documents to the specified number | yes | numeric |  | 
+reduce | Use the reduce function | yes | boolean | true |  
+skip | Skip this number of rows from the start | yes | numeric | 0 | 
+stale | Allow the results from a stale view to be used. This makes the request return immediately, even if the view has not been completely built yet. If this parameter is not given, a response will be returned only after the view has been built. | yes | string | false | ok: Allow stale views, update_after: Allow stale views, but update them immediately after the request
+startkey | Return records starting with the specified key | yes | string or JSON array |  |  
+startkey_docid | Return records starting with the specified document ID | yes | string |  |  
