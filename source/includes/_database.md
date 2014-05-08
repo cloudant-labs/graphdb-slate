@@ -129,13 +129,13 @@ The method accepts these query arguments:
 Argument | Description | Optional | Type | Default
 ---------|-------------|----------|------|--------
 `descending` | Return the documents in descending by key order | yes | boolean | false
-`endkey | Stop returning records when the specified key is reached | yes | string |  
+`endkey` | Stop returning records when the specified key is reached | yes | string |  
 `include_docs` | Include the full content of the documents in the return | yes | boolean | false
 `inclusive_end` | Include rows whose key equals the endkey | yes | boolean | true
 `key` | Return only documents that match the specified key | yes | string |  
 `limit` | Limit the number of the returned documents to the specified number | yes | numeric | 
-`skip | Skip this number of records before starting to return the results | yes | numeric | 0
-`startkey | Return records starting with the specified key | yes | string |
+`skip` | Skip this number of records before starting to return the results | yes | numeric | 0
+`startkey` | Return records starting with the specified key | yes | string |
 
 ## List Changes
 
