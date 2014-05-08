@@ -205,7 +205,7 @@ Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE/_changes`
 Argument | Description | Optional | Type | Default | Supported Values
 ---------|-------------|----------|------|---------|-----------------
 `doc_ids` | List of documents IDs to use to filter updates | yes | array of strings
-`feed` | Type of feed | yes | string | normal | `continuous`: Continuous mode, `longpoll`: Long polling mode, `normal`: Polling mode
+`feed` | Type of feed | yes | string | normal | `continuous`, `longpoll`, `normal`
 `filter` | Name of filter function from a design document to get updates | yes | string | |
 `heartbeat` Time in milliseconds after which an empty line is sent during longpoll or continuous if there have been no changes | yes | numeric | 60000 | 
 `include_docs` | Include the document with the result | yes | boolean | false |
