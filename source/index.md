@@ -36,7 +36,7 @@ includes:
 
 Cloudant provides reliable [database](#databases) hosting and support for applications of any scale. It’s available to users within minutes of [creating an account](https://cloudant.com/sign-up/) because there’s nothing to install. This documentation contains [more detail about Cloudant](#why_cloudant), [the technology which supports it](#no_SQL), and [API reference](#api-reference) for developers.
 
-Cloudant encourages contributions and suggestions for improvement to this page. Contributions can be made through [GitHub](https://github.com/cloudant-labs/slate). Support is available to users through their dashboard and within a dedicated community on [StackOverflow](http://stackoverflow.com/questions/tagged/cloudant).
+Cloudant encourages contributions and suggestions for improvement to our documentation. Contributions can be made through [GitHub](https://github.com/cloudant-labs/slate). 
 
 ## Who are we?
 
@@ -47,6 +47,8 @@ Cloudant is a Massachusetts-based company, with offices in Seattle and Bristol, 
 <div id="why_cloudant"></div>
 
 Cloudant is the name of both the provider and the service, in this case a [database-as-a-service](https://cloudant.com/product/comparison-of-dbaas/), commonly known as DBaaS. It does not use [SQL](#no_SQL) as its query language and it’s [distributed over the web](#distributed), all features which you can read about in more depth within this documentation. You can use Cloudant for [almost any purpose](https://cloudant.com/terms/) in any scale of application.
+
+Support is available to our customers through their dashboard, the <a href="http://webchat.freenode.net?channels=cloudant&amp;uio=MTE9MTk117">#cloudant IRC channel</a>, and within a dedicated community on [StackOverflow](http://stackoverflow.com/questions/tagged/cloudant).
 
 ## NoSQL Databases
 
