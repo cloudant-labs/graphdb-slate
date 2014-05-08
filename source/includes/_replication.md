@@ -89,3 +89,7 @@ target | An obfuscated URL indicating the database to which the task is replicat
 ## Delete
 
 To halt a replication, simply [delete its document](#delete33) from the `_replicator` database.
+
+## Advanced
+
+Clients implementing the [replication protocol](http://dataprotocols.org/couchdb-replication/) should check out the [Advanced Methods](#advanced14).
