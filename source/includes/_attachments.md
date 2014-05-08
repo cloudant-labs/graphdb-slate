@@ -1,6 +1,6 @@
 # Attachments
 
-Attachments are [blob](http://en.wikipedia.org/wiki/Binary_large_object) files contained within documents. Examples of blob files would be images and multimedia. All attachments have a name and a content type, corresponding to a [MIME type][mime]. If you need to store raw files, use attachments.
+Attachments are [BLOb](http://en.wikipedia.org/wiki/Binary_large_object) files contained within documents. Examples of BLObs would be images and multimedia. All attachments have a name and a content type, corresponding to a [MIME type][mime]. If you need to store raw files, use attachments.
 
 ## Create / Update
 
@@ -22,7 +22,7 @@ TODO
 }
 ```
 
-To create or update an attachment, make a PUT request to `https://$USERNAME.cloudant.com/$DATABASE/$DOC/$ATTACHMENT` where `$ATTACHMENT` is the name of the attachment, and the `rev` query argument is the document's latest revision. The attachment's [content type][mime] must be specified using the `Content-Type` header.
+To create or update an attachment, make a PUT request with the attachment's latest `_rev` to `https://$USERNAME.cloudant.com/$DATABASE/$_ID/$ATTACHMENT`.  The attachment's [content type][mime] must be specified using the `Content-Type` header.
 
 ## Read
 
@@ -34,7 +34,7 @@ TODO
 TODO
 ```
 
-To retrieve a document, make a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOC/$ATTACHMENT`. The body of the response will be the raw blob file.
+To retrieve a document, make a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$_ID/$ATTACHMENT`. The body of the response will be the raw blob file.
 
 ## Delete
 
@@ -56,6 +56,6 @@ TODO
 }
 ```
 
-To delete a document, make a DELETE request to `https://$USERNAME.cloudant.com/$DATABASE/$DOC/$ATTACHMENT`, where the `rev` query argument is the document's latest revision. If the revision is not provided or is not the document's latest, Cloudant will respond with a 409 error.
+To delete a document, make a DELETE request with the document's latest `_rev` to `https://$USERNAME.cloudant.com/$DATABASE/$_ID/$ATTACHMENT`. Anything but the latest `_rev` will return a [409 error](#errors).
 
 [mime]: http://en.wikipedia.org/wiki/Internet_media_type#List_of_common_media_types

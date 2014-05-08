@@ -205,22 +205,22 @@ Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE/_changes`
 Argument | Description | Optional | Type | Default | Supported Values
 ---------|-------------|----------|------|---------|-----------------
 `doc_ids` | List of documents IDs to use to filter updates | yes | array of strings
-`feed` | Type of feed | yes | string | normal | `continuous`: Continuous mode, `longpoll`: Long polling mode, `normal`: Polling mode
+`feed` | Type of feed | yes | string | normal | `continuous`, `longpoll`, `normal`
 `filter` | Name of filter function from a design document to get updates | yes | string | |
 `heartbeat` Time in milliseconds after which an empty line is sent during longpoll or continuous if there have been no changes | yes | numeric | 60000 | 
 `include_docs` | Include the document with the result | yes | boolean | false |
 `limit` Maximum number of rows to return | yes | numeric | none |  
-`since` Start the results from changes immediately after the specified sequence number. If since is 0 (the default), the request will return all changes from the creation of the database. | yes | string | 0 | 
-`descending` | Return the changes in descending (by seq) order | yes | boolean | false | 
-`timeout` Number of milliseconds to wait for data in a longpoll or continuous feed before terminating the response. If both heartbeat and timeout are suppled, heartbeat supersedes timeout. | yes | numeric | |
+`since` Start the results from changes after the specified sequence number. If since is 0 (the default), the request will return all changes. | yes | string | 0 | 
+`descending` | Return the changes in sequential order | yes | boolean | false | 
+`timeout` Number of milliseconds to wait for data before terminating the response. If heartbeat supersedes timeout if both are supplied. | yes | numeric | |
 
-The `feed` argument changes how Cloudant sends the response. By default, Cloudant sends the current changes feed in its entirety and then closes the connection.
+The `feed` argument changes how Cloudant sends the response. By default, changes feed in entirety and the connection closes.
 
-If you set `feed=longpoll`, the request to the server will remain open until a change is made on the database, when the changes will be reported, and then the connection will close. The long poll is useful when you want to monitor for changes for a specific purpose without wanting to monitoring continuously for changes.
+If you set `feed=longpoll`, requests to the server remain open until changes are reported. This can help monitor changes specifically instead of continuously.
 
-If you set `feed=continuous`, Cloudant will send all new changes back to the client immediately, without closing the connection. In continuous mode the format of the changes is slightly different to accommodate the continuous nature while ensuring that the JSON output is still valid for each change notification.
+If you set `feed=continuous`, new changes send without closing the connection. In this mode the format of changes accomodates the continuous nature while ensuring validity of the JSON output.
 
-The `filter` parameter designates a pre-defined function to filter the changes feed. See [Design Documents: Filter Functions](#filter-functions) for more information.
+The `filter` parameter designates a pre-defined [function to filter](#filter-functions) the changes feed.
 
 ## Delete
 
@@ -240,7 +240,7 @@ TODO
 }
 ```
 
-To delete a request, and all the documents it contains, make a DELETE request to `https://$USERNAME.cloudant.com/$DATABASE`.
+To delete a databases and it's contents, make a DELETE request to `https://$USERNAME.cloudant.com/$DATABASE`.
 
 ## Reading Permissions
 
