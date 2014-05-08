@@ -50,13 +50,13 @@ Cloudant is the name of both the provider and the service, in this case a [datab
 
 Support is available to our customers through their dashboard, the <a href="http://webchat.freenode.net?channels=cloudant&amp;uio=MTE9MTk117">#cloudant IRC channel</a>, and within a dedicated community on [StackOverflow](http://stackoverflow.com/questions/tagged/cloudant).
 
-## NoSQL Databases
+## JSON
 
 <div id="no_SQL"></div>
 
-Cloudant databases do not use SQL to query, trading eventual consistency for unparalleled scalability. Cloudant stores documents using JSON (JavaScript Object Notion) encoding, so anything encoded into JSON can be stored as a document. Files like images, videos, and audio are called BLObs (binary large objects) and can be stored as attachments within documents.
+Cloudant stores documents using JSON (JavaScript Object Notion) encoding, so anything encoded into JSON can be stored as a document. Files like images, videos, and audio are called BLObs (binary large objects) and can be stored as attachments within documents.
 
-## HTTP-Driven
+## HTTP API
 
 <div id="http_driv"></div>
 
