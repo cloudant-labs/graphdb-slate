@@ -60,7 +60,7 @@ TODO
 
 Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE` will return information about the database, such as how many documents it contains.
 
-## List Databases
+## Get Databases
 
 ```shell
 TODO
@@ -84,7 +84,7 @@ TODO
 
 To list all the databases in an account, make a GET request against `https://$USERNAME.cloudant.com/_all_dbs`.
 
-## List Documents
+## Get Documents
 
 ```shell
 TODO
@@ -137,7 +137,7 @@ Argument | Description | Optional | Type | Default
 `skip` | Skip this number of records before starting to return the results | yes | numeric | 0
 `startkey` | Return records starting with the specified key | yes | string |
 
-## List Changes
+## Get Changes
 
 ```shell
 TODO
