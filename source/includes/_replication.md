@@ -88,4 +88,4 @@ target | An obfuscated URL indicating the database to which the task is replicat
 
 ## Delete
 
-To halt a replication, simply delete its document from the `_replicator` database. To do that, see [Deleting documents](#delete33).
+To halt a replication, simply [delete its document](#delete33) from the `_replicator` database.
