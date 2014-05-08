@@ -90,7 +90,7 @@ TODO
 TODO
 ```
 
-Once you've got an index written, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT/_view/$INDEX_NAME`.
+Once you've got an index written, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$_ID/_view/$INDEX_NAME`.
 
 ### Query Parameters
 
