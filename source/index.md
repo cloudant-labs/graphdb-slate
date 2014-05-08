@@ -1,5 +1,5 @@
 ---
-title: Documentation
+title: Cloudant Documentation
 
 language_tabs:
   - shell
