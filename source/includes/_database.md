@@ -29,7 +29,7 @@ print response.status_code
 
 To create a database, make a PUT request to `https://$USERNAME.cloudant.com/$DATABASE`.
 
-## Info
+## Read
 
 ```shell
 TODO
