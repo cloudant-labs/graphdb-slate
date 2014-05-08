@@ -240,7 +240,7 @@ TODO
 }
 ```
 
-To delete a databases and it's contents, make a DELETE request to `https://$USERNAME.cloudant.com/$DATABASE`.
+To delete a databases and its contents, make a DELETE request to `https://$USERNAME.cloudant.com/$DATABASE`.
 
 ## Reading Permissions
 
