@@ -32,7 +32,7 @@ includes:
 
 ---
 
-# Documentation and Support
+# Documentation
 
 Cloudant provides reliable [database](#databases) hosting and support for applications of any scale. It’s available to users within minutes of [creating an account](https://cloudant.com/sign-up/) because there’s nothing to install. This documentation contains [more detail about Cloudant](#why_cloudant), [the technology which supports it](#no_SQL), and [API reference](#api-reference) for developers.
 
