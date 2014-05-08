@@ -38,7 +38,7 @@ TODO
 }
 ```
 
-To create a document, make a POST request to `https://$USERNAME.cloudant.com/$DATABASE`, where the document's JSON is the request body. If you don't provide an `_id` field as part of the document, Cloudant will generate a UUID and make that the document's `_id`.
+To create a document, make a POST request with the document's JSON content to `https://$USERNAME.cloudant.com/$DATABASE`. If you don't provide an `_id` field, Cloudant will generate one as a [UUID](http://en.wikipedia.org/wiki/Universally_unique_identifier) for the document. 
 
 ## Read
 
