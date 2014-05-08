@@ -2,7 +2,7 @@
 
 Documents are [JSON objects](http://en.wikipedia.org/wiki/JSON#Data_types.2C_syntax_and_example), containers for your data and the vital organs of the Cloudant database.
 
-All documents have a unique `_id` field, either assigned by you or generated as a UUID by Cloudant, and a `_rev` field, which is essential to Cloudant's replication protocol. Beyond those, documents can contain anything a JSON might.
+All documents have a unique `_id` field, either assigned by you or generated as a [UUID](http://en.wikipedia.org/wiki/Universally_unique_identifier) by Cloudant, and a `_rev` field, a revision number which is essential to Cloudant's replication protocol. Beyond those, documents can contain anything a JSON might.
 
 ## Create
 
