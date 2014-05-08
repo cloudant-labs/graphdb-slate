@@ -42,7 +42,7 @@ Cloudant encourages contributions and suggestions for improvement to our documen
 
 Cloudant is a Massachusetts-based company, with offices in Seattle and Bristol, UK. Cloudant is a division of IBM. You can get in touch with us via [email](mailto:support@cloudant.com) or check out our [calendar](#) of conferences and events to start a conversation in person.
 
-# Why Cloudant?
+# Cloudant Basics
 
 <div id="why_cloudant"></div>
 
