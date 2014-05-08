@@ -38,7 +38,7 @@ TODO
 }
 ```
 
-To create a document, make a POST request with the document's JSON content to `https://$USERNAME.cloudant.com/$DATABASE`. If you don't provide an `_id` field, Cloudant will generate one as a [UUID](http://en.wikipedia.org/wiki/Universally_unique_identifier) for the document. 
+To create a document, make a POST request with the document's JSON content to `https://$USERNAME.cloudant.com/$DATABASE`. If you don't provide an `_id` field, Cloudant will generate one as a [UUID](http://en.wikipedia.org/wiki/Universally_unique_identifier). 
 
 ## Read
 
@@ -69,7 +69,7 @@ To retrieve a document, make a GET request to `https://$USERNAME.cloudant.com/$D
 
 ## List
 
-To fetch many documents at once, you would also [query the database](#list-documents).
+To fetch many documents at once, [query the database](#list-documents).
 
 ## Update
 
