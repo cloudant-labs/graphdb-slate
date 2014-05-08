@@ -55,14 +55,46 @@ TODO
 ```json
 {
   "shards": {
-    "00000000-1fffffff": ["dbcore@db1.testy004.cloudant.net", "dbcore@db2.testy004.cloudant.net", "dbcore@db3.testy004.cloudant.net"],
-    "20000000-3fffffff": ["dbcore@db1.testy004.cloudant.net", "dbcore@db2.testy004.cloudant.net", "dbcore@db3.testy004.cloudant.net"],
-    "40000000-5fffffff": ["dbcore@db1.testy004.cloudant.net", "dbcore@db2.testy004.cloudant.net", "dbcore@db3.testy004.cloudant.net"],
-    "60000000-7fffffff": ["dbcore@db1.testy004.cloudant.net", "dbcore@db2.testy004.cloudant.net", "dbcore@db3.testy004.cloudant.net"],
-    "80000000-9fffffff": ["dbcore@db1.testy004.cloudant.net", "dbcore@db2.testy004.cloudant.net", "dbcore@db3.testy004.cloudant.net"],
-    "a0000000-bfffffff": ["dbcore@db1.testy004.cloudant.net", "dbcore@db2.testy004.cloudant.net", "dbcore@db3.testy004.cloudant.net"],
-    "c0000000-dfffffff": ["dbcore@db1.testy004.cloudant.net", "dbcore@db2.testy004.cloudant.net", "dbcore@db3.testy004.cloudant.net"],
-    "e0000000-ffffffff": ["dbcore@db1.testy004.cloudant.net", "dbcore@db2.testy004.cloudant.net", "dbcore@db3.testy004.cloudant.net"]
+    "e0000000-ffffffff": [
+      "dbcore@db1.testy004.cloudant.net",
+      "dbcore@db2.testy004.cloudant.net",
+      "dbcore@db3.testy004.cloudant.net"
+    ],
+    "c0000000-dfffffff": [
+      "dbcore@db1.testy004.cloudant.net",
+      "dbcore@db2.testy004.cloudant.net",
+      "dbcore@db3.testy004.cloudant.net"
+    ],
+    "a0000000-bfffffff": [
+      "dbcore@db1.testy004.cloudant.net",
+      "dbcore@db2.testy004.cloudant.net",
+      "dbcore@db3.testy004.cloudant.net"
+    ],
+    "80000000-9fffffff": [
+      "dbcore@db1.testy004.cloudant.net",
+      "dbcore@db2.testy004.cloudant.net",
+      "dbcore@db3.testy004.cloudant.net"
+    ],
+    "60000000-7fffffff": [
+      "dbcore@db1.testy004.cloudant.net",
+      "dbcore@db2.testy004.cloudant.net",
+      "dbcore@db3.testy004.cloudant.net"
+    ],
+    "40000000-5fffffff": [
+      "dbcore@db1.testy004.cloudant.net",
+      "dbcore@db2.testy004.cloudant.net",
+      "dbcore@db3.testy004.cloudant.net"
+    ],
+    "20000000-3fffffff": [
+      "dbcore@db1.testy004.cloudant.net",
+      "dbcore@db2.testy004.cloudant.net",
+      "dbcore@db3.testy004.cloudant.net"
+    ],
+    "00000000-1fffffff": [
+      "dbcore@db1.testy004.cloudant.net",
+      "dbcore@db2.testy004.cloudant.net",
+      "dbcore@db3.testy004.cloudant.net"
+    ]
   }
 }
 ```
@@ -214,8 +246,16 @@ TODO
 
 ```json
 {
-  "all_nodes": ["dbcore@db1.testy004.cloudant.net", "dbcore@db2.testy004.cloudant.net", "dbcore@db3.testy004.cloudant.net"],
-  "cluster_nodes": ["dbcore@db1.testy004.cloudant.net", "dbcore@db2.testy004.cloudant.net", "dbcore@db3.testy004.cloudant.net"]
+  "cluster_nodes": [
+    "dbcore@db1.testy004.cloudant.net",
+    "dbcore@db2.testy004.cloudant.net",
+    "dbcore@db3.testy004.cloudant.net"
+  ],
+  "all_nodes": [
+    "dbcore@db1.testy004.cloudant.net",
+    "dbcore@db2.testy004.cloudant.net",
+    "dbcore@db3.testy004.cloudant.net"
+  ]
 }
 ```
 
