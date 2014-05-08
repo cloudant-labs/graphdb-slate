@@ -225,25 +225,21 @@ latin_name:"Meles meles"
 diet:(herbivore OR omnivore) AND class:mammal
 ```
 
-The Cloudant search query syntax is based on the Lucene syntax. Search queries take the form of name:value (unless the name is omitted, in which case they hit the default field as we demonstrated in the first example, above).
+The Cloudant search query syntax is based on the [Lucene syntax](http://lucene.apache.org/core/4_3_0/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#Overview). Search queries take the form of name:value (unless the name is omitted, in which case they hit the default field, demonstrated in the example to your right).
 
-Queries over multiple fields can be logically combined and groups and fields can be grouped. The available logical operators are: AND, +, OR, NOT and -, and are case sensitive. Range queries can run over strings or numbers.
+Queries over multiple fields can be logically combined, and groups and fields can be further grouped. The available logical operators are case sensitive and are `AND`, `+`, `OR`, `NOT` and `-`. Range queries can run over strings or numbers.
 
-If you want a fuzzy search you can run a query with `~` to find terms like the search term, for instance `look~` will find terms book and took.
+If you want a fuzzy search you can run a query with `~` to find terms like the search term. For instance, `look~` will find terms book and took.
 
-You can also increase the importance of a search term by using the boost character `^`. This makes matches containing the term more relevant, e.g. `cloudant "data layer"^4` will make results containing "data layer" 4 times more relevant. The default boost value is 1. Boost values must be positive, but can be less than 1 (e.g. 0.5 to reduce importance).
+You can alter the importance of a search term by adding `^` + a positive number. This makes matches containing the term more or less relevant to the power of the boost value, with 1 as the default. Any decimal between 0 and 1 will reduce importance while anything over 1 will increase it.
 
-Wild card searches are supported, for both single (`?`) and multiple (`*`) character searches. `dat?` would match date and data, `dat*` would match date, data, database, dates etc. Wildcards must come after a search term, so you cannot do a query like *base.
+Wild card searches are supported, for both single (`?`) and multiple (`*`) character searches. `dat?` would match date and data, `dat*` would match date, data, database, dates etc. Wildcards must come after the search term.
 
 Result sets from searches are limited to 200 rows, and return 25 rows by default. The number of rows returned can be changed via the limit parameter. The response contains a bookmark. If the bookmark is passed back as a URL parameter you'll skip through the rows you've already seen and get the next set of results.
 
-The following characters require escaping if you want to search on them:
-
-`+ - && || ! ( ) { } [ ] ^ " ~ * ? : \ /`
+The following characters require escaping if you want to search on them: `+ - && || ! ( ) { } [ ] ^ " ~ * ? : \ /`
 
 Escape these with a preceding backslash character.
-
-For more information, see the [Lucene Query Parser Syntax](http://lucene.apache.org/core/4_3_0/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#Overview).
 
 ## Faceting
 
