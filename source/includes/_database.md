@@ -198,7 +198,7 @@ TODO
 }
 ```
 
-Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE/_changes` returns a list of changes made to documents in the database, including insertions, updates, and deletions. The changes feed may not return changes in chronological order, but usually gets pretty close.
+Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE/_changes` returns a list of changes made to documents in the database, including insertions, updates, and deletions. This log [may not be in chronological order](http://en.wikipedia.org/wiki/Clock_synchronization#Problems).
 
 `_changes` accepts these query arguments:
 
