@@ -1,16 +1,18 @@
 # Design Documents
 
-Design documents are [documents](#documents) whose `_id`s begin with `_design/`. This causes Cloudant to read certain fields and values of the document as functions, which it uses to [build indexes](#indexes), [validate updates](#update-validators), and [format query results](#list-functions), to name a few uses.
+Design documents are [documents](#documents) whose `_id`s begin with `_design/`. Cloudant reads certain fields and values of design documents as functions, which it uses to [build indexes](#indexes), [validate updates](#update-validators), and [format query results](#list-functions).
+
+Since the `$VARIABLES` in these instructions contain both standard and design documents, respective `_id`s are indicated by `$DOC_ID` and `%DESIGN_ID`.
 
 ## Indexes
 
-All queries, whether [Search](#search), [MapReduce](#mapreduce), or [Geo](#geo), operate on pre-defined indexes defined in design documents. For more information, see the section for each kind of index:
+All queries operate on pre-defined indexes defined in design documents. These indexes are:
 
 * [Search](#search)
 * [MapReduce](#mapreduce)
 * [Geo](#geo)
 
-Because design documents are just [documents](#documents), you can add a search index by [updating](#update) the document with the appropriate field, or by [inserting](#create29) a new document with it. As soon as the design document with your index is written, Cloudant will begin building the index and you can make queries against it.
+Because design documents are still [documents](#documents), a [search index](#search) can be added by [updating](#update) the document with the appropriate field or by [inserting](#create29) a new document with it. You can make queries against the index as soon as it's written with the design document.
 
 ## List Functions
 
@@ -65,7 +67,7 @@ List functions customize the format of [MapReduce](#mapreduce) query results.
 
 List functions receive two arguments: `head` and `req`.
 
-Once you've defined a list function, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT/_list/$LIST_FUNCTION/$MAPREDUCE_INDEX`, where `$LIST_FUNCTION` is the function's name, and `$MAPREDUCE_INDEX` is the name of the index whose query results you want to format. This request takes the same query parameters as a regular [MapReduce query](#queries53).
+Once you've defined a list function, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOC_ID/_list/$LIST_FUNCTION/$MAPREDUCE_INDEX`, where `$LIST_FUNCTION` is the function's name, and `$MAPREDUCE_INDEX` is the name of the index whose query results you want to format. This request takes the same query parameters as a regular [MapReduce query](#queries53).
 
 ### head
 
@@ -137,7 +139,7 @@ Show functions are like [list functions](#list-functions) but for formatting ind
 
 Show functions receive two arguments: `doc`, and [req](#req). `doc` is the document requested by the show function.
 
-Once you've defined a show function, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT/_show/$SHOW_FUNCTION/$DOCUMENT_ID`, where `$SHOW_FUNCTION` is the function's name, and `$DOCUMENT_ID` is the `_id` of the document you want to run the show function on.
+Once you've defined a show function, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOC_ID/_show/$SHOW_FUNCTION/$DESIGN_ID`, where `$SHOW_FUNCTION` is the function's name, and `$DESIGN_ID` is the `_id` of the document you want to run the show function on.
 
 ## Update Handlers
 
@@ -190,10 +192,10 @@ Here's how to query update handlers:
 
 Method | URL
 -------|------
-POST | `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_DOCUMENT/_update/$UPDATE_HANDLER`
-PUT | `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_DOCUMENT/_update/$UPDATE_HANDLER/$DOCUMENT_ID`
+POST | `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_update/$UPDATE_HANDLER`
+PUT | `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_update/$UPDATE_HANDLER/$DOC_ID`
 
-Where `$DESIGN_DOCUMENT` is the `_id` of the document defining the update handler, `$UPDATE_HANDLER` is the name of the update handler, and `$DOCUMENT_ID` is the `_id` of the document you want the handler to, well, handle.
+Where `$DESIGN_ID` is the `_id` of the document defining the update handler, `$UPDATE_HANDLER` is the name of the update handler, and `$DOC_ID` is the `_id` of the document you want the handler to, well, handle.
 
 ## Filter Functions
 
