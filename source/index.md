@@ -35,7 +35,7 @@ includes:
 
 Cloudant provides reliable [database](#databases) hosting and support for applications of any scale. It’s available to users within minutes of [creating an account](https://cloudant.com/sign-up/) because there’s nothing to install. This documentation contains [more detail about Cloudant](#why_cloudant), [the technology which supports it](#no_SQL), and [API reference](#api-reference) for developers.
 
-Documentation should be inspring: a cook book instead of a long description of the oven. Cloudant encourages contribution and suggestions for improvement to this page. Contributions can be made through [GitHub](https://github.com/cloudant-labs/slate). Support is available to users through their dashboard and within a dedicated community on [StackOverflow](http://stackoverflow.com/questions/tagged/cloudant).
+Documentation should be inspring: a cook book instead of a long description of the oven. Cloudant encourages contributions and suggestions for improvement to this page. Contributions can be made through [GitHub](https://github.com/cloudant-labs/slate). Support is available to users through their dashboard and within a dedicated community on [StackOverflow](http://stackoverflow.com/questions/tagged/cloudant).
 
 ## Who are we?
 
