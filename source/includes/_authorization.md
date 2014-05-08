@@ -54,4 +54,6 @@ To generate an API key, use `https://cloudant.com/api/generate_api_key`. The cre
 
 ## CORS
 
-Coming soon!
+TODO
+
+![Under Construction](http://www.omgwiki.org/model-interchange/lib/exe/fetch.php?cache=cache&media=under-construction.gif)
