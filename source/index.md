@@ -25,6 +25,7 @@ includes:
   - design_documents
   - search
   - mapreduce
+  - geo
   - replication
   - advanced
   - errors
