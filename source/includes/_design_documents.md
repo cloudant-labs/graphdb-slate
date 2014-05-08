@@ -182,7 +182,7 @@ TODO
 TODO
 ```
 
-Update handlers are functions that invoke server-side logic that will create or update a document. This feature allows a range of use cases such as providing a server-side last modified timestamp, updating individual fields in a document without first getting the latest revision, etc.
+Update handlers are custom functions that live on Cloudant's server that will create or update a document. This can, for example, provide server-side modifcation timestamps, and document updates to individual fields without the latest revision. 
 
 Update handlers receive two arguments: `doc` and [req](#req). If a document ID is provided in the request to the update handler, then `doc` will be the document corresponding with that ID. If no ID was provided, `doc` will be `null`.
 
@@ -257,13 +257,11 @@ function(newDoc, oldDoc, userCtx, secObj) {
 }
 ```
 
-Update validators run whenever a document would be inserted or updated in the database, evaluating whether that document should actually be written to disk. If a change is rejected, the update validator will send the requesting
+Update validators evaluate whether a document should be written to disk when insertions and updates are attempted. They do not require a query because they implicitly run during this process. If a change is rejected, the update validator responds with a custom error. 
 
 Update validators get four arguments:
 
 * `newDoc`: the version of the document passed in the request.
 * `oldDoc`: the version of the document currently in the database, or `null` if there is none.
-* `userCtx`: context about the currently authenticated user, specifically their `name` and `roles` within the current database.
+* `userCtx`: context about the currently authenticated user, such as `name` and `roles`..
 * `secObj`: the database's [security object](#reading-permissions)
-
-Update validators run implicitly during every insertion and update, so there's no special query to access them.

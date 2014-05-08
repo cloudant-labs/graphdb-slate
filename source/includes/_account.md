@@ -1,8 +1,8 @@
 # Account
 
-Your account, which lives at `https://YOUR_USERNAME.cloudant.com`, is your entry point for Cloudant's API.
+Your account, which lives at `https://$USERNAME.cloudant.com`, is your entry point for Cloudant's API. Your Cloudant dashboard is always `https://$USERNAME.cloudant.com/dashboard.html`.
 
-Your dashboard is always `https://YOUR_USERNAME.cloudant.com/dashboard.html` unless you want to use the old interface, which is `https://cloudant.com/dashboard/#!/`.
+If you don't yet have an account, [sign up](https://cloudant.com/sign-up/).
 
 ## Ping
 

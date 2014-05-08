@@ -1,5 +1,5 @@
 ---
-title: Documentation
+title: Cloudant Documentation
 
 language_tabs:
   - shell
@@ -32,29 +32,31 @@ includes:
 
 ---
 
-# Documentation and Support
+# Documentation
 
 Cloudant provides reliable [database](#databases) hosting and support for applications of any scale. It’s available to users within minutes of [creating an account](https://cloudant.com/sign-up/) because there’s nothing to install. This documentation contains [more detail about Cloudant](#why_cloudant), [the technology which supports it](#no_SQL), and [API reference](#api-reference) for developers.
 
-Documentation should be inspring: a cook book instead of a long description of the oven. Cloudant encourages contributions and suggestions for improvement to this page. Contributions can be made through [GitHub](https://github.com/cloudant-labs/slate). Support is available to users through their dashboard and within a dedicated community on [StackOverflow](http://stackoverflow.com/questions/tagged/cloudant).
+Cloudant encourages contributions and suggestions for improvement to our documentation. Contributions can be made through [GitHub](https://github.com/cloudant-labs/slate). 
 
 ## Who are we?
 
 Cloudant is a Massachusetts-based company, with offices in Seattle and Bristol, UK. Cloudant is a division of IBM. You can get in touch with us via [email](mailto:support@cloudant.com) or check out our [calendar](#) of conferences and events to start a conversation in person.
 
-# Why Cloudant?
+# Cloudant Basics
 
 <div id="why_cloudant"></div>
 
 Cloudant is the name of both the provider and the service, in this case a [database-as-a-service](https://cloudant.com/product/comparison-of-dbaas/), commonly known as DBaaS. It does not use [SQL](#no_SQL) as its query language and it’s [distributed over the web](#distributed), all features which you can read about in more depth within this documentation. You can use Cloudant for [almost any purpose](https://cloudant.com/terms/) in any scale of application.
 
-## NoSQL Databases
+Support is available to our customers through their dashboard, the <a href="http://webchat.freenode.net?channels=cloudant&amp;uio=MTE9MTk117">#cloudant IRC channel</a>, and within a dedicated community on [StackOverflow](http://stackoverflow.com/questions/tagged/cloudant).
+
+## JSON
 
 <div id="no_SQL"></div>
 
-Cloudant databases do not use SQL to query, trading eventual consistency for unparalleled scalability. Cloudant stores documents using JSON (JavaScript Object Notion) encoding, so anything encoded into JSON can be stored as a document. Files like images, videos, and audio are called BLObs (binary large objects) and can be stored as attachments within documents.
+Cloudant stores documents using JSON (JavaScript Object Notion) encoding, so anything encoded into JSON can be stored as a document. Files like images, videos, and audio are called BLObs (binary large objects) and can be stored as attachments within documents.
 
-## HTTP-Driven
+## HTTP API
 
 <div id="http_driv"></div>
 
@@ -70,7 +72,7 @@ Cloudant's API represents the collaboration of numerous machines, called a clust
 
 <div id="cap_theorem"></div>
 
-Developers early in the design process might want to consider the complexities raised by The CAP theorem, which states that a distributed computing system can only exhibit two of the three following characteristics:
+Developers early in the design process might want to consider the complexities raised by [The CAP theorem](http://lpd.epfl.ch/sgilbert/pubs/BrewersConjecture-SigAct.pdf), which states that a distributed computing system can only exhibit two of the three following characteristics:
 
 * Consistency: all nodes see the same data at the same time.
 * Availability: every request receives a response indicating success or failure.
@@ -78,7 +80,6 @@ Developers early in the design process might want to consider the complexities r
 
 For example, a database prioritizing consistency and availability is simple: a single node storing a single copy of your data. But scaling necessarily involves a performance increase in the node rather than the leverage of additional nodes, which means that a minor system failure can shut down a single-node system. To endure, the system must become more sophisticated. Cloudant's ease of scalability makes it adaptable to this problem.
 
-The formal proof for the CAP theroem is available [here](http://lpd.epfl.ch/sgilbert/pubs/BrewersConjecture-SigAct.pdf) for a more in depth view.
 
 ## AcID
 
