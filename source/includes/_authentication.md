@@ -1,6 +1,6 @@
 # Authentication
 
-Authentication just means verifying user credentials. There are two ways that clients can authenticate with Cloudant: Basic and Cookie. Basic is like showing an ID to be let through a door and Cookie is more like borrowing a key to the door.
+Authentication just means verifying user credentials. There are two ways that clients can authenticate with Cloudant: Basic and Cookie. The difference is essentially like showing an ID at a door versus borrowing a key to the door.
 
 ## Basic Authentication
 
