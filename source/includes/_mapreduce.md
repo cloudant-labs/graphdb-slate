@@ -99,12 +99,12 @@ Argument | Description | Optional | Type | Default | Supported Values
 descending | Return the documents in descending by key order | yes | boolean | false | 
 endkey | Stop returning records when the specified key is reached | yes | string or JSON array |  |  
 endkey_docid | Stop returning records when the specified document ID is reached | yes | string |  |  
-group Group the results using the reduce function to a group or single row | yes | boolean | false | 
-group_level Only applicable if the view uses complex keys, i.e. keys that are JSON arrays. Groups reduce results for the specified number of array fields. | yes | numeric |  | 
+group | Group the results using the reduce function to a group or single row | yes | boolean | false | 
+group_level | Only applicable if the view uses complex keys, i.e. keys that are JSON arrays. Groups reduce results for the specified number of array fields. | yes | numeric |  | 
 include_docs | Include the full content of the documents in the response | yes | boolean | false | 
-inclusive_end included rows with the specified endkey | yes | boolean | true |  
-key Return only documents that match the specified key. Note that keys are JSON values and must be URL-encoded. | yes | string |  |  
-limit Limit the number of the returned documents to the specified number | yes | numeric |  | 
+inclusive_end | included rows with the specified endkey | yes | boolean | true |  
+key | Return only documents that match the specified key. Note that keys are JSON values and must be URL-encoded. | yes | string |  |  
+limit | Limit the number of the returned documents to the specified number | yes | numeric |  | 
 reduce | Use the reduce function | yes | boolean | true |  
 skip | Skip this number of rows from the start | yes | numeric | 0 | 
 stale | Allow the results from a stale view to be used. This makes the request return immediately, even if the view has not been completely built yet. If this parameter is not given, a response will be returned only after the view has been built. | yes | string | false | ok: Allow stale views, update_after: Allow stale views, but update them immediately after the request
