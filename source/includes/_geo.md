@@ -54,6 +54,12 @@ TODO
 TODO
 ```
 
+> Example response:
+
+```json
+
+```
+
 Once you've got an index written, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_DOCUMENT_ID/_geo/$INDEX_NAME`. All geo queries must provide these two query arguments: `relation` (a relation) and `g` (a geometry). Cloudant returns every document in the database whose indexed geometry has the specified relationship to the given geometry.
 
 ### Geometries
@@ -78,23 +84,22 @@ Function | Arguments | Description
 ---------|-----------|-------------
 `POINT` | (x, y) | A single 2d point
 `MULTIPOINT` | ((x1, y1), (x2, y2), ...) | Multiple unrelated 2d points
-`LINESTRING` |  | 
-`MULTILINESTRING` |  | 
-`POLYGON` |  | 
-`MULTIPOLYGON` |  | 
-`GEOMETRYCOLLECTION` |  | 
-`CIRCULARSTRING` |  | 
-`COMPOUNDCURVE` |  | 
-`CURVEPOLYGON` |  | 
-`MULTICURVE` |  | 
-`MULTISURFACE` |  | 
-`CURVE` |  | 
-`SURFACE` |  | 
-`POLYHEDRALSURFACE` |  | 
-`TIN` |  | 
-`TRIANGLE` |  | 
-
-
+`LINESTRING` | (x1, y1, x2, y2, ...) | A line constructed from a series of 2d points
+`MULTILINESTRING` | ((x1, y1, x2, y2, ...), (x3, y3, x4, y4, ...)) | Multiple lines constructed from multiple series of 2d points
+`POLYGON` | ((x1, y1, x2, y2, x3, y3, ...)) | A polygon constructed by connecting a series of 2d points
+`POLYGON` | ((x1, y1, x2, y2, x3, y3, ...), (x4, y4, x5, y5, x6, y6, ...)) | A polygon constructed by connecting a series of 2d points, with the area of a second polygon removed from it.
+`MULTIPOLYGON` | (((x1, y1, x2, y2, x3, y3, ...)), ((x4, y4, x5, y5, x6, y6, ...))) | Multiple polygons constructed by connecting multiple series of 2d points. Each polygon takes the same arguments as the `POLYGON` geometry.
+`GEOMETRYCOLLECTION` | * | A collection of arbitrary geometries, ex: `POINT(4, 6),LINESTRING(4, 6, 7, 10)`
+`CIRCULARSTRING` | TODO | TODO
+`COMPOUNDCURVE` | TODO | TODO
+`CURVEPOLYGON` | TODO | TODO
+`MULTICURVE` | TODO | TODO
+`MULTISURFACE` | TODO | TODO
+`CURVE` | TODO | TODO
+`SURFACE` | TODO | TODO
+`POLYHEDRALSURFACE` | TODO | TODO
+`TIN` | TODO | TODO
+`TRIANGLE` | TODO | TODO
 
 ### Relations
 
@@ -111,3 +116,45 @@ Relation | Description
 `within` | True if the indexed geometry is wholly inside the given geometry
 `contains` | True if the given geometry is wholly inside the indexed geometry
 `overlaps` | True if the intersection of the geometries results in a value of the same dimension as the geometries that is different from both of the geometries
+
+### Radius
+
+```shell
+curl 
+  -H "Content-Type: application/json" \
+  -u "$USERNAME:$PASSWORD"
+  'http://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_geo/$INDEX_NAME\
+  ?radius=100\
+  &lat=0\
+  &lon=0\
+  &relation="within"'
+```
+
+```python
+TODO
+```
+
+Rather than use the `g` parameter, queries regarding a radius use the `radius`, `lat`, and `lon` parameters.
+
+Specifying `lat`, `lon`, and `radius` creates a circle centered at that latitude ('lat') and longitude ('lon') with the given radius in meters, and compares each geometry in the index to that circle using the given relation.
+
+### Ellipse
+
+```shell
+curl 
+  -H "Content-Type: application/json" \
+  -u "$USERNAME:$PASSWORD"
+  "http://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_geo/$INDEX_NAME\
+  ?lat=0\
+  &lon=0\
+  &rangex=100\
+  &rangey=50"
+```
+
+```python
+TODO
+```
+
+Like [radius](#radius) queries, `ellipse` queries construct a circular geometry on the fly using the `lat`, `lon`, `rangex`, and `rangey` parameters.
+
+Specifying `lat`, `lon`, `rangex` and `rangey` creates an ellipse centered at that latitude ('lat') and longitude ('lon') with a vertical radius of rangey and with a horizontal radius of rangex, and compares each geometry in the index to that circle using the given relation. Both `rangex` and `rangey` are measured in meters.
