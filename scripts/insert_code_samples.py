@@ -34,6 +34,11 @@ docs = os.walk('docs')
 for doc in docs:
     dirname = doc[0]
     filenames = doc[2]
+    dest_dirname = dirname.replace('docs', 'source')
+    try:
+        os.mkdir(dest_dirname)
+    except OSError as e:
+        pass
     for filename in filenames:
         path = os.path.join(dirname, filename)
         with open(path) as f:
