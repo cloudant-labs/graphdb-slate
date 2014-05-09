@@ -17,7 +17,7 @@ Now, your docs are live at <http://localhost:4567/>.
 
 ## Contribute
 
-The Cloudant documentation is updated whenever the master branch of this repository sees a new commit, thanks to Travis and CouchApp. So, to contribute changes to the docs, just make a pull request! You can find all the copy in the [intro](https://github.com/cloudant-labs/slate/blob/master/source/index.md) or in the [includes directory](https://github.com/cloudant-labs/slate/tree/master/source/includes). 
+The Cloudant documentation is updated whenever the master branch of this repository sees a new commit, thanks to Travis and CouchApp. So, to contribute changes to the docs, just make a pull request! You can find all the copy [docs directory](https://github.com/cloudant-labs/slate/tree/master/docs), in the [intro](https://github.com/cloudant-labs/slate/blob/master/docs/index.md) or in the [includes directory](https://github.com/cloudant-labs/slate/tree/master/docs/includes). 
 
 For more details on what we expect from contributions, see [CONTRIBUTING.MD](https://github.com/cloudant-labs/slate/blob/master/CONTRIBUTING.md).
 
