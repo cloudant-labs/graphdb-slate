@@ -15,7 +15,7 @@ toc_footers:
   - <a href="https://github.com/cloudant-labs/slate">Documentation Source</a>
 
 includes:
-  - api/api
+  - api/index
   - api/account
   - api/authentication
   - api/authorization
