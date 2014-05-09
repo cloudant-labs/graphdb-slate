@@ -65,11 +65,11 @@ TODO
 }
 ```
 
-To retrieve a document, make a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$_ID`. If you don't know a particular document's `_id` you can [query the database](#list-documents) for all documents.
+To retrieve a document, make a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$_ID`. If you don't know a particular document's `_id` you can [query the database](#get-documents) for all documents.
 
-## List
+## Read Many
 
-To fetch many documents at once, [query the database](#list-documents).
+To fetch many documents at once, [query the database](#get-documents).
 
 ## Update
 

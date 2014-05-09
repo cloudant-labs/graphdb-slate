@@ -15,20 +15,20 @@ toc_footers:
   - <a href="https://github.com/cloudant-labs/slate">Documentation Source</a>
 
 includes:
-  - api
-  - account
-  - authentication
-  - authorization
-  - database
-  - document
-  - attachments
-  - design_documents
-  - search
-  - mapreduce
-  - geo
-  - replication
-  - advanced
-  - errors
+  - api/api
+  - api/account
+  - api/authentication
+  - api/authorization
+  - api/database
+  - api/document
+  - api/attachments
+  - api/design_documents
+  - api/search
+  - api/mapreduce
+  - api/geo
+  - api/replication
+  - api/advanced
+  - api/errors
 
 ---
 
