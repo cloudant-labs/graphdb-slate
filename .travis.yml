@@ -14,8 +14,10 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install python python-pip
   - sudo pip install couchapp
+  - pip install cloudant
 
 script: 
+  - python scripts/insert_code_samples.py
   - bundle exec middleman build --verbose
   - cp -r build/* couchapp/_attachments
   - ./scripts/deploy.sh
