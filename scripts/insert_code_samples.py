@@ -24,7 +24,7 @@ code_sample_string = '```{language}\n{path}\n```'
 # format into object for fast access
 sample_code = dict()
 for doc in db.all_docs().iter(params=dict(include_docs=True)):
-    if 'text' in doc['doc']:
+    if 'doc' in doc and 'text' in doc['doc']:
         sample_code[doc['id']] = doc['doc']['text']
 
 # walk docs tree in `/docs`
