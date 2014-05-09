@@ -31,7 +31,7 @@ function (doc) {
   }, 
   "type": "Feature", 
   "geometry": { 
-    "coordinates": [-10.0, 10.0] 
+    "coordinates": [-10.0, 10.0],
     "type": "Point" 
   }
 } 
