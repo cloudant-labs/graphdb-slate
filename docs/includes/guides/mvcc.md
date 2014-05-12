@@ -31,10 +31,10 @@ You can then regularly query this view and resolve conflicts as needed, or query
 
 Once you've found a conflict, you can resolve it in 4 steps.
 
- * [Get the conflicting revisions](#get-conflicting-revisions).
- * Merge them in your application or ask the user what he wants to do.
- * Upload the new revision.
- * Delete old revisions.
+ * [Get](#get-conflicting-revisions) the conflicting revisions.
+ * [Merge](#merge-the-changes) them in your application or ask the user what he wants to do.
+ * [Upload](#upload-new-revision) the new revision.
+ * [Delete](#delete-old-revisions) old revisions.
 
 Let's look at an example of how this can be done. Suppose you have a database of products for an online shop. The first version of a document might look like this:
 
@@ -74,7 +74,7 @@ At the same time, someone else - working with a replicated database - reduces th
 
 Then the two databases are replicated, leading to a conflict.
 
-#### Get conflicting revisions
+### Get conflicting revisions
 
 You get the document with `conflicts=true` like this:
 
@@ -95,7 +95,7 @@ And get the following response:
 
 The version with the changed price has been chosen arbitrarily as the latest version of the document and the conflict is noted in the `_conflicts` array. In most cases this array has only one element, but there can be many conflicting revisions.
 
-### 2. Merge the changes
+### Merge the changes
 
 To compare the revisions to see what has been changed, your application gets all of the versions from the database with URLs like this:
 
@@ -111,7 +111,7 @@ Other conflict resolution strategies are:
 * reporting conflicts to users and letting them decide on the best resolution
 * more sophisticated merging algorithms, e.g. 3-way merges of text fields
 
-### 3. Upload the new revision
+### Upload new revision
 
 In this example, you produce the document to your right and update the database with it.
 
@@ -125,7 +125,7 @@ In this example, you produce the document to your right and update the database 
 }
 ```
 
-### 4. Delete old revisions
+### Delete old revisions
 
 Then to delete the old revisions, send a DELETE request to the URLs with the revisions we want to delete.
 
