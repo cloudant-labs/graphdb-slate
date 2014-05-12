@@ -12,7 +12,6 @@ test/tmp
 test/version_tmp
 tmp
 *.DS_STORE
-build/
 .cache
 
 # YARD artifacts
@@ -22,3 +21,8 @@ doc/
 
 # couchapp!
 couchapp/_attachments
+
+# build artifacts
+build/
+source/includes/
+source/index.md
