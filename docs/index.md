@@ -78,3 +78,53 @@ Cloudant's API represents the collaboration of numerous machines, called a clust
 <div id="replication"></div>
 
 Replication is a procedure followed by Cloudant, [CouchDB](http://couchdb.apache.org/), [PouchDB](http://junk.arandomurl.com/), and others. It synchronizes the state of two databases so that their contents are identical. You can continuously replicate as well, which means that a target database updates every time the source changes. This can be used for backups of data, aggregation across multiple databases, or for sharing data.
+
+## Client Libraries
+
+If you're working in one of the following languages, we highly recommend these libraries for working with Cloudant. If you see that one you like isn't mentioned, [let us know!](https://github.com/cloudant-labs/slate/issues)
+
+### Node.js
+
+[Nano](https://github.com/dscape/nano) is a minimalistic client for CouchDB and Cloudant. You can install it via NPM:
+
+```
+npm install nano
+```
+
+### JavaScript
+
+[PouchDB](http://pouchdb.com/) is a JavaScript database that can sync with Cloudant, meaning you can make your apps offline-ready just by using PouchDB. For more info, see [our blog post](https://cloudant.com/blog/pouchdb) on PouchDB, or install it by including this in your app's HTML:
+
+```html
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/pouchdb/2.2.0/pouchdb.min.js"></script>
+```
+
+PS: PouchDB is also available for Node.js: `npm install pouchdb`
+
+### Python
+
+[Cloudant-Python](https://github.com/cloudant-labs/cloudant-python) is Cloudant's premier Python client. Install it using pip:
+
+```
+pip install cloudant
+```
+
+### Ruby
+
+[CouchRest](https://github.com/couchrest/couchrest) is a CouchDB and Cloudant client with extensions for working with Rails using [CouchRest Model](https://github.com/couchrest/couchrest_model). Install CouchRest as a gem:
+
+```
+gem install couchrest
+```
+
+### PHP
+
+TODO
+
+### C# / .NET
+
+TODO
+
+### Java
+
+TODO
