@@ -27,17 +27,11 @@
 }
 ```
 
-MapReduce indexes are used for...
+MapReduce is a process for querying data sets. They're composed of a `map` function that returns specified info from your documents, and a `reduce` function that combines those results into a single value. `emit` is a function within `map` that determines what keys and values to index. 
 
-* Filtering the documents in your database to find those relevant to a particular process.
-* Extracting data from your documents and presenting it in a specific order.
-* Building efficient indexes to find documents by any value or structure that resides in them.
-* Use these indexes to represent relationships among documents.
-* Finally, with views you can make all sorts of calculations on the data in your documents. For example, if documents represent your company’s financial transactions, a view can answer the question of what the spending was in the last week, month, or year.
+MapReduce indexes are used for extracting data and presenting it in a specific order, building efficient indexes to find documents by any value or structure within them, and representing relationships among documents with these indexes. 
 
-MapReduce indexes are composed of a `map` function that `emit`s keys and values to index (such as sales and who closed them) and a `reduce` function that performs a summary operation (such as closed deals per sales rep). In Cloudant, the `_reduce` function is optional.
-
-`map` functions run once for every document in the database, which appears as the `doc` parameter. The `reduce` field can either be one of the following pre-defined function names, or a custom function. See [Custom Reduces](#custom-reduces) for more details.
+`map` functions run once for every document in the database, which appear as the `doc` parameter. The optional `reduce` field can be one of the following functions, or a [custom function](#custom-reduces).
 
 Function Name | Description
 --------------|-------------
