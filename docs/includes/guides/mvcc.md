@@ -74,7 +74,7 @@ At the same time, someone else - working with a replicated database - reduces th
 
 Then the two databases are replicated, leading to a conflict.
 
-### Get conflicting revisions
+#### Get conflicting revisions
 
 You get the document with `conflicts=true` like this:
 
@@ -95,7 +95,7 @@ And get the following response:
 
 The version with the changed price has been chosen arbitrarily as the latest version of the document and the conflict is noted in the `_conflicts` array. In most cases this array has only one element, but there can be many conflicting revisions.
 
-### Merge the changes
+#### Merge the changes
 
 To compare the revisions to see what has been changed, your application gets all of the versions from the database with URLs like this:
 
@@ -111,7 +111,7 @@ Other conflict resolution strategies are:
 * reporting conflicts to users and letting them decide on the best resolution
 * more sophisticated merging algorithms, e.g. 3-way merges of text fields
 
-### Upload the new revision
+#### Upload the new revision
 
 In this example, you produce the document to your right and update the database with it.
 
@@ -125,7 +125,7 @@ In this example, you produce the document to your right and update the database 
 }
 ```
 
-### Delete old revisions
+#### Delete old revisions
 
 Then to delete the old revisions, send a DELETE request to the URLs with the revisions we want to delete.
 
