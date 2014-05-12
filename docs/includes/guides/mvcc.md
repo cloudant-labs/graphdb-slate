@@ -9,16 +9,13 @@ Every document in a Cloudant database has a `_rev` field indicating its revision
 
 You can query a particular revision using its `_rev`, however, older revisions are regularly deleted by a process called compaction. [Create a new document](#create28) per revision to better implement version control.
 
-### Distributed databases and conflicts
+### Distributed Databases and Conflicts
 
-Given our story so far, it seems impossible that we could have a conflict, because any update request has to reference the latest version of the document. So how would we get a conflict? How would a document get two different updates based on the same previous version? What we haven't taken into account is that Cloudant is not one monolithic database but rather a distributed system of databases that needn't always be in sync with each other. 
-This is especially true if you are developing mobile or web applications that have to work without a constant connection to the main database on Cloudant. When a document on such a disconnected database is updated while the same document on Cloudant is also updated, this will lead to a conflict when the remote database is replicated to Cloudant.
-While replication from local, disconnected databases is a common source of conflicts, it is not the only one. Cloudant's own infrastructure is a distributed system and updating your Cloudant database concurrently (for example from multiple web servers) can - very rarely - also lead to conflicts. In short, no matter what kind of application you have and how it works, conflicts can always happen.
+Distributed databases work without a constant connection to the main database on Cloudant, which is itself distributed, so updates based on the same previous version can still be in conflict.
 
-### How to find conflicts
+To find conflicts, add the query parameter `conflicts=true` when retrieving a document. The document will contain a `_conflicts` array with all conflicting revisions.
 
-To find out whether a document is in a conflict state, you can add the query parameter conflicts=true when you retrieve the document. The returned document will then contain a _conflicts array with all conflicting revisions.
-To find conflicts for multiple documents in a database, the best approach is to write a view. Here is a map function that emits all conflicting revisions for every document that has a conflict:
+To find conflicts for multiple documents in a database, write a view. Here is a map function that emits all conflicting revisions for every document that has a conflict:
 
 ```json
 function(doc) {
@@ -28,7 +25,7 @@ function(doc) {
 }
 ```
 
-You can then regularly query this view and resolve conflicts as needed or query the view after each replication.
+You can then regularly query this view and resolve conflicts as needed, or query the view after each replication.
 
 ### How to resolve conflicts
 
