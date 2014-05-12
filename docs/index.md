@@ -119,12 +119,12 @@ gem install couchrest
 
 ### PHP
 
-TODO
+TODO [Sag](http://www.saggingcouch.com/)
 
 ### C# / .NET
 
-TODO
+TODO [MyCouch](https://github.com/danielwertheim/mycouch)
 
 ### Java
 
-TODO
+TODO [Ektorp](https://github.com/helun/Ektorp)
