@@ -7,7 +7,7 @@ Multi-version concurrency control (MVCC) is how Cloudant databases ensure that a
 Every document in a Cloudant database has a `_rev` field indicating its revision number. You must specify the previous `_rev` when [updating a document](#update) or else your request will fail and return a [409 error](#errors).
 
 
-You can query a particular revision using its `_rev`, however, older revisions are regularly deleted by a process called compaction. [Create a new document](#create28) per revision to better implement version control.
+You can query a particular revision using its `_rev`, however, older revisions are regularly deleted by a process called compaction. [Create a new document](#create36) per revision to better implement version control.
 
 ### Distributed Databases and Conflicts
 
