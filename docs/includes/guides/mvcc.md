@@ -36,7 +36,7 @@ Once you've found a conflict, you can resolve it in 4 steps.
  * Upload the new revision.
  * Delete old revisions.
 
-Let's look at an example of how this can be done. Suppose we have a database of products for an online shop. The first version of a document might look like this:
+Let's look at an example of how this can be done. Suppose you have a database of products for an online shop. The first version of a document might look like this:
 
 ```json
 {
@@ -76,11 +76,11 @@ Then the two databases are replicated, leading to a conflict.
 
 ### 1. Getting conflicting revisions
 
-We get the document with conflicts=true like this...
+You get the document with `conflicts=true` like this:
 
-http://username.cloudant.com/products/74b2be56045bed0c8c9d24b939000dbe?conflicts=true
+`http://$USERNAME.cloudant.com/products/$_ID?conflicts=true`
 
-...and get the following response:
+And get the following response:
 
 ```json
 {
@@ -93,19 +93,19 @@ http://username.cloudant.com/products/74b2be56045bed0c8c9d24b939000dbe?conflicts
 }
 ```
 
-The version with the changed price has been chosen arbitrarily as the latest version of the document and the conflict is noted in the _conflicts array. In most cases this array has only one element, but there can be many conflicting revisions.
+The version with the changed price has been chosen arbitrarily as the latest version of the document and the conflict is noted in the `_conflicts` array. In most cases this array has only one element, but there can be many conflicting revisions.
 
 ### 2. Merge the changes
 
-Now your applications needs to compare the revisions to see what has been changed. To do that, it gets all the version from the database with the following URLs:
+To compare the revisions to see what has been changed, your application gets all of the versions from the database with URLs like this:
 
-* `http://username.cloudant.com/products/74b2be56045bed0c8c9d24b939000dbe`
-* `http://username.cloudant.com/products/74b2be56045bed0c8c9d24b939000dbe?rev=2-61ae00e029d4f5edd2981841243ded13`
-* `http://username.cloudant.com/products/74b2be56045bed0c8c9d24b939000dbe?rev=1-7438df87b632b312c53a08361a7c3299`
+* `http://$USERNAME.cloudant.com/products/$_ID`
+* `http://$USERNAME.cloudant.com/products/$_ID?rev=2-61ae00e029d4f5edd2981841243ded13`
+* `http://$USERNAME.cloudant.com/products/$_ID?rev=1-7438df87b632b312c53a08361a7c3299`
 
-Since the two changes are for different fields of the document, it is easy to merge them automatically.
+Since these two changes are for different fields of the document, it is easy to merge them.
 
-Depending on your application and the nature of the changes, other conflict resolution strategies might be useful. Some common strategies are:
+Other conflict resolution strategies are:
 
 * time based: first or last edit
 * reporting conflicts to users and letting them decide on the best resolution
@@ -113,7 +113,7 @@ Depending on your application and the nature of the changes, other conflict reso
 
 ### 3. Upload the new revision
 
-We produce the following document and update the database with it.
+In this example, you produce the document to your right and update the database with it.
 
 ```json
 {
@@ -127,14 +127,14 @@ We produce the following document and update the database with it.
 
 ### 4. Delete old revisions
 
-To delete the old revisions, we send a DELETE request to the URLs with the revisions we want to delete.
+Then to delete the old revisions, send a DELETE request to the URLs with the revisions we want to delete.
 
 ```http
-DELETE http://username.cloudant.com/products/74b2be56045bed0c8c9d24b939000dbe?rev=2-61ae00e029d4f5edd2981841243ded13
+DELETE http://$USERNAME.cloudant.com/products/$_ID?rev=2-61ae00e029d4f5edd2981841243ded13
 ```
 
 ```http
-DELETE http://username.cloudant.com/products/74b2be56045bed0c8c9d24b939000dbe?rev=2-f796915a291b37254f6df8f6f3389121
+DELETE http://$USERNAME.cloudant.com/products/$_ID?rev=2-f796915a291b37254f6df8f6f3389121
 ```
 
-After that, the document is not in conflict any more and you can verify that by getting the document again with the conflicts parameter set to true.
+After this, conflicts are resolved and you can verify this by getting the document again with the conflicts parameter set to true.
