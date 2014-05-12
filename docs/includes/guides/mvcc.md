@@ -31,7 +31,7 @@ You can then regularly query this view and resolve conflicts as needed, or query
 
 Once you've found a conflict, you can resolve it in 4 steps.
 
- * Get the conflicting revisions.
+ * [Get the conflicting revisions](#get-conflicting-revisions).
  * Merge them in your application or ask the user what he wants to do.
  * Upload the new revision.
  * Delete old revisions.
@@ -74,7 +74,7 @@ At the same time, someone else - working with a replicated database - reduces th
 
 Then the two databases are replicated, leading to a conflict.
 
-### 1. Getting conflicting revisions
+#### Get conflicting revisions
 
 You get the document with `conflicts=true` like this:
 
