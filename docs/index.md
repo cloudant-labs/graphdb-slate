@@ -73,49 +73,6 @@ All requests to Cloudant go over the web, which means any system that can speak 
 
 Cloudant's API represents the collaboration of numerous machines, called a cluster, which may live in different physical locations. Clustering means that when you need more horsepower, you just add more machines, which is more cost-effective and fault-tolerant than scaling up a single machine.
 
-### The CAP Theorem
-
-<div id="cap_theorem"></div>
-
-Developers early in the design process might want to consider the complexities raised by [The CAP theorem](http://lpd.epfl.ch/sgilbert/pubs/BrewersConjecture-SigAct.pdf), which states that a distributed computing system can only exhibit two of the three following characteristics:
-
-* Consistency: all nodes see the same data at the same time.
-* Availability: every request receives a response indicating success or failure.
-* Partition Tolerance: the system continues to operate despite arbitrary message loss or failure of part of the system.
-
-For example, a database prioritizing consistency and availability is simple: a single node storing a single copy of your data. But scaling necessarily involves a performance increase in the node rather than the leverage of additional nodes, which means that a minor system failure can shut down a single-node system. To endure, the system must become more sophisticated. Cloudant's ease of scalability makes it adaptable to this problem.
-
-
-## AcID
-
-<div id="acid"></div>
-
-ACID is an acronym for [atomic](#acid_atomic), [consistent](#acid_consistent), [isolated](#acid_isolated), [durable](#acid_durable), simply a set of properties which guarantee that transactions with a database are processed and reported reliably. Cloudant is AcID: the “c” is lowercase because Cloudant is eventually consistent rather than strongly consistent.
-
-### Atomic
-
-<div id="acid_atomic"></div>
-
-Atomic is just another way to mean “cannot be divided”. All this means is that if one part of a process fails, the whole thing fails, so that the database is not left in an inconsistent state. For example, a request to modify a document will only report success once it has been written to disk.
-
-### Consistent
-
-<div id="acid_consistent"></div>
-
-Cloudant is eventually consistent, such that any change will propagate to the whole cluster within milliseconds, but will not wait for that propagation before reporting success. 
-
-### Isolated
-
-<div id="acid_isolated"></div>
-
-Cloudant is lockless, so that even simultaneous reads and writes will not delay or impact other reads and writes. Isolation just means that concurrent processes like this result in a state that would be obtained if things happened one at a time.
-
-### Durable
-
-<div id="acid_durable"></div>
-
-Durability ensures that changes remain once committed, even with power failures or other errors. Document updates and insertions are written to disk before the request is considered complete.
-
 ## Replication
 
 <div id="replication"></div>
