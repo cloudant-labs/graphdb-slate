@@ -33,7 +33,7 @@ Once you've found a conflict, you can resolve it in 4 steps.
 
  * [Get](#get-conflicting-revisions) the conflicting revisions.
  * [Merge](#merge-the-changes) them in your application or ask the user what he wants to do.
- * [Upload](#upload-new-revision) the new revision.
+ * [Upload](#upload-the-new-revision) the new revision.
  * [Delete](#delete-old-revisions) old revisions.
 
 Let's look at an example of how this can be done. Suppose you have a database of products for an online shop. The first version of a document might look like this:
@@ -111,7 +111,7 @@ Other conflict resolution strategies are:
 * reporting conflicts to users and letting them decide on the best resolution
 * more sophisticated merging algorithms, e.g. 3-way merges of text fields
 
-### Upload new revision
+### Upload the new revision
 
 In this example, you produce the document to your right and update the database with it.
 
