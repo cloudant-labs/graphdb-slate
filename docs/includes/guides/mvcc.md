@@ -1,23 +1,19 @@
-Document Versioning and MVCC
-============================
+## Document Versioning and MVCC
 
 Concurrent updates are a tricky subject in any kind of database. Let's have a look at how  versioning works in a Cloudant database and how you can use it to 
 resolve conflicts between concurrent updates to the same document. 
 
-Revisions
------------
+### Revisions
 
 In a Cloudant database, every document has a revision. The revision is stored in the _rev field of the document. As a developer, you should treat it as an opaque string used internally by the database and not rely on it as a counter. When you retrieve a document from the database, you can either retrieve the latest revision or you can ask for a past revision by specifying the rev query parameter. However, past revisions will only be kept in the database for a short time or if the revisions are in conflict. Otherwise, old revisions will be deleted regularly by a process called compaction. Cloudant's revisions are thus not a good fit for implementing a version control system. For this purpose, we recommend creating a new document per revision. When you update a document, you have to specify the previous revision, and if the update is successful, the _rev field will be updated automatically. However, if the revision you specified in your update request does not match the latest revision in the database, your request will fail with HTTP status 409 (conflict). This technique is called multi-version concurrency control (MVCC); it prevents concurrent updates from accidentally overwriting or reversing each other's changes, works well with disconnected clients and does not require write locks. That said, as any mechanism for dealing with concurrency, it does have some tricky parts.
 
-Distributed databases and conflicts
-------------------------------------
+### Distributed databases and conflicts
 
 Given our story so far, it seems impossible that we could have a conflict, because any update request has to reference the latest version of the document. So how would we get a conflict? How would a document get two different updates based on the same previous version? What we haven't taken into account is that Cloudant is not one monolithic database but rather a distributed system of databases that needn't always be in sync with each other. 
 This is especially true if you are developing mobile or web applications that have to work without a constant connection to the main database on Cloudant. When a document on such a disconnected database is updated while the same document on Cloudant is also updated, this will lead to a conflict when the remote database is replicated to Cloudant.
 While replication from local, disconnected databases is a common source of conflicts, it is not the only one. Cloudant's own infrastructure is a distributed system and updating your Cloudant database concurrently (for example from multiple web servers) can - very rarely - also lead to conflicts. In short, no matter what kind of application you have and how it works, conflicts can always happen.
 
-How to find conflicts
-----------------------
+### How to find conflicts
 
 To find out whether a document is in a conflict state, you can add the query parameter conflicts=true when you retrieve the document. The returned document will then contain a _conflicts array with all conflicting revisions.
 To find conflicts for multiple documents in a database, the best approach is to write a view. Here is a map function that emits all conflicting revisions for every document that has a conflict:
@@ -32,8 +28,7 @@ function(doc) {
 
 You can then regularly query this view and resolve conflicts as needed or query the view after each replication.
 
-How to resolve conflicts
----------------------------
+### How to resolve conflicts
 
 Once you've found a conflict, you can resolve it in 4 steps.
 

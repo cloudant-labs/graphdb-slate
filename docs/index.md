@@ -29,6 +29,8 @@ includes:
   - api/replication
   - api/advanced
   - api/errors
+  - guides/index
+  - guides/mvcc
 
 ---
 
