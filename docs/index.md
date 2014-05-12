@@ -31,6 +31,7 @@ includes:
   - api/errors
   - guides/index
   - guides/mvcc
+  - guides/transactions
 
 ---
 
