@@ -1,10 +1,10 @@
-# Account
+## Account
 
 Your account, which lives at `https://$USERNAME.cloudant.com`, is your entry point for Cloudant's API. Your Cloudant dashboard is always `https://$USERNAME.cloudant.com/dashboard.html`.
 
 If you don't yet have an account, [sign up](https://cloudant.com/sign-up/).
 
-## Ping
+### Ping
 
 ```shell
 curl -X HEAD -u $USERNAME https://$USERNAME.cloudant.com

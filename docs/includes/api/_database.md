@@ -1,8 +1,8 @@
-# Databases
+## Databases
 
 Databases contain [documents](#documents), the JSON objects Cloudant revolves around. All documents need a database to contain them.
 
-## Create
+### Create
 
 ```shell
 curl -X PUT https://$USERNAME.cloudant.com/$DATABASE
@@ -29,7 +29,7 @@ print response.status_code
 
 To create a database, make a PUT request to `https://$USERNAME.cloudant.com/$DATABASE`.
 
-## Read
+### Read
 
 ```shell
 TODO
@@ -60,7 +60,7 @@ TODO
 
 Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE` will return information about the database, such as how many documents it contains.
 
-## Get Databases
+### Get Databases
 
 ```shell
 TODO
@@ -84,7 +84,7 @@ TODO
 
 To list all the databases in an account, make a GET request against `https://$USERNAME.cloudant.com/_all_dbs`.
 
-## Get Documents
+### Get Documents
 
 ```shell
 TODO
@@ -137,7 +137,7 @@ Argument | Description | Optional | Type | Default
 `skip` | Skip this number of records before starting to return the results | yes | numeric | 0
 `startkey` | Return records starting with the specified key | yes | string |
 
-## Get Changes
+### Get Changes
 
 ```shell
 TODO
@@ -222,7 +222,7 @@ If you set `feed=continuous`, new changes send without closing the connection. I
 
 The `filter` parameter designates a pre-defined [function to filter](#filter-functions) the changes feed.
 
-## Delete
+### Delete
 
 ```shell
 TODO
@@ -242,7 +242,7 @@ TODO
 
 To delete a databases and its contents, make a DELETE request to `https://$USERNAME.cloudant.com/$DATABASE`.
 
-## Reading Permissions
+### Reading Permissions
 
 ```shell
 TODO
@@ -278,7 +278,7 @@ TODO
 
 To see who has permissions to read, write, and manage the database, make a GET request against `https://$USERNAME.cloudant.com/$DB/_security`. The response object's `cloudant` field contains an object whose keys are usernames with permissions to interact with the database. The `nobody` username indicates what rights are available to unauthenticated users -- that is, anybody. In the example response, for instance, `nobody` has `_reader` permissions, making the database publicly readable.
 
-## Modifying Permissions
+### Modifying Permissions
 
 ```shell
 TODO

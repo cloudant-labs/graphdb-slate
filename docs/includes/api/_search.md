@@ -1,4 +1,4 @@
-# Search
+## Search
 
 > Example design document:
 
@@ -41,7 +41,7 @@ store | If `true`, the value will be returned in the search result; otherwise, i
 index | whether (and how) the data is indexed. See [Analyzers](#analyzers) for more info. | `analyzed`, `analyzed_no_norms`, `no`, `not_analyzed`, `not_analyzed_no_norms` | analyzed
 facet | creates a faceted index. See [Faceting](#faceting) for more info. | `true`, `false` | `false`
 
-## Analyzers
+### Analyzers
 
 ```json
 {
@@ -68,7 +68,7 @@ simple | Divides text at non-letters.
 whitespace | Divides text at whitespace boundaries.
 classic | The standard Lucene analyzer circa release 3.1. You'll know if you need it.
 
-### Language-Specific Analyzers
+#### Language-Specific Analyzers
 
 These analyzers will omit very common words in the specific language, and many also [remove prefixes and suffixes](http://en.wikipedia.org/wiki/Stemming). The name of the language is also the name of the analyzer.
 
@@ -125,7 +125,7 @@ return true;
 * turkish
 </div>
 
-### Per-Field Analyzers
+#### Per-Field Analyzers
 
 ```json
 {
@@ -148,7 +148,7 @@ return true;
 
 The `perfield` analyzer configures multiple analyzers for different fields.
 
-### Stop Words
+#### Stop Words
 
 ```json
 {
@@ -173,7 +173,7 @@ Stop words are words that do not get indexed. You define them within a design do
 
 <aside>The `keyword`, `simple` and `whitespace` analyzers do not support stop words.</aside>
 
-## Queries
+### Queries
 
 ```shell
 TODO
@@ -185,7 +185,7 @@ TODO
 
 Once you've got an index written, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$_ID/_search/$INDEX_NAME`. Specify your search query in the `query` query parameter.
 
-### Query Parameters
+#### Query Parameters
 
 Argument | Description | Optional | Type | Supported Values
 ---------|-------------|----------|------|------------------
@@ -202,7 +202,7 @@ ranges | This field defines ranges for faceted, numeric search fields. The value
 counts | This field defines an array of names of string fields, for which counts should be produced. The response will contain counts for each unique value of this field name among the documents matching the search query. | yes | JSON | A JSON array of field names
 drilldown | This field can be used several times. Each use defines a pair of a field name and a value. The search will only match documents that have the given value in the field name. It differs from using “fieldname:value” in the q parameter only in that the values aren’t analyzed. | yes | JSON | A JSON array with two elements, the field name and the value.
 
-## Query Syntax
+### Query Syntax
 
 ```
 // Birds
@@ -241,7 +241,7 @@ The following characters require escaping if you want to search on them: `+ - &&
 
 Escape these with a preceding backslash character.
 
-## Faceting
+### Faceting
 
 ```javascript
 function(doc) {
@@ -272,7 +272,7 @@ function(doc) {
 
 Cloudant Search also supports faceted searching, which allows you to discover aggregate information about all your matches quickly and easily. You can even match all documents (using the special `?q=*:*` query syntax) and use the returned facets to refine your query. To indicate a field should be indexed for faceted queries, set `{"facet": true}` in its options.
 
-### Counts
+#### Counts
 
 > Example query
 
@@ -299,7 +299,7 @@ Cloudant Search also supports faceted searching, which allows you to discover ag
 
 The count facet syntax takes a list of fields and returns the number of query results for each unique value of each named field.
 
-### Ranges
+#### Ranges
 
 > Example query
 

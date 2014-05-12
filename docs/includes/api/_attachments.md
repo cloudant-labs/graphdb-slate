@@ -1,8 +1,8 @@
-# Attachments
+## Attachments
 
 Attachments are [BLOb](http://en.wikipedia.org/wiki/Binary_large_object) files contained within documents. Examples of BLObs would be images and multimedia. All attachments have a name and a content type, corresponding to a [MIME type][mime]. If you need to store raw files, use attachments.
 
-## Create / Update
+### Create / Update
 
 ```shell
 TODO
@@ -24,7 +24,7 @@ TODO
 
 To create or update an attachment, make a PUT request with the attachment's latest `_rev` to `https://$USERNAME.cloudant.com/$DATABASE/$_ID/$ATTACHMENT`.  The attachment's [content type][mime] must be specified using the `Content-Type` header.
 
-## Read
+### Read
 
 ```shell
 TODO
@@ -36,7 +36,7 @@ TODO
 
 To retrieve a document, make a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$_ID/$ATTACHMENT`. The body of the response will be the raw blob file.
 
-## Delete
+### Delete
 
 ```shell
 TODO

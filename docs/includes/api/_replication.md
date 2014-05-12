@@ -1,10 +1,10 @@
-# Replication
+## Replication
 
 Cloudant replication syncs the state of two databases. Any change which occurs to the source database will occur to the target database. You can create replications between any number of databases, whether continuous or not, to share state and aggregate information as best suits your application.
 
 Replications are represented as [documents](#documents) in the `_replicator` database, so working with replications is just like working with documents.
 
-## Create
+### Create
 
 > Example document:
 
@@ -33,7 +33,7 @@ proxy | no | Proxy server URL.
 query_params | no | Object containing properties that are passed to the filter function.
 use_checkpoints | no | Whether to create checkpoints. Checkpoints greatly reduce the time and resources needed for repeated replications. Setting this to false removes the requirement for write access to the source database. Defaults to true.
 
-## Monitor
+### Monitor
 
 ```shell
 TODO
@@ -86,10 +86,10 @@ updated_on | When the replication was last updated, in seconds since the UNIX ep
 source | An obfuscated URL indicating the database from which the task is replicating | string
 target | An obfuscated URL indicating the database to which the task is replicating | string
 
-## Delete
+### Delete
 
 To halt a replication, simply [delete its document](#delete33) from the `_replicator` database.
 
-## Advanced
+### Advanced
 
 Clients implementing the [replication protocol](http://dataprotocols.org/couchdb-replication/) should check out the [Advanced Methods](#advanced14).

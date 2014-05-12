@@ -1,4 +1,4 @@
-# MapReduce
+## MapReduce
 
 > Example design document:
 
@@ -72,7 +72,7 @@ When `rereduce` is `true`, `keys` will be `null`, while `values` will be an arra
 
 By feeding the results of `reduce` functions back into the `reduce` function, MapReduce is able to split up the analysis of huge datasets into discrete, parallelized tasks, which can be completed much faster.
 
-## Queries
+### Queries
 
 ```shell
 TODO
@@ -84,7 +84,7 @@ TODO
 
 Once you've got an index written, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$_ID/_view/$INDEX_NAME`.
 
-### Query Parameters
+**Query Parameters**
 
 Argument | Description | Optional | Type | Default | Supported Values
 ---------|------------|----------|------|---------|-----------------

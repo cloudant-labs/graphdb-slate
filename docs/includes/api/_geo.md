@@ -1,4 +1,4 @@
-# Geo
+## Geo
 
 > Example design document:
 
@@ -44,7 +44,7 @@ Geo indexing allows you to perform sophisticated geo-spatial queries returning d
 
 The `st_index` function specifically indexes objects, called geometries, encoded as [GeoJSON](http://geojson.org/geojson-spec.html). GeoJSON objects which the `st_index` function can index must have a `geometry` field, containing the object's geometry ([examples here](http://geojson.org/geojson-spec.html#appendix-a-geometry-examples)), and a `type` field with the value `Feature`. The optional `properties` object can contain any fields and values; it's purely for your use as the developer.
 
-## Queries
+### Queries
 
 ```shell
 TODO
@@ -62,7 +62,7 @@ TODO
 
 Once you've got an index written, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_DOCUMENT_ID/_geo/$INDEX_NAME`. All geo queries must provide these two query arguments: `relation` (a relation) and `g` (a geometry). Cloudant returns every document in the database whose indexed geometry has the specified relationship to the given geometry.
 
-### Geometries
+#### Geometries
 
 ```
 POLYGON(
@@ -101,7 +101,7 @@ Function | Arguments | Description
 `TIN` | TODO | TODO
 `TRIANGLE` | TODO | TODO
 
-### Relations
+#### Relations
 
 Relations are specified by the `relation` query parameter, and indicate how indexed geometries must relate to the geometry specified in the query.
 
@@ -117,7 +117,7 @@ Relation | Description
 `contains` | True if the given geometry is wholly inside the indexed geometry
 `overlaps` | True if the intersection of the geometries results in a value of the same dimension as the geometries that is different from both of the geometries
 
-### Radius
+#### Radius
 
 ```shell
 curl 
@@ -138,7 +138,7 @@ Rather than use the `g` parameter, queries regarding a radius use the `radius`, 
 
 Specifying `lat`, `lon`, and `radius` creates a circle centered at that latitude ('lat') and longitude ('lon') with the given radius in meters, and compares each geometry in the index to that circle using the given relation.
 
-### Ellipse
+#### Ellipse
 
 ```shell
 curl 

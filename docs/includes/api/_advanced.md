@@ -1,8 +1,8 @@
-# Advanced
+## Advanced
 
 These endpoints provide information about the state of the cluster, details about revision history, and other miscellaneous tasks.
 
-## GET /_db_updates
+### GET /_db_updates
 
 ```shell
 TODO
@@ -40,7 +40,7 @@ since | Start the results from changes immediately after the specified sequence 
 timeout | Number of milliseconds to wait for data in a `longpoll` or `continuous` feed before terminating the response. If both `heartbeat` and `timeout` are suppled, `heartbeat` supersedes `timeout`. | yes | numeric |  | 
 descending | Whether results should be returned in descending order, i.e. the latest event first. By default, the oldest event is returned first. | yes | boolean | false | 
 
-## GET /$DB/_shards
+### GET /$DB/_shards
 
 ```shell
 TODO
@@ -103,7 +103,7 @@ Returns informations about the shards in the cluster, specifically what nodes co
 
 The response's `shards` field contains an object whose keys are the hash value range constituting each shard, while each value is the array of nodes containing that a copy of that shard.
 
-## POST /$DB/_missing_revs
+### POST /$DB/_missing_revs
 
 ```shell
 curl https://$USERNAME.cloudant.com/$DATABASE/_missing_revs \
@@ -142,7 +142,7 @@ TODO
 
 Given a list of document revisions, returns the document revisions that do not exist in the database.
 
-## POST /$DB/_revs_diff
+### POST /$DB/_revs_diff
 
 ```shell
 TODO
@@ -182,7 +182,7 @@ TODO
 
 Given a set of document/revision IDs, returns the subset of those that do not correspond to revisions stored in the database.
 
-## GET /$DB/_revs_limit
+### GET /$DB/_revs_limit
 
 ```python
 TODO
@@ -204,7 +204,7 @@ Gets the number of past revisions of a document that Cloudant stores information
 
 <aside>Although the documents associated with past revisions are automatically removed, "tombstones" remain with the `_rev` value for that revision. If a document has more revisions than the value of `_revs_limit`, Cloudant will delete the tombstones of the oldest revisions.</aside>
 
-## PUT /$DB/_revs_limit
+### PUT /$DB/_revs_limit
 
 ```shell
 TODO
@@ -232,7 +232,7 @@ Sets the maximum number of past revisions that Cloudant stores information on.
 
 <aside>Although the documents associated with past revisions are automatically removed, "tombstones" remain with the `_rev` value for that revision. If a document has more revisions than the value of `_revs_limit`, Cloudant will delete the tombstones of the oldest revisions.</aside>
 
-## GET /_membership
+### GET /_membership
 
 ```shell
 TODO
@@ -261,7 +261,7 @@ TODO
 
 Returns the names of nodes in the cluster. Currently active clusters are indicated in the `cluster_nodes` field, while `all_nodes` lists all nodes active or not.
 
-## GET /_uuids
+### GET /_uuids
 
 ```shell
 TODO

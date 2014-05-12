@@ -1,10 +1,10 @@
-# Documents
+## Documents
 
 Documents are [JSON objects](http://en.wikipedia.org/wiki/JSON#Data_types.2C_syntax_and_example), containers for your data and the vital organs of the Cloudant database.
 
 All documents have a unique `_id` field, either assigned by you or generated as a [UUID](http://en.wikipedia.org/wiki/Universally_unique_identifier) by Cloudant, and a `_rev` field, a revision number which is essential to Cloudant's replication protocol. Beyond those, documents can contain anything a JSON might.
 
-## Create
+### Create
 
 ```shell
 TODO
@@ -40,7 +40,7 @@ TODO
 
 To create a document, make a POST request with the document's JSON content to `https://$USERNAME.cloudant.com/$DATABASE`. If you don't provide an `_id` field, Cloudant will generate one as a [UUID](http://en.wikipedia.org/wiki/Universally_unique_identifier). 
 
-## Read
+### Read
 
 ```shell
 TODO
@@ -67,11 +67,11 @@ TODO
 
 To retrieve a document, make a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$_ID`. If you don't know a particular document's `_id` you can [query the database](#get-documents) for all documents.
 
-## Read Many
+### Read Many
 
 To fetch many documents at once, [query the database](#get-documents).
 
-## Update
+### Update
 
 ```shell
 TODO
@@ -111,7 +111,7 @@ To update a document, make a PUT request with the updated JSON content and lates
 
 <aside>If you don't provide the latest `_rev`, Cloudant will respond with a [409 error](#errors) to prevent overwriting data changed by other clients.</aside>
 
-## Delete
+### Delete
 
 ```shell
 TODO
@@ -135,7 +135,7 @@ To delete a document, make a DELETE request with the document's latest `_rev` in
 
 <aside>Just like with updating, if you don't provide the latest `_rev`, Cloudant will respond with a [409 error](#errors) to prevent overwriting data changed by other clients.</aside>
 
-## Bulk Operations
+### Bulk Operations
 
 ```shell
 TODO

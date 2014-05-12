@@ -1,10 +1,10 @@
-# Design Documents
+## Design Documents
 
 Design documents are [documents](#documents) whose `_id`s begin with `_design/`. Cloudant reads certain fields and values of design documents as functions, which it uses to [build indexes](#indexes), [validate updates](#update-validators), and [format query results](#list-functions).
 
 Since the `$VARIABLES` in these instructions contain both standard and design documents, respective `_id`s are indicated by `$DOC_ID` and `%DESIGN_ID`.
 
-## Indexes
+### Indexes
 
 All queries operate on pre-defined indexes defined in design documents. These indexes are:
 
@@ -14,7 +14,7 @@ All queries operate on pre-defined indexes defined in design documents. These in
 
 Because design documents are still [documents](#documents), a [search index](#search) can be added by [updating](#update) the document with the appropriate field or by [inserting](#create29) a new document with it. You can make queries against the index as soon as it's written with the design document.
 
-## List Functions
+### List Functions
 
 > Design doc with a list function:
 
@@ -96,11 +96,11 @@ secObj | The database's [security object](#reading-permissions)
 userCtx | Context about the currently authenticated user, specifically their `name` and `roles` within the current database.
 uuid | A generated UUID
 
-### Built-in Functions
+#### Built-in Functions
 
 TODO
 
-## Show Functions
+### Show Functions
 
 > Design doc with a show function:
 
@@ -141,7 +141,7 @@ Show functions receive two arguments: `doc`, and [req](#req). `doc` is the docum
 
 Once you've defined a show function, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOC_ID/_show/$SHOW_FUNCTION/$DESIGN_ID`, where `$SHOW_FUNCTION` is the function's name, and `$DESIGN_ID` is the `_id` of the document you want to run the show function on.
 
-## Update Handlers
+### Update Handlers
 
 > Example design doc:
 
@@ -197,7 +197,7 @@ PUT | `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_update/$UPDATE_HANDL
 
 Where `$DESIGN_ID` is the `_id` of the document defining the update handler, `$UPDATE_HANDLER` is the name of the update handler, and `$DOC_ID` is the `_id` of the document you want the handler to, well, handle.
 
-## Filter Functions
+### Filter Functions
 
 > Example design document:
 
@@ -227,7 +227,7 @@ Filter functions receive two arguments: `doc` and [req](#req). `doc` represents 
 
 To use a filter function on the changes feed, specify the function in the `_changes` query. See the examples for more details.
 
-## Update Validators
+### Update Validators
 
 > Example design document:
 

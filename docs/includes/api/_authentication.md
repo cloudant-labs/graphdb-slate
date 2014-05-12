@@ -1,8 +1,8 @@
-# Authentication
+## Authentication
 
 Authentication just means verifying user credentials. There are two ways that clients can authenticate with Cloudant: Basic and Cookie. The difference is essentially like showing an ID at a door versus borrowing a key to the door.
 
-## Basic Authentication
+### Basic Authentication
 
 ```shell
 curl -X HEAD -u $USERNAME https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com
@@ -20,7 +20,7 @@ print ping.status_code
 
 With Basic authentication, you pass along your credentials as part of every request.
 
-## Cookies
+### Cookies
 
 ```shell
 TODO
