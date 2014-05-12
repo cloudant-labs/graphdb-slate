@@ -99,6 +99,6 @@ key | Return only documents that match the specified key. Note that keys are JSO
 limit | Limit the number of the returned documents to the specified number | yes | numeric |  | 
 reduce | Use the reduce function | yes | boolean | true |  
 skip | Skip this number of rows from the start | yes | numeric | 0 | 
-stale | Allow the results from a stale view to be used. This makes the request return immediately, even if the view has not been completely built yet. If this parameter is not given, a response will be returned only after the view has been built. | yes | string | false | ok: Allow stale views, update_after: Allow stale views, but update them immediately after the request
+stale | Allow the results from a stale view to be used. This makes the request return immediately. If this parameter is not given, a response will be returned after the view has been built. | yes | string | false | ok: Allow stale views, update_after: Allow stale views but update them after the request
 startkey | Return records starting with the specified key | yes | string or JSON array |  |  
 startkey_docid | Return records starting with the specified document ID | yes | string |  |  
