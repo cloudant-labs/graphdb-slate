@@ -58,8 +58,6 @@ function (keys, values, rereduce) {
 }
 ```
 
-Although we strongly recommend using the built-in reduce functions (`_sum`, `_count`, `_stats`), you can define your own.
-
 Reduces are called with three parameters: `key`, `values` and `rereduce`. Keys will be a list of keys as emitted by the `map` function, or null; `values` will be a list of values for each element in `keys`; and `rereduce` will be `true` or `false`.
 
 When `rereduce` is `false`, `keys` will be an array of arrays representing unique key and document ID pairs emitted by the index's `map` function, while `values` will be an array of values emitted by the index's `map` function. For example:
