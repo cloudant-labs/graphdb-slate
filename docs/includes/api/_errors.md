@@ -6,7 +6,7 @@ Error Code | Meaning
 ---------- | -------
 200 | OK -- Request completed successfully.
 201 | Created -- Resource created successfully.
-202 | Accepted -- Request has been accepted, but the corresponding operation may not have completed. This is used for background operations, such as database compaction or for bulk operations where some updates might have led to a conflict.
+202 | Accepted -- Request has been accepted, but the corresponding operation may not have completed. This is used for background operations, such as [database compaction](#document-versioning-and-mvcc) or for bulk operations where some updates might have led to a conflict.
 304 | Not Modified -- The content requested has not been modified. This is used with the ETag system to identify the version of information returned.
 400 | Bad Request -- Bad request structure. The error can indicate an error with the request URL, path or headers. Differences in the supplied MD5 hash and content also trigger this error, as this may indicate message corruption.
 401 | Unauthorized -- The item requested was not available using the supplied authorization, or authorization was not supplied.
