@@ -1,11 +1,13 @@
 ## Document Versioning and MVCC
 
-Concurrent updates are a tricky subject in any kind of database. Let's have a look at how  versioning works in a Cloudant database and how you can use it to 
-resolve conflicts between concurrent updates to the same document. 
+Multi-version concurrency control (MVCC) is how Cloudant databases ensure that all of the nodes in a database's cluster contain only the [newest version](#documents) of a document. Since Cloudant databases are [eventually consistent](#acid), this is neccesary to prevent inconsistencies between nodes from syncronizing to outdated documents. 
 
 ### Revisions
 
-In a Cloudant database, every document has a revision. The revision is stored in the _rev field of the document. As a developer, you should treat it as an opaque string used internally by the database and not rely on it as a counter. When you retrieve a document from the database, you can either retrieve the latest revision or you can ask for a past revision by specifying the rev query parameter. However, past revisions will only be kept in the database for a short time or if the revisions are in conflict. Otherwise, old revisions will be deleted regularly by a process called compaction. Cloudant's revisions are thus not a good fit for implementing a version control system. For this purpose, we recommend creating a new document per revision. When you update a document, you have to specify the previous revision, and if the update is successful, the _rev field will be updated automatically. However, if the revision you specified in your update request does not match the latest revision in the database, your request will fail with HTTP status 409 (conflict). This technique is called multi-version concurrency control (MVCC); it prevents concurrent updates from accidentally overwriting or reversing each other's changes, works well with disconnected clients and does not require write locks. That said, as any mechanism for dealing with concurrency, it does have some tricky parts.
+Every document in a Cloudant database has a `_rev` field indicating its revision number. You must specify the previous `_rev` when [updating a document](#update) or else your request will fail and return a [409 error](#errors).
+
+
+You can query a particular revision using its `_rev`, however, older revisions are regularly deleted by a process called compaction. [Create a new document](#create28) per revision to better implement version control.
 
 ### Distributed databases and conflicts
 
