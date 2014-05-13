@@ -6,21 +6,19 @@ The easiest way to achieve consistency is *not* update documents at all.
 
 In the case of the shopping app, instead insert documents like this:
 
-<pre>
-{
-      "type": "purchase",
-      "item": "...",
-      "account": "...",
-      "quantity": 2,
-      "unit_price": 99.99
-    }
+`{`<<br>
+`"type": "purchase",`<br>
+`"item": "...",`<br>
+`"account": "...",`<br>
+`"quantity": 2,`<br>
+`"unit_price": 99.99`<br>
+`}`
 
-    {
-      "type": "payment",
-      "account": "...",
-      "value": 199.98
-    }
-</pre>
+`{`<br>
+`"type": "payment",`<br>
+`"account": "...",`<br>
+`"value": 199.98`<br>
+`}`
 
 `item` and `account` are IDs for other objects in your database. To calculate a running total for an account, we would use a view like the one to the right.
 
