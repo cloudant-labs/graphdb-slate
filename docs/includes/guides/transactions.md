@@ -6,7 +6,7 @@ The easiest way to achieve consistency is *not* update documents at all.
 
 In the case of the shopping app, instead insert documents like this:
 
-`{`<<br>
+`{`<br>
 `"type": "purchase",`<br>
 `"item": "...",`<br>
 `"account": "...",`<br>
