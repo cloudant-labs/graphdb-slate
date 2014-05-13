@@ -43,9 +43,7 @@ In the case of the shopping app, instead insert documents like this:
 
 Calling this view with the `group=true&key={account}` options gives you a running balance for a particular account. To give refunds, insert a document with values to balance to balance out the transaction in question.
 
-This practice of logging events, and aggregating them to determine an
-object's state, is called *event sourcing*. Used well, it provides
-SQL-like transactional atomicity even in a NoSQL database like Cloudant.
+Logging events and aggregating them to determine an object's state is called [event sourcing](http://martinfowler.com/eaaDev/EventSourcing.html). It can provide SQL-like transactional atomicity even in a [NoSQL database](#json) like Cloudant.
 
 ### Event Sourcing
 
