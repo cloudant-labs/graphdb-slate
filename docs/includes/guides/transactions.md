@@ -83,15 +83,11 @@ These arrays can be used to generate a shared transaction `_id` which allows you
 
 Therefore a `_view/transactions?key={transaction_id}&include_docs=true` query retrieves every change associated with a transaction.
 
-### Using dbcopy to map data into events
+### Mapping Data into Events
 
-Say your database consists of data that simply doesn't lend itself to
-event sourcing. Perhaps you uploaded documents that have rows of events
-in them, and you'd like to migrate your data to better accommodate an
-event sourcing strategy. To address this, we can use `dbcopy` to map our
-current data into events, and then output them to another database.
+The `dbcopy` map can be used to migrate data into events, and then output them to another database, in order to better accomodate event sourcing.
 
-Say you've got documents like this:
+A document like the first example can be mapped into another database using the view, or [MapReduce index](#mapreduce), in the second example. The results will be document in the events database like the third example.
 
 ```javascript
 {
@@ -110,9 +106,6 @@ Say you've got documents like this:
   }]
 }
 ```
-
-To map that into another database as a series of transaction events, try
-this:
 
 ```javascript
 {
@@ -135,9 +128,6 @@ this:
 }
 ```
 
-This will output the results of the map function into the events
-database, filling it with documents like this:
-
 ```javascript
 {
   key: {
@@ -149,8 +139,6 @@ database, filling it with documents like this:
   value: 100
 }
 ```
-
-And lo, from barren earth we have made a garden. Nifty, eh?
 
 ### Summary
 
