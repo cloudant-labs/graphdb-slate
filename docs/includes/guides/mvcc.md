@@ -15,7 +15,7 @@ Distributed databases work without a constant connection to the main database on
 
 To find conflicts, add the query parameter `conflicts=true` when retrieving a document. The document will contain a `_conflicts` array with all conflicting revisions.
 
-To find conflicts for multiple documents in a database, write a view. Here is a map function that emits all conflicting revisions for every document that has a conflict:
+To find conflicts for multiple documents in a database, write a view. To the right is a map function that emits all conflicting revisions for every document that has a conflict.
 
 ```json
 function(doc) {
@@ -36,7 +36,7 @@ Once you've found a conflict, you can resolve it in 4 steps.
  * [Upload](#upload-the-new-revision) the new revision.
  * [Delete](#delete-old-revisions) old revisions.
 
-Let's look at an example of how this can be done. Suppose you have a database of products for an online shop. The first version of a document might look like this:
+Let's look at an example of how this can be done. Suppose you have a database of products for an online shop. The first version of a document might look like this example on the right.
 
 ```json
 {
