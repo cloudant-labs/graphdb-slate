@@ -1,19 +1,13 @@
 ## Transactions in Cloudant
 
-Say you've got a shopping app. There are items, accounts, purchases,
-etc., and at the end of the day, the books must balance. If a user
-purchases something, you must appropriately charge the account, and
-reflect that change in inventory. If any of those steps fails, but
-others succeed, your system is left out of whack. If you were updating
-documents to reflect these changes, the previous versions of those
-documents might be lost, requiring you to take particular precaution in
-your app layer to handle failure cases, thus bloating your code. Is
-there an easier way to achieve consistency?
+In a shopping app, purchases must reflect charges and a change in inventory. However, if one of those processes fails while others succeed, your information becomes inconsistent. While previous revisions of your documents might be lost to [compaction](http://en.wikipedia.org/wiki/Data_compaction), regularly holding on to older data can slow things down.
 
-Yes. As Sam Bisbee put it, "Don't update documents." In the case of the
-shopping app, instead insert documents like this:
+The easiest way to achieve consistency is not update documents at all.
 
-    {
+In the case of the shopping app, instead insert documents like this:
+
+<pre>
+{
       "type": "purchase",
       "item": "...",
       "account": "...",
@@ -26,10 +20,9 @@ shopping app, instead insert documents like this:
       "account": "...",
       "value": 199.98
     }
+</pre>
 
-`item` and `account`, then, are IDs for other objects in your database.
-To calculate a running total for an account, we would use a view like
-this:
+`item` and `account` are IDs for other objects in your database. To calculate a running total for an account, we would use a view like the one to the right.
 
 ```javascript
 {
