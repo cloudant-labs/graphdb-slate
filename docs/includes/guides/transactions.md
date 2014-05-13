@@ -49,18 +49,11 @@ Logging events and aggregating them to determine an object's state is called [ev
 
 In event sourcing, the database's [atomic](#acid_atomic) unit is the document, which means if a document fails to write, it should never leave the database in an inconsistent state. To do this, documents should be understood as a sum of their interactions instead of merely their current state. In the case of the shopping app, this would be representing an account as every transaction logged within it instead of just its current balance.
 
-### Using \_uuids to group transactions
+### Grouping Transactions
 
-Say in our shopping app, you have a shopping cart where users can hold
-items before purchasing, and which they ultimately purchase as a group.
-How can we group these purchases, while maintaining each purchase as a
-single document? Use the `_uuids` endpoint!
+The `_uuids` ([UUIDs](http://en.wikipedia.org/wiki/Universally_unique_identifier)) enpoint can be used to maintain purchases as individual documents when they are purchased through a shopping cart in a single transaction.
 
-`https://{user}.cloudant.com/_uuids` returns an array of unique IDs
-which have an approximately negligible chance of overlapping with your
-document IDs. By default, it returns one ID, but you can set count in
-your querystring to get more. For example, calling `_uuids?count=3`
-yields this:
+By default, `https://$USERNAME.cloudant.com/_uuids` returns one ID. An array of multiple IDs can be called with `_uuids?count=$NUMBER`, so `?count=3" would return something like the green array to your right.
 
 ```json
 {
