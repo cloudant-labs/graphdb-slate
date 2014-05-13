@@ -2,7 +2,7 @@
 
 In a shopping app, purchases must reflect charges and a change in inventory. However, if one of those processes fails while others succeed, your information becomes inconsistent. While previous revisions of your documents might be lost to [compaction](http://en.wikipedia.org/wiki/Data_compaction), regularly holding on to older data can slow things down.
 
-The easiest way to achieve consistency is not update documents at all.
+The easiest way to achieve consistency is *not* update documents at all.
 
 In the case of the shopping app, instead insert documents like this:
 
@@ -43,10 +43,7 @@ In the case of the shopping app, instead insert documents like this:
 }
 ```
 
-Voila! Now calling this view with the `group=true&key={account}` options
-will give us a running balance for a particular account. If you need to
-roll back a purchase or payment, just insert a document with values to
-balance out the interaction you want to negate.
+Calling this view with the `group=true&key={account}` options gives you a running balance for a particular account. To give refunds, insert a document with values to balance to balance out the transaction in question.
 
 This practice of logging events, and aggregating them to determine an
 object's state, is called *event sourcing*. Used well, it provides
