@@ -4,23 +4,25 @@ In a shopping app, purchases must reflect charges and a change in inventory. How
 
 The easiest way to achieve consistency is *not* update documents at all.
 
-In the case of the shopping app, instead insert documents like this:
+In the case of the shopping app, instead insert documents like the first example on the right.
 
-`{`<br>
-`"type": "purchase",`<br>
-`"item": "...",`<br>
-`"account": "...",`<br>
-`"quantity": 2,`<br>
-`"unit_price": 99.99`<br>
-`}`
+```json
+{
+  "type": "purchase",
+  "item": "...",
+  "account": "...",
+  "quantity": 2,
+  "unit_price": 99.99
+}
 
-`{`<br>
-`"type": "payment",`<br>
-`"account": "...",`<br>
-`"value": 199.98`<br>
-`}`
+{
+  "type": "payment",
+  "account": "...",
+  "value": 199.98
+}
+```
 
-`item` and `account` are IDs for other objects in your database. To calculate a running total for an account, we would use a view like the one to the right.
+`item` and `account` are IDs for other objects in your database. To calculate a running total for an account, we would use a view like the second example.
 
 ```javascript
 {
