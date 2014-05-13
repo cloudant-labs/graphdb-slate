@@ -51,9 +51,9 @@ In event sourcing, the database's [atomic](#acid_atomic) unit is the document, w
 
 ### Grouping Transactions
 
-The `_uuids` ([UUIDs](http://en.wikipedia.org/wiki/Universally_unique_identifier)) enpoint can be used to maintain purchases as individual documents when they are purchased through a shopping cart in a single transaction.
+The `_uuids` ([UUIDs](http://en.wikipedia.org/wiki/Universally_unique_identifier)) endpoint can be used to maintain purchases as individual documents when they are purchased through a shopping cart in a single transaction.
 
-By default, `https://$USERNAME.cloudant.com/_uuids` returns one ID. An array of multiple IDs can be called with `_uuids?count=$NUMBER`, so `?count=3" would return something like the green array to your right.
+By default, `https://$USERNAME.cloudant.com/_uuids` returns one ID. An array of multiple IDs can be called with `_uuids?count=$NUMBER`, so `?count=3` would return something like the array on the right.
 
 ```json
 {
@@ -65,9 +65,7 @@ By default, `https://$USERNAME.cloudant.com/_uuids` returns one ID. An array of 
 }
 ```
 
-This way, when the user purchases everything in their cart, you can use
-`_uuids` to generate a shared transaction\_id that allows you to
-retrieve them as a group later. For that, we might use a view like this:
+These arrays can be used to generate a shared transaction `_id` which allows you to retrieve them as a group later. A view for this might look something like the example to the right.
 
 ```javascript
 {
@@ -83,9 +81,7 @@ retrieve them as a group later. For that, we might use a view like this:
 }
 ```
 
-We can then use queries like
-`_view/transactions?key={transaction_id}&include_docs=true` to retrieve
-every change associated with a transaction.
+Therefore a `_view/transactions?key={transaction_id}&include_docs=true` query retrieves every change associated with a transaction.
 
 ### Using dbcopy to map data into events
 
