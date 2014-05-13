@@ -49,7 +49,9 @@ Logging events and aggregating them to determine an object's state is called [ev
 
 ### Event Sourcing
 
-In event sourcing, the database's [atomic](#acid_atomic) unit is the document, which means if a document fails to write, it should never leave the database in an inconsistent state. To do this, documents should be understood as a sum of their interactions instead of merely their current state. In the case of the shopping app, this would be representing an account as every transaction logged within it instead of just its current balance.
+In event sourcing, the database's [atomic](#acid_atomic) unit is the document, which means if a document fails to write, it should never leave the database in an inconsistent state.
+
+Documents should be understood as a sum of their interactions instead of merely their current state. In the case of the shopping app, this would be representing an account as every transaction logged within it instead of just its current balance.
 
 ### Grouping Transactions
 
@@ -141,26 +143,3 @@ A document like the first example can be mapped into another database using the 
   value: 100
 }
 ```
-
-### Summary
-
-Although Cloudant's eventual consistency model makes satisfying ACID's
-consistency requirement difficult, you can satisfy the rest of the
-requirements through how you structure your data. For event sourcing,
-regard these guidelines:
-
--   The atomic unit is the document. The database should never find
-    itself in an inconsistent state because a document failed to write.
-
--   Use secondary indexes, not documents, to reflect overall application
-    state.
-
--   If you've got unruly data, use `dbcopy` to map it into a friendly
-    way and output it to another database.
-
-If you have any trouble with any of this, post your question on
-[StackOverflow](http://stackoverflow.com/search?tab=votes&q=cloudant%20is%3aquestion),
-hit us up on
-[IRC](http://webchat.freenode.net/?channels=cloudant&uio=MTE9MTk117), or
-if you'd like to speak more privately, send us a note at
-<support@cloudant.com>
