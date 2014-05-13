@@ -47,27 +47,7 @@ Logging events and aggregating them to determine an object's state is called [ev
 
 ### Event Sourcing
 
-SQL databases often have transactional semantics that allow you to
-commit changes in an all-or-nothing fashion: if any of the changes fail,
-the database rejects the whole package. Papers like
-[ARIES](http://202.202.43.2/users/1008/docs/6176-1.pdf)[S](http://202.202.43.2/users/1008/docs/6176-1.pdf)
-lay out how this works, and how to implement it to ensure
-[ACID](http://en.wikipedia.org/wiki/ACID) transactions. Although
-Cloudant lacks these semantics directly, you can use a strategy called
-[Event Sourcing](http://martinfowler.com/eaaDev/EventSourcing.html) to
-get dang close.
-
-Event sourcing, in a nutshell, is the strategy we outlined above:
-reflect changes through document insertions rather than updates, then
-use secondary indexes to reflect overall application state.
-
-In event sourcing, the database's atomic unit is the document. If a
-document fails to write, it should never leave the database in an
-inconsistent state. So, we break documents into interactions: rather
-than updating an account document with its current balance, we calculate
-it and other dynamic values by aggregating the interactions the account
-was involved in. As much as possible, represent objects as the sum of
-their interactions.
+In event sourcing, the database's [atomic](#acid_atomic) unit is the document, which means if a document fails to write, it should never leave the database in an inconsistent state. To do this, documents should be understood as a sum of their interactions instead of merely their current state. In the case of the shopping app, this would be representing an account as every transaction logged within it instead of just its current balance.
 
 ### Using \_uuids to group transactions
 
