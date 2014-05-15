@@ -23,4 +23,5 @@ script:
   - ./scripts/deploy.sh
 
 after_success:
+  - sudo pip install beautifulsoup4
   - ./scripts/deploy-master.sh $USERNAME $PASSWORD
