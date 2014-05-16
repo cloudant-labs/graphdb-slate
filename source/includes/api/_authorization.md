@@ -78,8 +78,8 @@ account.request({
 
 To generate an API key, use `https://cloudant.com/api/generate_api_key`. The created API key has no permissions to anything by default, and must be given permissions explicitly.
 
+<!--
 ### CORS
 
 TODO
-
-![Under Construction](http://www.omgwiki.org/model-interchange/lib/exe/fetch.php?cache=cache&media=under-construction.gif)
+-->
