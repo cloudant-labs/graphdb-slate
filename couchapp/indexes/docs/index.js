@@ -1,13 +1,5 @@
 function (doc) {
-  Object.keys(doc).forEach(function (key) {
-    if (key[0] !== '_') {
-      if (typeof(doc[key]) !== 'object') {
-        index(key, doc[key]);
-      } else if (doc[key].forEach) {
-        // TODO
-      } else {
-        // TODO
-      }
-    }
-  });
+  index('title', doc.title, { store: true });
+  index('text', doc.text, { store: true });
+  index('default', doc.text);
 }
