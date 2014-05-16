@@ -16,14 +16,14 @@
 
 > Example mapreduce index:
 
-```
+```json
 {
-  map: function (doc) {
-    if (doc.kingdom === 'animal') {
-      emit(doc.order, doc.species);
-    }
-  },
-  reduce: '_count'
+  "map": "function (doc) {
+      if (doc.kingdom === 'animal') {
+        emit(doc.order, doc.species);
+      }
+    }",
+  "reduce": "_count"
 }
 ```
 

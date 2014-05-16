@@ -56,18 +56,27 @@ function (head, req) {
 > Example queries:
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_list/$LIST_FUNCTION/$MAPREDUCE_INDEX \
+     -u $USERNAME
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var db = account.use($DATABASE);
+
+db.view_with_list($DESIGN_ID, $MAPREDUCE_INDEX, $LIST_FUNCTION, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 List functions customize the format of [MapReduce](#mapreduce) query results.
 
 List functions receive two arguments: `head` and `req`.
 
-Once you've defined a list function, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOC_ID/_list/$LIST_FUNCTION/$MAPREDUCE_INDEX`, where `$LIST_FUNCTION` is the function's name, and `$MAPREDUCE_INDEX` is the name of the index whose query results you want to format. This request takes the same query parameters as a regular [MapReduce query](#queries53).
+Once you've defined a list function, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_list/$LIST_FUNCTION/$MAPREDUCE_INDEX`, where `$LIST_FUNCTION` is the function's name, and `$MAPREDUCE_INDEX` is the name of the index whose query results you want to format. This request takes the same query parameters as a regular [MapReduce query](#queries53).
 
 ### head
 
@@ -128,11 +137,20 @@ function (doc, req) {
 > Example queries:
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_show/$SHOW_FUNCTION/$DOCUMENT_ID \
+     -u $USERNAME
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var db = account.use($DATABASE);
+
+db.show($DESIGN_ID, $SHOW_FUNCTION, $DOCUMENT_ID, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 Show functions are like [list functions](#list-functions) but for formatting individual documents.
@@ -175,11 +193,23 @@ function(doc, req){
 > Example queries:
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_update/$UPDATE_HANDLER \
+     -X POST \
+     -H "Content-Type: application/json" \
+     -u $USERNAME
+     -d $JSON
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var db = account.use($DATABASE);
+
+db.atomic($DESIGN_ID, $UPDATE_HANDLER, $DOCUMENT_ID, $JSON, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 Update handlers are custom functions that live on Cloudant's server that will create or update a document. This can, for example, provide server-side modifcation timestamps, and document updates to individual fields without the latest revision. 
@@ -202,23 +232,48 @@ Where `$DESIGN_ID` is the `_id` of the document defining the update handler, `$U
 > Example design document:
 
 ```json
-TODO
+{
+  "_id":"_design/FILTER_EXAMPLE",
+  "filters": {
+    "FILTER_EXAMPLE": "function (doc, req) { ... }"
+  }
+}
 ```
 
 > Example filter function:
 
 ```
-TODO
+function(doc, req){
+  // we need only `mail` documents
+  if (doc.type != 'mail'){
+    return false;
+  }
+  // we're interested only in `new` ones
+  if (doc.status != 'new'){
+    return false;
+  }
+  return true; // passed!
+}
 ```
 
 > Example queries:
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/$DATABASE/_changes?filter=$FILTER \
+     -u $USERNAME
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+
+account.db.changes($DATABASE, {
+  filter: $FILTER
+}, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 Filter functions format the [changes feed](#list-changes), removing changes you don't want to monitor. The filter function is run over every change in the changes feed, and only those for which the function returns `true` are returned to the client in the response.

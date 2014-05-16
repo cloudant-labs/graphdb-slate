@@ -5,18 +5,19 @@ Databases contain [documents](#documents), the JSON objects Cloudant revolves ar
 ### Create
 
 ```shell
-curl -X PUT https://$USERNAME.cloudant.com/$DATABASE
+curl -X PUT https://$USERNAME.cloudant.com/$DATABASE \
   -u $USERNAME
 ```
 
-```python
-import cloudant
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
 
-account = cloudant.Account(USERNAME)
-database = account.database(DATABASE)
-response = database.put()
-print response.status_code
-# 201
+account.db.create($DATABASE, function (err, body) {
+  if (!err) {
+    console.log('database created!');
+  }
+});
 ```
 
 > Example response:
@@ -32,11 +33,19 @@ To create a database, make a PUT request to `https://$USERNAME.cloudant.com/$DAT
 ### Read
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/$DATABASE \
+     -u $USERNAME
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+
+account.db.get($DATABASE, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 > Example response:
@@ -63,11 +72,19 @@ Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE` will ret
 ### Get Databases
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/_all_dbs \
+     -u $USERNAME
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+
+account.db.list($DATABASE, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 > Example response:
@@ -87,11 +104,20 @@ To list all the databases in an account, make a GET request against `https://$US
 ### Get Documents
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/$DATABASE/_all_docs \
+     -u $USERNAME
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var db = account.use($DATABASE);
+
+db.list(function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 > Example response:
@@ -140,11 +166,19 @@ Argument | Description | Optional | Type | Default
 ### Get Changes
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/$DATABASE/_changes \
+     -u $USERNAME
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+
+account.db.changes($DATABASE, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 > Example response:
@@ -225,11 +259,20 @@ The `filter` parameter designates a pre-defined [function to filter](#filter-fun
 ### Delete
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/$DATABASE \
+     -X DELETE \
+     -u $USERNAME
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+
+account.db.destroy($DATABASE, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 > Example response:
@@ -245,11 +288,22 @@ To delete a databases and its contents, make a DELETE request to `https://$USERN
 ### Reading Permissions
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/$DATABASE/_security \
+     -u $USERNAME
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+
+account.request({
+  db: $DATABASE,
+  path: '_security'
+}, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 > Example response:
@@ -281,11 +335,27 @@ To see who has permissions to read, write, and manage the database, make a GET r
 ### Modifying Permissions
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/$DATABASE/_security \
+     -X PUT \
+     -H "Content-Type: application/json" \
+     -u $USERNAME \
+     -d $JSON
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+
+account.request({
+  db: $DATABASE,
+  path: '_security',
+  method: 'PUT',
+  body: $JSON
+}, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 > Example request:
