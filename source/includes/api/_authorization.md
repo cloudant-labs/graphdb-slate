@@ -15,14 +15,29 @@ The credentials you use to log in to the dashboard automatically have `_admin` p
 ### Managing Permissions
 
 ```shell
-curl -X POST https://cloudant.com/api/set_permissions
-  -H "Content-Type: application/x-www-form-urlencoded"
-  -d "username=aUserNameOrApiKey&database=accountName/db&roles=_reader&roles=_writer"
+curl -X POST https://cloudant.com/api/set_permissions \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "username=$USERNAME_OR_API_KEY&database=$ACCOUNT_NAME/$DATABASE&roles=_reader&roles=_writer" \
   -u $USERNAME
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@cloudant.com");
+
+account.request({
+  db: 'api',
+  path: 'set_permissions',
+  method: 'POST',
+  body: 'username=$USERNAME_OR_API_KEY&database=$ACCOUNT_NAME/$DATABASE&roles=_reader&roles=_writer',
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded'
+  }
+}, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 To modify a user's permissions, use `https://cloudant.com/api/set_permissions`.
@@ -33,11 +48,22 @@ To modify a user's permissions, use `https://cloudant.com/api/set_permissions`.
 
 ```shell
 curl -X POST https://cloudant.com/api/generate_api_key
-  -u $USERNAME
+     -u $USERNAME
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@cloudant.com");
+
+account.request({
+  db: 'api',
+  path: 'generate_api_ket',
+  method: 'POST'
+}, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 > Response body:
