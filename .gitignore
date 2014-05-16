@@ -24,5 +24,3 @@ couchapp/_attachments
 
 # build artifacts
 build/
-source/includes/
-source/index.md
