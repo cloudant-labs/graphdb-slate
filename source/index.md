@@ -2,8 +2,9 @@
 title: Cloudant Documentation
 
 language_tabs:
-  - shell
-  - python
+  - http
+  - shell: curl
+  - javascript: node.js
 
 toc_footers:
   - <a href="https://cloudant.com/">Cloudant</a>
@@ -81,7 +82,7 @@ Replication is a procedure followed by Cloudant, [CouchDB](http://couchdb.apache
 
 ## Client Libraries
 
-If you're working in one of the following languages, we highly recommend these libraries for working with Cloudant. If you see that one you like isn't mentioned, [let us know!](https://github.com/cloudant-labs/slate/issues)
+If you're working in one of the following languages, we highly recommend these libraries for working with Cloudant. If you see that one you like isn't mentioned, [let us know!](https://github.com/cloudant-labs/slate/issues).
 
 ### Node.js
 
@@ -111,7 +112,7 @@ pip install cloudant
 
 ### Ruby
 
-[CouchRest](https://github.com/couchrest/couchrest) is a CouchDB and Cloudant client with extensions for working with Rails using [CouchRest Model](https://github.com/couchrest/couchrest_model). Install CouchRest as a gem:
+[CouchRest](https://github.com/couchrest/couchrest) is a CouchDB and Cloudant client with extensions for working with Rails using [CouchRest Model](https://github.com/couchrest/couchrest_model).
 
 ```
 gem install couchrest
@@ -119,12 +120,32 @@ gem install couchrest
 
 ### PHP
 
-TODO [Sag](http://www.saggingcouch.com/)
+[Sag](http://www.saggingcouch.com/) is PHP's CouchDB and Cloudant client. [Sag.js](https://github.com/sbisbee/sag-js) is Sag's JavaScript counterpart.
+
+```
+// download sag from http://www.saggingcouch.com/download.php
+require_once('./src/Sag.php');
+```
 
 ### C# / .NET
 
-TODO [MyCouch](https://github.com/danielwertheim/mycouch)
+[MyCouch](https://github.com/danielwertheim/mycouch) is an asynchronous CouchDB and Cloudant client for .Net.
+
+```
+/// open up the Package manager console, and invoke:
+install-package mycouch.cloudant
+```
 
 ### Java
 
-TODO [Ektorp](https://github.com/helun/Ektorp)
+[Ektorp](https://github.com/helun/Ektorp) is a Java API for CouchDB and Cloudant.
+
+```
+// install binaries from https://github.com/helun/Ektorp/downloads
+// or, if using maven, set this in your dependencies:
+<dependency>
+    <groupId>org.ektorp</groupId>
+    <artifactId>org.ektorp</artifactId>
+    <version>1.3.0</version>
+</dependency>
+```

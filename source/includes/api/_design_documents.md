@@ -29,7 +29,7 @@ Because design documents are still [documents](#documents), a [search index](#se
 
 > Example list function:
 
-```javascript
+```
 function (head, req) {
   // specify our headers
   start({
@@ -115,7 +115,7 @@ TODO
 
 > Example show function:
 
-```javascript
+```
 function (doc, req) {
   if (doc) {
     return "Hello from " + doc._id + "!";
@@ -156,7 +156,7 @@ Once you've defined a show function, you can query it with a GET request to `htt
 
 > Example update handler:
 
-```javascript
+```
 function(doc, req){
   if (!doc){
     if ('id' in req && req.id){
@@ -207,7 +207,7 @@ TODO
 
 > Example filter function:
 
-```javascript
+```
 TODO
 ```
 
@@ -240,7 +240,7 @@ To use a filter function on the changes feed, specify the function in the `_chan
 
 > Example update validator:
 
-```javascript
+```
 function(newDoc, oldDoc, userCtx, secObj) {
   if (newDoc.address === undefined) {
      throw({forbidden: 'Document must have an address.'});

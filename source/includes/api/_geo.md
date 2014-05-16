@@ -15,7 +15,7 @@
 
 > Example geo index:
 
-```javascript
+```
 function (doc) {
   st_index(doc.geolocation);
 }
@@ -47,17 +47,32 @@ The `st_index` function specifically indexes objects, called geometries, encoded
 ### Queries
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_geo/$INDEX_NAME?g=$GEOMETRY&relation=$RELATION \
+     -u $USERNAME
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+
+account.request({
+  db: $DATABASE,
+  path: '$DESIGN_ID/_geo/$INDEX_NAME',
+  params: {
+    g: $GEOMETRY,
+    relation: $RELATION
+  }
+}, function (err, response) {
+  if (!err) {
+    console.log(response);
+  }
+});
 ```
 
 > Example response:
 
 ```json
-
+TODO
 ```
 
 Once you've got an index written, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_DOCUMENT_ID/_geo/$INDEX_NAME`. All geo queries must provide these two query arguments: `relation` (a relation) and `g` (a geometry). Cloudant returns every document in the database whose indexed geometry has the specified relationship to the given geometry.
@@ -90,6 +105,8 @@ Function | Arguments | Description
 `POLYGON` | ((x1, y1, x2, y2, x3, y3, ...), (x4, y4, x5, y5, x6, y6, ...)) | A polygon constructed by connecting a series of 2d points, with the area of a second polygon removed from it.
 `MULTIPOLYGON` | (((x1, y1, x2, y2, x3, y3, ...)), ((x4, y4, x5, y5, x6, y6, ...))) | Multiple polygons constructed by connecting multiple series of 2d points. Each polygon takes the same arguments as the `POLYGON` geometry.
 `GEOMETRYCOLLECTION` | * | A collection of arbitrary geometries, ex: `POINT(4, 6),LINESTRING(4, 6, 7, 10)`
+
+<!--
 `CIRCULARSTRING` | TODO | TODO
 `COMPOUNDCURVE` | TODO | TODO
 `CURVEPOLYGON` | TODO | TODO
@@ -100,6 +117,7 @@ Function | Arguments | Description
 `POLYHEDRALSURFACE` | TODO | TODO
 `TIN` | TODO | TODO
 `TRIANGLE` | TODO | TODO
+-->
 
 #### Relations
 
@@ -120,9 +138,9 @@ Relation | Description
 #### Radius
 
 ```shell
-curl 
+curl \
   -H "Content-Type: application/json" \
-  -u "$USERNAME:$PASSWORD"
+  -u "$USERNAME:$PASSWORD" \
   'http://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_geo/$INDEX_NAME\
   ?radius=100\
   &lat=0\
@@ -130,8 +148,24 @@ curl
   &relation="within"'
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+
+account.request({
+  db: $DATABASE,
+  path: '$DESIGN_ID/_geo/$INDEX_NAME',
+  params: {
+    radius: 100,
+    lat: 0,
+    lon: 0,
+    relation: '"within"'
+  }
+}, function (err, response) {
+  if (!err) {
+    console.log(response);
+  }
+});
 ```
 
 Rather than use the `g` parameter, queries regarding a radius use the `radius`, `lat`, and `lon` parameters.
@@ -143,16 +177,34 @@ Specifying `lat`, `lon`, and `radius` creates a circle centered at that latitude
 ```shell
 curl 
   -H "Content-Type: application/json" \
-  -u "$USERNAME:$PASSWORD"
+  -u "$USERNAME:$PASSWORD" \
   "http://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_geo/$INDEX_NAME\
   ?lat=0\
   &lon=0\
   &rangex=100\
-  &rangey=50"
+  &rangey=50"\
+  &relation="within"'
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+
+account.request({
+  db: $DATABASE,
+  path: '$DESIGN_ID/_geo/$INDEX_NAME',
+  params: {
+    lat: 0,
+    lon: 0,
+    rangex: 100,
+    rangey: 50,
+    relation: '"within"'
+  }
+}, function (err, response) {
+  if (!err) {
+    console.log(response);
+  }
+});
 ```
 
 Like [radius](#radius) queries, `ellipse` queries construct a circular geometry on the fly using the `lat`, `lon`, `rangex`, and `rangey` parameters.

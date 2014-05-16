@@ -16,7 +16,7 @@
 
 > Example mapreduce index:
 
-```javascript
+```
 {
   map: function (doc) {
     if (doc.kingdom === 'animal') {
@@ -43,7 +43,7 @@ Function Name | Description
 
 > Example reduce function:
 
-```javascript
+```
 // manually count unique keys
 function (keys, values, rereduce) {
   if (rereduce){
@@ -75,11 +75,20 @@ By feeding the results of `reduce` functions back into the `reduce` function, Ma
 ### Queries
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_view/$INDEX_NAME \
+     -u $USERNAME
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var db = account.use($DATABASE);
+
+db.view($DESIGN_ID, $INDEX_NAME, function (err, doc) {
+  if (!err) {
+    console.log(doc);
+  }
+});
 ```
 
 Once you've got an index written, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$_ID/_view/$INDEX_NAME`.

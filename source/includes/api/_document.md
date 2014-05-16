@@ -7,11 +7,23 @@ All documents have a unique `_id` field, either assigned by you or generated as 
 ### Create
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/$DATABASE \
+     -X POST \
+     -u $USERNAME \
+     -H "Content-Type: application/json" \
+     -d $JSON
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var db = account.use($DATABASE);
+
+db.insert($JSON, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 > Example document:
@@ -43,11 +55,20 @@ To create a document, make a POST request with the document's JSON content to `h
 ### Read
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID \
+     -u $USERNAME
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var db = account.use($DATABASE);
+
+db.get($DOCUMENT_ID, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 > Example response:
@@ -74,11 +95,25 @@ To fetch many documents at once, [query the database](#get-documents).
 ### Update
 
 ```shell
-TODO
+// make sure $JSON contains the correct `_rev` value!
+curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID \
+     -X PUT \
+     -u $USERNAME \
+     -H "Content-Type: application/json" \
+     -d $JSON
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var db = account.use($DATABASE);
+
+// make sure $JSON contains the correct `_rev` value!
+db.insert($JSON, $DOCUMENT_ID, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 > Example request body:
@@ -107,18 +142,30 @@ TODO
 }
 ```
 
-To update a document, make a PUT request with the updated JSON content and latest `rev` value to `https://$USERNAME.cloudant.com/$DATABASE/$_ID`.
+To update a document, make a PUT request with the updated JSON content and latest `_rev` value to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID`.
 
 <aside>If you don't provide the latest `_rev`, Cloudant will respond with a [409 error](#errors) to prevent overwriting data changed by other clients.</aside>
 
 ### Delete
 
 ```shell
-TODO
+// make sure $JSON contains the correct `_rev` value!
+curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID?rev=$REV \
+     -X DELETE \
+     -u $USERNAME \
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var db = account.use($DATABASE);
+
+// make sure $JSON contains the correct `_rev` value!
+db.destroy($DOCUMENT_ID, $REV, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 > Example response:
@@ -138,11 +185,23 @@ To delete a document, make a DELETE request with the document's latest `_rev` in
 ### Bulk Operations
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/$DATABASE/_bulk_docs \
+     -X POST \
+     -u $USERNAME \
+     -H "Content-Type: application/json" \
+     -d $JSON
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var db = account.use($DATABASE);
+
+db.bulk($JSON, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 > Example request body:

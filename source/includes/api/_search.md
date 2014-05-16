@@ -15,7 +15,7 @@
 
 > Example search index:
 
-```javascript
+```
 function(doc){
   index("default", doc._id);
   if(doc.min_length){
@@ -176,11 +176,20 @@ Stop words are words that do not get indexed. You define them within a design do
 ### Queries
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_search/$INDEX_NAME?q=$QUERY \
+     -u $USERNAME
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var db = account.use($DATABASE);
+
+db.search($DESIGN_ID, $INDEX_NAME, { q: $QUERY }, function (err, doc) {
+  if (!err) {
+    console.log(doc);
+  }
+});
 ```
 
 Once you've got an index written, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$_ID/_search/$INDEX_NAME`. Specify your search query in the `query` query parameter.

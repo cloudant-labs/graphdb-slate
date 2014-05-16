@@ -188,7 +188,7 @@ It is also possible to change the priority of backup jobs by setting the
 x-cloudant-io-priority field in the headers object of the target and/or
 the source objects of the replication document to "low". For example:
 
-```javascript
+```
 {
   'source': {
     'url': 'https://user:pass@example.com/db',

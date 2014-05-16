@@ -36,11 +36,21 @@ use_checkpoints | no | Whether to create checkpoints. Checkpoints greatly reduce
 ### Monitor
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/_active_tasks \
+     -u $USERNAME
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+
+account.request({
+  path: '_active_tasks'
+}, function (err, response) {
+  if (!err) {
+    console.log(response);
+  }
+});
 ```
 
 > Example response:

@@ -22,7 +22,7 @@ In the case of the shopping app, instead insert documents like this:
 
 `item` and `account` are IDs for other objects in your database. To calculate a running total for an account, we would use a view like the one to the right.
 
-```javascript
+```
 {
   views: {
     totals: {
@@ -96,7 +96,7 @@ This way, when the user purchases everything in their cart, you can use
 `_uuids` to generate a shared transaction\_id that allows you to
 retrieve them as a group later. For that, we might use a view like this:
 
-```javascript
+```
 {
   views: {
     transactions: {
@@ -124,7 +124,7 @@ current data into events, and then output them to another database.
 
 Say you've got documents like this:
 
-```javascript
+```
 {
   account_id: '...',
   balance: '...',
@@ -145,7 +145,7 @@ Say you've got documents like this:
 To map that into another database as a series of transaction events, try
 this:
 
-```javascript
+```
 {
   views: {
     events: {
@@ -169,7 +169,7 @@ this:
 This will output the results of the map function into the events
 database, filling it with documents like this:
 
-```javascript
+```
 {
   key: {
     from: '...',
