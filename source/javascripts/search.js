@@ -12,7 +12,7 @@ $(function () {
     name: 'doc_matches',
     source: compute_suggestions,
     displayKey: function (row) {
-      return row.fields.title;
+      return row.id;
     }
   };
 
@@ -24,12 +24,10 @@ $(function () {
   }
 
   function on_submit (event) {
-    console.log(arguments);
-    var section_id = $(query_input).val().replace(' ', '-').toLowerCase();
-    console.log(section_id);
+    var section_id = $(query_input).val();
     
     $('html, body').animate({
-        scrollTop: $("#" + section_id).offset().top
+        scrollTop: $(document.getElementById(section_id)).offset().top
     }, 200);
 
     return false;
