@@ -78,14 +78,14 @@ List functions receive two arguments: `head` and `req`.
 
 Once you've defined a list function, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_list/$LIST_FUNCTION/$MAPREDUCE_INDEX`, where `$LIST_FUNCTION` is the function's name, and `$MAPREDUCE_INDEX` is the name of the index whose query results you want to format. This request takes the same query parameters as a regular [MapReduce query](#queries53).
 
-### head
+#### head
 
 Field | Description
 ------|-------------
 total_rows | Number of documents in the view
 offset | Offset where the document list started
 
-### req
+#### req
 
 Field | Description
 ------|-------------
@@ -104,10 +104,6 @@ raw_path | Raw requested path string.
 secObj | The database's [security object](#reading-permissions)
 userCtx | Context about the currently authenticated user, specifically their `name` and `roles` within the current database.
 uuid | A generated UUID
-
-#### Built-in Functions
-
-TODO
 
 ### Show Functions
 
