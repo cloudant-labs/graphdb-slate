@@ -5,11 +5,21 @@ These endpoints provide information about the state of the cluster, details abou
 ### GET /_db_updates
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/_db_updates \
+     -u $USERNAME
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano('https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com');
+
+account.request({
+  path: '_db_updates'
+}, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 > Example response:
@@ -43,11 +53,22 @@ descending | Whether results should be returned in descending order, i.e. the la
 ### GET /$DB/_shards
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/$DATABASE/_shards \
+     -u $USERNAME
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano('https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com');
+
+account.request({
+  database: $DATABASE,
+  path: '_shards'
+}, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 > Example response:
@@ -113,8 +134,20 @@ curl https://$USERNAME.cloudant.com/$DATABASE/_missing_revs \
      -d "$JSON"
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano('https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com');
+
+account.request({
+  database: $DATABASE,
+  path: '_missing_revs',
+  method: 'POST',
+  body: $JSON
+}, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 > Example request:
@@ -145,11 +178,26 @@ Given a list of document revisions, returns the document revisions that do not e
 ### POST /$DB/_revs_diff
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/$DATABASE/_revs_diff \
+     -X POST \
+     -u $USERNAME \
+     -d $JSON
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano('https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com');
+
+account.request({
+  database: $DATABASE,
+  path: '_revs_diff',
+  method: 'POST',
+  body: $JSON
+}, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 > Example request:
@@ -184,8 +232,17 @@ Given a set of document/revision IDs, returns the subset of those that do not co
 
 ### GET /$DB/_revs_limit
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano('https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com');
+
+account.request({
+  path: '_revs_limit'
+}, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 ```shell
@@ -207,11 +264,25 @@ Gets the number of past revisions of a document that Cloudant stores information
 ### PUT /$DB/_revs_limit
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/_revs_limit \
+     -u $USERNAME \
+     -X PUT \
+     -d 1000
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano('https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com');
+
+account.request({
+  path: '_revs_limit',
+  body: '1000',
+  method: 'PUT'
+}, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 > Example request:
@@ -235,11 +306,21 @@ Sets the maximum number of past revisions that Cloudant stores information on.
 ### GET /_membership
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/_membership \
+     -u $USERNAME
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano('https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com');
+
+account.request({
+  path: '_membership'
+}, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 > Example response:
@@ -264,11 +345,21 @@ Returns the names of nodes in the cluster. Currently active clusters are indicat
 ### GET /_uuids
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/_uuids \
+     -u $USERNAME
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano('https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com');
+
+account.request({
+  path: '_uuids'
+}, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 > Example response:

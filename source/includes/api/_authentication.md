@@ -5,7 +5,7 @@ Authentication just means verifying user credentials. There are two ways that cl
 ### Basic Authentication
 
 ```shell
-curl -X HEAD -u $USERNAME https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com
+curl -X HEAD -u $USERNAME https://$USERNAME.cloudant.com
 ```
 
 ```python
@@ -23,7 +23,15 @@ With Basic authentication, you pass along your credentials as part of every requ
 ### Cookies
 
 ```shell
-TODO
+# get cookie
+curl https://$USERNAME.cloudant.com/_session \
+     -X POST \
+     -c /path/to/cookiefile
+     -d "name=$USERNAME&password=$PASSWORD"
+
+# use cookie
+curl https://$USERNAME.cloudant.com/_session \
+     -b /path/to/cookiefile
 ```
 
 ```python
@@ -36,8 +44,8 @@ print login.status_code
 logout = account.logout()
 print logout.status_code
 # 200
-ping = account.ping()
-print ping.status_code
+all_dbs = account.all_dbs()
+print all_dbs.status_code
 # 401
 ```
 

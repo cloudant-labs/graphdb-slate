@@ -5,11 +5,29 @@ Attachments are [BLOb](http://en.wikipedia.org/wiki/Binary_large_object) files c
 ### Create / Update
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT/$ATTACHMENT?rev=$REV \
+     -u $USERNAME \
+     -X PUT \
+     -H "Content-Type: $ATTACHMENT_MIME_TYPE" \
+     --data-binary @$ATTACHMENT_FILEPATH
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var fs = require('fs');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var db = account.use($DATABASE);
+
+fs.readFile($FILEPATH, function (err, data) {
+  if (!err) {
+    db.attachment.insert($DOCUMENT, $ATTACHMENT, data, $ATTACHMENT_MIME_TYPE, { 
+      rev: $REV
+    }, function (err, body) {
+      if (!err)
+        console.log(body);
+    });
+  }
+});
 ```
 
 > Example response:
@@ -27,11 +45,20 @@ To create or update an attachment, make a PUT request with the attachment's late
 ### Read
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT/$ATTACHMENT \
+     -u $USERNAME
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var db = account.use($DATABASE);
+
+db.attachment.get($DOCUMENT, $FILENAME, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 To retrieve a document, make a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$_ID/$ATTACHMENT`. The body of the response will be the raw blob file.
@@ -39,11 +66,21 @@ To retrieve a document, make a GET request to `https://$USERNAME.cloudant.com/$D
 ### Delete
 
 ```shell
-TODO
+curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT/$ATTACHMENT?rev=$REV \
+     -u $USERNAME \
+     -X DELETE
 ```
 
-```python
-TODO
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var db = account.use($DATABASE);
+
+db.attachment.destroy($DOCUMENT, $FILENAME, $REV, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 > Example response:
