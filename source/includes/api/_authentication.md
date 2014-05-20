@@ -5,7 +5,7 @@ Authentication just means verifying user credentials. There are two ways that cl
 ### Basic Authentication
 
 ```shell
-curl -X HEAD -u $USERNAME https://$USERNAME.cloudant.com
+curl -u $USERNAME https://$USERNAME.cloudant.com
 ```
 
 ```python
