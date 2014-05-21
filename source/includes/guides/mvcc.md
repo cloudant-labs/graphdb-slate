@@ -17,8 +17,8 @@ To find conflicts, add the query parameter `conflicts=true` when retrieving a do
 
 To find conflicts for multiple documents in a database, write a view. To the right is a map function that emits all conflicting revisions for every document that has a conflict.
 
-```json
-function(doc) {
+```
+function (doc) {
   if (doc._conflicts) {
     emit(null, [doc._rev].concat(doc._conflicts));
   }
