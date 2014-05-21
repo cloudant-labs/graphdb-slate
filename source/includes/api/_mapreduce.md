@@ -75,16 +75,18 @@ By feeding the results of `reduce` functions back into the `reduce` function, Ma
 ### Queries
 
 ```shell
-curl https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_view/$INDEX_NAME \
+# N.B.: $DESIGN_ID should include the `_design/` prefix
+curl https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_view/$MAPREDUCE_INDEX \
      -u $USERNAME
 ```
 
 ```javascript
 var nano = require('nano');
-var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
 var db = account.use($DATABASE);
 
-db.view($DESIGN_ID, $INDEX_NAME, function (err, doc) {
+// N.B.: $DESIGN_ID should not include the `_design/` prefix
+db.view($DESIGN_ID, $MAPREDUCE_INDEX, function (err, res) {
   if (!err) {
     console.log(doc);
   }

@@ -42,13 +42,15 @@ curl https://$USERNAME.cloudant.com/_active_tasks \
 
 ```javascript
 var nano = require('nano');
-var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
 
 account.request({
   path: '_active_tasks'
-}, function (err, response) {
+}, function (err, body, headers) {
   if (!err) {
-    console.log(response);
+    console.log(body.filter(function (task) {
+      return (task.type === 'replication');
+    })); 
   }
 });
 ```

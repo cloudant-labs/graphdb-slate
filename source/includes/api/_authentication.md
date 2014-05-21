@@ -5,7 +5,7 @@ Authentication just means verifying user credentials. There are two ways that cl
 ### Basic Authentication
 
 ```shell
-curl -X HEAD -u $USERNAME https://$USERNAME.cloudant.com
+curl -u $USERNAME https://$USERNAME.cloudant.com
 ```
 
 ```python
@@ -16,6 +16,17 @@ account = cloudant.Account(url)
 ping = account.get()
 print ping.status_code
 # 200
+```
+
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+
+account.request(function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
 ```
 
 With Basic authentication, you pass along your credentials as part of every request.
@@ -47,6 +58,31 @@ print logout.status_code
 all_dbs = account.all_dbs()
 print all_dbs.status_code
 # 401
+```
+
+```javascript
+var nano = require('nano');
+var cloudant = nano("https://"+$USERNAME+".cloudant.com");
+var cookies = {}
+
+cloudant.auth($USERNAME, $PASSWORD, function (err, body, headers) {
+  if (!err) {
+    cookies[$USERNAME] = headers['set-cookie'];
+    cloudant = nano({
+      url: "https://"+$USERNAME+".cloudant.com",
+      cookie: cookies[$USERNAME] 
+    });
+
+    // ping to ensure we're logged in
+    cloudant.request({
+      path: 'test_porter'
+    }, function (err, body, headers) {
+      if (!err) {
+        console.log(body, headers);
+      }
+    }); 
+  }
+});
 ```
 
 With Cookie authentication, you use your credentials to acquire a cookie which remains active for twenty four hours. You send the cookie with all requests until it expires.

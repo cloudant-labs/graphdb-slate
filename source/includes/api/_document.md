@@ -16,10 +16,10 @@ curl https://$USERNAME.cloudant.com/$DATABASE \
 
 ```javascript
 var nano = require('nano');
-var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
 var db = account.use($DATABASE);
 
-db.insert($JSON, function (err, body) {
+db.insert($JSON, function (err, body, headers) {
   if (!err) {
     console.log(body);
   }
@@ -61,10 +61,10 @@ curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID \
 
 ```javascript
 var nano = require('nano');
-var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
 var db = account.use($DATABASE);
 
-db.get($DOCUMENT_ID, function (err, body) {
+db.get($JSON._id, function (err, body, headers) {
   if (!err) {
     console.log(body);
   }
@@ -105,11 +105,13 @@ curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID \
 
 ```javascript
 var nano = require('nano');
-var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
 var db = account.use($DATABASE);
 
 // make sure $JSON contains the correct `_rev` value!
-db.insert($JSON, $DOCUMENT_ID, function (err, body) {
+$JSON._rev = $REV;
+
+db.insert($JSON, $JSON._id, function (err, body, headers) {
   if (!err) {
     console.log(body);
   }
@@ -157,11 +159,11 @@ curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID?rev=$REV \
 
 ```javascript
 var nano = require('nano');
-var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
 var db = account.use($DATABASE);
 
 // make sure $JSON contains the correct `_rev` value!
-db.destroy($DOCUMENT_ID, $REV, function (err, body) {
+db.destroy($JSON._id, $REV, function (err, body, headers) {
   if (!err) {
     console.log(body);
   }

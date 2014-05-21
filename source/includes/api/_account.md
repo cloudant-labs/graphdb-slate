@@ -19,4 +19,15 @@ print ping.status_code
 # 200
 ```
 
+```javascript
+var nano = require('nano');
+var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+
+account.request(function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
+```
+
 To see if your Cloudant account is accessible, make a `GET` against `https://YOUR_USERNAME.cloudant.com`.

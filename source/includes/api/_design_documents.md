@@ -2,7 +2,7 @@
 
 Design documents are [documents](#documents) whose `_id`s begin with `_design/`. Cloudant reads certain fields and values of design documents as functions, which it uses to [build indexes](#indexes), [validate updates](#update-validators), and [format query results](#list-functions).
 
-Since the `$VARIABLES` in these instructions contain both standard and design documents, respective `_id`s are indicated by `$DOC_ID` and `%DESIGN_ID`.
+Since the `$VARIABLES` in these instructions contain both standard and design documents, respective `_id`s are indicated by `$DOC_ID` and `$DESIGN_ID`.
 
 ### Indexes
 
@@ -62,10 +62,10 @@ curl https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_list/$LIST_FUNCTION/$M
 
 ```javascript
 var nano = require('nano');
-var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
 var db = account.use($DATABASE);
 
-db.view_with_list($DESIGN_ID, $MAPREDUCE_INDEX, $LIST_FUNCTION, function (err, body) {
+db.view_with_list($DESIGN_ID, $MAPREDUCE_INDEX, $LIST_FUNCTION, function (err, body, headers) {
   if (!err) {
     console.log(body);
   }
@@ -139,7 +139,7 @@ curl https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_show/$SHOW_FUNCTION/$D
 
 ```javascript
 var nano = require('nano');
-var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
 var db = account.use($DATABASE);
 
 db.show($DESIGN_ID, $SHOW_FUNCTION, $DOCUMENT_ID, function (err, body) {
@@ -198,7 +198,7 @@ curl https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_update/$UPDATE_HANDLER
 
 ```javascript
 var nano = require('nano');
-var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
 var db = account.use($DATABASE);
 
 db.atomic($DESIGN_ID, $UPDATE_HANDLER, $DOCUMENT_ID, $JSON, function (err, body) {
@@ -208,7 +208,7 @@ db.atomic($DESIGN_ID, $UPDATE_HANDLER, $DOCUMENT_ID, $JSON, function (err, body)
 });
 ```
 
-Update handlers are custom functions that live on Cloudant's server that will create or update a document. This can, for example, provide server-side modifcation timestamps, and document updates to individual fields without the latest revision. 
+Update handlers are custom functions that live on Cloudant's server that will create or update a document. This can, for example, provide server-side modification timestamps, and document updates to individual fields without the latest revision. 
 
 Update handlers receive two arguments: `doc` and [req](#req). If a document ID is provided in the request to the update handler, then `doc` will be the document corresponding with that ID. If no ID was provided, `doc` will be `null`.
 
@@ -241,11 +241,11 @@ Where `$DESIGN_ID` is the `_id` of the document defining the update handler, `$U
 ```
 function(doc, req){
   // we need only `mail` documents
-  if (doc.type != 'mail'){
+  if (doc.type !== 'mail'){
     return false;
   }
   // we're interested only in `new` ones
-  if (doc.status != 'new'){
+  if (doc.status !== 'new'){
     return false;
   }
   return true; // passed!
@@ -255,17 +255,18 @@ function(doc, req){
 > Example queries:
 
 ```shell
-curl https://$USERNAME.cloudant.com/$DATABASE/_changes?filter=$FILTER \
+curl https://$USERNAME.cloudant.com/$DATABASE/_changes?filter=$DESIGN_ID%2F$FILTER \
      -u $USERNAME
 ```
 
 ```javascript
 var nano = require('nano');
-var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
 
 account.db.changes($DATABASE, {
-  filter: $FILTER
-}, function (err, body) {
+  // ex: example/filter
+  filter: [$DESIGN_ID, $FILTER_FUNCTION].join('/')
+}, function (err, body, headers) {
   if (!err) {
     console.log(body);
   }

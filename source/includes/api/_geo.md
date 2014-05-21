@@ -53,18 +53,18 @@ curl https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_geo/$INDEX_NAME?g=$GEO
 
 ```javascript
 var nano = require('nano');
-var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
 
 account.request({
   db: $DATABASE,
-  path: '$DESIGN_ID/_geo/$INDEX_NAME',
+  path: ['_design', $DESIGN_ID, '_geo', $GEO_INDEX].join('/'),
   params: {
     g: $GEOMETRY,
     relation: $RELATION
   }
-}, function (err, response) {
+}, function (err, body, headers) {
   if (!err) {
-    console.log(response);
+    console.log(body);
   }
 });
 ```
@@ -150,20 +150,20 @@ curl \
 
 ```javascript
 var nano = require('nano');
-var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
 
 account.request({
   db: $DATABASE,
-  path: '$DESIGN_ID/_geo/$INDEX_NAME',
+  path: ['_design', $DESIGN_ID, '_geo', $GEO_INDEX].join('/'),
   params: {
     radius: 100,
     lat: 0,
     lon: 0,
     relation: '"within"'
   }
-}, function (err, response) {
+}, function (err, body, headers) {
   if (!err) {
-    console.log(response);
+    console.log(body);
   }
 });
 ```
@@ -188,11 +188,11 @@ curl
 
 ```javascript
 var nano = require('nano');
-var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
 
 account.request({
   db: $DATABASE,
-  path: '$DESIGN_ID/_geo/$INDEX_NAME',
+  path: ['_design', $DESIGN_ID, '_geo', $GEO_INDEX].join('/'),
   params: {
     lat: 0,
     lon: 0,
@@ -200,9 +200,9 @@ account.request({
     rangey: 50,
     relation: '"within"'
   }
-}, function (err, response) {
+}, function (err, body, headers) {
   if (!err) {
-    console.log(response);
+    console.log(body);
   }
 });
 ```

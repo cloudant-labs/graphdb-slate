@@ -182,12 +182,14 @@ curl https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_search/$INDEX_NAME?q=$
 
 ```javascript
 var nano = require('nano');
-var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
 var db = account.use($DATABASE);
 
-db.search($DESIGN_ID, $INDEX_NAME, { q: $QUERY }, function (err, doc) {
+db.search($DESIGN_ID, $SEARCH_INDEX, {
+  q: $QUERY
+}, function (err, body, headers) {
   if (!err) {
-    console.log(doc);
+    console.log(body);
   }
 });
 ```

@@ -5,15 +5,16 @@ Databases contain [documents](#documents), the JSON objects Cloudant revolves ar
 ### Create
 
 ```shell
-curl -X PUT https://$USERNAME.cloudant.com/$DATABASE \
-  -u $USERNAME
+curl https://$USERNAME.cloudant.com/$DATABASE \
+    -X PUT \
+    -u $USERNAME
 ```
 
 ```javascript
 var nano = require('nano');
-var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
 
-account.db.create($DATABASE, function (err, body) {
+account.db.create($DATABASE, function (err, body, headers) {
   if (!err) {
     console.log('database created!');
   }
@@ -39,9 +40,9 @@ curl https://$USERNAME.cloudant.com/$DATABASE \
 
 ```javascript
 var nano = require('nano');
-var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
 
-account.db.get($DATABASE, function (err, body) {
+account.db.get($DATABASE, function (err, body, headers) {
   if (!err) {
     console.log(body);
   }
@@ -78,9 +79,9 @@ curl https://$USERNAME.cloudant.com/_all_dbs \
 
 ```javascript
 var nano = require('nano');
-var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
 
-account.db.list($DATABASE, function (err, body) {
+account.db.list(function (err, body, headers) {
   if (!err) {
     console.log(body);
   }
@@ -110,10 +111,10 @@ curl https://$USERNAME.cloudant.com/$DATABASE/_all_docs \
 
 ```javascript
 var nano = require('nano');
-var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
 var db = account.use($DATABASE);
 
-db.list(function (err, body) {
+db.list(function (err, body, headers) {
   if (!err) {
     console.log(body);
   }
@@ -172,9 +173,9 @@ curl https://$USERNAME.cloudant.com/$DATABASE/_changes \
 
 ```javascript
 var nano = require('nano');
-var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
 
-account.db.changes($DATABASE, function (err, body) {
+account.db.changes($DATABASE, function (err, body, headers) {
   if (!err) {
     console.log(body);
   }
@@ -266,9 +267,9 @@ curl https://$USERNAME.cloudant.com/$DATABASE \
 
 ```javascript
 var nano = require('nano');
-var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
 
-account.db.destroy($DATABASE, function (err, body) {
+account.db.destroy($DATABASE, function (err, body, headers) {
   if (!err) {
     console.log(body);
   }
@@ -294,12 +295,12 @@ curl https://$USERNAME.cloudant.com/$DATABASE/_security \
 
 ```javascript
 var nano = require('nano');
-var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
 
 account.request({
   db: $DATABASE,
   path: '_security'
-}, function (err, body) {
+}, function (err, body, headers) {
   if (!err) {
     console.log(body);
   }
@@ -344,14 +345,14 @@ curl https://$USERNAME.cloudant.com/$DATABASE/_security \
 
 ```javascript
 var nano = require('nano');
-var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
+var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
 
 account.request({
   db: $DATABASE,
   path: '_security',
   method: 'PUT',
   body: $JSON
-}, function (err, body) {
+}, function (err, body, headers) {
   if (!err) {
     console.log(body);
   }
@@ -387,8 +388,6 @@ account.request({
   "ok" : true
 }
 ```
-
-`PUT /$DB/_security`
 
 To modify who has permissions to read, write, and manage the database, make a PUT request against `https://$USERNAME.cloudant.com/$DB/_security`. To see what roles you can assign, see [Roles](#roles).
 
