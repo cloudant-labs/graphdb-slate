@@ -36,7 +36,6 @@ includes:
   - guides/transactions
   - guides/cap_theorum
   - guides/acid
-  - recipes/index
 
 ---
 
