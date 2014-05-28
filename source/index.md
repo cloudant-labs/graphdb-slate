@@ -41,7 +41,7 @@ includes:
 
 # Documentation
 
-This is the documentation site for the [Cloudant database-as-a-service](https://cloudant.com/). Here you'll find a quick overview of Cloudant Basics, our API Reference, Client Libraries to help you get going quickly, and Guides that explore more advanced concepts in detail.
+This is the online documentation for the [Cloudant database-as-a-service](https://cloudant.com/). Here you'll find a quick overview of Cloudant Basics, our API Reference, Client Libraries to help you get going quickly, and Guides that explore more advanced concepts in detail.
 
 ## Contribute
 Cloudant is built on best-of-breed open source technologies, and we're heavy committers to the technology we rely on. We're also open about our documentation. If it's not working for you, it's not working for us. Please make contributions or share suggestions on [GitHub](https://github.com/cloudant-labs/slate).
