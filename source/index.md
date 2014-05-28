@@ -52,27 +52,20 @@ Cloudant is built on best-of-breed open source technologies, and we're heavy com
 
 If it's your first time here, scan this section before you scroll further. The API Reference, Client Libraries and Guides that follow assume you know these things about Cloudant.
 
+<div id="json"></div>
 ## JSON
-
-<div id="no_SQL"></div>
-
 Cloudant stores documents using JSON (JavaScript Object Notion) encoding, so anything encoded into JSON can be stored as a document. Files like images, videos, and audio are called BLObs (binary large objects) and can be stored as attachments within documents.
 
+<div id="http_api"></div>
 ## HTTP API
-
-<div id="http_driv"></div>
-
 All requests to Cloudant go over the web, which means any system that can speak to the web, can speak to Cloudant. All language-specific libraries for Cloudant are really just wrappers that provide some convenience and linguistic niceties to what, under the hood, is a pretty simple API. Many users even choose to use raw HTTP libraries for working with Cloudant.
 
-## Distributed
-
 <div id="distributed"></div>
-
+## Distributed
 Cloudant's API represents the collaboration of numerous machines, called a cluster, which may live in different physical locations. Clustering means that when you need more horsepower, you just add more machines, which is more cost-effective and fault-tolerant than scaling up a single machine.
 
-## Replication
-
 <div id="replication"></div>
+## Replication
 
 Replication is a procedure followed by Cloudant, [CouchDB](http://couchdb.apache.org/), [PouchDB](http://junk.arandomurl.com/), and others. It synchronizes the state of two databases so that their contents are identical. You can continuously replicate as well, which means that a target database updates every time the source changes. This can be used for backups of data, aggregation across multiple databases, or for sharing data.
 
