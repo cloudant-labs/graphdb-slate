@@ -50,7 +50,7 @@ Cloudant is built on best-of-breed open source technologies, and we're heavy com
 <div id="why_cloudant"></div>
 # Cloudant Basics
 
-If it's your first time here, scan this section before you scroll further. The API Reference, Client Libraries and Guides that follow assumes you know these things about Cloudant.
+If it's your first time here, scan this section before you scroll further. The API Reference, Client Libraries and Guides that follow assume you know these things about Cloudant.
 
 ## JSON
 
