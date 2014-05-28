@@ -41,13 +41,11 @@ includes:
 
 # Documentation
 
-Cloudant provides reliable [database](#databases) hosting and support for applications of any scale. It’s available to users within minutes of [creating an account](https://cloudant.com/sign-up/) because there’s nothing to install. This documentation contains [more detail about Cloudant](#why_cloudant), [the technology which supports it](#no_SQL), and [API reference](#api-reference) for developers.
+This is the documentation site for the [Cloudant database-as-a-service](https://cloudant.com/). Here you'll find a quick overview of Cloudant Basics, our API Reference, Code Libraries to help you get going quickly, and Guides that explore more advanced concepts in detail.
 
-Cloudant encourages contributions and suggestions for improvement to our documentation. Contributions can be made through [GitHub](https://github.com/cloudant-labs/slate). 
+## Contribute!
+Cloudant is built on best-of-breed open source technologies, and we're heavy committers to the technology we rely on. We're also open about our documentation. If it's not working for you, it's not working for us. Please make contributions or share suggestions on [GitHub](https://github.com/cloudant-labs/slate).
 
-## Who are we?
-
-Cloudant is a Massachusetts-based company, with offices in Seattle and Bristol, UK. Cloudant is a division of IBM. You can get in touch with us via [email](mailto:support@cloudant.com) or check out our [calendar](https://cloudant.com/about-us/events/) of conferences and events to start a conversation in person.
 
 # Cloudant Basics
 
