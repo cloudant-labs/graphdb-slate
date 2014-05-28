@@ -47,13 +47,10 @@ This is the online documentation for the [Cloudant database-as-a-service](https:
 Cloudant is built on best-of-breed open source technologies, and we're heavy committers to the technology we rely on. We're also open about our documentation. If it's not working for you, it's not working for us. Please make contributions or share suggestions on [GitHub](https://github.com/cloudant-labs/slate).
 
 
+<div id="why_cloudant"></div>
 # Cloudant Basics
 
-<div id="why_cloudant"></div>
-
-Cloudant is the name of both the provider and the service, in this case a [database-as-a-service](https://cloudant.com/product/comparison-of-dbaas/), commonly known as DBaaS. It does not use [SQL](#no_SQL) as its query language and it’s [distributed over the web](#distributed), all features which you can read about in more depth within this documentation. You can use Cloudant for [almost any purpose](https://cloudant.com/terms/) in any scale of application.
-
-Support is available to our customers through their dashboard, the <a href="http://webchat.freenode.net?channels=cloudant&amp;uio=MTE9MTk117">#cloudant IRC channel</a>, and within a dedicated community on [StackOverflow](http://stackoverflow.com/questions/tagged/cloudant).
+If it's your first time here, scan this section before you scroll further. The API Reference, Client Libraries and Guides that follow assumes you know these things about Cloudant.
 
 ## JSON
 
