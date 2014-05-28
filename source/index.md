@@ -31,6 +31,7 @@ includes:
   - api/replication
   - api/advanced
   - api/errors
+  - libraries/index
   - guides/index
   - guides/mvcc
   - guides/transactions
