@@ -1,25 +1,20 @@
 rvm:
-  - 1.9.3
-  - 2.0.0
-
+- 1.9.3
+- 2.0.0
 services:
-  - couchdb
-
+- couchdb
 env:
   global:
-    - secure: "KbkY9D7ZMI+vNHO97f/IM/NXyzEBcux4usxzHQ4g75NqoIzGnuuwmMCPkZeVWlgeUzVLzsRSswexTbQ95In13b5qhY8XC4KJxFgkqCfGY455DZ1DsUg/62EvPMkPzX5gq2l6LyLMaKnDXefiT6zb+4lO7YX7oqgsrzRyBBsdl7M="
-    - secure: "I0A5Ubrr4IsWXhmnW9qH8SmRQSDDFfrIyjiDPg1DOjJGvcweBDWqHEGdeQNGmiMhEm9jeWgQeUU58RVcpnuQmYs4ub1ymPqgcj/cVbkw5e3oyKvXEuWceoqO/CgGP2JmSXjeCULNPbNk3EMNy8z6ICGN5SiUFhbtL+Y8O3iKDoM="
-
+  - secure: Lvi+mSpgVUbeiAbwKtNNlAUs82gmScx66ifsjTYIOhb3anw+Xl5lLbtFugiCDL5VYA+REeNrKyavCQdkrlmWYm9U65Z7vn/MWzPIyWjIkkFoeQJ6m4TcD7SawkbhQEF50tbHcXFlOcAQHKXL7v3bb3K+KLA+EC4D41D+wKV7Tfk=
+  - secure: B0EVHgK/J2hz/RRMstIEgOath/K9u/M5XiPoqSm5N7x9QrDw4RhqIuVAxEHxnnz1cC4Jb3BV6PrheXAU3G0yEwbYVc+fP23ySxTlajriovhR1zv21BgMK8/TmBXIi8VmULjuBzH+9frg78ySbiSHFUWsLCp8zDwxAMfHxWltcbo=
 before_install:
-  - sudo apt-get update
-  - sudo apt-get install python python-pip
-  - sudo pip install couchapp
-
-script: 
-  - bundle exec middleman build --verbose
-  - cp -r build/* couchapp/_attachments
-  - ./scripts/deploy.sh
-
+- sudo apt-get update
+- sudo apt-get install python python-pip
+- sudo pip install couchapp
+script:
+- bundle exec middleman build --verbose
+- cp -r build/* couchapp/_attachments
+- ./scripts/deploy.sh
 after_success:
-  - sudo pip install cloudant beautifulsoup4
-  - ./scripts/deploy-master.sh $USERNAME $PASSWORD
+- sudo pip install cloudant beautifulsoup4
+- ./scripts/deploy-master.sh $USERNAME $PASSWORD
