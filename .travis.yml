@@ -5,8 +5,8 @@ services:
 - couchdb
 env:
   global:
-  - secure: "Lvi+mSpgVUbeiAbwKtNNlAUs82gmScx66ifsjTYIOhb3anw+Xl5lLbtFugiCDL5VYA+REeNrKyavCQdkrlmWYm9U65Z7vn/MWzPIyWjIkkFoeQJ6m4TcD7SawkbhQEF50tbHcXFlOcAQHKXL7v3bb3K+KLA+EC4D41D+wKV7Tfk="
-  - secure: "B0EVHgK/J2hz/RRMstIEgOath/K9u/M5XiPoqSm5N7x9QrDw4RhqIuVAxEHxnnz1cC4Jb3BV6PrheXAU3G0yEwbYVc+fP23ySxTlajriovhR1zv21BgMK8/TmBXIi8VmULjuBzH+9frg78ySbiSHFUWsLCp8zDwxAMfHxWltcbo="
+  - secure: RVVXLdoAvl5XX5LRO27CmYZEcZ6pXhm78Pvd7SVsQqLL9++KIYPs966zdzrH2NHYVN3kvnOC1quBtPHE+LDzOLmDDRu0TyadtHBUolYFYN5zCoX3LFDj09be5ruZEaXLpnOLWSnXhqGVqidhxiM1B3C34jaxr0etMuVHbSpS9k4=
+  - secure: RXSLp1t+j127T7Mk5OIb3WdaQ7MfBD/J5QkzHTWnbFG76mflYVSyT4HzSYaSY+OX9ajpZMmxNlDE/goNEV7iQ+/23TgD1UP8iqkDHKb+VIkUzG/Ep7AbepGcTXaVS/swgGylfEUtil+f5wpN1bpntDZ2MPl2Oxj6YbBONt8Ldzg=
 before_install:
 - sudo apt-get update
 - sudo apt-get install python python-pip
