@@ -58,7 +58,7 @@
 
             // **selectors**: Accepts an Array of Strings: Any jQuery selectors
             // The element's used to generate the table of contents.  The order is very important since it will determine the table of content's nesting structure
-            selectors: "h1, h2",
+            selectors: "h1, h2, h3",
 
             // **showAndHide**: Accepts a boolean: true or false
             // Used to determine if elements should be shown and hidden
@@ -710,10 +710,10 @@
 
                             if(window.location.hash !== "#" + anchorText) {
 
-                                if(history.replaceState) {
+                                if(history.replaceState) { 
                                     history.replaceState({}, "", "#" + anchorText);
                                 // provide a fallback
-                                } else {
+                                } else { 
                                     scrollV = document.body.scrollTop;
                                     scrollH = document.body.scrollLeft;
                                     location.hash = "#" + anchorText;
