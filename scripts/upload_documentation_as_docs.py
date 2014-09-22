@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 import cloudant
 import os
 
-USERNAME = 'garbados'
+USERNAME = 'docs-testb'
 KEY = os.environ.get('USERNAME')
 SECRET = os.environ.get('PASSWORD')
 DATABASE = 'api-ref'
