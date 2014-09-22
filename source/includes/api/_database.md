@@ -1,7 +1,5 @@
 ## Databases
 
-TEST
-
 Databases contain [documents](#documents), the JSON objects Cloudant revolves around. All documents need a database to contain them.
 
 ### Create
