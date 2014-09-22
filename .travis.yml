@@ -5,8 +5,8 @@ services:
 - couchdb
 env:
   global:
-  - secure: Lx9uZVyAy7m7L2extALhhqEykVnGdE6FaHkHk58kGJVa/1vQoj3YTjtiPvt4kW+b4MnSpqrOBHEG853nXZv6ltnzRUloGAb0g7E6fLJEPCiBYNtXoEjHFmIOW48kuTCDXYGIUciX2KMTsexDcNbdPFy7iItT1M1MuLrdJA1vvuQ=
-  - secure: UBDzqdJdfrsxqBnHuEesFXy06u0emSP8d6R14leK9fILVWHToTBro24jZxhCnCptjMIvve05kpsf+w0HHaOZjVLUfZW3kTVCIf6lTqknXI1zGiz2KTrkHRnLKq8y73vybK/ZRINebY8dqFwmtPAc1Sge6WrE/m38zmQUiNUa6MM=
+  - secure: CekvzarBrARhWE2/K1cof7SCnXBSzN/MijwO4hI+n1fITgk18gBEzlfyzd4BD68JZ2fVhPuWIqs+9WxBm+XLZUGYcgiBRovqN9JooElXgyV/CvqIEbJ7Xa4Vw/8mE2qJ1Ce54A8Sdkt4cfOZppyedUg/krzYw5uar3sDWWTt6z0=
+  - secure: aSi+sIpBoS6VofHVUToRpvXrHG3avvdwG0frOBh+A8ijsjn3fOACeJm+ipQystYtCciZ09l5A/Q/Tkd1sogWy8ymU7bULVJsJb+aNJRM+00QYFelCLpxD8c6gP7aty/IRk7RfWqrii1ZHQ6KSeSqlJf6P6gYZOOA+1IQBO532vY=
 before_install:
 - sudo apt-get update
 - sudo apt-get install python python-pip
