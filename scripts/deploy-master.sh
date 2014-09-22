@@ -9,6 +9,7 @@ then
     echo "No USERNAME provided. Skipping..."
   else
     python scripts/upload_documentation_as_docs.py
+    echo couchapp push couchapp "https://$1:$2@docs-testb.cloudant.com/api-ref"
     couchapp push couchapp "https://$1:$2@docs-testb.cloudant.com/api-ref"
   fi
 else
