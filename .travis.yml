@@ -21,4 +21,4 @@ script:
 - ./scripts/deploy.sh
 after_success:
 - sudo pip install cloudant beautifulsoup4
-- ./scripts/deploy-master.sh "$USERNAME" "$PASSWORD"
+- ./scripts/deploy-branch.sh "$USERNAME" "$PASSWORD"
