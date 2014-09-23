@@ -1,10 +1,5 @@
 #!/bin/bash
 
-<<<<<<< HEAD
-BRANCH=testb
-
-=======
->>>>>>> 94194fc... deploy any branch to docs-testb.cloudant.com/$branch
 if [[ "$TRAVIS_PULL_REQUEST" == "false" ]]
 then
   if [ -z "$1" ]
