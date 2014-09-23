@@ -3,11 +3,12 @@
 from bs4 import BeautifulSoup
 import cloudant
 import os
+import sys
 
 USERNAME = 'docs-testb'
 KEY = os.environ.get('USERNAME')
 SECRET = os.environ.get('PASSWORD')
-DATABASE = 'api-ref'
+DATABASE = sys.argv[1]
 HEADINGS = ['h1', 'h2', 'h3']
 
 if KEY and SECRET:
