@@ -1,8 +1,14 @@
 ## Documents
 
-Documents are [JSON objects](http://en.wikipedia.org/wiki/JSON#Data_types.2C_syntax_and_example), containers for your data and the vital organs of the Cloudant database.
+Documents are [JSON objects](http://en.wikipedia.org/wiki/JSON#Data_types.2C_syntax_and_example).
+Documents are containers for your data, and are the basis of the Cloudant database.
 
-All documents have a unique `_id` field, either assigned by you or generated as a [UUID](http://en.wikipedia.org/wiki/Universally_unique_identifier) by Cloudant, and a `_rev` field, a revision number which is [essential to Cloudant's replication protocol](#document-versioning-and-mvcc). Beyond those, documents can contain anything a JSON might.
+All documents must have two fields:
+a unique `_id` field, and a `_rev` field.
+The `_id` field is either created by you,
+or generated automatically as a [UUID](http://en.wikipedia.org/wiki/Universally_unique_identifier) by Cloudant.
+The `_rev` field is a revision number, and is [essential to Cloudant's replication protocol](#document-versioning-and-mvcc).
+In addition to these two mandatory fields, documents can contain any other content expressed using JSON.
 
 ### Create
 
@@ -50,7 +56,8 @@ db.insert($JSON, function (err, body, headers) {
 }
 ```
 
-To create a document, make a POST request with the document's JSON content to `https://$USERNAME.cloudant.com/$DATABASE`. If you don't provide an `_id` field, Cloudant will generate one as a [UUID](http://en.wikipedia.org/wiki/Universally_unique_identifier). 
+To create a document, make a POST request with the document's JSON content to `https://$USERNAME.cloudant.com/$DATABASE`.
+If you do not provide an `_id` field, Cloudant generates one automatically as a [UUID](http://en.wikipedia.org/wiki/Universally_unique_identifier). 
 
 ### Read
 
@@ -86,7 +93,9 @@ db.get($JSON._id, function (err, body, headers) {
 }
 ```
 
-To retrieve a document, make a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$_ID`. If you don't know a particular document's `_id` you can [query the database](#get-documents) for all documents.
+To retrieve a document, make a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$_ID`.
+If you do not know the `_id` for a particular document,
+you can [query the database](#get-documents) for all documents.
 
 ### Read Many
 
@@ -144,9 +153,10 @@ db.insert($JSON, $JSON._id, function (err, body, headers) {
 }
 ```
 
-To update a document, make a PUT request with the updated JSON content and latest `_rev` value to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID`.
+To update a document, make a PUT request with the updated JSON content *and* the latest `_rev` value to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID`.
 
-<aside>If you don't provide the latest `_rev`, Cloudant will respond with a [409 error](#errors) to prevent overwriting data changed by other clients.</aside>
+<aside>If you fail to provide the latest `_rev`, Cloudant responds with a [409 error](#errors).
+This error prevents you overwriting data changed by other clients.</aside>
 
 ### Delete
 
@@ -180,9 +190,10 @@ db.destroy($JSON._id, $REV, function (err, body, headers) {
 }
 ```
 
-To delete a document, make a DELETE request with the document's latest `_rev` in the querystring to `https://$USERNAME.cloudant.com/$DATABASE/$_ID`.
+To delete a document, make a DELETE request with the document's latest `_rev` in the querystring, to `https://$USERNAME.cloudant.com/$DATABASE/$_ID`.
 
-<aside>Just like with updating, if you don't provide the latest `_rev`, Cloudant will respond with a [409 error](#errors) to prevent overwriting data changed by other clients.</aside>
+<aside>If you fail to provide the latest `_rev`, Cloudant responds with a [409 error](#errors).
+This error prevents you overwriting data changed by other clients.</aside>
 
 ### Bulk Operations
 
@@ -250,4 +261,5 @@ db.bulk($JSON, function (err, body) {
 }]
 ```
 
-To make multiple, simutaneous requests (insertions, updates, deletes, etc), make a POST request to `https://$USERNAME.cloudant.com/$DATABASE/_bulk_docs`. Cloudant will process and return results each contained action.
+To make multiple, simultaneous requests such as insertions, updates, or deletes, make a POST request to `https://$USERNAME.cloudant.com/$DATABASE/_bulk_docs`.
+Cloudant processes and returns the results for each of the requested actions.

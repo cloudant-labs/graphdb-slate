@@ -1,6 +1,12 @@
 ## Attachments
 
-Attachments are [BLOb](http://en.wikipedia.org/wiki/Binary_large_object) files contained within documents. Examples of BLObs would be images and multimedia. All attachments have a name and a content type, corresponding to a [MIME type][mime]. If you need to store raw files, use attachments.
+Attachments are Binary Large Object ([BLOb](http://en.wikipedia.org/wiki/Binary_large_object)) files contained within documents.
+Examples of BLObs would be images and multimedia.
+If you need to store raw files, use attachments.
+
+All attachments have a name and a content type, corresponding to a [MIME type][mime].
+For example, if you want to attach a `.jpg` image file to a document,
+you would specify the attachment MIME type as `image/jpeg`.
 
 ### Create / Update
 
@@ -40,13 +46,18 @@ fs.readFile($FILEPATH, function (err, data) {
 }
 ```
 
-To create or update an attachment, make a PUT request with the attachment's latest `_rev` to `https://$USERNAME.cloudant.com/$DATABASE/$_ID/$ATTACHMENT`.  The attachment's [content type][mime] must be specified using the `Content-Type` header.
+To create or update an attachment, make a PUT request with the attachment's latest `_rev` to `https://$USERNAME.cloudant.com/$DATABASE/$_ID/$ATTACHMENT`. 
+The attachment's [content type][mime] must be specified using the `Content-Type` header.
+The `$ATTACHMENT` value is the name by which the attachment is associated with the document.
 
 ### Read
 
 ```shell
 curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT/$ATTACHMENT \
      -u $USERNAME
+
+curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT/$ATTACHMENT \
+     -u $USERNAME > blob_content.dat
 ```
 
 ```javascript
@@ -61,7 +72,8 @@ db.attachment.get($DOCUMENT, $FILENAME, function (err, body) {
 });
 ```
 
-To retrieve a document, make a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$_ID/$ATTACHMENT`. The body of the response will be the raw blob file.
+To retrieve a document, make a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$_ID/$ATTACHMENT`. The body of the response is the raw content of the attachment.
+You might pipe the response content directly into a file, for further processing.
 
 ### Delete
 

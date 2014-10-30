@@ -1,6 +1,8 @@
 ## Databases
 
-Databases contain [documents](#documents), the JSON objects Cloudant revolves around. All documents need a database to contain them.
+Cloudant databases contain JSON objects.
+These JSON objects are called [documents](#documents).
+All documents must be contained in a database.
 
 ### Create
 
@@ -68,7 +70,8 @@ account.db.get($DATABASE, function (err, body, headers) {
 }
 ```
 
-Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE` will return information about the database, such as how many documents it contains.
+Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE` returns details about the database,
+such as how many documents it contains.
 
 ### Get Databases
 
@@ -100,7 +103,8 @@ account.db.list(function (err, body, headers) {
 ]
 ```
 
-To list all the databases in an account, make a GET request against `https://$USERNAME.cloudant.com/_all_dbs`.
+To list all the databases in an account,
+make a GET request against `https://$USERNAME.cloudant.com/_all_dbs`.
 
 ### Get Documents
 
@@ -233,7 +237,7 @@ account.db.changes($DATABASE, function (err, body, headers) {
 }
 ```
 
-Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE/_changes` returns a list of changes made to documents in the database, including insertions, updates, and deletions. This log [may not be in chronological order](http://en.wikipedia.org/wiki/Clock_synchronization#Problems).
+Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE/_changes` returns a list of changes made to documents in the database, including insertions, updates, and deletions. This log [might not be in chronological order](http://en.wikipedia.org/wiki/Clock_synchronization#Problems).
 
 `_changes` accepts these query arguments:
 
@@ -331,7 +335,10 @@ account.request({
 }
 ```
 
-To see who has permissions to read, write, and manage the database, make a GET request against `https://$USERNAME.cloudant.com/$DB/_security`. The response object's `cloudant` field contains an object whose keys are usernames with permissions to interact with the database. The `nobody` username indicates what rights are available to unauthenticated users -- that is, anybody. In the example response, for instance, `nobody` has `_reader` permissions, making the database publicly readable.
+To see who has permissions to read, write, and manage the database, make a GET request against `https://$USERNAME.cloudant.com/$DB/_security`.
+The `cloudant` field in the response object contains an object with keys that are the usernames that have permission to interact with the database.
+The `nobody` username indicates what rights are available to unauthenticated users -- that is, anyone who does not have permission to interact with the database.
+In the example response, for instance, `nobody` has `_reader` permissions, making the database publicly readable by everyone.
 
 ### Modifying Permissions
 
