@@ -222,7 +222,7 @@ curl https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_update/$UPDATE_HANDLER
      -X POST \
      -H "Content-Type: application/json" \
      -u $USERNAME
-     -d $JSON
+     -d "$JSON"
 ```
 
 ```javascript

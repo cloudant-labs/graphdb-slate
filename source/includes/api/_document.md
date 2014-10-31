@@ -17,7 +17,7 @@ curl https://$USERNAME.cloudant.com/$DATABASE \
      -X POST \
      -u $USERNAME \
      -H "Content-Type: application/json" \
-     -d $JSON
+     -d "$JSON"
 ```
 
 ```javascript
@@ -109,7 +109,7 @@ curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID \
      -X PUT \
      -u $USERNAME \
      -H "Content-Type: application/json" \
-     -d $JSON
+     -d "$JSON"
 ```
 
 ```javascript
@@ -202,7 +202,7 @@ curl https://$USERNAME.cloudant.com/$DATABASE/_bulk_docs \
      -X POST \
      -u $USERNAME \
      -H "Content-Type: application/json" \
-     -d $JSON
+     -d "$JSON"
 ```
 
 ```javascript

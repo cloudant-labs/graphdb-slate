@@ -347,7 +347,7 @@ curl https://$USERNAME.cloudant.com/$DATABASE/_security \
      -X PUT \
      -H "Content-Type: application/json" \
      -u $USERNAME \
-     -d $JSON
+     -d "$JSON"
 ```
 
 ```javascript
@@ -358,7 +358,7 @@ account.request({
   db: $DATABASE,
   path: '_security',
   method: 'PUT',
-  body: $JSON
+  body: '$JSON'
 }, function (err, body, headers) {
   if (!err) {
     console.log(body);
