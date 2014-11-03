@@ -11,7 +11,7 @@ you would specify the attachment MIME type as `image/jpeg`.
 ### Create / Update
 
 ```shell
-curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT/$ATTACHMENT?rev=$REV \
+curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID/$ATTACHMENT?rev=$REV \
      -u $USERNAME \
      -X PUT \
      -H "Content-Type: $ATTACHMENT_MIME_TYPE" \
@@ -26,7 +26,7 @@ var db = account.use($DATABASE);
 
 fs.readFile($FILEPATH, function (err, data) {
   if (!err) {
-    db.attachment.insert($DOCUMENT, $ATTACHMENT, data, $ATTACHMENT_MIME_TYPE, { 
+    db.attachment.insert($DOCUMENT_ID, $ATTACHMENT, data, $ATTACHMENT_MIME_TYPE, { 
       rev: $REV
     }, function (err, body) {
       if (!err)
@@ -48,7 +48,7 @@ fs.readFile($FILEPATH, function (err, data) {
 
 To create a new attachment on an existing document,
 or to update an attachment on a document,
-make a PUT request with the document's latest `_rev` to `https://$USERNAME.cloudant.com/$DATABASE/$_ID/$ATTACHMENT`. 
+make a PUT request with the document's latest `_rev` to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID/$ATTACHMENT`. 
 The attachment's [content type][mime] must be specified using the `Content-Type` header.
 The `$ATTACHMENT` value is the name by which the attachment is associated with the document.
 
@@ -58,10 +58,10 @@ simply ensure that the `$ATTACHMENT` value for each attachment is unique for the
 ### Read
 
 ```shell
-curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT/$ATTACHMENT \
+curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID/$ATTACHMENT \
      -u $USERNAME
 
-curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT/$ATTACHMENT \
+curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID/$ATTACHMENT \
      -u $USERNAME > blob_content.dat
 ```
 
@@ -70,20 +70,22 @@ var nano = require('nano');
 var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
 var db = account.use($DATABASE);
 
-db.attachment.get($DOCUMENT, $FILENAME, function (err, body) {
+db.attachment.get($DOCUMENT_ID, $FILENAME, function (err, body) {
   if (!err) {
     console.log(body);
   }
 });
 ```
 
-To retrieve a document, make a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$_ID/$ATTACHMENT`. The body of the response is the raw content of the attachment.
+To retrieve an attachment,
+make a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID/$ATTACHMENT`.
+The body of the response is the raw content of the attachment.
 You might pipe the response content directly into a file, for further processing.
 
 ### Delete
 
 ```shell
-curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT/$ATTACHMENT?rev=$REV \
+curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID/$ATTACHMENT?rev=$REV \
      -u $USERNAME \
      -X DELETE
 ```
@@ -93,7 +95,7 @@ var nano = require('nano');
 var account = nano("https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com");
 var db = account.use($DATABASE);
 
-db.attachment.destroy($DOCUMENT, $FILENAME, $REV, function (err, body) {
+db.attachment.destroy($DOCUMENT_ID, $FILENAME, $REV, function (err, body) {
   if (!err) {
     console.log(body);
   }
@@ -110,6 +112,6 @@ db.attachment.destroy($DOCUMENT, $FILENAME, $REV, function (err, body) {
 }
 ```
 
-To delete a document, make a DELETE request with the document's latest `_rev` to `https://$USERNAME.cloudant.com/$DATABASE/$_ID/$ATTACHMENT`. Anything but the latest `_rev` will return a [409 error](#errors).
+To delete an attachment, make a DELETE request with the document's latest `_rev` to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID/$ATTACHMENT`. Anything but the latest `_rev` will return a [409 error](#errors).
 
 [mime]: http://en.wikipedia.org/wiki/Internet_media_type#List_of_common_media_types
