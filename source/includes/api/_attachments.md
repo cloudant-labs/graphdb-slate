@@ -46,9 +46,14 @@ fs.readFile($FILEPATH, function (err, data) {
 }
 ```
 
-To create or update an attachment, make a PUT request with the attachment's latest `_rev` to `https://$USERNAME.cloudant.com/$DATABASE/$_ID/$ATTACHMENT`. 
+To create a new attachment on an existing document,
+or to update an attachment on a document,
+make a PUT request with the document's latest `_rev` to `https://$USERNAME.cloudant.com/$DATABASE/$_ID/$ATTACHMENT`. 
 The attachment's [content type][mime] must be specified using the `Content-Type` header.
 The `$ATTACHMENT` value is the name by which the attachment is associated with the document.
+
+<aside>You can create more than one attachment for a document;
+simply ensure that the `$ATTACHMENT` value for each attachment is unique for the document.</aside>
 
 ### Read
 
