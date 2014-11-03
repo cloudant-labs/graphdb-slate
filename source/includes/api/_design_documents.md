@@ -11,7 +11,7 @@ Design documents are used to [build indexes](#indexes), [validate updates](#upda
 In these examples,
 `$VARIABLES` might refer to standard and design documents.
 To distinguish between them,
-standard documents have an `_id` indicated by `$DOC_ID`,
+standard documents have an `_id` indicated by `$DOCUMENT_ID`,
 while design documents have an `_id` indicated by `$DESIGN_ID`.
 
 ### Indexes
@@ -182,7 +182,8 @@ Show functions are like [list functions](#list-functions) but for formatting ind
 
 Show functions receive two arguments: `doc`, and [req](#req). `doc` is the document requested by the show function.
 
-Once you've defined a show function, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOC_ID/_show/$SHOW_FUNCTION/$DESIGN_ID`, where `$SHOW_FUNCTION` is the function's name, and `$DESIGN_ID` is the `_id` of the document you want to run the show function on.
+Once you've defined a show function, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID/_show/$SHOW_FUNCTION/$DESIGN_ID`,
+where `$SHOW_FUNCTION` is the function's name, and `$DESIGN_ID` is the `_id` of the document you want to run the show function on.
 
 ### Update Handlers
 
@@ -237,9 +238,11 @@ db.atomic($DESIGN_ID, $UPDATE_HANDLER, $DOCUMENT_ID, $JSON, function (err, body)
 });
 ```
 
-Update handlers are custom functions that live on Cloudant's server that will create or update a document. This can, for example, provide server-side modification timestamps, and document updates to individual fields without the latest revision. 
+Update handlers are custom functions that live on Cloudant's server that will create or update a document.
+This can, for example, provide server-side modification timestamps, and document updates to individual fields without the latest revision. 
 
-Update handlers receive two arguments: `doc` and [req](#req). If a document ID is provided in the request to the update handler, then `doc` will be the document corresponding with that ID. If no ID was provided, `doc` will be `null`.
+Update handlers receive two arguments: `doc` and [req](#req).
+If a document ID is provided in the request to the update handler, then `doc` will be the document corresponding with that ID. If no ID was provided, `doc` will be `null`.
 
 Update handler functions must return an array of two elements, the first being the document to save (or null, if you don't want to save anything), and the second being the response body.
 
@@ -248,9 +251,9 @@ Here's how to query update handlers:
 Method | URL
 -------|------
 POST | `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_update/$UPDATE_HANDLER`
-PUT | `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_update/$UPDATE_HANDLER/$DOC_ID`
+PUT | `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_update/$UPDATE_HANDLER/$DOCUMENT_ID`
 
-Where `$DESIGN_ID` is the `_id` of the document defining the update handler, `$UPDATE_HANDLER` is the name of the update handler, and `$DOC_ID` is the `_id` of the document you want the handler to, well, handle.
+Where `$DESIGN_ID` is the `_id` of the document defining the update handler, `$UPDATE_HANDLER` is the name of the update handler, and `$DOCUMENT_ID` is the `_id` of the document you want the handler to, well, handle.
 
 ### Filter Functions
 
@@ -302,7 +305,8 @@ account.db.changes($DATABASE, {
 });
 ```
 
-Filter functions format the [changes feed](#list-changes), removing changes you don't want to monitor. The filter function is run over every change in the changes feed, and only those for which the function returns `true` are returned to the client in the response.
+Filter functions format the [changes feed](#list-changes), removing changes you don't want to monitor.
+The filter function is run over every change in the changes feed, and only those for which the function returns `true` are returned to the client in the response.
 
 Filter functions receive two arguments: `doc` and [req](#req). `doc` represents the document currently being filtered.
 
@@ -338,7 +342,8 @@ function(newDoc, oldDoc, userCtx, secObj) {
 }
 ```
 
-Update validators evaluate whether a document should be written to disk when insertions and updates are attempted. They do not require a query because they implicitly run during this process. If a change is rejected, the update validator responds with a custom error. 
+Update validators evaluate whether a document should be written to disk when insertions and updates are attempted.
+They do not require a query because they implicitly run during this process. If a change is rejected, the update validator responds with a custom error. 
 
 Update validators get four arguments:
 
