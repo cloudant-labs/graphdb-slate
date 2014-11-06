@@ -334,11 +334,15 @@ Miscellaneous operators
 
 ### Sort Syntax
 
+###### dummy
+
 The sort syntax is a basic array of field name and direction pairs. It looks like this:
 
 ```json
 [{"fieldName1": "desc"}, {"fieldName2": "desc" }]
 ```
+
+###### dummy
 
 Here is a query using sorting:
 
