@@ -24,6 +24,7 @@ includes:
   - api/database
   - api/document
   - api/attachments
+  - api/cloudant_query
   - api/design_documents
   - api/search
   - api/mapreduce
