@@ -1,18 +1,40 @@
 ## Design Documents
 
-Design documents are [documents](#documents) whose `_id`s begin with `_design/`. Cloudant reads certain fields and values of design documents as functions, which it uses to [build indexes](#indexes), [validate updates](#update-validators), and [format query results](#list-functions).
+Instead of storing data in a document,
+you might also have special documents that store other content, such as functions.
+The special documents are called "design documents".
 
-Since the `$VARIABLES` in these instructions contain both standard and design documents, respective `_id`s are indicated by `$DOC_ID` and `$DESIGN_ID`.
+Design documents are [documents](#documents) that have an `_id` beginning with `_design/`.
+Cloudant reads specific fields and values of design documents as functions.
+Design documents are used to [build indexes](#indexes), [validate updates](#update-validators), and [format query results](#list-functions).
+
+In these examples,
+`$VARIABLES` might refer to standard and design documents.
+To distinguish between them,
+standard documents have an `_id` indicated by `$DOC_ID`,
+while design documents have an `_id` indicated by `$DESIGN_ID`.
 
 ### Indexes
 
-All queries operate on pre-defined indexes defined in design documents. These indexes are:
+All queries operate on pre-defined indexes defined in design documents.
+These indexes are:
 
 * [Search](#search)
 * [MapReduce](#mapreduce)
 * [Geo](#geo)
 
-Because design documents are still [documents](#documents), a [search index](#search) can be added by [updating](#update) the document with the appropriate field or by [inserting](#create29) a new document with it. You can make queries against the index as soon as it's written with the design document.
+For example,
+to create a design document used for searching,
+you must ensure that two conditions are true:
+
+1. You have identified the document as a design document by having an `_id` starting with `_design/`.
+2. A [search index](#search) has been created within the document by [updating](#update) the document with the appropriate field or by [creating](#create) a new document containing the search index.
+
+As soon as the search index design document exists,
+you can make queries using it.
+
+For more information about search indexing,
+refer to the [search](#search) section of this documentation.
 
 ### List Functions
 
@@ -72,11 +94,18 @@ db.view_with_list($DESIGN_ID, $MAPREDUCE_INDEX, $LIST_FUNCTION, function (err, b
 });
 ```
 
-List functions customize the format of [MapReduce](#mapreduce) query results.
+Use list functions to customize the format of [MapReduce](#mapreduce) query results.
 
-List functions receive two arguments: `head` and `req`.
+List functions require two arguments: `head` and `req`.
 
-Once you've defined a list function, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_list/$LIST_FUNCTION/$MAPREDUCE_INDEX`, where `$LIST_FUNCTION` is the function's name, and `$MAPREDUCE_INDEX` is the name of the index whose query results you want to format. This request takes the same query parameters as a regular [MapReduce query](#queries53).
+When you define a list function,
+you use it by making a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_list/$LIST_FUNCTION/$MAPREDUCE_INDEX`.
+In this request:
+
+* `$LIST_FUNCTION` is the name of list function you defined.
+* `$MAPREDUCE_INDEX` is the name of the index providing the query results you want to format.
+
+The other parameters are the same query parameters used in a [MapReduce query](#queries).
 
 #### head
 
@@ -193,7 +222,7 @@ curl https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_update/$UPDATE_HANDLER
      -X POST \
      -H "Content-Type: application/json" \
      -u $USERNAME
-     -d $JSON
+     -d "$JSON"
 ```
 
 ```javascript

@@ -1,6 +1,8 @@
 ## Account
 
-Your account, which lives at `https://$USERNAME.cloudant.com`, is your entry point for Cloudant's API. Your Cloudant dashboard is always `https://$USERNAME.cloudant.com/dashboard.html`.
+Your account is your entry point for Cloudant's API.
+You access your account using the address prefix `https://$USERNAME.cloudant.com`.
+Your Cloudant dashboard is always `https://$USERNAME.cloudant.com/dashboard.html`.
 
 If you don't yet have an account, [sign up](https://cloudant.com/sign-up/).
 
@@ -30,4 +32,4 @@ account.request(function (err, body) {
 });
 ```
 
-To see if your Cloudant account is accessible, make a `GET` against `https://YOUR_USERNAME.cloudant.com`.
+To see if your Cloudant account is accessible, make a `GET` against `https://$USERNAME.cloudant.com`.

@@ -142,7 +142,7 @@ account.request({
   database: $DATABASE,
   path: '_missing_revs',
   method: 'POST',
-  body: $JSON
+  body: '$JSON'
 }, function (err, body) {
   if (!err) {
     console.log(body);
@@ -181,7 +181,7 @@ Given a list of document revisions, returns the document revisions that do not e
 curl https://$USERNAME.cloudant.com/$DATABASE/_revs_diff \
      -X POST \
      -u $USERNAME \
-     -d $JSON
+     -d "$JSON"
 ```
 
 ```javascript
@@ -192,7 +192,7 @@ account.request({
   database: $DATABASE,
   path: '_revs_diff',
   method: 'POST',
-  body: $JSON
+  body: '$JSON'
 }, function (err, body) {
   if (!err) {
     console.log(body);

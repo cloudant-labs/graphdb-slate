@@ -1,16 +1,19 @@
 ## Authorization
 
+When you have authenticated, the next test is to decide whether you
+are permitted to perform certain tasks. This is called authorization.
+
 ### Roles
 
 Cloudant has three roles:
 
-Role | Description
+Role      | Description
 ----------|------------
 `_reader` | Gives the user permission to read documents from the database.
 `_writer` | Gives the user permission to create and modify documents in the database.
-`_admin` | Gives the user all permissions, including setting permissions.
+`_admin`  | Gives the user all permissions, including setting permissions.
 
-The credentials you use to log in to the dashboard automatically have `_admin` permissions to all databases you create. Everyone else, from users you share databases with to API keys you create, must be given a permission level explicitly.
+The credentials you use to log in to the dashboard automatically have `_admin` permissions to all databases you create. Everyone and everything else, from users you share databases with to API keys you create, must be given a permission level explicitly.
 
 ### Managing Permissions
 
