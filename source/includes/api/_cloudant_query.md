@@ -85,7 +85,7 @@ Creates a new index in the specified database using the information supplied in 
 </tbody>
 </table>
 
-For example, you can create a new index for the `foo` field with the following request:
+###### dummy
 
 ```http
 POST /db/_index HTTP/1.1
@@ -100,13 +100,17 @@ Content-Type: application/json
 }
 ```
 
-The returned JSON confirms the index has been created:
+For example, you can create a new index for the `foo` field with this request:
+
+###### dummy
 
 ```json
 {
     "result": "created"
 }
 ```
+
+The returned JSON confirms the index has been created:
 
 ### List all indexes
 
@@ -119,13 +123,7 @@ With a `GET` request to `/db/_index` you get a list of all indexes in the databa
 
 #### Response body
 
--   **indexes**: Array of indeces
-    -   **ddoc**: ID of the design document the index belongs to. This ID can be used to retrieve the design document containing the index with a `GET` request to `/db/ddoc`, where `ddoc` is the value of this field.
-    -   **name**: Name of the index.
-    -   **type**: Type of the index. Currently "json" is the only supported type.
-    -   **def**: Definition of the index, containing the indexed fields and the sort order, i.e. ascending or descending.
-
-An example of a response body with two indexes:
+> An example of a response body with two indexes
 
 ```json
 {
@@ -155,6 +153,12 @@ An example of a response body with two indexes:
 }
 ```
 
+-   **indexes**: Array of indeces
+    -   **ddoc**: ID of the design document the index belongs to. This ID can be used to retrieve the design document containing the index with a `GET` request to `/db/ddoc`, where `ddoc` is the value of this field.
+    -   **name**: Name of the index.
+    -   **type**: Type of the index. Currently "json" is the only supported type.
+    -   **def**: Definition of the index, containing the indexed fields and the sort order, i.e. ascending or descending.
+
 ### Deleting an index
 
 -   **Method**: `DELETE`
@@ -172,13 +176,6 @@ An example of a response body with two indexes:
 
 #### Request body
 
--   **selector**: JSON object describing criteria used to select documents. See the section on selectors \<cloudant-query-selectors\> below.
--   **limit (optional, default: 25)**: maximum number of results returned
--   **skip (optional, default: 0)**: skip the first n results, where n is the value specified
--   **sort (optional, default: [])**: JSON array following sort syntax \<cloudant-query-sort-syntax\>
--   **fields (optional, default: null)**: JSON array following the field syntax, described below. This parameter lets you specify which fields of an object should be returned. If it is omitted, the entire object is returned.
--   **r (optional, default: 1)**: Read quorum needed for the result. This defaults to 1, in which case the document found in the index is returned. If set to a higher value, each document is read from at least that many replicas before it is returned in the results. This is obviously less performant than using the document local to the index.
-
 ```json
 {
     "selector": {
@@ -191,9 +188,14 @@ An example of a response body with two indexes:
 }
 ```
 
-#### Response body
+-   **selector**: JSON object describing criteria used to select documents. See the section on selectors \<cloudant-query-selectors\> below.
+-   **limit (optional, default: 25)**: maximum number of results returned
+-   **skip (optional, default: 0)**: skip the first n results, where n is the value specified
+-   **sort (optional, default: [])**: JSON array following sort syntax \<cloudant-query-sort-syntax\>
+-   **fields (optional, default: null)**: JSON array following the field syntax, described below. This parameter lets you specify which fields of an object should be returned. If it is omitted, the entire object is returned.
+-   **r (optional, default: 1)**: Read quorum needed for the result. This defaults to 1, in which case the document found in the index is returned. If set to a higher value, each document is read from at least that many replicas before it is returned in the results. This is obviously less performant than using the document local to the index.
 
--   **docs**: Array of documents matching the search
+#### Response body
 
 ```json
 {
@@ -214,25 +216,29 @@ An example of a response body with two indexes:
 }
 ```
 
+-   **docs**: Array of documents matching the search
+
 ### Selector Syntax
 
 The Cloudant Query language is expressed as a JSON object describing documents of interest. Within this structure it is also possible to express conditional logic using specially named fields. This is inspired by and intended to maintain a fairly close parity to MongoDB query documents.
 
-As an example, a simple selector looks like this:
+###### dummy
 
 ```json
 {"name": "Paul"}
 ```
 
-This selector matches any documents with the `name` "Paul". Extending this example using other fields:
+As an example, a simple selector looks like this. This selector matches any documents with the `name` "Paul". Extending this example using other fields:
+
+###### dummy
+
+This selector matches a document with `name` Paul, that also has a "location" field with the value of "Boston".
 
 ```json
 {"name": "Paul", "location": "Boston"}
 ```
 
-This selector matches a document with `name` Paul, that also has a "location" field with the value of "Boston".
-
-There are two special syntax elements for the object fields in a selector. The first is that the dot character denotes subfields in a document. For instance, here are two equivalent examples:
+###### dummy
 
 ```json
 {"location": {"city": "Omaha"}}
@@ -242,21 +248,21 @@ There are two special syntax elements for the object fields in a selector. The f
 {"location.city": "Omaha"}
 ```
 
-The second important syntax element is the use of a dollar sign ($) prefix to denote operators. For example:
+There are two special syntax elements for the object fields in a selector. The first is that the dot character denotes subfields in a document. For instance, here are two equivalent examples:
+
+###### dummy
 
 ```json
 {"age": {"$gt": 20}}
 ```
+
+The second important syntax element is the use of a dollar sign ($) prefix to denote operators. For example:
 
 In this example, any document where the age field has a value greater than 20 will be machted.
 
 There are two core types of operators in the selector syntax: combination operators and condition operators. In general, combination operators are at the top level and combine conditions or combinations of confitions into one selector. We'll describe each operator below.
 
 ### Implicit Operators
-
-For the most part every operator must be of the form {"$operator": argument}. Though there are two implicit operators for selectors.
-
-Any field that contains a JSON value that has no operators in it is an equality condition. For instance, these are equivalent:
 
 ```json
 {"foo": "bar"}
@@ -266,7 +272,11 @@ Any field that contains a JSON value that has no operators in it is an equality 
 {"foo": {"$eq": "bar"}}
 ```
 
-And to be clear, these are also equivalent:
+For the most part every operator must be of the form {"$operator": argument}. Though there are two implicit operators for selectors.
+
+Any field that contains a JSON value that has no operators in it is an equality condition. For instance, these are equivalent:
+
+###### dummy
 
 ```json
 {"foo": {"bar": "baz"}}
@@ -276,7 +286,9 @@ And to be clear, these are also equivalent:
 {"foo": {"$eq": {"bar": "baz"}}}
 ```
 
-Any JSON object that is not the argument to a condition operator is an implicit $and operator on each field. For instance, these two examples are identical:
+And to be clear, these are also equivalent:
+
+###### dummy 
 
 ```json
 {"foo": "bar", "baz": true}
@@ -285,6 +297,8 @@ Any JSON object that is not the argument to a condition operator is an implicit 
 ```json
 {"$and": [{"foo": {"$eq": "bar"}}, {"baz": {"$eq": true}}]}
 ```
+
+Any JSON object that is not the argument to a condition operator is an implicit $and operator on each field. For instance, these two examples are identical:
 
 ### Combination Operators
 
@@ -336,15 +350,13 @@ Miscellaneous operators
 
 ###### dummy
 
-The sort syntax is a basic array of field name and direction pairs. It looks like this:
-
 ```json
 [{"fieldName1": "desc"}, {"fieldName2": "desc" }]
 ```
 
-###### dummy
+The sort syntax is a basic array of field name and direction pairs. It looks like this:
 
-Here is a query using sorting:
+###### dummy
 
 ```json
 {
@@ -353,19 +365,19 @@ Here is a query using sorting:
 }
 ```
 
-Where `fieldName` can be any field (dotted notation is available for sub-document fields) and `dir` can be `"asc"` or `"desc"`. One of the fields have to be used in the selector as well and there has to be an index defined with all sort fields in the same order. Each object in the array should have a single key. If it does not, the resulting sort order is implementation specific and might change. Currently, Cloudant Query does not support multiple fields with different sort orders, so the directions have to be either all ascending or all descending.
+Here is a query using sorting:
 
-If the direction is ascending, you can use a string instead of an object to specify the sort fields.
+###### dummy 
 
 ```json
 ["fieldName1", "fieldName2", "and_so_on"]
 ```
 
+Where `fieldName` can be any field (dotted notation is available for sub-document fields) and the value can be `"asc"` or `"desc"`. One of the fields have to be used in the selector as well and there has to be an index defined with all sort fields in the same order. Each object in the array should have a single key. If it does not, the resulting sort order is implementation specific and might change. Currently, Cloudant Query does not support multiple fields with different sort orders, so the directions have to be either all ascending or all descending.
+
+If the direction is ascending, you can use a string instead of an object to specify the sort fields.
+
 ### Filtering fields
-
-When retrieving documents from the database you can specify that only a subset of the fields are returned. This allows you to limit your results strictly to the parts of the document that are interesting for your application and reduces the size of the response. The fields returned are specified as an array. Unlike MongoDB, only the fields specified are included, there is no automatic inclusion of the "\_id" or other metadata fields when a field list is included.
-
-A trivial example:
 
 ```json
 {
@@ -373,3 +385,7 @@ A trivial example:
     "fields": ["Actor_name", "Movie_year", "_id", "_rev"]
 }
 ```
+
+When retrieving documents from the database you can specify that only a subset of the fields are returned. This allows you to limit your results strictly to the parts of the document that are interesting for your application and reduces the size of the response. The fields returned are specified as an array. Unlike MongoDB, only the fields specified are included, there is no automatic inclusion of the "\_id" or other metadata fields when a field list is included.
+
+
