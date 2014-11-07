@@ -2,11 +2,23 @@
 
 Cloudant replication syncs the state of two databases. Any change which occurs to the source database will occur to the target database. You can create replications between any number of databases, whether continuous or not, to share state and aggregate information as best suits your application.
 
-Replications are represented as [documents](#documents) in the `_replicator` database, so working with replications is just like working with documents.
+Replications can be represented as [documents](#documents) in the `_replicator` database, so working with replications is just like working with documents. Replications can also be started by POSTing said documents to the `/\_replicate` endpoint. Here is the format of the document:
 
-### Create
+Field Name | Required | Description
+-----------|----------|-------------
+source | yes | Identifies the database to copy revisions from. Can be a database URL, or an object whose url property contains the full URL of the database.
+target | yes | Identifies the database to copy revisions to. Same format and interpretation as source.
+continuous | no | Continuously syncs state from the source to the target, only stopping when deleted.
+create_target | no | A value of true tells the replicator to create the target database if it doesn't exist.
+doc_ids | no | Array of document IDs; if given, only these documents will be replicated.
+filter | no | Name of a [filter function](#filter-functions) that can choose which documents get replicated.
+proxy | no | Proxy server URL.
+query_params | no | Object containing properties that are passed to the filter function.
+use_checkpoints | no | Whether to create checkpoints. Checkpoints greatly reduce the time and resources needed for repeated replications. Setting this to false removes the requirement for write access to the source database. Defaults to true.
 
-> Example document:
+### Replicator database
+
+#### Creating a replication
 
 ```json
 {
@@ -21,19 +33,8 @@ To start a replication, [add a document](#create29) to the `_replicator` databas
 
 Replication documents can have the following fields:
 
-Field Name | Required | Description
------------|----------|-------------
-source | yes | Identifies the database to copy revisions from. Can be a database URL, or an object whose url property contains the full URL of the database.
-target | yes | Identifies the database to copy revisions to. Same format and interpretation as source.
-continuous | no | Continuously syncs state from the source to the target, only stopping when deleted.
-create_target | no | A value of true tells the replicator to create the target database if it doesn't exist.
-doc_ids | no | Array of document IDs; if given, only these documents will be replicated.
-filter | no | Name of a [filter function](#filter-functions) that can choose which documents get replicated.
-proxy | no | Proxy server URL.
-query_params | no | Object containing properties that are passed to the filter function.
-use_checkpoints | no | Whether to create checkpoints. Checkpoints greatly reduce the time and resources needed for repeated replications. Setting this to false removes the requirement for write access to the source database. Defaults to true.
 
-### Monitor
+#### Monitoring a replication
 
 ```shell
 curl https://$USERNAME.cloudant.com/_active_tasks \
@@ -54,8 +55,6 @@ account.request({
   }
 });
 ```
-
-> Example response:
 
 ```json
 [
@@ -98,10 +97,207 @@ updated_on | When the replication was last updated, in seconds since the UNIX ep
 source | An obfuscated URL indicating the database from which the task is replicating | string
 target | An obfuscated URL indicating the database to which the task is replicating | string
 
-### Delete
+#### Delete
 
-To halt a replication, simply [delete its document](#delete33) from the `_replicator` database.
+To cancel a replication, simply [delete its document](#delete33) from the `_replicator` database.
 
-### Advanced
+### Replication using the /\_replicate endpoint
+
+Replication can be triggered by sending a POST request to the `/_replicate` URL.
+
+```shell
+curl -H 'Content-Type: application/json' -X POST '/_replicate HTTP/1.1' -d '
+{
+  "source": "http://username.cloudant.com/example-database",
+  "target": "http://example.org/example-database"
+}'
+```
+
+The target database has to exist and is not implicitly created. Add `"create_target":true` to the JSON object to create the target database (remote or local) prior to replication. The names of the source and target databases do not have to be the same.
+
+#### Canceling replication
+
+A replication triggered by POSTing to `/_replicate/` can be canceled by POSTing the exact same JSON object but with the additional `cancel` property set to `true`.
+
+```shell
+curl -H 'Content-Type: application/json' -X POST '/_replicate HTTP/1.1' -d '
+{
+  "source": "https://username:password@username.cloudant.com/example-database",
+  "target": "https://username:password@example.org/example-database",
+  "cancel": true
+}'
+```
+
+Notice: the request which initiated the replication will fail with error 500 (shutdown).
+
+The replication ID can be obtained from the original replication request (if it's a continuous replication) or from `/_active_tasks`.
+
+#### Example
+
+First we start the replication.
+
+```shell
+$ curl -H 'Content-Type: application/json' -X POST 'http://username.cloudant.com/_replicate' -d '
+      {
+        "source": "https://username:password@example.com/foo", 
+        "target": "https://username:password@username.cloudant.com/bar", 
+        "create_target": true, 
+        "continuous": true
+      }'
+
+{
+  "ok": true,
+  "_local_id": "0a81b645497e6270611ec3419767a584+continuous+create_target"
+}
+```
+
+We use this id to cancel the replication.
+
+The `"ok": true` reply indicates that the replication was successfully canceled.
+
+
+
+```shell
+$ curl -H 'Content-Type: application/json' -X POST http://username.cloudant.com/_replicate \
+  -d '{
+        "replication_id": "0a81b645497e6270611ec3419767a584+continuous+create_target",
+        "cancel": true
+      }'
+
+{
+  "ok": true,
+  "_local_id": "0a81b645497e6270611ec3419767a584+continuous+create_target"
+}
+```
+
+### Continuous replication
+
+To make replication continuous, add a `"continuous":true` parameter to the JSON, for example:
+
+```shell
+$ curl -H 'Content-Type: application/json' -X POST http://username.cloudant.com/_replicate \
+  -d '{
+        "source": "http://username:password@example.com/foo", 
+        "target": "http://username:password@username.cloudant.com/bar", 
+        "continuous": true
+      }'
+```
+
+Replications can be persisted, so that they survive server restarts. For more, see replicator-database.
+
+### Filtered Replication
+
+Sometimes you don't want to transfer all documents from source to target. You can include one or more filter functions in a design document on the source and then tell the replicator to use them.
+
+A filter function takes two arguments (the document to be replicated and the the replication request) and returns true or false. If the result is true, the document is replicated.
+
+```shell
+function(doc, req) {
+  return !!(doc.type && doc.type == "foo");
+}
+```
+
+Filters live under the top-level "filters" key;
+
+```shell
+{
+  "_id": "_design/myddoc",
+  "filters": {
+    "myfilter": "function goes here"
+  }
+}
+```
+
+Invoke them as follows:
+
+```shell
+{
+  "source": "http://username:password@example.org/example-database",
+  "target": "http://username:password@username.cloudant.com/example-database",
+  "filter": "myddoc/myfilter"
+}
+```
+
+You can even pass arguments to them.
+
+```shell
+{
+  "source": "http://username:password@example.org/example-database",
+  "target": "http://username:password@username.cloudant.com/example-database",
+  "filter": "myddoc/myfilter",
+  "query_params": {
+    "key": "value"
+  }
+}
+```
+
+### Named Document Replication
+
+Sometimes you only want to replicate some documents. For this simple case you do not need to write a filter function. Simply add the list of keys in the doc\_ids field.
+
+```shell
+{
+  "source": "http://username:password@example.org/example-database",
+  "target": "http://username:password@127.0.0.1:5984/example-database",
+  "doc_ids": ["foo", "bar", "baz]
+}
+```
+
+### Replicating through a proxy
+
+Pass a "proxy" argument in the replication data to have replication go through an HTTP proxy:
+
+```shell
+POST /_replicate HTTP/1.1
+```
+
+```shell
+{
+  "source": "http://username:password@username.cloudant.com/example-database",
+  "target": "http://username:password@example.org/example-database",
+  "proxy": "http://my-proxy.com:8888"
+}
+```
+
+### Authentication
+
+The source and the target database may require authentication, and if checkpoints are used (on by default), even the source will require write access. The easiest way to authenticate is to put a username and password into the URL; the replicator will use these for HTTP Basic auth:
+
+```shell
+{
+  "source": "https://username:password@example.com/db", 
+  "target": "https://username:password@username.cloudant.com/db"
+}
+```
+
+### Performance related options
+
+These options can be set per replication by including them in the replication document.
+
+-   `worker_processes` - The number of processes the replicator uses (per replication) to transfer documents from the source to the target database. Higher values can imply better throughput (due to more parallelism of network and disk IO) at the expense of more memory and eventually CPU. Default value is 4.
+-   `worker_batch_size` - Workers process batches with the size defined by this parameter (the size corresponds to number of ''\_changes'' feed rows). Larger batch sizes can offer better performance, while lower values imply that checkpointing is done more frequently. Default value is 500.
+-   `http_connections` - The maximum number of HTTP connections per replication. For push replications, the effective number of HTTP connections used is min(worker\_processes + 1, http\_connections). For pull replications, the effective number of connections used corresponds to this parameter's value. Default value is 20.
+-   `connection_timeout` - The maximum period of inactivity for a connection in milliseconds. If a connection is idle for this period of time, its current request will be retried. Default value is 30000 milliseconds (30 seconds).
+-   `retries_per_request` - The maximum number of retries per request. Before a retry, the replicator will wait for a short period of time before repeating the request. This period of time doubles between each consecutive retry attempt. This period of time never goes beyond 5 minutes and its minimum value (before the first retry is attempted) is 0.25 seconds. The default value of this parameter is 10 attempts.
+-   `socket_options` - A list of options to pass to the connection sockets. The available options can be found in the [documentation for the Erlang function setopts/2 of the inet module](http://www.erlang.org/doc/man/inet.html#setopts-2). Default value is `[{keepalive, true}, {nodelay, false}]`.
+
+#### Example
+
+```shell
+POST /_replicate HTTP/1.1
+```
+
+```shell
+{
+  "source": "https://username:password@example.com/example-database",
+  "target": "https://username:password@example.org/example-database",
+  "connection_timeout": 60000,
+  "retries_per_request": 20,
+  "http_connections": 30
+}
+```
+
+
+### Advanced content
 
 Clients implementing the [replication protocol](http://dataprotocols.org/couchdb-replication/) should check out the [Advanced Methods](#advanced14).
