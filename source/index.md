@@ -29,7 +29,6 @@ includes:
   - api/design_documents
   - api/search
   - api/mapreduce
-  - api/geo
   - api/replication
   - api/advanced
   - api/errors
