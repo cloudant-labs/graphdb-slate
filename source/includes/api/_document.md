@@ -93,7 +93,7 @@ db.get($JSON._id, function (err, body, headers) {
 }
 ```
 
-To retrieve a document, make a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$_ID`.
+To retrieve a document, make a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID`.
 If you do not know the `_id` for a particular document,
 you can [query the database](#get-documents) for all documents.
 
@@ -190,7 +190,7 @@ db.destroy($JSON._id, $REV, function (err, body, headers) {
 }
 ```
 
-To delete a document, make a DELETE request with the document's latest `_rev` in the querystring, to `https://$USERNAME.cloudant.com/$DATABASE/$_ID`.
+To delete a document, make a DELETE request with the document's latest `_rev` in the querystring, to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID`.
 
 <aside>If you fail to provide the latest `_rev`, Cloudant responds with a [409 error](#errors).
 This error prevents you overwriting data changed by other clients.</aside>

@@ -93,7 +93,7 @@ db.view($DESIGN_ID, $MAPREDUCE_INDEX, function (err, res) {
 });
 ```
 
-Once you've got an index written, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$_ID/_view/$INDEX_NAME`.
+Once you've got an index written, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_view/$INDEX_NAME`.
 
 **Query Parameters**
 
