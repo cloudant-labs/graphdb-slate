@@ -20,6 +20,16 @@ use_checkpoints | no | Whether to create checkpoints. Checkpoints greatly reduce
 
 #### Creating a replication
 
+```shell
+curl -X PUT https://$USERNAME:$PASSWORD@USERNAME.cloudant.com/_replicator/replication-doc -H 'Content-Type: application/json' -d @replication-document.json
+#assuming replication-document.json is a json file with the following content:
+```
+
+```http
+PUT /_replicator/replication-doc HTTP/1.1
+Content-Type: application/json
+```
+
 ```json
 {
   "source": "https://$USERNAME1:$PASSWORD1@$USERNAME1.cloudant.com/$DATABASE1",
@@ -31,14 +41,10 @@ use_checkpoints | no | Whether to create checkpoints. Checkpoints greatly reduce
 
 To start a replication, [add a document](#create29) to the `_replicator` database.
 
-Replication documents can have the following fields:
-
-
 #### Monitoring a replication
 
 ```shell
-curl https://$USERNAME.cloudant.com/_active_tasks \
-     -u $USERNAME
+curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/_active_tasks
 ```
 
 ```javascript
@@ -99,6 +105,14 @@ target | An obfuscated URL indicating the database to which the task is replicat
 
 #### Delete
 
+```http
+DELETE /_replicator/replication-doc?rev=1-... HTTP/1.1
+```
+
+```shell
+curl -X DELETE https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/_replicator/replication-doc?rev=1-...
+```
+
 To cancel a replication, simply [delete its document](#delete33) from the `_replicator` database.
 
 ### Replication using the /\_replicate endpoint
@@ -106,27 +120,45 @@ To cancel a replication, simply [delete its document](#delete33) from the `_repl
 Replication can be triggered by sending a POST request to the `/_replicate` URL.
 
 ```shell
-curl -H 'Content-Type: application/json' -X POST '/_replicate HTTP/1.1' -d '
-{
-  "source": "http://username.cloudant.com/example-database",
-  "target": "http://example.org/example-database"
-}'
+curl -H 'Content-Type: application/json' -X POST "https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/_replicate" -d @replication-doc.json
+#with the file replication-doc.json containing the following:
 ```
 
-The target database has to exist and is not implicitly created. Add `"create_target":true` to the JSON object to create the target database (remote or local) prior to replication. The names of the source and target databases do not have to be the same.
+```http
+POST /_replicate HTTP/1.1
+Content-Type: application/json
+```
+
+```json
+{
+  "source": "http://$USERNAME:$PASSWORD@username.cloudant.com/example-database",
+  "target": "http://$USERNAME2:$PASSWORD2@example.org/example-target-database"
+}
+```
+
+The target database has to exist and is not implicitly created. Add `"create_target":true` to the JSON document to create the target database prior to replication. 
 
 #### Canceling replication
 
-A replication triggered by POSTing to `/_replicate/` can be canceled by POSTing the exact same JSON object but with the additional `cancel` property set to `true`.
-
 ```shell
-curl -H 'Content-Type: application/json' -X POST '/_replicate HTTP/1.1' -d '
+curl -H 'Content-Type: application/json' -X POST 'https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/_replicate HTTP/1.1' -d @replication-doc.json
+#the file replication-doc.json has the following content:
+```
+
+```http
+POST /_replicate HTTP/1.1
+Content-Type: application/json
+```
+
+```json
 {
   "source": "https://username:password@username.cloudant.com/example-database",
   "target": "https://username:password@example.org/example-database",
   "cancel": true
-}'
+}
 ```
+
+A replication triggered by POSTing to `/_replicate/` can be canceled by POSTing the exact same JSON object but with the additional `cancel` property set to `true`.
 
 Notice: the request which initiated the replication will fail with error 500 (shutdown).
 
@@ -134,17 +166,54 @@ The replication ID can be obtained from the original replication request (if it'
 
 #### Example
 
+```shell
+$ curl -H 'Content-Type: application/json' -X POST 'http://username.cloudant.com/_replicate' -d @replication-doc.json
+#the file replication-doc.json has the following content:
+```
+
+```http
+POST /_replicate HTTP/1.1
+Content-Type: application/json
+```
+
+```json
+{
+  "source": "https://username:password@example.com/foo", 
+  "target": "https://username:password@username.cloudant.com/bar", 
+  "create_target": true, 
+  "continuous": true
+}
+```
+
+```json
+{
+  "ok": true,
+  "_local_id": "0a81b645497e6270611ec3419767a584+continuous+create_target"
+}
+```
+
 First we start the replication.
 
-```shell
-$ curl -H 'Content-Type: application/json' -X POST 'http://username.cloudant.com/_replicate' -d '
-      {
-        "source": "https://username:password@example.com/foo", 
-        "target": "https://username:password@username.cloudant.com/bar", 
-        "create_target": true, 
-        "continuous": true
-      }'
+###### dummy
 
+```shell
+curl -H 'Content-Type: application/json' -X POST http://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/_replicate -d @replication-doc.json
+# where the file replication-doc.json has the following content:
+```
+
+```http
+POST /_replicate HTTP/1.1
+Content-Type: application/json
+```
+
+```json
+{
+  "replication_id": "0a81b645497e6270611ec3419767a584+continuous+create_target",
+  "cancel": true
+}
+```
+
+```json
 {
   "ok": true,
   "_local_id": "0a81b645497e6270611ec3419767a584+continuous+create_target"
@@ -155,51 +224,43 @@ We use this id to cancel the replication.
 
 The `"ok": true` reply indicates that the replication was successfully canceled.
 
-
+### Continuous replication
 
 ```shell
-$ curl -H 'Content-Type: application/json' -X POST http://username.cloudant.com/_replicate \
-  -d '{
-        "replication_id": "0a81b645497e6270611ec3419767a584+continuous+create_target",
-        "cancel": true
-      }'
+curl -H 'Content-Type: application/json' -X POST http://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/_replicate -d @replication-doc.json
+# where the file replication-doc.json has the following content:
+```
 
+```http
+POST /_replicate HTTP/1.1
+Content-Type: application/json
+```
+
+```json
 {
-  "ok": true,
-  "_local_id": "0a81b645497e6270611ec3419767a584+continuous+create_target"
+  "source": "http://username:password@example.com/foo", 
+  "target": "http://username:password@username.cloudant.com/bar", 
+  "continuous": true
 }
 ```
 
-### Continuous replication
-
-To make replication continuous, add a `"continuous":true` parameter to the JSON, for example:
-
-```shell
-$ curl -H 'Content-Type: application/json' -X POST http://username.cloudant.com/_replicate \
-  -d '{
-        "source": "http://username:password@example.com/foo", 
-        "target": "http://username:password@username.cloudant.com/bar", 
-        "continuous": true
-      }'
-```
-
-Replications can be persisted, so that they survive server restarts. For more, see replicator-database.
+To make replication continuous, add a `"continuous":true` parameter to the JSON. This way, the replication process will not stop when it has processed all current updates and will wait for further updates to the source database and apply them to the target.
 
 ### Filtered Replication
 
-Sometimes you don't want to transfer all documents from source to target. You can include one or more filter functions in a design document on the source and then tell the replicator to use them.
-
-A filter function takes two arguments (the document to be replicated and the the replication request) and returns true or false. If the result is true, the document is replicated.
-
-```shell
+```
 function(doc, req) {
   return !!(doc.type && doc.type == "foo");
 }
 ```
 
-Filters live under the top-level "filters" key;
+Sometimes you don't want to transfer all documents from source to target. You can include one or more filter functions in a design document on the source and then tell the replicator to use them.
 
-```shell
+A filter function takes two arguments (the document to be replicated and the the replication request) and returns true or false. If the result is true, the document is replicated.
+
+###### h6
+
+```json
 {
   "_id": "_design/myddoc",
   "filters": {
@@ -208,9 +269,11 @@ Filters live under the top-level "filters" key;
 }
 ```
 
-Invoke them as follows:
+Filters live under the top-level "filters" key;
 
-```shell
+###### h6
+
+```json
 {
   "source": "http://username:password@example.org/example-database",
   "target": "http://username:password@username.cloudant.com/example-database",
@@ -218,9 +281,11 @@ Invoke them as follows:
 }
 ```
 
-You can even pass arguments to them.
+Invoke them as follows:
 
-```shell
+###### h6
+
+```json
 {
   "source": "http://username:password@example.org/example-database",
   "target": "http://username:password@username.cloudant.com/example-database",
@@ -231,27 +296,24 @@ You can even pass arguments to them.
 }
 ```
 
+You can even pass arguments to them.
+
 ### Named Document Replication
 
-Sometimes you only want to replicate some documents. For this simple case you do not need to write a filter function. Simply add the list of keys in the doc\_ids field.
-
-```shell
+```json
 {
   "source": "http://username:password@example.org/example-database",
   "target": "http://username:password@127.0.0.1:5984/example-database",
-  "doc_ids": ["foo", "bar", "baz]
+  "doc_ids": ["foo", "bar", "baz"]
 }
 ```
 
+Sometimes you only want to replicate some documents. For this simple case you do not need to write a filter function. Simply add the list of keys in the doc\_ids field.
+
+
 ### Replicating through a proxy
 
-Pass a "proxy" argument in the replication data to have replication go through an HTTP proxy:
-
-```shell
-POST /_replicate HTTP/1.1
-```
-
-```shell
+```json
 {
   "source": "http://username:password@username.cloudant.com/example-database",
   "target": "http://username:password@example.org/example-database",
@@ -259,16 +321,18 @@ POST /_replicate HTTP/1.1
 }
 ```
 
+Pass a "proxy" argument in the replication data to have replication go through an HTTP proxy:
+
 ### Authentication
 
-The source and the target database may require authentication, and if checkpoints are used (on by default), even the source will require write access. The easiest way to authenticate is to put a username and password into the URL; the replicator will use these for HTTP Basic auth:
-
-```shell
+```json
 {
   "source": "https://username:password@example.com/db", 
   "target": "https://username:password@username.cloudant.com/db"
 }
 ```
+
+The source and the target database may require authentication, and if checkpoints are used (on by default), even the source will require write access. The easiest way to authenticate is to put a username and password into the URL; the replicator will use these for HTTP Basic auth:
 
 ### Performance related options
 
@@ -283,11 +347,7 @@ These options can be set per replication by including them in the replication do
 
 #### Example
 
-```shell
-POST /_replicate HTTP/1.1
-```
-
-```shell
+```json
 {
   "source": "https://username:password@example.com/example-database",
   "target": "https://username:password@example.org/example-database",
@@ -296,7 +356,6 @@ POST /_replicate HTTP/1.1
   "http_connections": 30
 }
 ```
-
 
 ### Advanced content
 
