@@ -428,7 +428,13 @@ html, body {
       border-bottom: dashed 1px #ccc;
     }
   }
+  pre.javascript {
+    display:none;
+  }
 
+  pre.python {
+    display:none;
+  }
   pre {
     @extend %code-font;
   }

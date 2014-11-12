@@ -2,7 +2,7 @@
 title: Cloudant Documentation
 
 language_tabs:
-  - http
+  - http 
   - shell: curl
 #  - javascript: node.js
 #  - python
