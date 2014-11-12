@@ -31,7 +31,7 @@ includes:
   - api/mapreduce
   - api/replication
   - api/advanced
-  - api/errors
+#  - api/errors
   - guides/index
   - guides/mvcc
   - guides/transactions
