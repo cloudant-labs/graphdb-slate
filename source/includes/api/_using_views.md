@@ -121,18 +121,33 @@ you are using stale view data.
 
 The data returned by a view query is in the form of an array.
 Each element within the array is sorted using native UTF-8 sorting.
-The sort is applied to the key HERE
-according to the contents of the key portion of the emitted content. The basic order of output is as follows:
+The sort is applied to the key defined in the view function.
 
--   `null`
--   `false`
--   `true`
--   Numbers
--   Text (case sensitive, lowercase first)
--   Arrays (according to the values of each element, in order)
--   Objects (according to the values of keys, in key order)
+The basic order of output is as follows:
 
-You can reverse the order of the returned view information by using the `descending` query value set to true. For example, Retrieving the list of recipes using the `by_title` (limited to 5 records) view:
+Value | Order
+------|------
+`null` | First
+`false` |
+`true` |
+Numbers |
+Text (lowercase) |
+Text (uppercase) |
+Arrays (according to the values of each element, using the order given in this table) |
+Objects (according to the values of keys, in key order using the order given in this table) | Last
+
+You can reverse the order of the returned view information by setting the `descending` query value <code>true</code>.
+
+For example, to retrieve a list of the first five documents from a database,
+using the user-created `by_title` view,
+use a request similar to:
+
+``` json
+GET /<database>/_design/<design-doc>/_view/by_title?limit=5
+Accept: application/json
+Content-Type: application/json</codeblock>
+```
+The result would be similar to:
 
 ``` json
 {
@@ -183,7 +198,8 @@ You can reverse the order of the returned view information by using the `descend
 }
 ```
 
-Requesting the same in descending order will reverse the entire view content. For example the request
+To request the last five records,
+you would add the Requesting the same in descending order will reverse the entire view content. For example the request
 
 ```
 GET /recipes/_design/recipes/_view/by_title?limit=5&descending=true
