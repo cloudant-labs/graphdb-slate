@@ -351,3 +351,53 @@ Update validators get four arguments:
 * `oldDoc`: the version of the document currently in the database, or `null` if there is none.
 * `userCtx`: context about the currently authenticated user, such as `name` and `roles`..
 * `secObj`: the database's [security object](#reading-permissions)
+
+### Retrieving information about a design document
+
+-   **Method**: `GET /db/_design/design-doc/_info`
+-   **Request**: None
+-   **Response**: JSON of the design document information
+-   **Roles permitted**: \_reader
+
+Obtains information about a given design document, including the index, index size and current status of the design document and associated index information.
+
+For example, to get the information for the `recipes` design document:
+
+```
+GET /recipes/_design/recipes/_info
+Content-Type: application/json
+```
+
+This returns the following JSON structure:
+
+``` json
+{
+   "name" : "recipes"
+   "view_index" : {
+      "compact_running" : false,
+      "updater_running" : false,
+      "language" : "javascript",
+      "purge_seq" : 10,
+      "waiting_commit" : false,
+      "waiting_clients" : 0,
+      "signature" : "fc65594ee76087a3b8c726caf5b40687",
+      "update_seq" : 375031,
+      "disk_size" : 16491
+   },
+}
+```
+
+The individual fields in the returned JSON structure are detailed below:
+
+-   **name**: Name/ID of Design Document
+-   **view\_index**: View Index
+    -   **compact\_running**: Indicates whether a compaction routine is currently running on the view
+    -   **disk\_size**: Size in bytes of the view as stored on disk
+    -   **language**: Language for the defined views
+    -   **purge\_seq**: The purge sequence that has been processed
+    -   **signature**: MD5 signature of the views for the design document
+    -   **update\_seq**: The update sequence of the corresponding database that has been indexed
+    -   **updater\_running**: Indicates if the view is currently being updated
+    -   **waiting\_clients**: Number of clients waiting on views from this design document
+    -   **waiting\_commit**: Indicates if there are outstanding commits to the underlying database that need to processed
+

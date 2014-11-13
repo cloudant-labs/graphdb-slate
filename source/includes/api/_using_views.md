@@ -1,225 +1,82 @@
 ## Using Views
 
-### Retrieving information about a design document
-
--   **Method**: `GET /db/_design/design-doc/_info`
--   **Request**: None
--   **Response**: JSON of the design document information
--   **Roles permitted**: \_reader
-
-Obtains information about a given design document, including the index, index size and current status of the design document and associated index information.
-
-For example, to get the information for the `recipes` design document:
-
-```
-GET /recipes/_design/recipes/_info
-Content-Type: application/json
-```
-
-This returns the following JSON structure:
-
-``` json
-{
-   "name" : "recipes"
-   "view_index" : {
-      "compact_running" : false,
-      "updater_running" : false,
-      "language" : "javascript",
-      "purge_seq" : 10,
-      "waiting_commit" : false,
-      "waiting_clients" : 0,
-      "signature" : "fc65594ee76087a3b8c726caf5b40687",
-      "update_seq" : 375031,
-      "disk_size" : 16491
-   },
-}
-```
-
-The individual fields in the returned JSON structure are detailed below:
-
--   **name**: Name/ID of Design Document
--   **view\_index**: View Index
-    -   **compact\_running**: Indicates whether a compaction routine is currently running on the view
-    -   **disk\_size**: Size in bytes of the view as stored on disk
-    -   **language**: Language for the defined views
-    -   **purge\_seq**: The purge sequence that has been processed
-    -   **signature**: MD5 signature of the views for the design document
-    -   **update\_seq**: The update sequence of the corresponding database that has been indexed
-    -   **updater\_running**: Indicates if the view is currently being updated
-    -   **waiting\_clients**: Number of clients waiting on views from this design document
-    -   **waiting\_commit**: Indicates if there are outstanding commits to the underlying database that need to processed
+Views are used to obtain data stored within a database.
+Views are written using Javascript functions,
+and work by letting you search for content that matches specific criteria.
+The criteria are specified within the function,
+or supplied as arguments to the function.
 
 ### Querying a view
 
--   **Method**: `GET /db/_design/design-doc/_view/view-name`
+-   **Method**: `GET /db/_design/<design-doc>/_view/<view-name>`
 -   **Request**: None
 -   **Response**: JSON of the documents returned by the view
 -   **Roles permitted**: \_reader
+
+Executes the specified `view-name` from the specified `design-doc` design document.
 
 #### Query Arguments
 
 Argument | Description | Optional | Type | Default | Supported values
 ---------|-------------|----------|------|---------|-----------------
-`descending` | Return the documents in descending by key order | yes | boolean | false | 
-
-<table>
-<colgroup>
-<col width="5%" />
-<col width="57%" />
-<col width="2%" />
-<col width="5%" />
-<col width="2%" />
-<col width="26%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">Argument</th>
-<th align="left">Decription</th>
-<th align="left">Optional</th>
-<th align="left">Type</th>
-<th align="left">Default</th>
-<th align="left">Supported Values</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left"><code>descending</code></td>
-<td align="left">Return the documents in descending by key order</td>
-<td align="left">yes</td>
-<td align="left">boolean</td>
-<td align="left">false</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"><code>endkey</code></td>
-<td align="left">Stop returning records when the specified key is reached</td>
-<td align="left">yes</td>
-<td align="left">string or JSON array</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>endkey_docid</code></td>
-<td align="left">Stop returning records when the specified document ID is reached</td>
-<td align="left">yes</td>
-<td align="left">string</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"><code>group</code></td>
-<td align="left">Group the results using the reduce function to a group or single row</td>
-<td align="left">yes</td>
-<td align="left">boolean</td>
-<td align="left">false</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>group_level</code></td>
-<td align="left">Only applicable if the view uses complex keys, i.e. keys that are JSON arrays. Groups reduce results for the specified number of array fields.</td>
-<td align="left">yes</td>
-<td align="left">numeric</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"><code>include_docs</code></td>
-<td align="left">Include the full content of the documents in the response</td>
-<td align="left">yes</td>
-<td align="left">boolean</td>
-<td align="left">false</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>inclusive_end</code></td>
-<td align="left">included rows with the specified endkey</td>
-<td align="left">yes</td>
-<td align="left">boolean</td>
-<td align="left">true</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"><code>key</code></td>
-<td align="left">Return only documents that match the specified key. Note that keys are JSON values and must be URL-encoded.</td>
-<td align="left">yes</td>
-<td align="left">string</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>limit</code></td>
-<td align="left">Limit the number of the returned documents to the specified number</td>
-<td align="left">yes</td>
-<td align="left">numeric</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"><code>reduce</code></td>
-<td align="left">Use the reduce function</td>
-<td align="left">yes</td>
-<td align="left">boolean</td>
-<td align="left">true</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>skip</code></td>
-<td align="left">Skip this number of rows from the start</td>
-<td align="left">yes</td>
-<td align="left">numeric</td>
-<td align="left">0</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"><code>stale</code></td>
-<td align="left">Allow the results from a stale view to be used. This makes the request return immediately, even if the view has not been completely built yet. If this parameter is not given, a response will be returned only after the view has been built.</td>
-<td align="left">yes</td>
-<td align="left">string</td>
-<td align="left">false</td>
-<td align="left"><code>ok</code>: Allow stale views, <code>update_after</code>: Allow stale views, but update them immediately after the request</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>startkey</code></td>
-<td align="left">Return records starting with the specified key</td>
-<td align="left">yes</td>
-<td align="left">string or JSON array</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"><code>startkey_docid</code></td>
-<td align="left">Return records starting with the specified document ID</td>
-<td align="left">yes</td>
-<td align="left">string</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-</tbody>
-</table>
-
-Executes the specified `view-name` from the specified `design-doc` design document.
+`descending` | Return the documents in descending by key order. | yes | Boolean | false | 
+`endkey` | Stop returning records when the specified key is reached. | yes | String or JSON array | | 
+`endkey_docid` | Stop returning records when the specified document ID is reache.d | yes | String | | 
+`group` | Group the results using the reduce function to a group or single row. | yes | Boolean | false | 
+`group_level` | Only applicable if the view uses complex keys: keys that are JSON arrays. Groups reduce results for the specified number of array fields. | yes | Numeric | | 
+`include_docs` | Include the full content of the documents in the response. | yes | Boolean | false | 
+`inclusive_end` | Include rows with the specified end key. | yes | Boolean | true | 
+`key` | Return only documents that match the specified key. Note: Leys are JSON values, and must be URL-encoded. | yes | String | | 
+`limit` | Limit the number of returned documents to the specified value. | yes | Numeric | | 
+`reduce` | Use the reduce function. | yes | Boolean | true | 
+`skip` | Skip this number of rows from the start. | yes | Numeric | 0 | 
+`stale` | Allow the results from a stale view to be used. This makes the request return immediately, even if the view has not been completely built yet. If this parameter is not given, a response is returned only after the view has been built. | yes | String | false | `ok`: Allow stale views.<br/>`update_after`: Allow stale views, but update them immediately after the request.
+`startkey` | Return records starting with the specified key. | yes | String or JSON array | | 
+`startkey_docid` | Return records starting with the specified document ID. | yes | String | | 
 
 #### Querying Views and Indexes
 
-The definition of a view within a design document also creates an index based on the key information defined within each view. The production and use of the index significantly increases the speed of access and searching or selecting documents from the view.
+When a view is defined in a design document,
+a corresponding index is also created,
+based on the key information defined within the view.
+The index helps improve performance when using the view to access documents,
+for example when searching or selecting documents.
+To save time,
+the index is not populated with content until the view is used.
 
-However, the index is not updated when new documents are added or modified in the database. Instead, the index is generated or updated, either when the view is first accessed, or when the view is accessed after a document has been updated. In each case, the index is updated before the view query is executed against the database.
-
-View indexes are updated incrementally in the following situations:
+The index content is generated when the view is first used.
+The index content is updated incrementally and automatically when the view is used again after any one of the following three situations has occurred:
 
 -   A new document has been added to the database.
--   A document has been deleted from the database.
--   A document in the database has been updated.
+-   An existing document has been deleted from the database.
+-   An existing document in the database has been updated or modified in some way.
 
-View indexes are rebuilt entirely when the view definition changes. To achieve this, a 'fingerprint' of the view definition is created when the design document is updated. If the fingerprint changes, then the view indexes are entirely rebuilt. This ensures that changes to the view definitions are reflected in the view indexes.
+When a view is being applied to the database,
+a check is first made to see if any index updates should be performed.
+If any updates are required,
+they are completed before the view query is applied.
 
-> **note**
->
-> View index rebuilds occur when one view from the same view group (i.e. all the views defined within a single design document) needs to be rebuilt. For example, if you have a design document with three views, and you update the document, all three view indexes within the design document will be rebuilt.
+View indexes are rebuilt entirely when the view definition changes.
+This ensures that changes to the view definitions are reflected in the view indexes.
+To achieve this,
+a 'fingerprint' of the view definition is created whenever the design document is updated.
+If the fingerprint changes,
+then the view indexes are completely rebuilt.
 
-Because the view is updated when it has been queried, it can result in a delay in returned information when the view is accessed, especially if there are a large number of documents in the database and the view index does not exist. There are a number of ways to mitigate, but not completely eliminate, these issues. These include:
+<aside class="notice">View index rebuilds occur whenever a change occurs to any one view from all the views defined in the design document.
+For example,
+if you have a design document with three views,
+and you update the design document,
+all three view indexes within the design document are rebuilt.</aside>
 
--   Create the view definition (and associated design documents) on your database before allowing insertion or updates to the documents. If this is allowed while the view is being accessed, the index can be updated incrementally.
+The results returned by a view are updated when the view is queried.
+This means that there might be a delay in returning the results when the view is accessed,
+especially if there are a large number of documents in the database and the view index does not exist or is not current because the database content has been modified.
+
+It is not possible to eliminate these delays,
+but you might reduce them by trying the following techniques:
+
+-   Create the view definition in the design document in your database before inserting or updating documents. If this is allowed while the view is being accessed, the index can be updated incrementally.
 -   Manually force a view request from the database. You can do this either before users are allowed to use the view, or you can access the view manually after documents are added or updated.
 -   Use `/db/_changes` to monitor for changes to the database and then access the view to force the corresponding view index to be updated. See api-changes for more information.
 
