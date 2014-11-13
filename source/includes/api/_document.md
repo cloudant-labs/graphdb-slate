@@ -12,6 +12,11 @@ In addition to these two mandatory fields, documents can contain any other conte
 
 ### Create
 
+```http
+POST /$DATABASE HTTP/1.1
+Content-Type: application/json
+```
+
 ```shell
 curl https://$USERNAME.cloudant.com/$DATABASE \
      -X POST \
@@ -61,6 +66,10 @@ If you do not provide an `_id` field, Cloudant generates one automatically as a 
 
 ### Read
 
+```http
+GET /$DATABASE/$DOCUMENT_ID HTTP/1.1
+```
+
 ```shell
 curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID \
      -u $USERNAME
@@ -102,6 +111,10 @@ you can [query the database](#get-documents) for all documents.
 To fetch many documents at once, [query the database](#get-documents).
 
 ### Update
+
+```http
+PUT /$DATABASE/$DOCUMENT_ID HTTP/1.1
+```
 
 ```shell
 // make sure $JSON contains the correct `_rev` value!
@@ -160,6 +173,10 @@ This error prevents you overwriting data changed by other clients.</aside>
 
 ### Delete
 
+```http
+DELETE /$DATABASE/$DOCUMENT_ID?rev=$REV HTTP/1.1
+```
+
 ```shell
 // make sure $JSON contains the correct `_rev` value!
 curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID?rev=$REV \
@@ -196,6 +213,11 @@ To delete a document, make a DELETE request with the document's latest `_rev` in
 This error prevents you overwriting data changed by other clients.</aside>
 
 ### Bulk Operations
+
+```http
+POST /$DATABASE/_bulk_docs HTTP/1.1
+Content-Type: application/json
+```
 
 ```shell
 curl https://$USERNAME.cloudant.com/$DATABASE/_bulk_docs \

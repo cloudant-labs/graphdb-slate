@@ -6,6 +6,10 @@ All documents must be contained in a database.
 
 ### Create
 
+```http
+PUT /$DATABASE HTTP/1.1
+```
+
 ```shell
 curl https://$USERNAME.cloudant.com/$DATABASE \
     -X PUT \
@@ -34,6 +38,10 @@ account.db.create($DATABASE, function (err, body, headers) {
 To create a database, make a PUT request to `https://$USERNAME.cloudant.com/$DATABASE`.
 
 ### Read
+
+```http
+GET /$DATABASE HTTP/1.1
+```
 
 ```shell
 curl https://$USERNAME.cloudant.com/$DATABASE \
@@ -75,6 +83,10 @@ such as how many documents it contains.
 
 ### Get Databases
 
+```http
+GET /_all_dbs HTTP/1.1
+```
+
 ```shell
 curl https://$USERNAME.cloudant.com/_all_dbs \
      -u $USERNAME
@@ -107,6 +119,10 @@ To list all the databases in an account,
 make a GET request against `https://$USERNAME.cloudant.com/_all_dbs`.
 
 ### Get Documents
+
+```http
+GET /_all_docs HTTP/1.1
+```
 
 ```shell
 curl https://$USERNAME.cloudant.com/$DATABASE/_all_docs \
@@ -169,6 +185,10 @@ Argument | Description | Optional | Type | Default
 `startkey` | Return records starting with the specified key | yes | string |
 
 ### Get Changes
+
+```http
+GET /$DATABASE/_changes HTTP/1.1
+```
 
 ```shell
 curl https://$USERNAME.cloudant.com/$DATABASE/_changes \
@@ -292,6 +312,10 @@ To delete a databases and its contents, make a DELETE request to `https://$USERN
 
 ### Reading Permissions
 
+```http
+GET /$DATABASE/_security HTTP/1.1
+```
+
 ```shell
 curl https://$USERNAME.cloudant.com/$DATABASE/_security \
      -u $USERNAME
@@ -341,6 +365,11 @@ The `nobody` username indicates what rights are available to unauthenticated use
 In the example response, for instance, `nobody` has `_reader` permissions, making the database publicly readable by everyone.
 
 ### Modifying Permissions
+
+```http
+PUT /$DATABASE/_security HTTP/1.1
+Content-Type: application/json
+```
 
 ```shell
 curl https://$USERNAME.cloudant.com/$DATABASE/_security \
