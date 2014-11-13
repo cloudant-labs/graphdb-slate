@@ -78,15 +78,15 @@ Content-Type: application/json
 
 Argument | Description | Optional | Type | Default | Supported values
 ---------|-------------|----------|------|---------|-----------------
-`descending` | Return the documents in descending by key order. | yes | Boolean | false | 
+`descending` | Return the documents in 'descending by key' order. | yes | Boolean | false | 
 `endkey` | Stop returning records when the specified key is reached. | yes | String or JSON array | | 
-`endkey_docid` | Stop returning records when the specified document ID is reache.d | yes | String | | 
-`group` | Group the results using the reduce function to a group or single row. | yes | Boolean | false | 
+`endkey_docid` | Stop returning records when the specified document ID is reached. | yes | String | | 
+`group` | Using the reduce function, group the results to a group or single row. | yes | Boolean | false | 
 `group_level` | Only applicable if the view uses complex keys: keys that are JSON arrays. Groups reduce results for the specified number of array fields. | yes | Numeric | | 
 `include_docs` | Include the full content of the documents in the response. | yes | Boolean | false | 
-`inclusive_end` | Include rows with the specified end key. | yes | Boolean | true | 
-`key` | Return only documents that match the specified key. Note: Leys are JSON values, and must be URL-encoded. | yes | String | | 
-`limit` | Limit the number of returned documents to the specified value. | yes | Numeric | | 
+`inclusive_end` | Include rows with the specified endkey. | yes | Boolean | true | 
+`key` | Return only documents that match the specified key. Note: Keys are JSON values, and must be URL encoded. | yes | String | | 
+`limit` | Limit the number of returned documents to the specified count. | yes | Numeric | | 
 `reduce` | Use the reduce function. | yes | Boolean | true | 
 `skip` | Skip this number of rows from the start. | yes | Numeric | 0 | 
 `stale` | Allow the results from a stale view to be used. This makes the request return immediately, even if the view has not been completely built yet. If this parameter is not given, a response is returned only after the view has been built. | yes | String | false | `ok`: Allow stale views.<br/>`update_after`: Allow stale views, but update them immediately after the request.
@@ -314,167 +314,23 @@ but also the `startkey` and `endkey` parameter values.
 
 ### Querying a view using a list of keys
 
--   **Method**: `POST /db/_design/design-doc/_view/view-name`
--   **Request**: List of keys to be returned from specified view
--   **Response**: JSON of the documents returned by the view
--   **Roles permitted**: \_reader
+> Example request to return all recipes, where the key for the view matches either "clear apple juice" or "lemonade":
 
-#### Query Arguments
-
-<table>
-<colgroup>
-<col width="6%" />
-<col width="45%" />
-<col width="3%" />
-<col width="7%" />
-<col width="3%" />
-<col width="34%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">Argument</th>
-<th align="left">Decription</th>
-<th align="left">Optional</th>
-<th align="left">Type</th>
-<th align="left">Default</th>
-<th align="left">Supported Values</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left"><code>descending</code></td>
-<td align="left">Return the documents in descending by key order</td>
-<td align="left">yes</td>
-<td align="left">boolean</td>
-<td align="left">false</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"><code>endkey</code></td>
-<td align="left">Stop returning records when the specified key is reached</td>
-<td align="left">yes</td>
-<td align="left">string or JSON array</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>endkey_docid</code></td>
-<td align="left">Stop returning records when the specified document ID is reached</td>
-<td align="left">yes</td>
-<td align="left">string</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"><code>group</code></td>
-<td align="left">Group the results using the reduce function to a group or single row</td>
-<td align="left">yes</td>
-<td align="left">boolean</td>
-<td align="left">false</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>group_level</code></td>
-<td align="left">Only applicable if the view uses complex keys, i.e. keys that are JSON arrays. Groups reduce results for the specified number of array fields.</td>
-<td align="left">yes</td>
-<td align="left">numeric</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"><code>include_docs</code></td>
-<td align="left">Include the full content of the documents in the response</td>
-<td align="left">yes</td>
-<td align="left">boolean</td>
-<td align="left">false</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>inclusive_end</code></td>
-<td align="left">included rows with the specified endkey</td>
-<td align="left">yes</td>
-<td align="left">boolean</td>
-<td align="left">true</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"><code>key</code></td>
-<td align="left">Return only documents that match the specified key. Note that keys are JSON values and must be URL-encoded.</td>
-<td align="left">yes</td>
-<td align="left">string</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>limit</code></td>
-<td align="left">Limit the number of the returned documents to the specified number</td>
-<td align="left">yes</td>
-<td align="left">numeric</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"><code>reduce</code></td>
-<td align="left">Use the reduce function</td>
-<td align="left">yes</td>
-<td align="left">boolean</td>
-<td align="left">true</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>skip</code></td>
-<td align="left">Skip this number of rows from the start</td>
-<td align="left">yes</td>
-<td align="left">numeric</td>
-<td align="left">0</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"><code>stale</code></td>
-<td align="left">Allow the results from a stale view to be used. This makes the request return immediately, even if the view has not been completely built yet.</td>
-<td align="left">yes</td>
-<td align="left">string</td>
-<td align="left">false</td>
-<td align="left"><code>ok</code>: Allow stale views, <code>update_after</code>: Allow stale views, but update them immediately after the request</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>startkey</code></td>
-<td align="left">Return records starting with the specified key</td>
-<td align="left">yes</td>
-<td align="left">string or JSON array</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"><code>startkey_docid</code></td>
-<td align="left">Return records starting with the specified document ID</td>
-<td align="left">yes</td>
-<td align="left">string</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-</tbody>
-</table>
-
-Executes the specified `view-name` from the specified `design-doc` design document. Unlike the `GET` method for accessing views, the `POST` method supports the specification of explicit keys to be retrieved from the view results. The remainder of the `POST` view functionality is identical to the api-get-view API.
-
-For example, the request below will return all the recipes where the key for the view matches either “claret” or “clear apple cider” :
-
-```
+```sourceCode
 POST /recipes/_design/recipes/_view/by_ingredient
 Content-Type: application/json
 
 {
    "keys" : [
-      "claret",
-      "clear apple juice"
+      "clear apple juice",
+      "lemonade"
    ]
 }
 ```
 
-The returned view data contains the standard view information, but only where the keys match.
+> Example returned view data, containing the standard view information, but only where the keys match:
 
-``` json
+```json
 {
    "total_rows" : 26484,
    "rows" : [
@@ -497,13 +353,22 @@ The returned view data contains the standard view information, but only where th
 }
 ```
 
-#### Multi-document Fetching
+-   **Method**: `POST /db/_design/design-doc/_view/view-name`
+-   **Request**: List of keys to be returned from specified view
+-   **Response**: JSON of the documents returned by the view
+-   **Roles permitted**: \_reader
 
-By combining the `POST` method to a given view with the `include_docs=true` query argument you can obtain multiple documents from a database. The result is more efficient than using multiple api-get-doc requests.
+This method of requesting information from a database executes the specified `view-name` from the specified `design-doc` design document. However,
+unlike using [`GET`](#querying-a-view) to access views,
+the `POST` method allows you to specify the keys to use when retrieving the view results.
+In all other aspects,
+the `POST` method is identical to the [`GET`](#querying-a-view) API request.
 
-For example, sending the following request for ingredients matching “claret” and “clear apple juice”:
+### Multi-document Fetching
 
-```
+> Example request to obtain the full documents that match the listed keys:
+
+```sourceCode
 POST /recipes/_design/recipes/_view/by_ingredient?include_docs=true
 Content-Type: application/json
 
@@ -515,9 +380,9 @@ Content-Type: application/json
 }
 ```
 
-Returns the full document for each recipe:
+> Example response, returning the full document for each recipe:
 
-``` json
+```json
 {
    "offset" : 6324,
    "rows" : [
@@ -602,6 +467,9 @@ Returns the full document for each recipe:
    "total_rows" : 26484
 }
 ```
+
+Combining a `POST` request to a given view, with the `include_docs=true` query argument, enables you to retrieve multiple documents from a database.
+This technique is more efficient than using multiple [`GET`](#querying-a-view) API requests.
 
 ### Sending several queries to a view
 
