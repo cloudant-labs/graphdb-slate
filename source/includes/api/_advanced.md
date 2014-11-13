@@ -4,6 +4,10 @@ These endpoints provide information about the state of the cluster, details abou
 
 ### GET /_db_updates
 
+```http
+GET /_db_updates HTTP/1.1
+```
+
 ```shell
 curl https://$USERNAME.cloudant.com/_db_updates \
      -u $USERNAME
@@ -51,6 +55,10 @@ timeout | Number of milliseconds to wait for data in a `longpoll` or `continuous
 descending | Whether results should be returned in descending order, i.e. the latest event first. By default, the oldest event is returned first. | yes | boolean | false | 
 
 ### GET /$DB/_shards
+
+```http
+GET /$DATABASE/_shards HTTP/1.1
+```
 
 ```shell
 curl https://$USERNAME.cloudant.com/$DATABASE/_shards \
@@ -124,14 +132,20 @@ Returns informations about the shards in the cluster, specifically what nodes co
 
 The response's `shards` field contains an object whose keys are the hash value range constituting each shard, while each value is the array of nodes containing that a copy of that shard.
 
-### POST /$DB/_missing_revs
+### GET /$DB/_missing_revs
+
+```
+GET /$DATABASE/_missing_revs
+Content-Type: application/json
+```
 
 ```shell
 curl https://$USERNAME.cloudant.com/$DATABASE/_missing_revs \
      -X POST \
      -u "$USERNAME:$PASSWORD" \
      -H "Content-Type: application/json" \
-     -d "$JSON"
+     -d @request-body.json
+# where the file request-body.json contains the following:
 ```
 
 ```javascript
@@ -176,6 +190,10 @@ account.request({
 Given a list of document revisions, returns the document revisions that do not exist in the database.
 
 ### POST /$DB/_revs_diff
+
+```http
+POST /$DATABASE/_revs_diff HTTP/1.1
+```
 
 ```shell
 curl https://$USERNAME.cloudant.com/$DATABASE/_revs_diff \
@@ -245,6 +263,10 @@ account.request({
 });
 ```
 
+```http
+GET /$DATABASE/_revs_limit
+```
+
 ```shell
 curl https://$USERNAME.cloudant.com/$DATABASE/_revs_limit \
      -X GET \
@@ -262,6 +284,10 @@ Gets the number of past revisions of a document that Cloudant stores information
 <aside>Although the documents associated with past revisions are automatically removed, "tombstones" remain with the `_rev` value for that revision. If a document has more revisions than the value of `_revs_limit`, Cloudant will delete the tombstones of the oldest revisions.</aside>
 
 ### PUT /$DB/_revs_limit
+
+```http
+PUT /$DB/_revs_limit HTTP/1.1
+```
 
 ```shell
 curl https://$USERNAME.cloudant.com/_revs_limit \
@@ -305,6 +331,10 @@ Sets the maximum number of past revisions that Cloudant stores information on.
 
 ### GET /_membership
 
+```http
+GET /_membership HTTP/1.1
+```
+
 ```shell
 curl https://$USERNAME.cloudant.com/_membership \
      -u $USERNAME
@@ -343,6 +373,10 @@ account.request({
 Returns the names of nodes in the cluster. Currently active clusters are indicated in the `cluster_nodes` field, while `all_nodes` lists all nodes active or not.
 
 ### GET /_uuids
+
+```http
+GET /_uuids HTTP/1.1
+```
 
 ```shell
 curl https://$USERNAME.cloudant.com/_uuids \

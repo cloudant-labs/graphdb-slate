@@ -8,6 +8,11 @@ If you don't yet have an account, [sign up](https://cloudant.com/sign-up/).
 
 ### Ping
 
+```http
+GET / HTTP/1.1
+HOST: $USERNAME.cloudant.com
+```
+
 ```shell
 curl -u $USERNAME https://$USERNAME.cloudant.com
 ```
@@ -32,4 +37,4 @@ account.request(function (err, body) {
 });
 ```
 
-To see if your Cloudant account is accessible, make a `GET` against `https://$USERNAME.cloudant.com`.
+To see if your Cloudant account is accessible, make a `GET` against `https://$USERNAME.cloudant.com`. If you misspelled your account name, you might get a 503 error.

@@ -90,7 +90,9 @@ Creates a new index in the specified database using the information supplied in 
 ```http
 POST /db/_index HTTP/1.1
 Content-Type: application/json
+```
 
+```json
 {
     "index": {
         "fields": ["foo"]

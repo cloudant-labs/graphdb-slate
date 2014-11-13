@@ -42,6 +42,7 @@ account.request(function (err, body) {
 With Basic authentication, you pass along your credentials as part of every request by adding an `Authentication` header. The value is the base-64 encoding of your username, followed by `:`, followed by your password. However, most HTTP libraries will do this encoding for you.
 
 ### Cookies
+
 > Get a cookie
 
 ```http

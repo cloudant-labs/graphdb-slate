@@ -17,6 +17,14 @@ The credentials you use to log in to the dashboard automatically have `_admin` p
 
 ### Managing Permissions
 
+```http
+POST /api/set_permissions HTTP/1.1
+Host: cloudant.com
+Content-Type: application/x-www-form-urlencoded
+
+username=$USERNAME_OR_API_KEY&database=$ACCOUNT_NAME/$DATABASE&roles=_reader&roles=_writer
+```
+
 ```shell
 curl -X POST https://cloudant.com/api/set_permissions \
   -H "Content-Type: application/x-www-form-urlencoded" \
@@ -48,6 +56,11 @@ To modify a user's permissions, use `https://cloudant.com/api/set_permissions`.
 <aside>Unlike most Cloudant endpoints, `/api/set_permissions` accepts form-encoded data rather than a JSON object in the request body.</aside>
 
 ### Creating API Keys
+
+```http
+POST /api/generate_api_key HTTP/1.1
+Host: cloudant.com
+```
 
 ```shell
 curl -X POST https://cloudant.com/api/generate_api_key

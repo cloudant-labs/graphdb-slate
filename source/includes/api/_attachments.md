@@ -12,6 +12,11 @@ you would specify the attachment MIME type as `image/jpeg`.
 
 ### Create / Update
 
+```http
+PUT /$DATABASE/$DOCUMENT_ID/$ATTACHMENT?rev=$REV HTTP/1.1
+Content-Type: $$ATTACHMENT_MIME_TYPE
+```
+
 ```shell
 curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID/$ATTACHMENT?rev=$REV \
      -u $USERNAME \
@@ -62,12 +67,14 @@ simply ensure that the `$ATTACHMENT` value for each attachment is unique with th
 
 ### Read
 
+```http
+GET /$DATABASE/$DOCUMENT_ID/$ATTACHMENT HTTP/1.1
+```
+
 ```shell
 curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID/$ATTACHMENT \
-     -u $USERNAME
-
-curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID/$ATTACHMENT \
-     -u $USERNAME > blob_content.dat
+     -u $USERNAME >blob_content.dat
+# store the response content into a file for further processing.
 ```
 
 ```javascript
@@ -85,9 +92,12 @@ db.attachment.get($DOCUMENT_ID, $FILENAME, function (err, body) {
 To retrieve an attachment,
 make a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID/$ATTACHMENT`.
 The body of the response is the raw content of the attachment.
-You might pipe the response content directly into a file, for further processing.
 
 ### Delete
+
+```http
+DELETE /$DATABASE/$DOCUMENT_ID/$ATTACHMENT?rev=$REV HTTP/1.1
+```
 
 ```shell
 curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID/$ATTACHMENT?rev=$REV \
@@ -126,7 +136,8 @@ the response is a [409 error](#errors).
 Inline attachments are attachments included as part of the JSON content.
 An example of JSON content that includes an inline attachment of a jpeg image is as follows:
 
-```{
+```json
+{
   "_id":"document_with_attachment",
   "_attachments":
   {
@@ -136,6 +147,7 @@ An example of JSON content that includes an inline attachment of a jpeg image is
       "data": "iVBORw0KGgoAA... ...AASUVORK5CYII="
     }
   }
-}```
+}
+```
 
 [mime]: http://en.wikipedia.org/wiki/Internet_media_type#List_of_common_media_types
