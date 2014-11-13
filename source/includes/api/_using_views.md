@@ -119,7 +119,10 @@ you are using stale view data.
 
 #### Sorting Returned Rows
 
-Each element within the returned array is sorted using native UTF-8 sorting according to the contents of the key portion of the emitted content. The basic order of output is as follows:
+The data returned by a view query is in the form of an array.
+Each element within the array is sorted using native UTF-8 sorting.
+The sort is applied to the key HERE
+according to the contents of the key portion of the emitted content. The basic order of output is as follows:
 
 -   `null`
 -   `false`
