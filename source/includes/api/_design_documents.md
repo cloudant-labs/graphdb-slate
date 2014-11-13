@@ -354,23 +354,16 @@ Update validators get four arguments:
 
 ### Retrieving information about a design document
 
--   **Method**: `GET /db/_design/design-doc/_info`
--   **Request**: None
--   **Response**: JSON of the design document information
--   **Roles permitted**: \_reader
-
-Obtains information about a given design document, including the index, index size and current status of the design document and associated index information.
-
-For example, to get the information for the `recipes` design document:
+> Example to get the information for the `recipes` design document:
 
 ```
 GET /recipes/_design/recipes/_info
 Content-Type: application/json
 ```
 
-This returns the following JSON structure:
+> Example JSON structure response:
 
-``` json
+```json
 {
    "name" : "recipes"
    "view_index" : {
@@ -387,6 +380,13 @@ This returns the following JSON structure:
 }
 ```
 
+-   **Method**: `GET /db/_design/design-doc/_info`
+-   **Request**: None
+-   **Response**: JSON of the design document information
+-   **Roles permitted**: \_reader
+
+Obtains information about a given design document, including the index, index size and current status of the design document and associated index information.
+
 The individual fields in the returned JSON structure are detailed below:
 
 -   **name**: Name/ID of Design Document
@@ -400,4 +400,3 @@ The individual fields in the returned JSON structure are detailed below:
     -   **updater\_running**: Indicates if the view is currently being updated
     -   **waiting\_clients**: Number of clients waiting on views from this design document
     -   **waiting\_commit**: Indicates if there are outstanding commits to the underlying database that need to processed
-

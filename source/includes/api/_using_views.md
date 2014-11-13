@@ -17,6 +17,65 @@ Executes the specified `view-name` from the specified `design-doc` design docume
 
 #### Query Arguments
 
+> Example of retrieving a list of the first five documents from a database, applying the user-created `by_title` view:
+
+```sourceCode
+GET /<database>/_design/<design-doc>/_view/by_title?limit=5
+Accept: application/json
+Content-Type: application/json
+```
+
+> Example response:
+
+```json
+{
+   "offset" : 0,
+   "rows" : [
+      {
+         "id" : "3-tiersalmonspinachandavocadoterrine",
+         "key" : "3-tier salmon, spinach and avocado terrine",
+         "value" : [
+            null,
+            "3-tier salmon, spinach and avocado terrine"
+         ]
+      },
+      {
+         "id" : "Aberffrawcake",
+         "key" : "Aberffraw cake",
+         "value" : [
+            null,
+            "Aberffraw cake"
+         ]
+      },
+      {
+         "id" : "Adukiandorangecasserole-microwave",
+         "key" : "Aduki and orange casserole - microwave",
+         "value" : [
+            null,
+            "Aduki and orange casserole - microwave"
+         ]
+      },
+      {
+         "id" : "Aioli-garlicmayonnaise",
+         "key" : "Aioli - garlic mayonnaise",
+         "value" : [
+            null,
+            "Aioli - garlic mayonnaise"
+         ]
+      },
+      {
+         "id" : "Alabamapeanutchicken",
+         "key" : "Alabama peanut chicken",
+         "value" : [
+            null,
+            "Alabama peanut chicken"
+         ]
+      }
+   ],
+   "total_rows" : 2667
+}
+```
+
 Argument | Description | Optional | Type | Default | Supported values
 ---------|-------------|----------|------|---------|-----------------
 `descending` | Return the documents in descending by key order. | yes | Boolean | false | 
@@ -34,7 +93,7 @@ Argument | Description | Optional | Type | Default | Supported values
 `startkey` | Return records starting with the specified key. | yes | String or JSON array | | 
 `startkey_docid` | Return records starting with the specified document ID. | yes | String | | 
 
-#### Querying Views and Indexes
+### Indexes
 
 When a view is defined in a design document,
 a corresponding index is also created,
@@ -96,15 +155,15 @@ For example, to access the existing stale view `by_recipe` in the `recipes` desi
 you would use a request similar to:
 <code>/recipes/_design/recipes/_view/by_recipe?stale=ok</code>
 
-#### Accessing a stale view
+### Accessing a stale view
 
 Making use of a stale view has consequences.
 In particular,
 accessing a stale view:
 
-1   Does not trigger a rebuild of the view indexes, even if there have been changes since the last access.
-2   Returns the current (existing) version of the view index, if it exists.
-3   Returns an empty result set if the view index does exist.
+1.	Does not trigger a rebuild of the view indexes, even if there have been changes since the last access.
+2.	Returns the current (existing) version of the view index, if it exists.
+3.	Returns an empty result set if the view index does exist.
 
 A useful variation is to force an update to the index,
 after a stale view has been returned.
@@ -113,103 +172,23 @@ When `update_after` is supplied,
 the update process is started when the view information has been returned to the client.
 
 You can confirm that you are using stale view data by making use of the `update_seq` value returned in the view information.
-The returned value can be compared to the current update sequence exposed in the database information (returned by [Reading details about the database](#read).
+The stale view data value can be compared to the current update sequence that is available in the database information ([Reading details about the database](#read)).
 If the values are different,
 you are using stale view data.
 
-#### Sorting Returned Rows
+### Sorting Returned Rows
 
-The data returned by a view query is in the form of an array.
-Each element within the array is sorted using native UTF-8 sorting.
-The sort is applied to the key defined in the view function.
+> Example of requesting the last five records by reversing the sort order:
 
-The basic order of output is as follows:
-
-Value | Order
-------|------
-`null` | First
-`false` |
-`true` |
-Numbers |
-Text (lowercase) |
-Text (uppercase) |
-Arrays (according to the values of each element, using the order given in this table) |
-Objects (according to the values of keys, in key order using the order given in this table) | Last
-
-You can reverse the order of the returned view information by setting the `descending` query value <code>true</code>.
-
-For example, to retrieve a list of the first five documents from a database,
-using the user-created `by_title` view,
-use a request similar to:
-
-``` json
-GET /<database>/_design/<design-doc>/_view/by_title?limit=5
-Accept: application/json
-Content-Type: application/json</codeblock>
-```
-The result would be similar to:
-
-``` json
-{
-   "offset" : 0,
-   "rows" : [
-      {
-         "id" : "3-tiersalmonspinachandavocadoterrine",
-         "key" : "3-tier salmon, spinach and avocado terrine",
-         "value" : [
-            null,
-            "3-tier salmon, spinach and avocado terrine"
-         ]
-      },
-      {
-         "id" : "Aberffrawcake",
-         "key" : "Aberffraw cake",
-         "value" : [
-            null,
-            "Aberffraw cake"
-         ]
-      },
-      {
-         "id" : "Adukiandorangecasserole-microwave",
-         "key" : "Aduki and orange casserole - microwave",
-         "value" : [
-            null,
-            "Aduki and orange casserole - microwave"
-         ]
-      },
-      {
-         "id" : "Aioli-garlicmayonnaise",
-         "key" : "Aioli - garlic mayonnaise",
-         "value" : [
-            null,
-            "Aioli - garlic mayonnaise"
-         ]
-      },
-      {
-         "id" : "Alabamapeanutchicken",
-         "key" : "Alabama peanut chicken",
-         "value" : [
-            null,
-            "Alabama peanut chicken"
-         ]
-      }
-   ],
-   "total_rows" : 2667
-}
-```
-
-To request the last five records,
-you would add the Requesting the same in descending order will reverse the entire view content. For example the request
-
-```
-GET /recipes/_design/recipes/_view/by_title?limit=5&descending=true
+```sourceCode
+GET /<database>/_design/<design-doc>/_view/by_title?limit=5&descending=true
 Accept: application/json
 Content-Type: application/json
 ```
 
-Returns the last 5 records from the view:
+> Example response:
 
-``` json
+```json
 {
    "offset" : 0,
    "rows" : [
@@ -258,25 +237,51 @@ Returns the last 5 records from the view:
 }
 ```
 
-The sorting direction is applied before the filtering is applied using the `startkey` and `endkey` query arguments. For example the following query:
+The data returned by a view query is in the form of an array.
+Each element within the array is sorted using native UTF-8 sorting.
+The sort is applied to the key defined in the view function.
 
-```
+The basic order of output is as follows:
+
+Value | Order
+------|------
+`null` | First
+`false` |
+`true` |
+Numbers |
+Text (lowercase) |
+Text (uppercase) |
+Arrays (according to the values of each element, using the order given in this table) |
+Objects (according to the values of keys, in key order using the order given in this table) | Last
+
+You can reverse the order of the returned view information by setting the `descending` query value <code>true</code>.
+
+### Specifying Start and End Values
+
+> Example of filtering using `startkey` and `endkey` query arguments:
+
+```sourceCode
 GET /recipes/_design/recipes/_view/by_ingredient?startkey=%22carrots%22&endkey=%22egg%22
 Accept: application/json
 Content-Type: application/json
 ```
 
-Will operate correctly when listing all the matching entries between “carrots” and `egg`. If the order of output is reversed with the `descending` query argument, the view request will return no entries:
+> Useful results would be returned, because "carrots" is alphabetically before "egg".
 
+```sourceCode
 ```
+
+> Example of <i>incorrect</i> filtering and reversing the order of output using the `descending` query argument:
+
+```sourceCode
 GET /recipes/_design/recipes/_view/by_ingredient?descending=true&startkey=%22carrots%22&endkey=%22egg%22
 Accept: application/json
 Content-Type: application/json
 ```
 
-The returned result is empty:
+> The view request returns no entries, because "carrots" is alphabetically before "egg". The returned result is empty:
 
-``` json
+```json
 {
    "total_rows" : 26453,
    "rows" : [],
@@ -284,19 +289,28 @@ The returned result is empty:
 }
 ```
 
-The results will be empty because the entries in the view are reversed before the key filter is applied, and therefore the `endkey` of “egg” will be seen before the `startkey` of “carrots”, resulting in an empty list.
+> Example of <i>correct</i> filtering and reversing the order of output by using the `descending` query argument, and reversing the `startkey` and `endkey` query arguments:
 
-Instead, you should reverse the values supplied to the `startkey` and `endkey` parameters to match the descending sorting applied to the keys. Changing the previous example to:
-
-```
+```sourceCode
 GET /recipes/_design/recipes/_view/by_ingredient?descending=true&startkey=%22egg%22&endkey=%22carrots%22
 Accept: application/json
 Content-Type: application/json
 ```
 
-#### Specifying Start and End Values
-
 The `startkey` and `endkey` query arguments can be used to specify the range of values to be displayed when querying the view.
+
+The sort direction is always applied first.
+Next, filtering is applied using the `startkey` and `endkey` query arguments.
+This means that it is possible to have empty view results because the sorting and filtering do not make sense in combination.
+
+For example,
+if you have a database that returns ten results when viewing with a `startkey` of "alpha" and an `endkey` of "beta",
+you would get no results when reversing the order.
+The reason is that the entries in the view are reversed before the key filter is applied.
+Therefore the `endkey` of "beta" is seen before the `startkey` of "alpha", resulting in an empty list.
+
+The solution is to reverse not just the sort order,
+but also the `startkey` and `endkey` parameter values.
 
 ### Querying a view using a list of keys
 
