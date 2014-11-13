@@ -70,35 +70,52 @@ and you update the design document,
 all three view indexes within the design document are rebuilt.</aside>
 
 The results returned by a view are updated when the view is queried.
-This means that there might be a delay in returning the results when the view is accessed,
-especially if there are a large number of documents in the database and the view index does not exist or is not current because the database content has been modified.
+This means that there might be a delay in returning the results when the view is accessed.
+A delay is affected by the number of documents in the database, and whether the view index does not exist or is not current because the database content has been modified.
 
 It is not possible to eliminate these delays,
 but you might reduce them by trying the following techniques:
 
--   Create the view definition in the design document in your database before inserting or updating documents. If this is allowed while the view is being accessed, the index can be updated incrementally.
--   Manually force a view request from the database. You can do this either before users are allowed to use the view, or you can access the view manually after documents are added or updated.
--   Use `/db/_changes` to monitor for changes to the database and then access the view to force the corresponding view index to be updated. See api-changes for more information.
+-   Create the view definition in the design document in your database before inserting or updating documents. This causes incremental updates to the index when the view is accessed.
+-   Manually force a view request from the database. Do this either before users are allowed to use the view, or by accessing the view manually after documents are added or updated.
+-   Use `/db/_changes` to monitor for changes to the database. If a change occurs, access the view to force an update of the corresponding view index. See [Getting database changes](#get-changes) for more information.
 
-None of these can completely eliminate the need for the indexes to be rebuilt or updated when the view is accessed, but they may lessen the effects on end-users of the index update affecting the user experience.
+<aside class="notice">None of these mitigations completely eliminate the need for the indexes to be rebuilt or updated when the view is accessed.</aside>
 
-Another alternative is to allow users to access a 'stale' version of the view index, rather than forcing the index to be updated and displaying the updated results. Using a stale view may not return the latest information, but will return the results of the view query using an existing version of the index.
+If speed of response is more important than having completely up-to-date data,
+an alternative is to allow users to access an old version of the view index.
+In effect,
+the user has an immediate response from 'stale' index content,
+rather than waiting for the index to be updated.
+Depending on the document contents,
+using a stale view might not return the latest information.
+Nevertheless, a stale view returns the results of the view query quickly,
+by using an existing version of the index.
 
-For example, to access the existing stale view `by_recipe` in the `recipes` design document:
+For example, to access the existing stale view `by_recipe` in the `recipes` design document,
+you would use a request similar to:
+<code>/recipes/_design/recipes/_view/by_recipe?stale=ok</code>
 
-```
-/recipes/_design/recipes/_view/by_recipe?stale=ok
-```
+#### Accessing a stale view
 
-Accessing a stale view:
+Making use of a stale view has consequences.
+In particular,
+accessing a stale view:
 
--   Does not trigger a rebuild of the view indexes, even if there have been changes since the last access.
--   Returns the current version of the view index, if a current version exists.
--   Returns an empty result set if the given view index does exist.
+1   Does not trigger a rebuild of the view indexes, even if there have been changes since the last access.
+2   Returns the current (existing) version of the view index, if it exists.
+3   Returns an empty result set if the view index does exist.
 
-As an alternative, you use the `update_after` value to the `stale` parameter. This causes the view to be returned as a stale view, but for the update process to be triggered after the view information has been returned to the client.
+A useful variation is to force an update to the index,
+after a stale view has been returned.
+Do this by supplying the `update_after` value to the `stale` parameter.
+When `update_after` is supplied,
+the update process is started when the view information has been returned to the client.
 
-In addition to using stale views, you can also make use of the `update_seq` field in the view information. The returned value can be compared to the current update sequence exposed in the database information (returned by api-get-db).
+You can confirm that you are using stale view data by making use of the `update_seq` value returned in the view information.
+The returned value can be compared to the current update sequence exposed in the database information (returned by [Reading details about the database](#read).
+If the values are different,
+you are using stale view data.
 
 #### Sorting Returned Rows
 
