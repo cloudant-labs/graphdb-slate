@@ -12,7 +12,7 @@ then
     #give everybody read access and docs-testb admin access
     curl -X PUT "https://$1:$2@docs-testb.cloudant.com/${TRAVIS_BRANCH}/_security" -d '{"cloudant": {
         "kimstebel": ["_reader"],
-        "warmana": ["_reader"],
+        "warmanaibm": ["_reader"],
         "bradnoble": ["_reader"],
         "reader": ["_reader"],
         "bradley-holt": ["_reader"],
