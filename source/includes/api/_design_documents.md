@@ -42,7 +42,7 @@ All queries operate on pre-defined indexes defined in design documents.
 These indexes are:
 
 * [Search](#search)
-* [MapReduce](#mapreduce-views)
+* [MapReduce](#creating-views)
 * [Geo](#geo)
 
 For example,

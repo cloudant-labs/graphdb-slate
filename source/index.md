@@ -30,7 +30,6 @@ includes:
   - api/creating_views
   - api/using_views
   - api/search
-  - api/mapreduce
   - api/replication
   - api/advanced
 #  - api/errors

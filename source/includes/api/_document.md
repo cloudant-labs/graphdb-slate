@@ -166,7 +166,7 @@ db.insert($JSON, $JSON._id, function (err, body, headers) {
 }
 ```
 
-To update a document, make a PUT request with the updated JSON content *and* the latest `_rev` value to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID`.
+To update (or create) a document, make a PUT request with the updated JSON content *and* the latest `_rev` value (not needed for creating new documents) to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID`.
 
 <aside>If you fail to provide the latest `_rev`, Cloudant responds with a [409 error](#errors).
 This error prevents you overwriting data changed by other clients.</aside>
