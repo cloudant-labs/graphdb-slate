@@ -17,6 +17,8 @@ then
         "reader": ["_reader"],
         "bradley-holt": ["_reader"],
         "ten-eleven": ["_reader"],
+        "elsmore": ["_reader"],
+        "rajsingh": ["_reader"],
         "docs-testb":["_reader","_writer","_admin","_replicator"]}}'
   fi
 else
