@@ -1,10 +1,9 @@
 ## Using Views
 
-Views are used to obtain data stored within a database.
-Views are written using Javascript functions,
-and work by letting you search for content that matches specific criteria.
-The criteria are specified within the function,
-or supplied as arguments to the function.
+View enable you to search for content within a database,
+that matches specific criteria.
+The criteria are specified within the view definition,
+or supplied as arguments when you use the view.
 
 ### Querying a view
 
