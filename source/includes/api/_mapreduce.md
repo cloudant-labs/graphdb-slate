@@ -1,6 +1,6 @@
-## MapReduce
+## MapReduce Views
 
-> Example design document:
+> Example design document with a single MapReduce index:
 
 ```json
 {
@@ -19,7 +19,7 @@
 ```json
 {
   "map": "function (doc) {
-      if (doc.kingdom === 'animal') {
+    if (doc.kingdom === 'animal') {
         emit(doc.order, doc.species);
       }
     }",
@@ -27,89 +27,156 @@
 }
 ```
 
-MapReduce is a process for querying data sets. They're composed of a `map` function that returns specified info from your documents, and a `reduce` function that combines those results into a single value. `emit` is a function within `map` that determines what keys and values to index. 
+MapReduce is a process for querying data sets. MapReduce views, also known as "CouchDB views" or just "views", are composed of a `map` function that returns specified information from your documents, and an optional `reduce` function that combines those results into a single value.
 
 MapReduce indexes are used for extracting data and presenting it in a specific order, building efficient indexes to find documents by any value or structure within them, and representing relationships among documents with these indexes. 
 
-`map` functions run once for every document in the database, which appear as the `doc` parameter. The optional `reduce` field can be one of the following functions, or a [custom function](#custom-reduces).
-
-Function Name | Description
---------------|-------------
-`_sum` | Produces the sum of all values for a key. Values must be numeric.
-`_count` | Produces the row count for a given key. Values can be any valid JSON.
-`_stats` | Produces a JSON structure containing sum, count, min, max and sum squared. Values must be numeric.
-
-### Custom Reduces
-
-> Example reduce function:
+### Map functions
 
 ```
-// manually count unique keys
-function (keys, values, rereduce) {
-  if (rereduce){
-    // Given an array of counts, sum them
-    return values.reduce(function (a, b) {
-      return a + b;
-    }, 0);
-  } else {
-    // Given an array of keys, count them
-    return values.length;
+function(doc) {
+  emit(doc._id, doc);
+}
+```
+
+The function contained in the map field is a Javascript function that is called for each document in the database. The map function takes the document as an argument and optionally calls the `emit` function one or more times to emit pairs of keys and values. The simplest example of a map function is this:
+
+The result will be that the view contains every document with the key being the id of the document, effectively creating a copy of the database.
+
+#### Indexing a field
+
+```
+function(doc) {
+  if (doc.foo) {
+    emit(doc._id, doc.foo);
   }
 }
 ```
 
-Reduces are called with three parameters: `key`, `values` and `rereduce`. Keys will be a list of keys as emitted by the `map` function, or null; `values` will be a list of values for each element in `keys`; and `rereduce` will be `true` or `false`.
+This map function checks whether the object has a `foo` field and emits the value of this field. This allows you to query against the value of the foo field.
 
-When `rereduce` is `false`, `keys` will be an array of arrays representing unique key and document ID pairs emitted by the index's `map` function, while `values` will be an array of values emitted by the index's `map` function. For example:
+#### An index for a one to many relationship
 
-* keys: `[[key1, idA], [key1, idB], [key1, idC], [key2, idA], [key2, idD], [key3, idA]`
-* values: `[key1value1, key1value2. key1value3, key2value1, key2value2, key3value1]`
+```
+function(doc) {
+  if (doc.friends) {
+    for (friend in friends) {
+      emit(doc._id, { "_id": friend });
+    }
+  }
+}
+```
 
-When `rereduce` is `true`, `keys` will be `null`, while `values` will be an array of values returned by past iterations of the `reduce` function. For example:
+If the object passed to `emit` has an `_id` field, a view query with `include_docs` set to `true` will contain the document with the given ID.
 
-* keys: `null`
-* values: `[6, 3, 7]`
+#### Complex Keys
+
+Keys are not limited to simple values. You can use arbitrary JSON values to influence sorting.
+
+When the key is an array, view results can be grouped by a sub-section of the key. For example, if keys have the form [year, month, day] then results can be reduced to a single value or by year, month, or day. See HttpViewApi for more information. 
+
+### Reduce functions
+
+```
+function (key, values, rereduce) {
+  return sum(values);
+}
+```
+
+If a view has a reduce function, it is used to produce aggregate results for that view. A reduce function is passed a set of intermediate values and combines them to a single value. Reduce functions must accept, as input, results emitted by its corresponding map function '''as well as results returned by the reduce function itself'''. The latter case is referred to as a ''rereduce''.
+
+Here is an example of a reduce function:
+
+Reduce functions are passed three arguments in the order ''key'', ''values'', and ''rereduce''.
+
+Reduce functions must handle two cases:
+
+1.  When `rereduce` is false:
+
+-   `key` will be an array whose elements are arrays of the form `[key,id]`, where `key` is a key emitted by the map function and ''id'' is that of the document from which the key was generated.
+-   `values` will be an array of the values emitted for the respective elements in `keys`
+-   i.e. `reduce([ [key1,id1], [key2,id2], [key3,id3] ], [value1,value2,value3], false)`
+
+1.  When `rereduce` is true:
+
+-   `key` will be `null`.
+-   `values` will be an array of values returned by previous calls to the reduce function.
+-   i.e. `reduce(null, [intermediate1,intermediate2,intermediate3], true)`\`
+
+Reduce functions should return a single value, suitable for both the ''value'' field of the final view and as a member of the ''values'' array passed to the reduce function.
+
+Often, reduce functions can be written to handle rereduce calls without any extra code, like the summation function above. In that case, the ''rereduce'' argument can be ignored.
+
+#### Built-in reduce functions
+
+For performance reasons, a few simple reduce functions are built in. To use one of the built-in functions, put its name into the `reduce` field of the view object in your design document.
+
+<table>
+<colgroup>
+<col width="11%" />
+<col width="88%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Function</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>_sum</code></td>
+<td align="left">Produces the sum of all values for a key, values must be numeric</td>
+</tr>
+<tr class="even">
+<td align="left"><code>_count</code></td>
+<td align="left">Produces the row count for a given key, values can be any valid json</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>_stats</code></td>
+<td align="left">Produces a json structure containing sum, count, min, max and sum squared, values must be numeric</td>
+</tr>
+</tbody>
+</table>
 
 By feeding the results of `reduce` functions back into the `reduce` function, MapReduce is able to split up the analysis of huge datasets into discrete, parallelized tasks, which can be completed much faster.
 
-### Queries
+### Dbcopy
 
-```shell
-# N.B.: $DESIGN_ID should include the `_design/` prefix
-curl https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_view/$MAPREDUCE_INDEX \
-     -u $USERNAME
-```
+If the `dbcopy` field of a view is set, the view contents will be written to a database of that name. If `dbcopy` is set, the view must also have a reduce function. For every key/value pair created by a reduce query with `group` set to `true`, a document will be created in the dbcopy database. If the database does not exist, it will be created. The documents created have the following fields:
 
-```javascript
-var nano = require('nano');
-var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
-var db = account.use($DATABASE);
+<table>
+<colgroup>
+<col width="18%" />
+<col width="81%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Field</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>key</code></td>
+<td align="left">The key of the view result. This can be a string or an array.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>value</code></td>
+<td align="left">The value calculated by the reduce function.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>_id</code></td>
+<td align="left">The ID is a hash of the key.</td>
+</tr>
+<tr class="even">
+<td align="left"><code>salt</code></td>
+<td align="left">This value is an implementation detail used internally.</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>partials</code></td>
+<td align="left">This value is an implementation detail used internally.</td>
+</tr>
+</tbody>
+</table>
 
-// N.B.: $DESIGN_ID should not include the `_design/` prefix
-db.view($DESIGN_ID, $MAPREDUCE_INDEX, function (err, res) {
-  if (!err) {
-    console.log(doc);
-  }
-});
-```
 
-Once you've got an index written, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_view/$INDEX_NAME`.
-
-**Query Parameters**
-
-Argument | Description | Optional | Type | Default | Supported Values
----------|------------|----------|------|---------|-----------------
-descending | Return the documents in descending by key order | yes | boolean | false | 
-endkey | Stop returning records when the specified key is reached | yes | string or JSON array |  |  
-endkey_docid | Stop returning records when the specified document ID is reached | yes | string |  |  
-group | Group the results using the reduce function to a group or single row | yes | boolean | false | 
-group_level | Only applicable if the view uses complex keys, i.e. keys that are JSON arrays. Groups reduce results for the specified number of array fields. | yes | numeric |  | 
-include_docs | Include the full content of the documents in the response | yes | boolean | false | 
-inclusive_end | included rows with the specified endkey | yes | boolean | true |  
-key | Return only documents that match the specified key. Note that keys are JSON values and must be URL-encoded. | yes | string |  |  
-limit | Limit the number of the returned documents to the specified number | yes | numeric |  | 
-reduce | Use the reduce function | yes | boolean | true |  
-skip | Skip this number of rows from the start | yes | numeric | 0 | 
-stale | Allow the results from a stale view to be used. This makes the request return immediately. If this parameter is not given, a response will be returned after the view has been built. | yes | string | false | ok: Allow stale views, update_after: Allow stale views but update them after the request
-startkey | Return records starting with the specified key | yes | string or JSON array |  |  
-startkey_docid | Return records starting with the specified document ID | yes | string |  |  

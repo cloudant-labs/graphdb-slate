@@ -4,7 +4,7 @@ Instead of storing data in a document,
 you might also have special documents that store other content, such as functions.
 The special documents are called "design documents".
 
-Design documents are [documents](#documents) that have an `_id` beginning with `_design/`.
+Design documents are [documents](#documents) that have an `_id` beginning with `_design/`. They can thus be read and updated like any other document in the database.
 Cloudant reads specific fields and values of design documents as functions.
 Design documents are used to [build indexes](#indexes), [validate updates](#update-validators), and [format query results](#list-functions).
 
@@ -14,13 +14,35 @@ To distinguish between them,
 standard documents have an `_id` indicated by `$DOCUMENT_ID`,
 while design documents have an `_id` indicated by `$DESIGN_ID`.
 
+The structure of design document is as follows:
+
+-   **\_id**: Design Document ID
+-   **\_rev**: Design Document Revision
+-   **views (optional)**: an object describing MapReduce views
+    -   **viewname** (one for each view): View Definition
+        -   **map**: Map Function for the view
+        -   **reduce (optional)**: Reduce Function for the view
+        -   **dbcopy (optional)**: Database name to store view results in
+-   **indexes (optional)**: an object describing search indexes
+    -   **index name** (one for each index): Index definition
+        -   **analyzer**: Object describing the analyzer to be used or an object with the following fields:
+            -   **name**: Name of the analyzer. Valid values are `standard`, `email`, `keyword`, `simple`, `whitespace`, `classic`, `perfield`.
+            -   **stopwords (optional)**: An array of stop words. Stop words are words that should not be indexed. If this array is specified, it overrides the default list of stop words. The default list of stop words depends on the analyzer. The list of stop words for the standard analyzer is: "a", "an", "and", "are", "as", "at", "be", "but", "by", "for", "if", "in", "into", "is", "it", "no", "not", "of", "on", "or", "such", "that", "the", "their", "then", "there", "these", "they", "this", "to", "was", "will", "with".
+            -   **default (for the per field analyzer)**: default language to use if there is no language specified for the field
+            -   **fields (for the per field analyzer)**: An object specifying which language to use to analyze each field of the index. Field names in the object correspond to field names in the index (i.e. the first parameter of the index function). The values of the fields are the languages to be used, e.g. "english".
+        -   **index**: Function that handles the indexing
+-   **shows (optional)**: Show functions
+    -   **function name** (one for each function): Function definition
+-   **lists (optional)**: List functions
+    -   **function name** (one for each function): Function definition
+
 ### Indexes
 
 All queries operate on pre-defined indexes defined in design documents.
 These indexes are:
 
 * [Search](#search)
-* [MapReduce](#mapreduce)
+* [MapReduce](#mapreduce-views)
 * [Geo](#geo)
 
 For example,
@@ -30,11 +52,15 @@ you must ensure that two conditions are true:
 1. You have identified the document as a design document by having an `_id` starting with `_design/`.
 2. A [search index](#search) has been created within the document by [updating](#update) the document with the appropriate field or by [creating](#create) a new document containing the search index.
 
-As soon as the search index design document exists,
-you can make queries using it.
+As soon as the search index design document exists and the index has been built, you can make queries using it.
 
 For more information about search indexing,
 refer to the [search](#search) section of this documentation.
+
+#### General notes on functions in design documents
+
+Functions in design documents are run on multiple nodes for each document and might be run several times. To avoid inconsistencies, they need to be idempotent, meaning they need to behave identically when run multiple times and/or on different nodes. In particular, you should avoid using functions that generate random numbers or return the current time.
+
 
 ### List Functions
 

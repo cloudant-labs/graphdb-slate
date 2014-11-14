@@ -13,7 +13,11 @@
 }
 ```
 
-> Example search index:
+Search indexes, defined in design documents, allow databases to be queried using [Lucene Query Parser Syntax](http://lucene.apache.org/core/4_3_0/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#Overview). Search indexes are defined by an index function, similar to a map function in MapReduce views. The index function decides what data to index and store in the index.
+
+### Index functions
+
+> Example search index function:
 
 ```
 function(doc){
@@ -33,7 +37,62 @@ function(doc){
 }
 ```
 
-Search indexes allow databases to be queried using [Lucene Query Parser Syntax](http://lucene.apache.org/core/4_3_0/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#Overview).
+The function contained in the index field is a Javascript function that is called for each document in the database. It takes the document as a parameter, extracts some data from it and then calls the `index` function to index that data. The `index` function takes 3 parameters, where the third parameter is optional. The first parameter is the name of the index. If the special value `"default"` is used, the data is stored in the default index, which is queried if no index name is specified in the search. The second parameter is the data to be indexed. The third parameter is an object that can contain the fields `store` and `index`. If the `store` field contains the value `yes`, the value will be returned in search results, otherwise, it will only be indexed. The `index` field can have the following values describing whether and how the data is indexed:
+
+-   `analyzed`: Index the tokens produced by running the field's value through an analyzer.
+-   `analyzed_no_norms`: Index the tokens produced by running the field's value through an analyzer, and also separately disable the storing of norms.
+-   `no`: Do not index the field value.
+-   `not_analyzed`: Index the field's value without using an analyzer. This is necessary if the field will be used for sorting.
+-   `not_analyzed_no_norms`: Index the field's value without an analyzer, and also disable the indexing of norms.
+
+This index function indexes only a single field in the document. You, however, compute the value to be indexed from several fields or index only part of a field (rather than its entire value).
+
+The `index` function also provides a third, options parameter that receives a JavaScript Object with the following possible values and defaults:
+
+<table>
+<colgroup>
+<col width="3%" />
+<col width="63%" />
+<col width="26%" />
+<col width="6%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Option</th>
+<th align="left">Description</th>
+<th align="left">Values</th>
+<th align="left">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>boost</code></td>
+<td align="left">Anaolgous to the <code>boost</code> query string parameter, but done at index time rather than query time.</td>
+<td align="left">Float</td>
+<td align="left"><code>1.0</code> (no boosting)</td>
+</tr>
+<tr class="even">
+<td align="left"><code>index</code></td>
+<td align="left">Whether (and how) the data is indexed. The options available are explained in the <a href="http://lucene.apache.org/core/3_6_2/api/core/org/apache/lucene/document/Field.Index.html#enum_constant_summary">Lucene documentation</a>.</td>
+<td align="left"><code>analyzed</code>, <code>analyzed_no_norms</code>, <code>no</code>, <code>not_analyzed</code>, <code>not_analyzed_no_norms</code></td>
+<td align="left"><code>analyzed</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>store</code></td>
+<td align="left">If <code>true</code>, the value will be returned in the search result; if <code>false</code>, the value will not be returned in the search result.</td>
+<td align="left"><code>true</code>, <code>false</code></td>
+<td align="left"><code>false</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>facet</code></td>
+<td align="left">If <code>true</code>, faceting will be turned on for the data being indexed. Faceting is off by default.</td>
+<td align="left"><code>true</code>, <code>false</code></td>
+<td align="left"><code>false</code></td>
+</tr>
+</tbody>
+</table>
+
+
 
 Option | Description | Values | Default
 -------|-------------|--------|---------
