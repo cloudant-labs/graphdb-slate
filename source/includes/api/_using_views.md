@@ -134,30 +134,15 @@ using a stale view might not return the latest information.
 Nevertheless, a stale view returns the results of the view query quickly,
 by using an existing version of the index.
 
+### Accessing a stale view
+
 For example, to access the existing stale view `by_recipe` in the `recipes` design document,
 you would use a request similar to:
 <code>/recipes/_design/recipes/_view/by_recipe?stale=ok</code>
 
-### Accessing a stale view
-
 Making use of a stale view has consequences.
 In particular,
-accessing a stale view:
-
-1.	Does not trigger a rebuild of the view indexes, even if there have been changes since the last access.
-2.	Returns the current (existing) version of the view index, if it exists.
-3.	Returns an empty result set if the view index does exist.
-
-A useful variation is to force an update to the index,
-after a stale view has been returned.
-Do this by supplying the `update_after` value to the `stale` parameter.
-When `update_after` is supplied,
-the update process is started when the view information has been returned to the client.
-
-You can confirm that you are using stale view data by making use of the `update_seq` value returned in the view information.
-The stale view data value can be compared to the current update sequence that is available in the database information ([Reading details about the database](#read)).
-If the values are different,
-you are using stale view data.
+accessing a stale view returns the current (existing) version of the data in the view index, if it exists. The current state of the view index might be different on different nodes in the cluster.
 
 ### Sorting Returned Rows
 
