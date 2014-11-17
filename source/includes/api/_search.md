@@ -396,3 +396,58 @@ The count facet syntax takes a list of fields and returns the number of query re
 ```
 
 The range facet syntax reuses the standard Lucene syntax for ranges (inclusive range queries are denoted by square brackets, exclusive range queries are denoted by curly brackets) to return counts of results which fit into each specified category.
+
+### Geographical searches
+
+> Some example data...
+
+```json
+{
+    "name":"Aberdeen, Scotland",
+    "lat":57.15,
+    "lon":-2.15,
+    "type":"city"
+}
+```
+
+> ... as well as a design document with a search index for them.
+
+```
+function(doc) {
+    if (doc.type && doc.type == 'city') {
+        index('city', doc.name, {'store': true});
+        index('lat', doc.lat, {'store': true});
+        index('lon', doc.lon, {'store': true});
+    }
+}
+```
+
+> An example query that sorts cities in the upper hemisphere by their distance to New York:
+
+```shell
+curl 'https://docs.cloudant.com/examples/_design/cities-designdoc/_search/cities?q=lat:[0+TO+90]&sort="<distance,lon,lat,-74.0059,40.7127,km>"'
+```
+
+```http
+GET /examples/_design/cities-designdoc/_search/cities?q=lat:[0+TO+90]&sort="<distance,lon,lat,-74.0059,40.7127,km>" HTTP/1.1
+Host: docs.cloudant.com
+```
+
+In addition to searching by the content of textual fields,
+you can also sort your results by their distance from a geographic coordinate. 
+
+You will need to index two numeric fields (representing the longitude and latitude). 
+
+
+You can then query using the special <distance...> sort field which takes 5 parameters:
+
+- longitude field name: The name of your longitude field (“mylon” in this example)
+- latitude field name: The name of your latitude field (“mylat” in this example)
+- longitude of origin: The longitude of the place you want to sort by distance from
+- latitude of origin: The latitude of the place you want to sort by distance from units
+- The units to use (“km” or “mi” for kilometers and miles, respectively). The distance itself is returned in the order field
+
+
+You can combine sorting by distance with any other search query, such as range searches on the latitude and longitude or queries involving non-geographical information. That way, you can search in a bounding box and narrow down the search with additional criteria. 
+
+
