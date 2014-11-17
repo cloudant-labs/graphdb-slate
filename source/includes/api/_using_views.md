@@ -469,6 +469,8 @@ Content-Type: application/json
 
 Combining a `POST` request to a given view, with the `include_docs=true` query argument, enables you to retrieve multiple documents from a database.
 This technique is more efficient than using multiple [`GET`](#querying-a-view) API requests.
+However,
+`include_docs=true` adds a slight overhead compared to accessing the view on its own.
 
 ### Sending several queries to a view
 
