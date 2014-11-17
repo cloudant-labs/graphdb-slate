@@ -334,6 +334,43 @@ Pass a "proxy" argument in the replication data to have replication go through a
 
 The source and the target database may require authentication, and if checkpoints are used (on by default), even the source will require write access. The easiest way to authenticate is to put a username and password into the URL; the replicator will use these for HTTP Basic auth:
 
+### Custom request headers and Oauth
+
+```json
+{
+  "source": {
+    "url": "https://$username:$password@host1.example.com/db",
+    "auth": {
+      "oauth": {
+        "consumer_key": "",
+        "token": "",
+        "token_secret": "",
+        "consumer_secret": "",
+        "signature_method": ""
+      }
+    },
+    "headers": {
+      "HTTP Header": "value"
+    }
+  },
+  "target": {
+    "url": "https://$username2:$password2@host2.example.com/db2"
+  }
+}
+```
+
+The `source` and `target` field in a replication object usually just have a string value, but they can also hold an object.
+This object has the following structure:
+
+- **`url`**: the source/target url
+- **`headers`** (optional): an object containing HTTP headers for the requests, so it can, for example, be used to set the authorization header.
+- **`oauth`** (optional) an object containing oauth parameters. Since Cloudant does not support oauth, this field is only useful to replicate to or from CouchDB or other implementations of the replication protocol which support oauth. The object has the following fields:
+  - **`consumer_key`**
+  - **`token`**
+  - **`token_secret`**
+  - **`consumer_secret`**
+  - **`signature_method`**: supported values are "PLAINTEXT", "HMAC-SHA1", and "RSA-SHA1".
+
 ### Performance related options
 
 These options can be set per replication by including them in the replication document.
