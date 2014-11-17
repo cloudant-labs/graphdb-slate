@@ -9,6 +9,7 @@ env:
   - secure: aSi+sIpBoS6VofHVUToRpvXrHG3avvdwG0frOBh+A8ijsjn3fOACeJm+ipQystYtCciZ09l5A/Q/Tkd1sogWy8ymU7bULVJsJb+aNJRM+00QYFelCLpxD8c6gP7aty/IRk7RfWqrii1ZHQ6KSeSqlJf6P6gYZOOA+1IQBO532vY=
 notifications:
   email:
+    - adrian.warman@uk.ibm.com
     - kim@cloudant.com
   on_success: always
 before_install:
