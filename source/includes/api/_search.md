@@ -257,12 +257,14 @@ Once you've got an index written, you can query it with a GET request to `https:
 
 #### Query Parameters
 
+<!-- The numeric limit was suggested by Glynn, in FB 40734. -->
+
 Argument | Description | Optional | Type | Supported Values
 ---------|-------------|----------|------|------------------
 query | A Lucene query | no | string or number |  
 bookmark | A bookmark that was received from a previous search. This allows you to page through the results. If there are no more results after the bookmark, you will get a response with an empty rows array and the same bookmark. That way you can determine that you have reached the end of the result list. | yes | string |  
 stale | Don't wait for the index to finish building to return results. | yes | string | ok
-limit | Limit the number of the returned documents to the specified number. In case of a grouped search, this parameter limits the number of documents per group. | yes | numeric | 
+limit | Limit the number of the returned documents to the specified number. In case of a grouped search, this parameter limits the number of documents per group. | yes | numeric | The limit value can be any positive integer number up to and including 200.
 include_docs | Include the full content of the documents in the response | yes | boolean |
 sort | Specifies the sort order of the results. In a grouped search (i.e. when group_field is used), this specifies the sort order within a group. The default sort order is relevance. | yes | JSON | A JSON string of the form "fieldname<type>" or -fieldname<type> for descending order, where fieldname is the name of a string or number field and type is either number or string or a JSON array of such strings. The type part is optional and defaults to number. Some examples are "foo", "-foo", "bar<string>", "-foo<number>" and ["-foo<number>", "bar<string>"]. String fields used for sorting must not be analyzed fields. The field(s) used for sorting must be indexed by the same indexer used for the search query.
 group_field | Field by which to group search matches. | yes | String | A string containing the field name and optionally the type of the field (string or number) in angle brackets. If the type is not specified, it defaults to string. For example, `age<number>`.
