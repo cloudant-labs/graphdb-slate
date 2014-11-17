@@ -433,6 +433,63 @@ GET /examples/_design/cities-designdoc/_search/cities?q=lat:[0+TO+90]&sort="<dis
 Host: docs.cloudant.com
 ```
 
+> Example response
+
+```json
+{
+    "total_rows": 205,
+    "bookmark": "g1AAAAEbeJzLYWBgYMlgTmGQS0lKzi9KdUhJMtfLTczJLyrRS87JL01JzCvRy0styQGqY0pkSLL___9_Fpjj5tDCOG974NGNieJZqAaY4DQgyQFIJtUjmyHXJivfY5PIgmaGKU4z8liAJEMDkAIasx9mTnPNv-PSgosTmbOI9QzEnAMQc-DuqY3U-vbZXTSRNSsLAMMnXIU",
+    "rows": [
+        {
+            "id": "city180",
+            "order": [
+                8.530665755719783,
+                18
+            ],
+            "fields": {
+                "city": "New York, N.Y.",
+                "lat": 40.78333333333333,
+                "lon": -73.96666666666667
+            }
+        },
+        {
+            "id": "city177",
+            "order": [
+                13.756343205985946,
+                17
+            ],
+            "fields": {
+                "city": "Newark, N.J.",
+                "lat": 40.733333333333334,
+                "lon": -74.16666666666667
+            }
+        },
+        {
+            "id": "city178",
+            "order": [
+                113.53603438866077,
+                26
+            ],
+            "fields": {
+                "city": "New Haven, Conn.",
+                "lat": 41.31666666666667,
+                "lon": -72.91666666666667
+            }
+        }
+    ]
+}
+
+Quick Search
+
+More Help
+
+    Cloudant
+    Cloudant for developers
+    IRC
+
+
+```
+
 In addition to searching by the content of textual fields,
 you can also sort your results by their distance from a geographic coordinate. 
 
