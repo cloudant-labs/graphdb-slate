@@ -168,7 +168,7 @@ db.insert($JSON, $JSON._id, function (err, body, headers) {
 
 To update (or create) a document, make a PUT request with the updated JSON content *and* the latest `_rev` value (not needed for creating new documents) to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID`.
 
-<aside>If you fail to provide the latest `_rev`, Cloudant responds with a [409 error](#errors).
+<aside>If you fail to provide the latest `_rev`, Cloudant responds with a [409 error](#http-status-codes).
 This error prevents you overwriting data changed by other clients.</aside>
 
 ### Delete
@@ -209,7 +209,7 @@ db.destroy($JSON._id, $REV, function (err, body, headers) {
 
 To delete a document, make a DELETE request with the document's latest `_rev` in the querystring, to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID`.
 
-<aside>If you fail to provide the latest `_rev`, Cloudant responds with a [409 error](#errors).
+<aside>If you fail to provide the latest `_rev`, Cloudant responds with a [409 error](#http-status-codes).
 This error prevents you overwriting data changed by other clients.</aside>
 
 ### Bulk Operations
