@@ -55,7 +55,7 @@ Creates a new index in the specified database using the information supplied in 
 #### Request Body
 
 -   **index**:
-    -   **fields**: A JSON array of field names following the sort syntax \<cloudant-query-sort-syntax\>. Nested fields are also allowed, e.g. `"person.name"`.
+    -   **fields**: A JSON array of field names following the [sort syntax](#sort-syntax). Nested fields are also allowed, e.g. `"person.name"`.
 -   **ddoc (optional)**: Name of the design document in which the index will be created. By default, each index will be created in its own design document. Indexes can be grouped into design documents for efficiency. However, a change to one index in a design document will invalidate all other indexes in the same document.
 -   **type (optional)**: Defaults to json, which is currently the only supported type. Full text indexes and geospatial indexes will be provided in the future.
 -   **name (optional)**: Name of the index. If no name is provided, one will be generated automatically.
@@ -190,10 +190,10 @@ With a `GET` request to `/db/_index` you get a list of all indexes in the databa
 }
 ```
 
--   **selector**: JSON object describing criteria used to select documents. See the section on selectors \<cloudant-query-selectors\> below.
+-   **selector**: JSON object describing criteria used to select documents. See the section on [selectors](#selector-syntax) below.
 -   **limit (optional, default: 25)**: maximum number of results returned
 -   **skip (optional, default: 0)**: skip the first n results, where n is the value specified
--   **sort (optional, default: [])**: JSON array following sort syntax \<cloudant-query-sort-syntax\>
+-   **sort (optional, default: [])**: JSON array following [sort syntax](#sort-syntax)
 -   **fields (optional, default: null)**: JSON array following the field syntax, described below. This parameter lets you specify which fields of an object should be returned. If it is omitted, the entire object is returned.
 -   **r (optional, default: 1)**: Read quorum needed for the result. This defaults to 1, in which case the document found in the index is returned. If set to a higher value, each document is read from at least that many replicas before it is returned in the results. This is obviously less performant than using the document local to the index.
 
