@@ -264,7 +264,7 @@ account.request({
 ```
 
 ```http
-GET /$DATABASE/_revs_limit
+GET /$DATABASE/_revs_limit HTTP/1.1
 ```
 
 ```shell
