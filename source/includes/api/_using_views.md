@@ -96,25 +96,17 @@ Argument | Description | Optional | Type | Default | Supported values
 
 When a view is defined in a design document,
 a corresponding index is also created,
-based on the key information defined within the view.
-The index helps improve performance when using the view to access documents,
-for example when searching or selecting documents.
-To save time,
-the index is not populated with content until the view is used.
+based on the information defined within the view.
+Indexes let you select for documents by criteria other than their `_id` field, for instance by a field or combination of fields or by a value that is computed based on the contents of the document.
+The index is populated as soon as the design document is created. On large databases, this process might take a while.
 
-The index content is generated when the view is first used.
-The index content is updated incrementally and automatically when the view is used again after any one of the following three situations has occurred:
+The index content is updated incrementally and automatically when any one of the following three events has occurred:
 
 -   A new document has been added to the database.
 -   An existing document has been deleted from the database.
--   An existing document in the database has been updated or modified in some way.
+-   An existing document in the database has been updated.
 
-When a view is being applied to the database,
-a check is first made to see if any index updates should be performed.
-If any updates are required,
-they are completed before the view query is applied.
-
-View indexes are rebuilt entirely when the view definition changes.
+View indexes are rebuilt entirely when the view definition changes or when another view definition in the same design document changes.
 This ensures that changes to the view definitions are reflected in the view indexes.
 To achieve this,
 a 'fingerprint' of the view definition is created whenever the design document is updated.
@@ -127,18 +119,10 @@ if you have a design document with three views,
 and you update the design document,
 all three view indexes within the design document are rebuilt.</aside>
 
-The results returned by a view are updated when the view is queried.
-This means that there might be a delay in returning the results when the view is accessed.
-A delay is affected by the number of documents in the database, and whether the view index does not exist or is not current because the database content has been modified.
+If the database has been updated recently, there might be a delay in returning the results when the view is accessed.
+The delay is affected by the number of changes to the database, and whether the view index is not current because the database content has been modified.
 
-It is not possible to eliminate these delays,
-but you might reduce them by trying the following techniques:
-
--   Create the view definition in the design document in your database before inserting or updating documents. This causes incremental updates to the index when the view is accessed.
--   Manually force a view request from the database. Do this either before users are allowed to use the view, or by accessing the view manually after documents are added or updated.
--   Use `/db/_changes` to monitor for changes to the database. If a change occurs, access the view to force an update of the corresponding view index. See [Getting database changes](#get-changes) for more information.
-
-<aside class="notice">None of these mitigations completely eliminate the need for the indexes to be rebuilt or updated when the view is accessed.</aside>
+It is not possible to eliminate these delays, in the case of newly created databases you might reduce them by creating the view definition in the design document in your database before inserting or updating documents. This causes incremental updates to the index when the documents or inserted.
 
 If speed of response is more important than having completely up-to-date data,
 an alternative is to allow users to access an old version of the view index.
