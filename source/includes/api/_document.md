@@ -257,9 +257,6 @@ db.bulk($JSON, function (err, body) {
       "gender": "female"
     },
     {
-      "name": "Owen",
-      "age": 51,
-      "gender": "female",
       "_id": "d1f61e66-7708-4da6-aa05-7cbc33b44b7e",
       "_rev": "1-a2b6e5dac4e0447e7049c8c540b309d6",
       "_deleted": true
