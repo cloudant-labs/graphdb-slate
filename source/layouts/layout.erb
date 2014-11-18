@@ -127,6 +127,36 @@ under the License.
 
       
     </script>
+    
+    <script type="text/javascript">
+        $(document).ready(function() {
+        var queryInput = $('#query');
+        queryInput.val('author:John');
+        var form = $("#testSearchForm");
+        form.submit(function(event) {
+            var query = queryInput.val();
+            jQuery.ajax({
+                url: '/examples/_design/ddoc/_search/books?q=' + query,
+                type: 'GET',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + btoa('thereencespedgetytolisir:c1IimpBSAC3b3A66N8LHKwKF'));
+                },
+                error: function(one, two) {
+                },
+                complete: function(jqXHR, textStatus) {
+                    var result = JSON.stringify(jQuery.parseJSON(jqXHR.responseText), null, '    ');
+                    var outputField = $("#search-output");
+                    outputField.show();
+                    outputField.text(result);
+                }
+            });
+            event.preventDefault();
+        });
+        form.submit();
+        });
+    </script>
+
+    
   </head>
 
   <body class="<%= page_classes %>">

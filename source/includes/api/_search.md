@@ -277,34 +277,7 @@ Argument | Description | Optional | Type | Supported Values
         <input size="100" style="width: 400px; display:block;" type="text" name="query" id="query"><br><br>
         <input type="submit" value="search" id="searchButton"></input><br>
     </form>
-    <pre style="display:none;" id="output"></pre>
-    <script>
-        $(document).ready(function() {
-        var queryInput = $('#query');
-        queryInput.val('author:John');
-        var form = $("#testSearchForm");
-        form.submit(function(event) {
-            var query = queryInput.val();
-            jQuery.ajax({
-                url: '/examples/_design/ddoc/_search/books?q=' + query,
-                type: 'GET',
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader("Authorization", "Basic " + btoa('thereencespedgetytolisir:c1IimpBSAC3b3A66N8LHKwKF'));
-                },
-                error: function(one, two) {
-                },
-                complete: function(jqXHR, textStatus) {
-                    var result = JSON.stringify(jQuery.parseJSON(jqXHR.responseText), null, '    ');
-                    var outputField = $("#output");
-                    outputField.show();
-                    outputField.text(result);
-                }
-            });
-            event.preventDefault();
-        });
-        form.submit();
-        });
-    </script>
+    <pre style="display:none;" id="search-output"></pre>
 
 
 
