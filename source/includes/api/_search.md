@@ -478,16 +478,6 @@ Host: docs.cloudant.com
         }
     ]
 }
-
-Quick Search
-
-More Help
-
-    Cloudant
-    Cloudant for developers
-    IRC
-
-
 ```
 
 In addition to searching by the content of textual fields,
