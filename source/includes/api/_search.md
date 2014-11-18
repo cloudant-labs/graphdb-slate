@@ -265,6 +265,55 @@ Argument | Description | Optional | Type | Supported Values
 
 <aside class="warning">Do not combine the `bookmark` and `stale` options. The reason is that both these options constrain the choice of shard replicas to use for determining the response. When used together, the options can result in problems when attempting to contact slow or unavailable replicas.</aside>
 
+
+
+
+
+
+
+
+    <form action="#" id="testSearchForm">
+        <label for="query">Search query (q)</label><br>
+        <input size="100" style="width: 400px; display:block;" type="text" name="query" id="query"><br><br>
+        <input type="submit" value="search" id="searchButton"></input><br>
+    </form>
+    <pre style="display:none;" id="output"></pre>
+    <script>
+        $(document).ready(function() {
+        var queryInput = $('#query');
+        queryInput.val('author:John');
+        var form = $("#testSearchForm");
+        form.submit(function(event) {
+            var query = queryInput.val();
+            jQuery.ajax({
+                url: '/examples/_design/ddoc/_search/books?q=' + query,
+                type: 'GET',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + btoa('thereencespedgetytolisir:c1IimpBSAC3b3A66N8LHKwKF'));
+                },
+                error: function(one, two) {
+                },
+                complete: function(jqXHR, textStatus) {
+                    var result = JSON.stringify(jQuery.parseJSON(jqXHR.responseText), null, '    ');
+                    var outputField = $("#output");
+                    outputField.show();
+                    outputField.text(result);
+                }
+            });
+            event.preventDefault();
+        });
+        form.submit();
+        });
+    </script>
+
+
+
+
+
+
+
+
+
 ### Query Syntax
 
 > Example search query:
