@@ -1,14 +1,17 @@
 #!/bin/bash
 if [ -z "$1" ]
 then
-  DB="slate"
+  echo 'no db specified'
+  echo './deploy DB URL'
+  exit
 else
   DB="$1"
 fi
 
 if [ -z "$2" ]
 then
-  URl=''
+  echo 'no base url specified'
+  echo './deploy DB URL'
 else
   URL="$2"
 fi
