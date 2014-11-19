@@ -39,7 +39,6 @@ includes:
   - guides/transactions
   - guides/cap_theorum
   - guides/acid
-  - libraries/index
 
 ---
 
