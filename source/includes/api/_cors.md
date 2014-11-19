@@ -1,15 +1,45 @@
 CORS
 ----
 
-[Cross-origin resource sharing (CORS)](http://www.w3.org/TR/cors/) is a mechanism that allows resources (e.g. JSON documents in a Cloudant database) to be requested from Javascript running on a website loaded from another domain. Such "cross-domain" requests would otherwise be forbidden by web browsers, due to the same origin security policy. CORS defines a way in which the browser and the server can interact to determine whether or not to allow the request. For Cloudant, there are two use cases in which CORS might be a good solution. First, you might have a website on `https://www.example.com` and you want scripts on this website to be able to access data from `https://example.cloudant.com`. In this case, you would add `https://www.example.com` to your list of allowed origins and scripts loaded from this domain would be allowed to make AJAX requests to your Cloudant databases. You can even use HTTP auth with CORS requests, so you can grant users of your application access to their database only. Another use case is allowing third parties to be able to access your database. Say you have a database with product information and you want sales partners to be able to access this information from Jsvascript running on their own domain. You can add their domain to your list of allowed origins and scripts running on their website will be able to access your Cloudant database.
+[Cross-origin resource sharing (CORS)](http://www.w3.org/TR/cors/) is a mechanism that allows resources such as JSON documents in a Cloudant database to be requested from Javascript running on a website loaded from another domain.
+These "cross-domain" requests would normally be forbidden by web browsers, due to the
+[same origin security policy](http://en.wikipedia.org/wiki/Same-origin_policy).
+
+CORS defines a way in which the browser and the server interact to determine whether or not to allow the request. For Cloudant, there are two use cases in which CORS might be a good solution.
+
+1. You have a website on `https://www.example.com` and you want scripts on this website to be able to access data from `https://example.cloudant.com`.
+To do this, add `https://www.example.com` to your list of allowed origins.
+The effect is that scripts loaded from this domain are then allowed to make AJAX requests to your Cloudant databases.
+By using HTTP auth with CORS requests, users of your application are able to access their database only.
+2. You want to allow third parties access to your your database.
+An example might be where you have a database that contains product information,
+and you want to give sales partners access to the information from Javascript running on their own domain.
+To do this, add their domain to your list of allowed origins.
+The effect is that scripts running on their website are able to access your Cloudant database.
 
 ### Browser support
 
-CORS is supported by all current versions of commonly used browsers. The main obstacle to wider adoption is Internet Explorer. Versions prior to 10 only offer partial support, versions prior to 8 offer no support at all.
+CORS is supported by all current versions of commonly used browsers.
+<aside class="notice">Versions of Microsoft Internet Explorer prior to version 10 offer partial support for CORS.
+Versions of Microsoft Internet Explorer prior to version 8 do not support CORS.</aside>
 
 ### Security
 
-If you are storing sensitive user data in databases that can be accessed via CORS, you need to take special care not to expose such data. By placing a domain in the list of allowed origins, you trust the Javascript from this domain. If the web application running on such a domain was vulnerable to a cross site scripting attack, this could expose user data from your database. Also, if you allow scripts loaded via HTTP rather than HTTPS to access data using CORS, a man in the middle attack might be used to modify such scripts. If you are dealing with sensitive information, we therefore recommend to allow CORS requests only from HTTPS origins and to make sure web applications running on allowed origin domains do not have cross site scripting vulnerabilities.
+Storing sensitive data in databases that can be accessed using CORS is a potential security risk.
+When you place a domain in the list of allowed origins,
+you are trusting any of the Javascript from the domain.
+If the web application running on the domain is vulnerable to a cross site scripting attack,
+sensitive data might be exposed from your database.
+
+In addition,
+allowing scripts to be loaded using HTTP rather than HTTPS,
+and then accessing data using CORS,
+introduces the risk that a man in the middle attack might modify the scripts.
+
+To reduce the risk:
+
+-	Allow CORS requests only from HTTPS origins.
+-	Ensure that web applications running on allowed origin domains do not have cross site scripting vulnerabilities.
 
 ### Configuration endpoints
 
@@ -76,7 +106,7 @@ curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/_api/v2/user/config/cors
 { "ok": true }
 ```
 
-`PUT`ting a json document with the above structure to `/_api/v2/user/config/cors` sets the CORS configuration. The configuration applies to all databases and all account level endpoints in your account.
+`PUT`ting a json document with the example structure to `/_api/v2/user/config/cors` sets the CORS configuration. The configuration applies to all databases and all account level endpoints in your account.
 
 
 ### Reading the CORS configuration
