@@ -1,20 +1,9 @@
 #!/bin/bash
-if [ -z "$1" ]
+if [ -z $1 ]
 then
-  echo 'no db specified'
-  echo './deploy DB URL'
-  exit
+  DEST='api-ref'
 else
-  DB="$1"
+  DEST=$1
 fi
 
-if [ -z "$2" ]
-then
-  echo 'no base url specified'
-  echo './deploy DB URL'
-else
-  URL="$2"
-fi
-
-python scripts/upload_documentation_as_docs.py "$DB"
-couchapp push couchapp "${URL}${DB}"
+couchapp push couchapp $DEST
