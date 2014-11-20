@@ -1,4 +1,4 @@
-## Replication
+<h2 id="ReplicationAPI">Replication</h2>
 
 Cloudant replication syncs the state of two databases. Any change which occurs to the source database will occur to the target database. You can create replications between any number of databases, whether continuous or not, to share state and aggregate information as best suits your application.
 
