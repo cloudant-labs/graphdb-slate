@@ -496,20 +496,38 @@ You can combine sorting by distance with any other search query, such as range s
 
 ### Try it!
 
-You can try out search requests right here. We have put together some sample data and a search index so that you can play with lucene search straight away.
+<p id="search-output-marker"></p>
+
+```json
+{
+  "total_rows": 1,
+  "bookmark": "g2wAAAABaANkACFkYmNvcmVAZGIxMS5tZXJpdGFnZS5jbG91ZGFudC5uZXRsAAAAAm4EAAAAAIBuBAD___-_amgCRkACik3gAAAAYRtq",
+  "rows": [
+    {
+      "id": "book91",
+      "order": [
+        2.3175313472747803,
+        27
+      ],
+      "fields": {
+        "author": "John Steinbeck",
+        "title_English": "The Grapes of Wrath"
+      }
+    }
+  ]
+}
+```
+
+You can try out search requests right here and output will be shown in the code column to the right. We have put together some sample data and a search index so that you can play with lucene search straight away.
 
 <form action="#" id="testSearchForm">
     <label for="query">Search query (q)</label><br>
     <input size="100" style="width: 400px; display:block;" type="text" name="query" id="query"><br><br>
     <input type="submit" value="search" id="searchButton"></input><br>
 </form>
-<pre style="display:none;" id="search-output"></pre>
 
 
 #### Sample Data
------------
-
-Our sample data is a database with information about best selling books. The database contains about 100 JSON documents like this one:
 
 ```json
 {
@@ -520,6 +538,8 @@ Our sample data is a database with information about best selling books. The dat
   "sold": 200.0
 }
 ```
+
+Our sample data is a database with information about best selling books. The database contains about 100 JSON documents like this one:
 
 #### Design Documents
 

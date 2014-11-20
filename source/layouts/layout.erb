@@ -129,10 +129,11 @@ under the License.
     </script>
     
     <script type="text/javascript">
-        $(document).ready(function() {
+      $(document).ready(function() {
         var queryInput = $('#query');
         queryInput.val('author:John');
         var form = $("#testSearchForm");
+        var outputField = $("#search-output-marker").next();
         form.submit(function(event) {
             var query = queryInput.val();
             jQuery.ajax({
@@ -145,15 +146,14 @@ under the License.
                 },
                 complete: function(jqXHR, textStatus) {
                     var result = JSON.stringify(jQuery.parseJSON(jqXHR.responseText), null, '    ');
-                    var outputField = $("#search-output");
+                    
                     outputField.show();
                     outputField.text(result);
                 }
             });
             event.preventDefault();
         });
-        form.submit();
-        });
+      });
     </script>
 
     
