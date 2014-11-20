@@ -134,24 +134,31 @@ under the License.
         queryInput.val('author:John');
         var form = $("#testSearchForm");
         var outputField = $("#search-output-marker").next();
+        var httpRequestField = $("#search-request-http-marker").next();
+        var curlRequestField = $("#search-request-curl-marker").next();
+        queryInput.change(function(){
+          httpRequestField.text('GET /examples/_design/ddoc/_search/books?q=' + queryInput.val() + ' HTTP/1.1');
+          curlRequestField.text('curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/examples/_design/ddoc/_search/books?q=' + queryInput.val());
+          
+        });
         form.submit(function(event) {
-            var query = queryInput.val();
-            jQuery.ajax({
-                url: '/examples/_design/ddoc/_search/books?q=' + query,
-                type: 'GET',
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader("Authorization", "Basic " + btoa('thereencespedgetytolisir:c1IimpBSAC3b3A66N8LHKwKF'));
-                },
-                error: function(one, two) {
-                },
-                complete: function(jqXHR, textStatus) {
-                    var result = JSON.stringify(jQuery.parseJSON(jqXHR.responseText), null, '    ');
-                    
-                    outputField.show();
-                    outputField.text(result);
-                }
-            });
-            event.preventDefault();
+          var query = queryInput.val();
+          jQuery.ajax({
+            url: '/examples/_design/ddoc/_search/books?q=' + query,
+            type: 'GET',
+            beforeSend: function(xhr) {
+              xhr.setRequestHeader("Authorization", "Basic " + btoa('thereencespedgetytolisir:c1IimpBSAC3b3A66N8LHKwKF'));
+            },
+            error: function(one, two) {
+            },
+            complete: function(jqXHR, textStatus) {
+              var result = JSON.stringify(jQuery.parseJSON(jqXHR.responseText), null, '    ');
+              
+              outputField.show();
+              outputField.text(result);
+            }
+          });
+          event.preventDefault();
         });
       });
     </script>

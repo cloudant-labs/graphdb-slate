@@ -496,6 +496,18 @@ You can combine sorting by distance with any other search query, such as range s
 
 ### Try it!
 
+<p id="search-request-http-marker"></p>
+
+```http
+GET /examples/_design/ddoc/_search/books?q=author:John HTTP/1.1
+```
+
+<p id="search-request-curl-marker"></p>
+
+```shell
+curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/examples/_design/ddoc/_search/books?q=author:John
+```
+
 <p id="search-output-marker"></p>
 
 ```json
