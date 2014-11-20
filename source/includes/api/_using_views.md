@@ -18,8 +18,8 @@ Executes the specified `view-name` from the specified `design-doc` design docume
 
 > Example of retrieving a list of the first five documents from a database, applying the user-created `by_title` view:
 
-```sourceCode
-GET /<database>/_design/<design-doc>/_view/by_title?limit=5
+```http
+GET /<database>/_design/<design-doc>/_view/by_title?limit=5 HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 ```
@@ -148,8 +148,8 @@ accessing a stale view returns the current (existing) version of the data in the
 
 > Example of requesting the last five records by reversing the sort order:
 
-```sourceCode
-GET /<database>/_design/<design-doc>/_view/by_title?limit=5&descending=true
+```http
+GET /<database>/_design/<design-doc>/_view/by_title?limit=5&descending=true HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 ```
@@ -228,21 +228,21 @@ You can reverse the order of the returned view information by setting the `desce
 
 > Example of filtering using `startkey` and `endkey` query arguments:
 
-```sourceCode
-GET /recipes/_design/recipes/_view/by_ingredient?startkey=%22carrots%22&endkey=%22egg%22
+```http
+GET /recipes/_design/recipes/_view/by_ingredient?startkey=%22carrots%22&endkey=%22egg%22 HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 ```
 
 > Useful results would be returned, because "carrots" is alphabetically before "egg".
 
-```sourceCode
+```http
 ```
 
 > Example of <i>incorrect</i> filtering and reversing the order of output using the `descending` query argument:
 
-```sourceCode
-GET /recipes/_design/recipes/_view/by_ingredient?descending=true&startkey=%22carrots%22&endkey=%22egg%22
+```http
+GET /recipes/_design/recipes/_view/by_ingredient?descending=true&startkey=%22carrots%22&endkey=%22egg%22 HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 ```
@@ -259,8 +259,8 @@ Content-Type: application/json
 
 > Example of <i>correct</i> filtering and reversing the order of output by using the `descending` query argument, and reversing the `startkey` and `endkey` query arguments:
 
-```sourceCode
-GET /recipes/_design/recipes/_view/by_ingredient?descending=true&startkey=%22egg%22&endkey=%22carrots%22
+```http
+GET /recipes/_design/recipes/_view/by_ingredient?descending=true&startkey=%22egg%22&endkey=%22carrots%22 HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 ```
@@ -284,8 +284,8 @@ but also the `startkey` and `endkey` parameter values.
 
 > Example request to return all recipes, where the key for the view matches either "clear apple juice" or "lemonade":
 
-```sourceCode
-POST /recipes/_design/recipes/_view/by_ingredient
+```http
+POST /recipes/_design/recipes/_view/by_ingredient HTTP/1.1
 Content-Type: application/json
 
 {
@@ -336,8 +336,8 @@ the `POST` method is identical to the [`GET`](#querying-a-view) API request.
 
 > Example request to obtain the full documents that match the listed keys:
 
-```sourceCode
-POST /recipes/_design/recipes/_view/by_ingredient?include_docs=true
+```http
+POST /recipes/_design/recipes/_view/by_ingredient?include_docs=true HTTP/1.1
 Content-Type: application/json
 
 {

@@ -52,7 +52,7 @@ If the client (such as some web browsers) does not support using these HTTP meth
 
 ### Method not allowed error
 
-``` sourceCode
+```json
 {
     "error":"method_not_allowed",
     "reason":"Only GET,HEAD allowed"

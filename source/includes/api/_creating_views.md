@@ -22,7 +22,7 @@ You might choose to define a collection of Javascript functions to create the ov
 
 > Example of a simple view, using a map function:
 
-```sourceCode
+```
 function(employee) {
   if(employee.training) {
     emit(employee.number, employee.training);
@@ -34,18 +34,18 @@ function(employee) {
 
 ```json
 {
-  _id:"23598567",
+  "_id":"23598567",
   "number":"23598567",
   "training":"2014/05/21 10:00:00"
 }
 
 {
-  _id:"10278947",
+  "_id":"10278947",
   "number":"10278947"
 }
 
 {
-  _id:"23598567",
+  "_id":"23598567",
   "number":"23598567",
   "training":"2014/07/30 12:00:00"
 }
@@ -99,7 +99,7 @@ This is to make it easier for the client to work with the results.</aside>
 
 #### Indexing a field
 
-```
+```javascript
 function(doc) {
   if (doc.foo) {
     emit(doc._id, doc.foo);
@@ -111,7 +111,7 @@ This map function checks whether the object has a `foo` field and emits the valu
 
 #### An index for a one to many relationship
 
-```
+```javascript
 function(doc) {
   if (doc.friends) {
     for (friend in friends) {
@@ -131,7 +131,7 @@ When the key is an array, view results can be grouped by a sub-section of the ke
 
 ### Reduce functions
 
-```
+```javascript
 function (key, values, rereduce) {
   return sum(values);
 }
