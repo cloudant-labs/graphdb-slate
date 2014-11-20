@@ -373,7 +373,7 @@ body, html {
   min-height: 100%;
   padding-bottom: 60px;
 
-  &>h1, &>h2, &>h3, &>h4, &>p, &>table, &>ul, &>ol, &>aside, &>dl {
+  &>form, &>h1, &>h2, &>h3, &>h4, &>p, &>table, &>ul, &>ol, &>aside, &>dl{
     margin-right: $examples-width;
     padding: 0 $main-padding;
     @include box-sizing(border-box);
