@@ -27,7 +27,7 @@ def make_docs(headers):
                 break
             elif sibling.string and not sibling.string == '\n':
                 children.append(sibling.string)
-            elif:
+            else:
                 for s in sibling.strings:
                     children.append(s)
         doc['text'] = ' '.join(children)
