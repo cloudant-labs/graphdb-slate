@@ -233,6 +233,15 @@ If the `dbcopy` field of a view is set, the view contents will be written to a d
 </tbody>
 </table>
 
+<aside>
+Dbcopy should be used carefully, since it can negatively impact the performance of a database cluster.
+
+ 1. It creates a new database, so it can use a lot of disk space.
+ 2. Dbcopy can also be IO intensive, and building a dbcopy target can adversely affect the rest of the cluster.
+ 3. It can behave in some unexpected ways. Notably, if a design document with a dbcopy target is created, and the target database has been built, editing this design document so that some documents, which were previously copied, are no longer copied, does not lead to those documents being deleted from the target database. This behavior differs from that of normal views. 
+
+</aside>
+
 ### Storing the view definition
 
 > Example for `PUT`ting a view into a design document (`training`):
