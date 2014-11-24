@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, NavigableString
 import cloudant
 import os
 import sys
@@ -27,6 +27,8 @@ def make_docs(headers):
                 break
             elif sibling.string and not sibling.string == '\n':
                 children.append(sibling.string)
+            elif type(sibling) is NavigableString:
+                children.append(unicode(sibling))
             else:
                 for s in sibling.strings:
                     children.append(s)
