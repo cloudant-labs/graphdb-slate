@@ -534,8 +534,8 @@ You can try out search requests right here and output will be shown in the code 
 
 <form action="#" id="testSearchForm">
     <label for="query">Search query (q)</label><br>
-    <input size="100" style="width: 400px; display:block;" type="text" name="query" id="query"><br><br>
-    <input type="submit" value="search" id="searchButton"></input><br>
+    <input size="100" style="width: 400px; display:block;" type="text" name="query" id="test-search-query"><br><br>
+    <input type="submit" value="search" id="test-search-button"></input><br>
 </form>
 
 <div>
