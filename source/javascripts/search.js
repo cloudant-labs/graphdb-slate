@@ -62,5 +62,5 @@ $(function () {
   $(query_input).typeahead(typeahead_opts, typeahead_data);
   $(query_input).bind('typeahead:selected', on_select);
   $(search_box).submit(on_submit);
-  $(query_input).on('typeahead:selected', 'typeahead:autocompleted'].join(' ')), logTypeaheadEvent);
+  $(query_input).on('typeahead:selected typeahead:autocompleted', logTypeaheadEvent);
 });
