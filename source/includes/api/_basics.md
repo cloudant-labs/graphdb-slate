@@ -17,7 +17,7 @@ Cloudant's API represents the collaboration of numerous machines, called a clust
 <div id="replication"></div>
 ## Replication
 
-Replication is a procedure followed by Cloudant, [CouchDB](http://couchdb.apache.org/), [PouchDB](http://junk.arandomurl.com/), and others. It synchronizes the state of two databases so that their contents are identical. You can continuously replicate as well, which means that a target database updates every time the source changes. This can be used for backups of data, aggregation across multiple databases, or for sharing data.
+[Replication](#ReplicationAPI) is a procedure followed by Cloudant, [CouchDB](http://couchdb.apache.org/), [PouchDB](http://junk.arandomurl.com/), and others. It synchronizes the state of two databases so that their contents are identical. You can continuously replicate as well, which means that a target database updates every time the source changes. This can be used for backups of data, aggregation across multiple databases, or for sharing data.
 
 Request Methods
 ---------------
@@ -52,7 +52,7 @@ If the client (such as some web browsers) does not support using these HTTP meth
 
 ### Method not allowed error
 
-``` sourceCode
+```json
 {
     "error":"method_not_allowed",
     "reason":"Only GET,HEAD allowed"
@@ -303,46 +303,46 @@ If you're working in one of the following languages, we highly recommend these l
 
 ### Node.js
 
-[Nano](https://github.com/dscape/nano) is a minimalistic client for CouchDB and Cloudant. You can install it via NPM:
-
 ```
 npm install nano
 ```
 
+[nodejs-cloudant](https://github.com/cloudant/nodejs-cloudant) is the official Cloudant library for Node.js. You can install it with npm.
+
 ### JavaScript
 
-[PouchDB](http://pouchdb.com/) is a JavaScript database that can sync with Cloudant, meaning you can make your apps offline-ready just by using PouchDB. For more info, see [our blog post](https://cloudant.com/blog/pouchdb) on PouchDB, or install it by including this in your app's HTML:
-
-```html
+```
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/pouchdb/2.2.0/pouchdb.min.js"></script>
 ```
+
+[PouchDB](http://pouchdb.com/) is a JavaScript database that can sync with Cloudant, meaning you can make your apps offline-ready just by using PouchDB. For more info, see [our blog post](https://cloudant.com/blog/pouchdb) on PouchDB, or install it by including this in your app's HTML:
 
 PS: PouchDB is also available for Node.js: `npm install pouchdb`
 
 ### Python
 
-[Cloudant-Python](https://github.com/cloudant-labs/cloudant-python) is Cloudant's premier Python client. Install it using pip:
-
 ```
 pip install cloudant
 ```
 
-### Ruby
+[Cloudant-Python](https://github.com/cloudant-labs/cloudant-python) is Cloudant's official Python library. Install it using pip:
 
-[CouchRest](https://github.com/couchrest/couchrest) is a CouchDB and Cloudant client with extensions for working with Rails using [CouchRest Model](https://github.com/couchrest/couchrest_model).
+### Ruby
 
 ```
 gem install couchrest
 ```
 
-### PHP
+[CouchRest](https://github.com/couchrest/couchrest) is a CouchDB and Cloudant client with extensions for working with Rails using [CouchRest Model](https://github.com/couchrest/couchrest_model).
 
-[Sag](http://www.saggingcouch.com/) is PHP's CouchDB and Cloudant client. [Sag.js](https://github.com/sbisbee/sag-js) is Sag's JavaScript counterpart.
+### PHP
 
 ```
 // download sag from http://www.saggingcouch.com/download.php
 require_once('./src/Sag.php');
 ```
+
+[Sag](http://www.saggingcouch.com/) is PHP's CouchDB and Cloudant client. [Sag.js](https://github.com/sbisbee/sag-js) is Sag's JavaScript counterpart.
 
 ### C# / .NET
 
@@ -355,14 +355,13 @@ install-package mycouch.cloudant
 
 ### Java
 
-[Ektorp](https://github.com/helun/Ektorp) is a Java API for CouchDB and Cloudant.
-
 ```
-// install binaries from https://github.com/helun/Ektorp/downloads
-// or, if using maven, set this in your dependencies:
 <dependency>
-    <groupId>org.ektorp</groupId>
-    <artifactId>org.ektorp</artifactId>
-    <version>1.3.0</version>
+  <groupId>com.cloudant</groupId>
+  <artifactId>cloudant-client</artifactId> 
+  <version>1.0.0-beta1</version>
 </dependency>
 ```
+
+[java-cloudant](https://github.com/cloudant/java-cloudant) is the official Cloudant library for Java. You can add it as a dependency to your maven build.
+

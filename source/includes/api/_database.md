@@ -313,11 +313,11 @@ To delete a databases and its contents, make a DELETE request to `https://$USERN
 ### Reading Permissions
 
 ```http
-GET /$DATABASE/_security HTTP/1.1
+GET /_api/v2/db/$DATABASE/_security HTTP/1.1
 ```
 
 ```shell
-curl https://$USERNAME.cloudant.com/$DATABASE/_security \
+curl https://$USERNAME.cloudant.com/_api/v2/db/$DATABASE/_security \
      -u $USERNAME
 ```
 
@@ -354,7 +354,6 @@ account.request({
       "_reader"
     ]
   },
-  "ok": true,
   "_id": "_security"
 }
 ```
@@ -367,15 +366,14 @@ In the example response, for instance, `nobody` has `_reader` permissions, makin
 ### Modifying Permissions
 
 ```http
-PUT /$DATABASE/_security HTTP/1.1
+PUT /_api/v2/db/$DATABASE/_security HTTP/1.1
 Content-Type: application/json
 ```
 
 ```shell
-curl https://$USERNAME.cloudant.com/$DATABASE/_security \
+curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/_api/v2/db/$DATABASE/_security \
      -X PUT \
      -H "Content-Type: application/json" \
-     -u $USERNAME \
      -d "$JSON"
 ```
 
@@ -425,6 +423,6 @@ account.request({
 }
 ```
 
-To modify who has permissions to read, write, and manage the database, make a PUT request against `https://$USERNAME.cloudant.com/$DB/_security`. To see what roles you can assign, see [Roles](#roles).
+To modify who has permissions to read, write, and manage the database, make a PUT request against `https://$USERNAME.cloudant.com/_api/v2/db/$DB/_security`. To see what roles you can assign, see [Roles](#roles).
 
 The request object's `cloudant` field contains an object whose keys are usernames with permissions to interact with the database. The `nobody` username indicates what rights are available to unauthenticated users -- that is, anybody. In the example request, for instance, `nobody` has `_reader` permissions, making the database publicly readable.

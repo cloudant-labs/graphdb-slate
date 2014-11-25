@@ -12,6 +12,8 @@ you would specify the attachment MIME type as `image/jpeg`.
 
 ### Create / Update
 
+> Example instruction for creating or updating an attachment:
+
 ```http
 PUT /$DATABASE/$DOCUMENT_ID/$ATTACHMENT?rev=$REV HTTP/1.1
 Content-Type: $$ATTACHMENT_MIME_TYPE
@@ -67,6 +69,8 @@ simply ensure that the `$ATTACHMENT` value for each attachment is unique with th
 
 ### Read
 
+> Example instruction for reading an attachment:
+
 ```http
 GET /$DATABASE/$DOCUMENT_ID/$ATTACHMENT HTTP/1.1
 ```
@@ -94,6 +98,8 @@ make a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID/$AT
 The body of the response is the raw content of the attachment.
 
 ### Delete
+
+> Example instruction for deleting an attachment:
 
 ```http
 DELETE /$DATABASE/$DOCUMENT_ID/$ATTACHMENT?rev=$REV HTTP/1.1
@@ -133,8 +139,7 @@ the response is a [409 error](#errors).
 
 ### Inline
 
-Inline attachments are attachments included as part of the JSON content.
-An example of JSON content that includes an inline attachment of a jpeg image is as follows:
+> Example JSON content that includes an inline attachment of a jpeg image:
 
 ```json
 {
@@ -149,5 +154,7 @@ An example of JSON content that includes an inline attachment of a jpeg image is
   }
 }
 ```
+
+Inline attachments are attachments included as part of the JSON content.
 
 [mime]: http://en.wikipedia.org/wiki/Internet_media_type#List_of_common_media_types

@@ -43,7 +43,8 @@ These indexes are:
 
 * [Search](#search)
 * [MapReduce](#creating-views)
-* [Geo](#geo)
+
+<!-- * [Geo](#geo) -->
 
 For example,
 to create a design document used for searching,

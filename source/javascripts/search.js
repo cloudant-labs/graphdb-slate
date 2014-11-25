@@ -17,7 +17,7 @@ $(function () {
   };
 
   function compute_suggestions (query, cb) {
-    $.get(query_url, { q: query }).done(function (response) {
+    $.get(query_url, { q: query + '*' }).done(function (response) {
       var res = JSON.parse(response);
       cb(res.rows);
     });

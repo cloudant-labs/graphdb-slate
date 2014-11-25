@@ -10,7 +10,9 @@ or generated automatically as a [UUID](http://en.wikipedia.org/wiki/Universally_
 The `_rev` field is a revision number, and is [essential to Cloudant's replication protocol](#document-versioning-and-mvcc).
 In addition to these two mandatory fields, documents can contain any other content expressed using JSON.
 
-### Create
+<h3 id="documentCreate">Create</h3>
+
+> Example instruction for creating a document:
 
 ```http
 POST /$DATABASE HTTP/1.1
@@ -37,7 +39,7 @@ db.insert($JSON, function (err, body, headers) {
 });
 ```
 
-> Example document:
+> Example document to be created:
 
 ```json
 {
@@ -65,6 +67,8 @@ To create a document, make a POST request with the document's JSON content to `h
 If you do not provide an `_id` field, Cloudant generates one automatically as a [UUID](http://en.wikipedia.org/wiki/Universally_unique_identifier). 
 
 ### Read
+
+> Example instruction for reading a document:
 
 ```http
 GET /$DATABASE/$DOCUMENT_ID HTTP/1.1
@@ -111,6 +115,8 @@ you can [query the database](#get-documents) for all documents.
 To fetch many documents at once, [query the database](#get-documents).
 
 ### Update
+
+> Example instruction for updating a document:
 
 ```http
 PUT /$DATABASE/$DOCUMENT_ID HTTP/1.1
@@ -173,6 +179,8 @@ This error prevents you overwriting data changed by other clients.</aside>
 
 ### Delete
 
+> Example instruction for deleting a document:
+
 ```http
 DELETE /$DATABASE/$DOCUMENT_ID?rev=$REV HTTP/1.1
 ```
@@ -213,6 +221,8 @@ To delete a document, make a DELETE request with the document's latest `_rev` in
 This error prevents you overwriting data changed by other clients.</aside>
 
 ### Bulk Operations
+
+> Example instruction for performing bulk operations:
 
 ```http
 POST /$DATABASE/_bulk_docs HTTP/1.1

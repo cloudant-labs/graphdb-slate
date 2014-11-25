@@ -22,6 +22,7 @@ includes:
   - api/account
   - api/authentication
   - api/authorization
+  - api/cors
   - api/database
   - api/document
   - api/attachments
@@ -38,7 +39,6 @@ includes:
   - guides/transactions
   - guides/cap_theorum
   - guides/acid
-  - libraries/index
 
 ---
 

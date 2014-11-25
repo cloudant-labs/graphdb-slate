@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, NavigableString
 import cloudant
 import os
 import sys
@@ -25,10 +25,13 @@ def make_docs(headers):
         for sibling in header.next_siblings:
             if sibling.name and sibling.name in HEADINGS:
                 break
-            elif not sibling.string or sibling.string == '\n':
-                continue
-            elif sibling.name == 'p':
-                children.append(sibling.get_text())
+            elif sibling.string and not sibling.string == '\n':
+                children.append(sibling.string)
+            elif type(sibling) is NavigableString:
+                children.append(unicode(sibling))
+            else:
+                for s in sibling.strings:
+                    children.append(s)
         doc['text'] = ' '.join(children)
         if doc['text']:
             docs[doc['_id']] = doc

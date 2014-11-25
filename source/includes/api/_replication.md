@@ -1,8 +1,13 @@
-## Replication
+<h2 id="ReplicationAPI">Replication</h2>
 
-Cloudant replication syncs the state of two databases. Any change which occurs to the source database will occur to the target database. You can create replications between any number of databases, whether continuous or not, to share state and aggregate information as best suits your application.
+Cloudant replication is the process that synchronizes ('syncs') the state of two databases.
+Any change which has occured in the source database is reproduced in the target database.
+You can create replications between any number of databases, whether continuous or not.
+Depending on your application requirements, you use replication to share and aggregate state and content.
 
-Replications can be represented as [documents](#documents) in the `_replicator` database, so working with replications is just like working with documents. Replications can also be started by POSTing said documents to the `/_replicate` endpoint. Here is the format of the document:
+Replications can be represented as [documents](#documents) in the `_replicator` database.
+This means that working with replications is the same as working with documents.
+Replications can also be started by `POST`ing documents to the `/_replicate` endpoint. Here is the format of the document:
 
 Field Name | Required | Description
 -----------|----------|-------------
@@ -39,7 +44,7 @@ Content-Type: application/json
 }
 ```
 
-To start a replication, [add a document](#create29) to the `_replicator` database.
+To start a replication, [add a document](#documentCreate) to the `_replicator` database.
 
 #### Monitoring a replication
 
