@@ -53,7 +53,7 @@ account.request({
 
 To modify a user's permissions, use `https://cloudant.com/api/set_permissions`.
 
-<aside>Unlike most Cloudant endpoints, `/api/set_permissions` accepts form-encoded data rather than a JSON object in the request body.</aside>
+<aside class="notice">Unlike most Cloudant endpoints, `/api/set_permissions` accepts form-encoded data rather than a JSON object in the request body.</aside>
 
 ### Creating API Keys
 

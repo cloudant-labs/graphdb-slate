@@ -175,6 +175,8 @@ A list of the error codes returned by Cloudant and generic descriptions of the r
 
     The content requested has not been modified. This is used with the ETag system to identify the version of information returned.
 
+<div id="400"></div>
+
 -   `400 - Bad Request`
 
     Bad request structure. The error can indicate an error with the request URL, path or headers. Differences in the supplied MD5 hash and content also trigger this error, as this may indicate message corruption.
@@ -187,14 +189,13 @@ A list of the error codes returned by Cloudant and generic descriptions of the r
 
     The requested item or operation is forbidden.
 
-###### 404
-
-```json
+```
 {"error":"not_found","reason":"no_db_file"}
 ```
+
 -   `404 - Not Found`
 
-    The requested resource could not be found. The content will include further information, as a JSON object, if available. The structure will contain two keys, `error` and `reason`. For example:
+    The requested resource could not be found. The content includes further information as a JSON object, if available. The structure contains two keys, `error` and `reason`.
 
 -   `405 - Resource Not Allowed`
 
@@ -228,8 +229,13 @@ A list of the error codes returned by Cloudant and generic descriptions of the r
 
     The request was invalid, either because the supplied JSON was invalid, or invalid information was supplied as part of the request.
 
-JSON Basics
------------
+<div id="503"></div>
+
+-   `503 - Service Unavailable`
+
+    The request could not be processed. Seeing this response following a Cloudant request might indicate an misspelled Cloudant account name. 
+
+## JSON Basics
 
 The majority of requests and responses to and from Cloudant use the JavaScript Object Notation (JSON) for formatting the content and structure of the data and responses.
 
@@ -260,11 +266,11 @@ String should be enclosed by double-quotes. They support Unicode characters and 
 
 ### Booleans
 
-A `true` or `false` value.
-
 ```json
 { "value": true}
 ```
+
+A `true` or `false` value.
 
 ### Arrays
 
@@ -286,15 +292,15 @@ A list of values enclosed in square brackets. The values enclosed can be any val
 }
 ```
 
-A set of key/value pairs (i.e. an associative array, or hash). The key must be a string, but the value can be any of the supported JSON values.
+A set of key/value pairs, such as an associative array, or hash. The key must be a string, but the value can be any of the supported JSON values.
 
 In Cloudant databases, the JSON object is used to represent a variety of structures, including all documents in a database.
 
-Parsing JSON into a JavaScript object is supported through the `JSON.parse()` function in JavaScript, or through various libraries that will perform the parsing of the content into a JavaScript object for you. Libraries for parsing and generating JSON are available in all major programming languages.
+Parsing JSON into a JavaScript object is supported through the `JSON.parse()` function in JavaScript, or through various libraries that perform the parsing of the content into a JavaScript object for you. Libraries for parsing and generating JSON are available in all major programming languages.
 
 ### Warning
 
-Care should be taken to ensure that your JSON structures are valid, invalid structures will cause Cloudant to return an HTTP status code of 400 (bad request).
+Care should be taken to ensure that your JSON structures are valid. Invalid structures cause Cloudant to return an HTTP status code of [400 (bad request)](#400).
 
 
 ## Client Libraries
@@ -315,9 +321,9 @@ npm install nano
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/pouchdb/2.2.0/pouchdb.min.js"></script>
 ```
 
-[PouchDB](http://pouchdb.com/) is a JavaScript database that can sync with Cloudant, meaning you can make your apps offline-ready just by using PouchDB. For more info, see [our blog post](https://cloudant.com/blog/pouchdb) on PouchDB, or install it by including this in your app's HTML:
+[PouchDB](http://pouchdb.com/) is a JavaScript database that can sync with Cloudant, meaning you can make your apps offline-ready just by using PouchDB. For more info, see [our blog post](https://cloudant.com/blog/pouchdb) on PouchDB, or install it by including the PouchDB script in your app's HTML.
 
-PS: PouchDB is also available for Node.js: `npm install pouchdb`
+<aside class="notice">PouchDB is also available for Node.js: `npm install pouchdb`</aside>
 
 ### Python
 
