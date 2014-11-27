@@ -123,6 +123,10 @@ db.view_with_list($DESIGN_ID, $MAPREDUCE_INDEX, $LIST_FUNCTION, function (err, b
 
 Use list functions to customize the format of [MapReduce](#mapreduce) query results.
 
+<aside>
+It should be noted that the result of a list function is not stored and thus the function is executed every time a request is made. Thus, using map-reduce functions can be more efficient. For web and mobile applications, it is also worth considering whether any computations done in a list function would be better placed in the application tier. The best use case for list functions is where you want to access Cloudant directly from a browser and need data to be returned in a different format, e.g. HTML.
+</aside>
+
 List functions require two arguments: `head` and `req`.
 
 When you define a list function,
@@ -206,6 +210,10 @@ db.show($DESIGN_ID, $SHOW_FUNCTION, $DOCUMENT_ID, function (err, body) {
 ```
 
 Show functions are like [list functions](#list-functions) but for formatting individual documents.
+
+<aside>
+It should be noted that the result of a show function is not stored and thus the function is executed every time a request is made. Thus, using map functions can be more efficient. For web and mobile applications, it is also worth considering whether any computations done in a show function would be better placed in the application tier. The best use case for show functions is where you want to access Cloudant directly from a browser and need data to be returned in a different format, e.g. HTML.
+</aside>
 
 Show functions receive two arguments: `doc`, and [req](#req). `doc` is the document requested by the show function.
 
