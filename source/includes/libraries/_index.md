@@ -3,12 +3,13 @@
 Client libraries are the tools that let you develop your own applications to work with Cloudant databases.
 
 Some client libraries are formally [supported](#supported) by Cloudant.
-These include
+These include:
 
-- [Java](#Java)
-- [Javascript](#Javascript)
-- [Node.js](#Node.js)
-- [Python](#Python)
+- [Mobile](#mobile)
+- [Java](#java)
+- [Javascript](#javascript)
+- [Node.js](#node.js)
+- [Python](#python)
 
 Other client libraries have been created by [third parties](#thirdparty).
 

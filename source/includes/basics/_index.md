@@ -17,7 +17,12 @@ Cloudant's API represents the collaboration of numerous machines, called a clust
 <div id="replication"></div>
 ## Replication
 
-[Replication](#ReplicationAPI) is a procedure followed by Cloudant, [CouchDB](http://couchdb.apache.org/), [PouchDB](http://junk.arandomurl.com/), and others. It synchronizes the state of two databases so that their contents are identical. You can continuously replicate as well, which means that a target database updates every time the source changes. This can be used for backups of data, aggregation across multiple databases, or for sharing data.
+[Replication](#ReplicationAPI) is a procedure followed by Cloudant, [CouchDB](http://couchdb.apache.org/), [PouchDB](http://junk.arandomurl.com/), and others. It synchronizes the state of two databases so that their contents are identical.
+
+You can continuously replicate as well, which means that a target database updates every time the source changes. Testing for source changes involves ongoing internal calls.
+Continuous replication can be used for backups of data, aggregation across multiple databases, or for sharing data.
+
+<aside class="warning">Continuous replication can result in a large number of internal calls. This might affect costs for multi-tenant users of Cloudant systems. Continuous replication is disabled by default.</aside>
 
 Request Methods
 ---------------
