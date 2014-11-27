@@ -1,6 +1,6 @@
 # Cloudant Basics
 
-If it's your first time here, scan this section before you scroll further. The API Reference, Client Libraries and Guides that follow assume you know these things about Cloudant.
+If it's your first time here, scan this section before you scroll further. The sections on Client Libraries, API Reference, and Guides assume you know basic things about Cloudant.
 
 <div id="json"></div>
 ## JSON
@@ -301,73 +301,3 @@ Parsing JSON into a JavaScript object is supported through the `JSON.parse()` fu
 ### Warning
 
 Care should be taken to ensure that your JSON structures are valid. Invalid structures cause Cloudant to return an HTTP status code of [400 (bad request)](#400).
-
-
-## Client Libraries
-
-If you're working in one of the following languages, we highly recommend these libraries for working with Cloudant. If you see that one you like isn't mentioned, [let us know!](https://github.com/cloudant-labs/slate/issues).
-
-### Node.js
-
-```
-npm install nano
-```
-
-[nodejs-cloudant](https://github.com/cloudant/nodejs-cloudant) is the official Cloudant library for Node.js. You can install it with npm.
-
-### JavaScript
-
-```
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/pouchdb/2.2.0/pouchdb.min.js"></script>
-```
-
-[PouchDB](http://pouchdb.com/) is a JavaScript database that can sync with Cloudant, meaning you can make your apps offline-ready just by using PouchDB. For more info, see [our blog post](https://cloudant.com/blog/pouchdb) on PouchDB, or install it by including the PouchDB script in your app's HTML.
-
-<aside class="notice">PouchDB is also available for Node.js: `npm install pouchdb`</aside>
-
-### Python
-
-```
-pip install cloudant
-```
-
-[Cloudant-Python](https://github.com/cloudant-labs/cloudant-python) is Cloudant's official Python library. Install it using pip:
-
-### Ruby
-
-```
-gem install couchrest
-```
-
-[CouchRest](https://github.com/couchrest/couchrest) is a CouchDB and Cloudant client with extensions for working with Rails using [CouchRest Model](https://github.com/couchrest/couchrest_model).
-
-### PHP
-
-```
-// download sag from http://www.saggingcouch.com/download.php
-require_once('./src/Sag.php');
-```
-
-[Sag](http://www.saggingcouch.com/) is PHP's CouchDB and Cloudant client. [Sag.js](https://github.com/sbisbee/sag-js) is Sag's JavaScript counterpart.
-
-### C# / .NET
-
-[MyCouch](https://github.com/danielwertheim/mycouch) is an asynchronous CouchDB and Cloudant client for .Net.
-
-```
-/// open up the Package manager console, and invoke:
-install-package mycouch.cloudant
-```
-
-### Java
-
-```
-<dependency>
-  <groupId>com.cloudant</groupId>
-  <artifactId>cloudant-client</artifactId> 
-  <version>1.0.0-beta1</version>
-</dependency>
-```
-
-[java-cloudant](https://github.com/cloudant/java-cloudant) is the official Cloudant library for Java. You can add it as a dependency to your maven build.
-
