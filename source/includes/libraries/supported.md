@@ -39,7 +39,7 @@ Install it by including the PouchDB script in your app's HTML.
 ### Node.js
 
 ```
-npm install nano
+npm install cloudant
 ```
 
 [nodejs-cloudant](https://github.com/cloudant/nodejs-cloudant) is the official Cloudant library for Node.js. You can install it with npm.
