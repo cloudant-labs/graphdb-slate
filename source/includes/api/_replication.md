@@ -3,6 +3,9 @@
 Cloudant replication is the process that synchronizes ('syncs') the state of two databases.
 Any change which has occured in the source database is reproduced in the target database.
 You can create replications between any number of databases, whether continuous or not.
+
+<aside class="warning">Continuous replication can result in a large number of internal calls. This might affect costs for multi-tenant users of Cloudant systems. Continuous replication is disabled by default.</aside>
+
 Depending on your application requirements, you use replication to share and aggregate state and content.
 
 Replications can be represented as [documents](#documents) in the `_replicator` database.
