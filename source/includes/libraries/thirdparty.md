@@ -1,5 +1,8 @@
-## Third part client libraries
+## Third party client libraries
 <div id="thirdparty"></div>
+
+<aside class="warning">Third party client libraries are not maintained or supported by Cloudant.</aside>
+
 ### C# / .NET
 
 ```
