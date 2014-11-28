@@ -4,7 +4,7 @@ Instead of storing data in a document,
 you might also have special documents that store other content, such as functions.
 The special documents are called "design documents".
 
-Design documents are [documents](#documents) that have an `_id` beginning with `_design/`. They can thus be read and updated like any other document in the database.
+Design documents are [documents](#documents) that have an `_id` beginning with `_design/`. They can be read and updated in the same way as any other document in the database.
 Cloudant reads specific fields and values of design documents as functions.
 Design documents are used to [build indexes](#indexes), [validate updates](#update-validators), and [format query results](#list-functions).
 
@@ -122,10 +122,11 @@ db.view_with_list($DESIGN_ID, $MAPREDUCE_INDEX, $LIST_FUNCTION, function (err, b
 ```
 
 Use list functions to customize the format of [MapReduce](#mapreduce) query results.
+They are used when you want to access Cloudant directly from a browser, and need data to be returned in a different format, such as HTML.
 
-<aside>
-It should be noted that the result of a list function is not stored and thus the function is executed every time a request is made. Thus, using map-reduce functions can be more efficient. For web and mobile applications, it is also worth considering whether any computations done in a list function would be better placed in the application tier. The best use case for list functions is where you want to access Cloudant directly from a browser and need data to be returned in a different format, e.g. HTML.
-</aside>
+<aside>The result of a list function is not stored. This means that the function is executed every time a request is made.
+As a consequence, using map-reduce functions might be more efficient.
+For web and mobile applications, consider whether any computations done in a list function would be better placed in the application tier.</aside>
 
 List functions require two arguments: `head` and `req`.
 
@@ -209,16 +210,17 @@ db.show($DESIGN_ID, $SHOW_FUNCTION, $DOCUMENT_ID, function (err, body) {
 });
 ```
 
-Show functions are like [list functions](#list-functions) but for formatting individual documents.
+Show functions are similar to [list functions](#list-functions) but are used to format individual documents.
+They are used when you want to access Cloudant directly from a browser, and need data to be returned in a different format, such as HTML.
 
-<aside>
-It should be noted that the result of a show function is not stored and thus the function is executed every time a request is made. Thus, using map functions can be more efficient. For web and mobile applications, it is also worth considering whether any computations done in a show function would be better placed in the application tier. The best use case for show functions is where you want to access Cloudant directly from a browser and need data to be returned in a different format, e.g. HTML.
-</aside>
+<aside>The result of a show function is not stored. This means that the function is executed every time a request is made.
+As a consequence, using map functions might be more efficient.
+For web and mobile applications, consider whether any computations done in a show function would be better placed in the application tier.</aside>
 
 Show functions receive two arguments: `doc`, and [req](#req). `doc` is the document requested by the show function.
 
-Once you've defined a show function, you can query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID/_show/$SHOW_FUNCTION/$DESIGN_ID`,
-where `$SHOW_FUNCTION` is the function's name, and `$DESIGN_ID` is the `_id` of the document you want to run the show function on.
+When you have defined a show function, you query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID/_show/$SHOW_FUNCTION/$DESIGN_ID`,
+where `$SHOW_FUNCTION` is the name of the function that is applied to the document that has `$DESIGN_ID` as its `_id`.
 
 ### Update Handlers
 
