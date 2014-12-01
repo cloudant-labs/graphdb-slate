@@ -5,44 +5,39 @@ The Cloudant Query endpoints can be used to create, list, update, and delete ind
 
 A list of the available methods and endpoints is provided below:
 
-<table>
-<colgroup>
-<col width="9%" />
-<col width="22%" />
-<col width="68%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">Method</th>
-<th align="left">Path</th>
-<th align="left">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">POST</td>
-<td align="left">/db/_index</td>
-<td align="left">Create a new index</td>
-</tr>
-<tr class="even">
-<td align="left">GET</td>
-<td align="left">/db/_index</td>
-<td align="left">List all indexes</td>
-</tr>
-<tr class="odd">
-<td align="left">DELETE</td>
-<td align="left">/db/_index</td>
-<td align="left">Delete an index</td>
-</tr>
-<tr class="even">
-<td align="left">POST</td>
-<td align="left">/db/_find</td>
-<td align="left">Find documents using an index</td>
-</tr>
-</tbody>
-</table>
+Method | Path | Description
+-------|------|------------
+POST | /db/_index | Create a new index
+GET | /db/_index | List all indexes
+DELETE | /db/_index | Delete an index
+POST| /db/_find | Find documents using an index
 
 ### Creating a new index
+
+> Example of creating a new index for the field called `foo`:
+
+```shell
+POST /db/_index HTTP/1.1
+Content-Type: application/json
+```
+
+```json
+{
+    "index": {
+        "fields": ["foo"]
+    },
+    "name" : "foo-index",
+    "type" : "json"
+}
+```
+
+> The returned JSON confirms the index has been created:
+
+```json
+{
+    "result": "created"
+}
+```
 
 -   **Method**: `POST`
 -   **URL Path**: `/db/_index`
@@ -62,57 +57,10 @@ Creates a new index in the specified database using the information supplied in 
 
 #### Return Codes
 
-<table>
-<colgroup>
-<col width="8%" />
-<col width="91%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">Code</th>
-<th align="left">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">200</td>
-<td align="left">Index has been created successfully or already existed</td>
-</tr>
-<tr class="even">
-<td align="left">400</td>
-<td align="left">Bad request, i.e. the request body does not have the specified format</td>
-</tr>
-</tbody>
-</table>
-
-###### dummy
-
-```http
-POST /db/_index HTTP/1.1
-Content-Type: application/json
-```
-
-```json
-{
-    "index": {
-        "fields": ["foo"]
-    },
-    "name" : "foo-index",
-    "type" : "json"
-}
-```
-
-For example, you can create a new index for the `foo` field with this request:
-
-###### dummy
-
-```json
-{
-    "result": "created"
-}
-```
-
-The returned JSON confirms the index has been created:
+Code | Description
+-----|------------
+200 | Index has been created successfully or already existed
+400 | Bad request: the request body does not have the specified format
 
 ### List all indexes
 
@@ -121,7 +69,7 @@ The returned JSON confirms the index has been created:
 -   **Response Body**: JSON object describing the indexes
 -   **Roles permitted**: \_reader
 
-With a `GET` request to `/db/_index` you get a list of all indexes in the database. In addition to the information available through this API, indexes are also stored in design documents \<index-functions\>. Design documents are regular documents whose ID starts with `_design/` and they can be retrieved and modified like any other document, although this isn't necessary when using Cloudant Query.
+When you make a `GET` request to `/db/_index`, you get a list of all indexes in the database. In addition to the information available through this API, indexes are also stored in design documents &lt;index-functions&gt;. Design documents are regular documents that have an ID starting with `_design/`. Design documents can be retrieved and modified in the same way as any other document, although this is not necessary when using Cloudant Query.
 
 #### Response body
 
@@ -155,17 +103,19 @@ With a `GET` request to `/db/_index` you get a list of all indexes in the databa
 }
 ```
 
--   **indexes**: Array of indeces
-    -   **ddoc**: ID of the design document the index belongs to. This ID can be used to retrieve the design document containing the index with a `GET` request to `/db/ddoc`, where `ddoc` is the value of this field.
+-   **indexes**: Array of indexes
+    -   **ddoc**: ID of the design document the index belongs to. This ID can be used to retrieve the design document containing the index,
+    by making a `GET` request to `/db/ddoc`, where `ddoc` is the value of this field.
     -   **name**: Name of the index.
     -   **type**: Type of the index. Currently "json" is the only supported type.
-    -   **def**: Definition of the index, containing the indexed fields and the sort order, i.e. ascending or descending.
+    -   **def**: Definition of the index, containing the indexed fields and the sort order: ascending or descending.
 
 ### Deleting an index
 
 -   **Method**: `DELETE`
--   **URL Path**: `/$db/_index/$designdoc/$type/$name` where $db is the name of the database, $designdoc is the ID of the design document, $type is the type of the index (e.g. json), and $name is the name of the index.
--   **Response Body**: JSON object indicating successful deletion of the index or describing an error
+-   **URL Path**: `/$db/_index/$designdoc/$type/$name` where $db is the name of the database, $designdoc is the ID of the design document, $type is the type of the index (for example "json"),
+and $name is the name of the index.
+-   **Response Body**: JSON object indicating successful deletion of the index, or describing any error encountered.
 -   **Request Body**: None
 -   **Roles permitted**: \_writer
 
@@ -177,6 +127,8 @@ With a `GET` request to `/db/_index` you get a list of all indexes in the databa
 -   **Roles permitted**: \_reader
 
 #### Request body
+
+> Example request body for finding documents using an index:
 
 ```json
 {
@@ -190,14 +142,16 @@ With a `GET` request to `/db/_index` you get a list of all indexes in the databa
 }
 ```
 
--   **selector**: JSON object describing criteria used to select documents. See the section on [selectors](#selector-syntax) below.
--   **limit (optional, default: 25)**: maximum number of results returned
--   **skip (optional, default: 0)**: skip the first n results, where n is the value specified
+-   **selector**: JSON object describing criteria used to select documents. More information provided in the section on [selectors](#selector-syntax).
+-   **limit (optional, default: 25)**: Maximum number of results returned.
+-   **skip (optional, default: 0)**: Skip the first 'n' results, where 'n' is the value specified.
 -   **sort (optional, default: [])**: JSON array following [sort syntax](#sort-syntax)
 -   **fields (optional, default: null)**: JSON array following the field syntax, described below. This parameter lets you specify which fields of an object should be returned. If it is omitted, the entire object is returned.
--   **r (optional, default: 1)**: Read quorum needed for the result. This defaults to 1, in which case the document found in the index is returned. If set to a higher value, each document is read from at least that many replicas before it is returned in the results. This is obviously less performant than using the document local to the index.
+-   **r (optional, default: 1)**: Read quorum needed for the result. This defaults to 1, in which case the document found in the index is returned. If set to a higher value, each document is read from at least that many replicas before it is returned in the results. This is likely to take more time than using only the document stored locally with the index.
 
 #### Response body
+
+> Example response when finding documents using an index:
 
 ```json
 {
@@ -218,89 +172,121 @@ With a `GET` request to `/db/_index` you get a list of all indexes in the databa
 }
 ```
 
--   **docs**: Array of documents matching the search
+-   **docs**: Array of documents matching the search. In each matching document, the fields specified in the `fields` part of the request body are listed, along with their values.
 
 ### Selector Syntax
 
-The Cloudant Query language is expressed as a JSON object describing documents of interest. Within this structure it is also possible to express conditional logic using specially named fields. This is inspired by and intended to maintain a fairly close parity to MongoDB query documents.
+The Cloudant Query language is expressed as a JSON object describing documents of interest. Within this structure, you can apply conditional logic using specially named fields.
 
-###### dummy
+<aside class="notice">While the Cloudant Query language has some similarities with MongoDB query documents, these arise from a similarity of purpose and do not necessarily extend to commonality of function or result.</aside>
+
+#### Selector basics
+
+> A simple selector to match any documents with the `name` "Paul":
 
 ```json
 {"name": "Paul"}
 ```
 
-As an example, a simple selector looks like this. This selector matches any documents with the `name` "Paul". Extending this example using other fields:
-
-###### dummy
-
-This selector matches a document with `name` Paul, that also has a "location" field with the value of "Boston".
+> A more complex selector that matches any document with `name` "Paul", and that also has a `location` field with the value "Boston":
 
 ```json
 {"name": "Paul", "location": "Boston"}
 ```
 
-###### dummy
+Elementary selector syntax requires you to specify one or more fields, and the corresponding values required for those fields.
+
+### Subfields
+
+> Example of a field and subfield selector, using a standard JSON structure:
 
 ```json
 {"location": {"city": "Omaha"}}
 ```
 
+> Example of an equivalent dot-notation field and subfield selector:
+
 ```json
 {"location.city": "Omaha"}
 ```
 
-There are two special syntax elements for the object fields in a selector. The first is that the dot character denotes subfields in a document. For instance, here are two equivalent examples:
+A more complex selector enables you to specify the values for fields and subfields.
+For example, you might use the standard JSON structure for specifying a field and subfield.
+However, an abbreviated equivalent uses a dot notation to combine the field and subfield names into a single name.
 
-###### dummy
+### Operators
+
+> Example selector to match any document where the `age` field has a value greater than 20:
 
 ```json
 {"age": {"$gt": 20}}
 ```
 
-The second important syntax element is the use of a dollar sign ($) prefix to denote operators. For example:
+Operators are identified by the use of a dollar sign ($) prefix in the name field.
 
-In this example, any document where the age field has a value greater than 20 will be machted.
+There are two core types of operators in the selector syntax:
 
-There are two core types of operators in the selector syntax: combination operators and condition operators. In general, combination operators are at the top level and combine conditions or combinations of confitions into one selector. We'll describe each operator below.
+- Combination operators
+- Condition operators
+
+In general, combination operators are applied at the top level of selection.
+They are used to combine conditions, or to create combinations of conditions, into one selector.
+
+Every explicit operator has the form `{"$operator": argument}`.
+A selector without an explicit operator is considered to have an implicit operator.
+The exact implicit operator is determined by the context of the selector expression.
 
 ### Implicit Operators
+
+> Example of implicit operator, where the field `foo` in a matching document must have a value exactly equal to "bar":
 
 ```json
 {"foo": "bar"}
 ```
 
+> Example of an explicit operator providing the equivalent test of matching for equality:
+
 ```json
 {"foo": {"$eq": "bar"}}
 ```
 
-For the most part every operator must be of the form {"$operator": argument}. Though there are two implicit operators for selectors.
-
-Any field that contains a JSON value that has no operators in it is an equality condition. For instance, these are equivalent:
-
-###### dummy
+> Example of implicit operator applied to a subfield test, where the field `foo` in a matching document must a subfield `bar` with a value exactly equal to "baz":
 
 ```json
 {"foo": {"bar": "baz"}}
 ```
 
+> Example of an explicit operator providing the equivalent test of matching for equality in subfields:
+
 ```json
 {"foo": {"$eq": {"bar": "baz"}}}
 ```
 
-And to be clear, these are also equivalent:
-
-###### dummy 
+> Example of an implicit `$and` operator, specifying a match for foo=bar _and_ baz=true:
 
 ```json
 {"foo": "bar", "baz": true}
 ```
 
+> Example of explicit `$and` and `$eq` operators, specifying a match for foo=bar _and_ baz=true:
+
 ```json
 {"$and": [{"foo": {"$eq": "bar"}}, {"baz": {"$eq": true}}]}
 ```
 
-Any JSON object that is not the argument to a condition operator is an implicit $and operator on each field. For instance, these two examples are identical:
+There are two implicit operators:
+
+- Equality
+- And
+
+In a selector, any field containing a JSON value but that has no operators in it, is considered to be an equality condition.
+The implicit equality test applies also for fields and subfields.
+
+Any JSON object that is not the argument to a condition operator is an implicit `$and` operator on each field.
+
+<hr/>
+
+###### dummy 
 
 ### Combination Operators
 
