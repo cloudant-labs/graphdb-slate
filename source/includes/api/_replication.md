@@ -22,7 +22,7 @@ doc_ids | no | Array of document IDs; if given, only these documents will be rep
 filter | no | Name of a [filter function](#filter-functions) that can choose which documents get replicated.
 proxy | no | Proxy server URL.
 query_params | no | Object containing properties that are passed to the filter function.
-use_checkpoints | no | Whether to create checkpoints. Checkpoints greatly reduce the time and resources needed for repeated replications. Setting this to false removes the requirement for write access to the source database. Defaults to true.
+<div id="checkpoints">use_checkpoints</div> | no | Whether to create checkpoints. Checkpoints greatly reduce the time and resources needed for repeated replications. Setting this to false removes the requirement for write access to the source database. Defaults to true.
 
 ### Replicator database
 
@@ -262,11 +262,21 @@ function(doc, req) {
 }
 ```
 
-Sometimes you don't want to transfer all documents from source to target. You can include one or more filter functions in a design document on the source and then tell the replicator to use them.
+Sometimes you do not want to transfer all documents from source to target.
+To choose which documents to transfer,
+include one or more filter functions in a design document on the source.
+You can then tell the replicator to use these filter functions.
 
-A filter function takes two arguments (the document to be replicated and the the replication request) and returns true or false. If the result is true, the document is replicated.
+A filter function takes two arguments:
+
+- The document to be replicated.
+- The replication request.
+
+A filter function returns a true or false value. If the result is true, the document is replicated.
 
 ###### h6
+
+> Simple example of a filter function:
 
 ```json
 {
@@ -277,9 +287,11 @@ A filter function takes two arguments (the document to be replicated and the the
 }
 ```
 
-Filters live under the top-level "filters" key;
+Filters are stored under the top-level `filters` key of the design document.
 
 ###### h6
+
+> Example JSON for invoking a filtered replication:
 
 ```json
 {
@@ -289,9 +301,15 @@ Filters live under the top-level "filters" key;
 }
 ```
 
-Invoke them as follows:
+Filters are invoked by using a JSON statement that identifies:
+
+- The source database.
+- The target database.
+- The name of the filter stored under the `filters` key of the design document.
 
 ###### h6
+
+> Example JSON for invoking a filtered replication with supplied parameters:
 
 ```json
 {
@@ -304,9 +322,11 @@ Invoke them as follows:
 }
 ```
 
-You can even pass arguments to them.
+Arguments can be supplied to the filter function by including key:value pairs in the `query_params` field of the invocation.
 
 ### Named Document Replication
+
+> Example replication of specific documents:
 
 ```json
 {
@@ -316,10 +336,12 @@ You can even pass arguments to them.
 }
 ```
 
-Sometimes you only want to replicate some documents. For this simple case you do not need to write a filter function. Simply add the list of keys in the doc\_ids field.
+Sometimes you only want to replicate some documents. For this simple case, you do not need to write a filter function. To replicate specific documents, add the list of keys as an array in the `doc_ids` field.
 
 
 ### Replicating through a proxy
+
+> Example showing replication through a proxy:
 
 ```json
 {
@@ -329,9 +351,11 @@ Sometimes you only want to replicate some documents. For this simple case you do
 }
 ```
 
-Pass a "proxy" argument in the replication data to have replication go through an HTTP proxy:
+If you want replication to pass through an HTTP proxy, provide the proxy details in the `proxy` field of the replication data.
 
 ### Authentication
+
+> Example of specifying username and password values for accessing source and target databases during replication:
 
 ```json
 {
@@ -340,20 +364,15 @@ Pass a "proxy" argument in the replication data to have replication go through a
 }
 ```
 
-The source and the target database may require authentication, and if checkpoints are used (on by default), even the source will require write access. The easiest way to authenticate is to put a username and password into the URL; the replicator will use these for HTTP Basic auth:
+In any production application, security of the source and target databases is essential.
+In order for replication to proceed, authentication is necessary to access the databases.
+In addition, checkpoints for replication are [enabled by default](#checkpoints), which means that replicating the source database requires write access.
+
+To enable authentication during replication, include a username and password in the database URL.
 
 ### Performance related options
 
-These options can be set per replication by including them in the replication document.
-
--   `worker_processes` - The number of processes the replicator uses (per replication) to transfer documents from the source to the target database. Higher values can imply better throughput (due to more parallelism of network and disk IO) at the expense of more memory and eventually CPU. Default value is 4.
--   `worker_batch_size` - Workers process batches with the size defined by this parameter (the size corresponds to number of ''\_changes'' feed rows). Larger batch sizes can offer better performance, while lower values imply that checkpointing is done more frequently. Default value is 500.
--   `http_connections` - The maximum number of HTTP connections per replication. For push replications, the effective number of HTTP connections used is min(worker\_processes + 1, http\_connections). For pull replications, the effective number of connections used corresponds to this parameter's value. Default value is 20.
--   `connection_timeout` - The maximum period of inactivity for a connection in milliseconds. If a connection is idle for this period of time, its current request will be retried. Default value is 30000 milliseconds (30 seconds).
--   `retries_per_request` - The maximum number of retries per request. Before a retry, the replicator will wait for a short period of time before repeating the request. This period of time doubles between each consecutive retry attempt. This period of time never goes beyond 5 minutes and its minimum value (before the first retry is attempted) is 0.25 seconds. The default value of this parameter is 10 attempts.
--   `socket_options` - A list of options to pass to the connection sockets. The available options can be found in the [documentation for the Erlang function setopts/2 of the inet module](http://www.erlang.org/doc/man/inet.html#setopts-2). Default value is `[{keepalive, true}, {nodelay, false}]`.
-
-#### Example
+> Example of including performance options in a replication document:
 
 ```json
 {
@@ -364,6 +383,15 @@ These options can be set per replication by including them in the replication do
   "http_connections": 30
 }
 ```
+
+These options can be set for a replication by including them in the replication document.
+
+-   `worker_processes` - The number of processes the replicator uses (per replication) to transfer documents from the source to the target database. Higher values can imply better throughput (due to more parallelism of network and disk IO) at the expense of more memory and eventually CPU. Default value is 4.
+-   `worker_batch_size` - Workers process batches with the size defined by this parameter (the size corresponds to number of ''\_changes'' feed rows). Larger batch sizes can offer better performance, while lower values imply that checkpointing is done more frequently. Default value is 500.
+-   `http_connections` - The maximum number of HTTP connections per replication. For push replications, the effective number of HTTP connections used is min(worker\_processes + 1, http\_connections). For pull replications, the effective number of connections used corresponds to this parameter's value. Default value is 20.
+-   `connection_timeout` - The maximum period of inactivity for a connection in milliseconds. If a connection is idle for this period of time, its current request will be retried. Default value is 30000 milliseconds (30 seconds).
+-   `retries_per_request` - The maximum number of retries per request. Before a retry, the replicator will wait for a short period of time before repeating the request. This period of time doubles between each consecutive retry attempt. This period of time never goes beyond 5 minutes and its minimum value (before the first retry is attempted) is 0.25 seconds. The default value of this parameter is 10 attempts.
+-   `socket_options` - A list of options to pass to the connection sockets. The available options can be found in the [documentation for the Erlang function setopts/2 of the inet module](http://www.erlang.org/doc/man/inet.html#setopts-2). Default value is `[{keepalive, true}, {nodelay, false}]`.
 
 ### Advanced content
 
