@@ -219,7 +219,7 @@ To delete a document, make a DELETE request with the document's latest `_rev` in
 This error prevents you overwriting data changed by other clients.</aside>
 
 <aside class="warning">
-CouchDB doesn’t completely delete the specified document. Instead, it leaves a tombstone with very basic information about the document. The tombstone is required so that the delete action can be replicated. Since the tombstones stay in the database indefinitely, creating new documents and deleting them increases the disk space usage of a database.
+CouchDB doesn’t completely delete the specified document. Instead, it leaves a tombstone with very basic information about the document. The tombstone is required so that the delete action can be replicated. Since the tombstones stay in the database indefinitely, creating new documents and deleting them increases the disk space usage of a database and the query time for the primary index, which is used to look up documents by their ID.
 </aside>
 
 ### Bulk Operations
