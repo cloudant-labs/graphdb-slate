@@ -443,15 +443,94 @@ However,
 
 ### Sending several queries to a view
 
--   **Method**: `POST /db/_design/design-doc/_view/view-name`
--   **Request**: A JSON document containing an array of query objects
--   **Response**: A JSON document containing an array of response object - one per query
--   **Roles permitted**: \_reader
+```http
+POST /$DB/_design/$DESIGNDOC/_view/$VIEW HTTP/1.1
+Content-Type: application/json
+```
 
-This in an example of a request body:
+```shell
+curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/$DB/_design/$DESIGNDOC/_view/$VIEW -H 'Content-Type: application/json' -d @request-body.json
+# where request-body.json is a file containing the following JSON data:
+```
 
-The JSON object contains only the `queries` field, which holds an array of query objects. Each query object can have fields for the parameters of a query. The field names and their meaning are the same as the query parameters of a regular view request.
+```json
+{
+  "queries": [{
 
-Here is an example of a response:
+  }, {
+    "startkey": 1,
+    "limit": 2
+  }]
+}
+```
 
-The JSON object contains only the `results` field, which holds an array of result objects - one for each query. Each result object contains the same fields as the response to a regular view request.
+> example response:
+
+```json
+{
+  "results": [
+		{
+		  "total_rows": 3,
+		  "offset": 0,
+		  "rows": [
+				{
+				  "id": "8fbb1250-6908-42e0-8862-aef60dc430a2",
+				  "key": 0,
+				  "value": {
+				    "_id": "8fbb1250-6908-42e0-8862-aef60dc430a2",
+				    "_rev": "1-ad1680946839206b088da5d9ac01e4ef",
+				    "foo": 0,
+				    "bar": "foo"
+				  }
+				}, {
+				  "id": "d69fb42c-b3b1-4fae-b2ac-55a7453b4e41",
+				  "key": 1,
+				  "value": {
+				    "_id": "d69fb42c-b3b1-4fae-b2ac-55a7453b4e41",
+				    "_rev": "1-abb9a4fc9f0f339efbf667ace66ee6a0",
+				    "foo": 1,
+				    "bar": "bar"
+				  }
+				}, {
+				  "id": "d1fa85cd-cd18-4790-8230-decf99e1f60f",
+				  "key": 2,
+				  "value": {
+				    "_id": "d1fa85cd-cd18-4790-8230-decf99e1f60f",
+				    "_rev": "1-d075a71f2d47af7d4f64e4a367160e2a",
+				    "foo": 2,
+				    "bar": "baz"
+				  }
+				}
+		  ]
+		}, {
+		  "total_rows": 3,
+		  "offset": 1,
+		  "rows": [
+				{
+				  "id": "d69fb42c-b3b1-4fae-b2ac-55a7453b4e41",
+				  "key": 1,
+				  "value": {
+				    "_id": "d69fb42c-b3b1-4fae-b2ac-55a7453b4e41",
+				    "_rev": "1-abb9a4fc9f0f339efbf667ace66ee6a0",
+				    "foo": 1,
+				    "bar": "bar"
+				  }
+				}, {
+				  "id": "d1fa85cd-cd18-4790-8230-decf99e1f60f",
+				  "key": 2,
+				  "value": {
+				    "_id": "d1fa85cd-cd18-4790-8230-decf99e1f60f",
+				    "_rev": "1-d075a71f2d47af7d4f64e4a367160e2a",
+				    "foo": 2,
+				    "bar": "baz"
+				  }
+				}
+		  ]
+  	}
+  ]
+}
+```
+
+To send several view queries in one request, use a `POST` request to `/$DB/_design/$DESIGNDOC/_view/$VIEW`. The request body is a JSON object containing only the `queries` field. It holds an array of query objects with fields for the parameters of the query. The field names and their meaning are the same as the query parameters of a regular view request.
+
+The JSON object returned in the response contains only the `results` field, which holds an array of result objects - one for each query. Each result object contains the same fields as the response to a regular view request.
