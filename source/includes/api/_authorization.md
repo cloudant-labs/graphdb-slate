@@ -5,55 +5,137 @@ are permitted to perform certain tasks. This is called authorization.
 
 ### Roles
 
-Cloudant has three roles:
-
 Role      | Description
 ----------|------------
 `_reader` | Gives the user permission to read documents from the database.
 `_writer` | Gives the user permission to create and modify documents in the database.
 `_admin`  | Gives the user all permissions, including setting permissions.
+`_replicate` | Gives the user permission to replicate a database, including creating checkpoints.
+`_db_updates` | Gives the user permission to use the global changes feed.
+`_design` | Gives the user access to views and design documents.
+`_shards` | Gives the user access to the `/$DB/_shards` endpoint.
+`_security` | Gives the user access to the `/$DB/_security` endpoint, letting them change roles of users.
+`_search_analyze` | Gives the user access to the `/_search_analyze` endpoint
+
 
 The credentials you use to log in to the dashboard automatically have `_admin` permissions to all databases you create. Everyone and everything else, from users you share databases with to API keys you create, must be given a permission level explicitly.
 
-### Managing Permissions
+### Reading Permissions
 
 ```http
-POST /api/set_permissions HTTP/1.1
-Host: cloudant.com
-Content-Type: application/x-www-form-urlencoded
-
-username=$USERNAME_OR_API_KEY&database=$ACCOUNT_NAME/$DATABASE&roles=_reader&roles=_writer
+GET /_api/v2/db/$DATABASE/_security HTTP/1.1
 ```
 
 ```shell
-curl -X POST https://cloudant.com/api/set_permissions \
-  -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "username=$USERNAME_OR_API_KEY&database=$ACCOUNT_NAME/$DATABASE&roles=_reader&roles=_writer" \
-  -u $USERNAME
+curl https://$USERNAME.cloudant.com/_api/v2/db/$DATABASE/_security \
+     -u $USERNAME
 ```
 
 ```javascript
 var nano = require('nano');
-var account = nano("https://$USERNAME:$PASSWORD@cloudant.com");
+var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
 
 account.request({
-  db: 'api',
-  path: 'set_permissions',
-  method: 'POST',
-  body: 'username=$USERNAME_OR_API_KEY&database=$ACCOUNT_NAME/$DATABASE&roles=_reader&roles=_writer',
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded'
-  }
-}, function (err, body) {
+  db: $DATABASE,
+  path: '_security'
+}, function (err, body, headers) {
   if (!err) {
     console.log(body);
   }
 });
 ```
 
-To modify a user's permissions, use `https://cloudant.com/api/set_permissions`.
+> Example response:
 
-<aside class="notice">Unlike most Cloudant endpoints, `/api/set_permissions` accepts form-encoded data rather than a JSON object in the request body.</aside>
+```json
+{
+  "cloudant": {
+    "antsellseadespecteposene": [
+      "_reader",
+      "_writer",
+      "_admin"
+    ],
+    "garbados": [
+      "_reader",
+      "_writer",
+      "_admin"
+    ],
+    "nobody": [
+      "_reader"
+    ]
+  },
+  "_id": "_security"
+}
+```
+
+To see who has permissions to read, write, and manage the database, make a GET request against `https://$USERNAME.cloudant.com/$DB/_security`.
+The `cloudant` field in the response object contains an object with keys that are the usernames that have permission to interact with the database.
+The `nobody` username indicates what rights are available to unauthenticated users -- that is, any request made without authentication credentials.
+In the example response, for instance, `nobody` has `_reader` permissions, making the database publicly readable by everyone.
+
+### Modifying Permissions
+
+```http
+PUT /_api/v2/db/$DATABASE/_security HTTP/1.1
+Content-Type: application/json
+```
+
+```shell
+curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/_api/v2/db/$DATABASE/_security \
+     -X PUT \
+     -H "Content-Type: application/json" \
+     -d "$JSON"
+```
+
+```javascript
+var nano = require('nano');
+var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
+
+account.request({
+  db: $DATABASE,
+  path: '_security',
+  method: 'PUT',
+  body: '$JSON'
+}, function (err, body, headers) {
+  if (!err) {
+    console.log(body);
+  }
+});
+```
+
+> Example request:
+
+```json
+{
+  "cloudant": {
+    "antsellseadespecteposene": [
+      "_reader",
+      "_writer",
+      "_admin"
+    ],
+    "garbados": [
+      "_reader",
+      "_writer",
+      "_admin"
+    ],
+    "nobody": [
+      "_reader"
+    ]
+  }
+}
+```
+
+> Example response:
+
+```json
+{
+  "ok" : true
+}
+```
+
+To modify who has permissions to read, write, and manage a database, make a PUT request against `https://$USERNAME.cloudant.com/_api/v2/db/$DB/_security`. To see what roles you can assign, see [Roles](#roles).
+
+The request object's `cloudant` field contains an object whose keys are usernames with permissions to interact with the database. The `nobody` username indicates what rights are available to unauthenticated users -- that is, anybody. In the example request, for instance, `nobody` has `_reader` permissions, making the database publicly readable.
 
 ### Creating API Keys
 
@@ -63,8 +145,7 @@ Host: cloudant.com
 ```
 
 ```shell
-curl -X POST https://cloudant.com/api/generate_api_key
-     -u $USERNAME
+curl -X POST https://$USERNAME:$PASSWORD@cloudant.com/api/generate_api_key
 ```
 
 ```javascript
