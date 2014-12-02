@@ -179,8 +179,6 @@ This error prevents you overwriting data changed by other clients.</aside>
 
 ### Delete
 
-> Example instruction for deleting a document:
-
 ```http
 DELETE /$DATABASE/$DOCUMENT_ID?rev=$REV HTTP/1.1
 ```
@@ -219,6 +217,10 @@ To delete a document, make a DELETE request with the document's latest `_rev` in
 
 <aside>If you fail to provide the latest `_rev`, Cloudant responds with a [409 error](#http-status-codes).
 This error prevents you overwriting data changed by other clients.</aside>
+
+<aside class="warning">
+CouchDB doesn’t completely delete the specified document. Instead, it leaves a tombstone with very basic information about the document. The tombstone is required so that the delete action can be replicated. Since the tombstones stay in the database indefinitely, creating new documents and deleting them increases the disk space usage of a database.
+</aside>
 
 ### Bulk Operations
 
