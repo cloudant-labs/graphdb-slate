@@ -216,7 +216,8 @@ However, an abbreviated equivalent uses a dot notation to combine the field and 
 
 ### Operators
 
-> Example selector to match any document where the `age` field has a value greater than 20:
+> Example selector using an operator to match any document,
+where the `age` field has a value greater than 20:
 
 ```json
 {"age": {"$gt": 20}}
@@ -232,13 +233,16 @@ There are two core types of operators in the selector syntax:
 In general, combination operators are applied at the top level of selection.
 They are used to combine conditions, or to create combinations of conditions, into one selector.
 
-Every explicit operator has the form `{"$operator": argument}`.
+Every explicit operator has the form:
+
+  `{"$operator": argument}`
+
 A selector without an explicit operator is considered to have an implicit operator.
-The exact implicit operator is determined by the context of the selector expression.
+The exact implicit operator is determined by the structure of the selector expression.
 
 ### Implicit Operators
 
-> Example of implicit operator, where the field `foo` in a matching document must have a value exactly equal to "bar":
+> Example of the equality implicit operator, where there must be a field `foo` in a matching document, and the field must have a value exactly equal to "bar":
 
 ```json
 {"foo": "bar"}
@@ -250,7 +254,7 @@ The exact implicit operator is determined by the context of the selector express
 {"foo": {"$eq": "bar"}}
 ```
 
-> Example of implicit operator applied to a subfield test, where the field `foo` in a matching document must a subfield `bar` with a value exactly equal to "baz":
+> Example of implicit operator applied to a subfield test, where the required field `foo` in a matching document must also have a subfield `bar` with a value exactly equal to "baz":
 
 ```json
 {"foo": {"bar": "baz"}}
@@ -262,13 +266,13 @@ The exact implicit operator is determined by the context of the selector express
 {"foo": {"$eq": {"bar": "baz"}}}
 ```
 
-> Example of an implicit `$and` operator, specifying a match for foo=bar _and_ baz=true:
+> Example of an implicit `$and` operator, requiring that the field `foo` must be present and contain the value `bar` _and_ that the field `baz` must exist can contain the value `true`:
 
 ```json
 {"foo": "bar", "baz": true}
 ```
 
-> Example of explicit `$and` and `$eq` operators, specifying a match for foo=bar _and_ baz=true:
+> Example of using explicit `$and` and `$eq` operators, in an equivalent test:
 
 ```json
 {"$and": [{"foo": {"$eq": "bar"}}, {"baz": {"$eq": true}}]}
@@ -279,72 +283,81 @@ There are two implicit operators:
 - Equality
 - And
 
-In a selector, any field containing a JSON value but that has no operators in it, is considered to be an equality condition.
+In a selector, any field containing a JSON value, but that has no operators in it, is considered to be an equality condition.
 The implicit equality test applies also for fields and subfields.
 
 Any JSON object that is not the argument to a condition operator is an implicit `$and` operator on each field.
 
-<hr/>
-
-###### dummy 
-
 ### Combination Operators
 
-Combination operators are responsible for combining selectors. In this group of operators you find the familiar boolean operators as well as two for working with JSON arrays.
+Combination operators are used to combine selectors.
+In addition to the common boolean operators found in most programming languages,
+there are two operators that help you work with JSON arrays.
 
-Each of the combining operators take a single argument that is either a selector or an array of selectors.
+A combination operator takes a single argument.
+The argument is either another selector, or an array of selectors.
 
-The list of combining characters:
+The list of combination operators:
 
--   `$and`: array argument, matches if all the selectors in the array match
--   `$or`: array argument, matches if any of the selectors in the array match. All selectors need to use the same index.
--   `$not`: single argument, matches if the given selector does not match
--   `$nor`: array argument, matches if none of the selectors in the array match
--   `$all`: array argument, matches an array value if it contains all the elements of the argument array
--   `$elemMatch`: single argument, matches an array value if any of the elements are matched by the argument to elemMatch and returns only the first such match
+Operator | Argument | Purpose
+---------|----------|--------
+`$and` | Array | Matches if all the selectors in the array match.
+`$or` | Array | Matches if any of the selectors in the array match. All selectors must use the same index.
+`$not` | Selector | Matches if the given selector does not match.
+`$nor` | Array | Matches if none of the selectors in the array match.
+`$all` | Array | Matches an array value if it contains all the elements of the argument array.
+`$elemMatch` | Selector | Matches an array value if any of the elements in the array are matched by the argument to `$elemMatch`, then returns only the first match.
 
 ### Condition Operators
 
-Condition operators are specified on a per field basis and apply to the value indexed for that field. For instance, the basic "$eq" operator matches when the indexed field is equal to its argument. There is currently support for the basic equality and inequality operators as well as a number of meta operators. Some of these operators will accept any JSON argument while some require a specific JSON formatted argument. Each is noted below.
+Condition operators are specific to a field, and are used to evaluate the value stored in that field. For instance, the basic `$eq` operator matches when the specified field contains a value that is equal to the supplied argument.
 
-The list of conditional arguments:
+The basic equality and inequality operators common to most programming languages are supported. In addition, some 'meta' condition operators are available. Some condition operators accept any valid JSON content as the argument. Other condition operators require the argument to be in a specific JSON format.
 
-(In)equality operators
+Operator type | Operator | Argument | Purpose
+--------------|----------|----------|--------
+(In)equality | `$lt` | Any JSON | The field is less than the argument.
+ | `$lte` | Any JSON | The field is less than or equal to the argument.
+ | `$eq` | Any JSON | The field is equal to the argument.
+ | `$ne` | Any JSON | The field is not equal to the argument.
+ | `$gte` | Any JSON | The field is greater than or equal to the argument.
+ | `$gt` | Any JSON | The field is greater than the argument.
+Object | `$exists` | Boolean | Check whether the field exists or not, regardless of its value.
+ | `$type` | String | Check the document field's type. Valid values are "null", "boolean", "number", "string", "array", and "object".
+Array | `$in` | Array of JSON values | The document field must exist in the list provided.
+ | `$nin` | Array of JSON values | The document field must not exist in the list provided.
+ | `$size` | Integer | Special condition to match the length of an array field in a document. Non-array fields cannot match this condition.
+Miscellaneous | `$mod` | [Divisor, Remainder] | Divisor and Remainder are both positive integers greater than 0. Matches documents where (field % Divisor == Remainder) is true. This is false for any non-integer field.
+ | `$regex` | String | A regular expression pattern to match against the document field. Only matches when the field is a string value and matches the supplied regular expression.
 
--   `$lt`: any JSON
--   `$lte`: any JSON
--   `$eq`: any JSON
--   `$ne`: any JSON
--   `$gte`: any JSON
--   `$gt`: any JSON
+<aside class="warning">Regular expressions do not work with indexes, so they should not be used to filter large data sets.</aside>
 
-Object related operators
+<aside class="notice">The matching algorithms use by the `$regex` operator are currently based on the Perl Compatible Regular Expression (PCRE) library.
+However, not all of the PCRE library is implemented,
+and some parts of the `$regex` operator go beyond what PCRE offers.
+For more information about what is implemented,
+see the <a href="http://erlang.org/doc/man/re.html" target="_blank">Erlang Regular Expression</a> information.</aside>
 
--   `$exists`: boolean, check whether the field exists or not regardless of its value
--   `$type`: string, check the document field's type. Valid values are "null", "boolean", "number", "string", "array", and "object".
 
-Array related operators
 
--   `$in`: array of JSON values, the document field must exist in the list provided
--   `$nin`: array of JSON values, the document field must not exist in the list provided
--   `$size`: integer, special condition to match the length of an array field in a document. Non-array fields cannot match this condition.
 
-Miscellaneous operators
-
--   `$mod`: [Divisor, Remainder], where Divisor and Remainder are both positive integers (ie, greater than 0). Matches documents where (field % Divisor == Remainder) is true. This is false for any non-integer field
--   `$regex`: string, a regular expression pattern to match against the document field. Only matches when the field is a string value and matches the supplied regular expression. The matching algorithms are currently based on the PCRE library, but not all of the PCRE library is interfaced and some parts of the library go beyond what PCRE offers. See <http://erlang.org/doc/man/re.html>. Regular expressions also don't benefit from indexes, so they should not be used to filter large data sets.
 
 ### Sort Syntax
 
-###### dummy
+> Example of simple sort syntax:
 
 ```json
 [{"fieldName1": "desc"}, {"fieldName2": "desc" }]
 ```
 
-The sort syntax is a basic array of field name and direction pairs. It looks like this:
+The sort syntax uses a basic array of field name and direction pairs.
+The first field name and direction pair is the topmost level of sort.
+The second pair, if provided is the next level of sort.
 
-###### dummy
+The `field` can be any field, using dotted notation if desired for sub-document fields.
+The direction value is `"asc"` for ascending, and `"desc"` for descending.
+
+> A simple query, using sorting:
 
 ```json
 {
@@ -353,19 +366,24 @@ The sort syntax is a basic array of field name and direction pairs. It looks lik
 }
 ```
 
-Here is a query using sorting:
+A typical requirement is to search for some content using a selector,
+then to sort the results according to the specified field, in the required direction.
 
-###### dummy 
+To use sorting, ensure that:
 
-```json
-["fieldName1", "fieldName2", "and_so_on"]
-```
+- At least one of the sort fields is included in the selector.
+- There is an index already defined, with all the sort fields in the same order.
+- Each object in the sort array has a single key.
 
-Where `fieldName` can be any field (dotted notation is available for sub-document fields) and the value can be `"asc"` or `"desc"`. One of the fields have to be used in the selector as well and there has to be an index defined with all sort fields in the same order. Each object in the array should have a single key. If it does not, the resulting sort order is implementation specific and might change. Currently, Cloudant Query does not support multiple fields with different sort orders, so the directions have to be either all ascending or all descending.
+<aside class="warning">If an object in the sort array does not have a single key, the resulting sort order is implementation specific and might change.</aside>
+
+<aside>Currently, Cloudant Query does not support multiple fields with different sort orders, so the directions must be either all ascending or all descending.</aside>
 
 If the direction is ascending, you can use a string instead of an object to specify the sort fields.
 
 ### Filtering fields
+
+> Example of selective retrieval of fields from matching documents:
 
 ```json
 {
@@ -374,6 +392,15 @@ If the direction is ascending, you can use a string instead of an object to spec
 }
 ```
 
-When retrieving documents from the database you can specify that only a subset of the fields are returned. This allows you to limit your results strictly to the parts of the document that are interesting for your application and reduces the size of the response. The fields returned are specified as an array. Unlike MongoDB, only the fields specified are included, there is no automatic inclusion of the "\_id" or other metadata fields when a field list is included.
+It is possible to specify exactly which fields are returned for a document when selecting from a database.
+The two advantages are:
+
+- Your results are limited to only those parts of the document that are required for your application.
+- A reduction in the size of the response.
+
+The fields returned are specified as an array.
+
+<aside>Only the specified filter fields are included, in the response.
+There is no automatic inclusion of the `_id` or other metadata fields when a field list is included.</aside>
 
 
