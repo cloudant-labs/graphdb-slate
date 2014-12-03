@@ -29,6 +29,8 @@ require_once('./src/Sag.php');
 
 <aside class="notice">PouchDB is also available for Node.js: `npm install pouchdb`</aside>
 
+<aside class="notice">PouchDB can also be installed with Bower: `bower install pouchdb`</aside>
+
 ### Ruby
 
 ```
