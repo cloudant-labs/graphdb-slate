@@ -21,6 +21,14 @@ require_once('./src/Sag.php');
 
 [Sag](http://www.saggingcouch.com/) is PHP's CouchDB and Cloudant client. [Sag.js](https://github.com/sbisbee/sag-js) is Sag's JavaScript counterpart.
 
+### JavaScript
+
+> To obtain PouchDB, and for setup details, refer to [http://pouchdb.com/](http://pouchdb.com/).
+
+[PouchDB](http://pouchdb.com/) is a JavaScript database that can sync with Cloudant, meaning you can make your apps offline-ready just by using PouchDB. For more info, see [our blog post](https://cloudant.com/blog/pouchdb) on PouchDB.
+
+<aside class="notice">PouchDB is also available for Node.js: `npm install pouchdb`</aside>
+
 ### Ruby
 
 ```

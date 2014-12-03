@@ -25,17 +25,6 @@ Two versions are available:
 
 [java-cloudant](https://github.com/cloudant/java-cloudant) is the official Cloudant library for Java. You can add it as a dependency to your maven build.
 
-### JavaScript
-
-```
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/pouchdb/2.2.0/pouchdb.min.js"></script>
-```
-
-[PouchDB](http://pouchdb.com/) is a JavaScript database that can sync with Cloudant, meaning you can make your apps offline-ready just by using PouchDB. For more info, see [our blog post](https://cloudant.com/blog/pouchdb) on PouchDB.
-Install it by including the PouchDB script in your app's HTML.
-
-<aside class="notice">PouchDB is also available for Node.js: `npm install pouchdb`</aside>
-
 ### Node.js
 
 ```
