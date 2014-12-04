@@ -1,5 +1,5 @@
 [
-{"from": "/api/authn.html", "to": "_show/redirect", "method": "GET", "query": {"fragment": "authorization"} },
+{"from": "/api/authz.html", "to": "_show/redirect", "method": "GET", "query": {"fragment": "authorization"} },
 {
     "from": "",
     "to": "index.html",
