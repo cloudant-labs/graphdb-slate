@@ -1,4 +1,6 @@
-[{
+[
+{"from": "/api/authn.html", "to": "/_show/redirect", "method": "GET", "query": {"fragment": "authorization"} },
+{
     "from": "",
     "to": "index.html",
     "method": "GET",
