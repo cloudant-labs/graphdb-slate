@@ -22,11 +22,13 @@ doc_ids | no | Array of document IDs; if given, only these documents will be rep
 filter | no | Name of a [filter function](#filter-functions) that can choose which documents get replicated.
 proxy | no | Proxy server URL.
 query_params | no | Object containing properties that are passed to the filter function.
-use_checkpoints | no | Whether to create checkpoints. Checkpoints greatly reduce the time and resources needed for repeated replications. Setting this to false removes the requirement for write access to the source database. Defaults to true.
+<div id="checkpoints">use_checkpoints</div> | no | Whether to create checkpoints. Checkpoints greatly reduce the time and resources needed for repeated replications. Setting this to false removes the requirement for write access to the source database. Defaults to true.
 
 ### Replicator database
 
 #### Creating a replication
+
+> Example instructions for creating a replication document:
 
 ```shell
 curl -X PUT https://$USERNAME:$PASSWORD@USERNAME.cloudant.com/_replicator/replication-doc -H 'Content-Type: application/json' -d @replication-document.json
@@ -37,6 +39,8 @@ curl -X PUT https://$USERNAME:$PASSWORD@USERNAME.cloudant.com/_replicator/replic
 PUT /_replicator/replication-doc HTTP/1.1
 Content-Type: application/json
 ```
+
+> Example replication document:
 
 ```json
 {
@@ -50,6 +54,8 @@ Content-Type: application/json
 To start a replication, [add a document](#documentCreate) to the `_replicator` database.
 
 #### Monitoring a replication
+
+> Example instructions for monitoring a replication:
 
 ```shell
 curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/_active_tasks
@@ -69,6 +75,8 @@ account.request({
   }
 });
 ```
+
+> Example response of active tasks, including replications:
 
 ```json
 [
@@ -96,7 +104,8 @@ account.request({
 ]
 ```
 
-To monitor replicators currently in process, make a GET request to `https://$USERNAME.cloudant.com/_actice_tasks`. This will return any active tasks including but not limited to replications. To filter for replications, just look for documents with `"type": "replication"`.
+To monitor replicators currently in process, make a GET request to `https://$USERNAME.cloudant.com/_actice_tasks`.
+This returns any active tasks, including replications. To filter for replications, look for documents with `"type": "replication"`.
 
 Field | Description | Type
 ------|-------------|------
@@ -113,6 +122,8 @@ target | An obfuscated URL indicating the database to which the task is replicat
 
 #### Delete
 
+> Example instructions for deleting a replication document:
+
 ```http
 DELETE /_replicator/replication-doc?rev=1-... HTTP/1.1
 ```
@@ -125,17 +136,18 @@ To cancel a replication, simply [delete its document](#delete33) from the `_repl
 
 ### Replication using the /\_replicate endpoint
 
-Replication can be triggered by sending a POST request to the `/_replicate` URL.
+> Example instructions for starting a replication:
 
 ```shell
 curl -H 'Content-Type: application/json' -X POST "https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/_replicate" -d @replication-doc.json
-#with the file replication-doc.json containing the following:
+#with the file replication-doc.json containing the required replication.
 ```
 
 ```http
 POST /_replicate HTTP/1.1
 Content-Type: application/json
 ```
+> Example document describing the required replication:
 
 ```json
 {
@@ -144,9 +156,13 @@ Content-Type: application/json
 }
 ```
 
-The target database has to exist and is not implicitly created. Add `"create_target":true` to the JSON document to create the target database prior to replication. 
+Replication can be triggered by sending a POST request to the `/_replicate` URL.
+
+<aside class="warning">The target database must exist. It is not automatically created if it does not exist. Add `"create_target":true` to the JSON document to create the target database prior to replication.</aside>
 
 #### Canceling replication
+
+> Example instructions for canceling a replication:
 
 ```shell
 curl -H 'Content-Type: application/json' -X POST 'https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/_replicate HTTP/1.1' -d @replication-doc.json
@@ -158,6 +174,8 @@ POST /_replicate HTTP/1.1
 Content-Type: application/json
 ```
 
+> Example document to describe the replication to be canceled:
+
 ```json
 {
   "source": "https://username:password@username.cloudant.com/example-database",
@@ -168,21 +186,26 @@ Content-Type: application/json
 
 A replication triggered by POSTing to `/_replicate/` can be canceled by POSTing the exact same JSON object but with the additional `cancel` property set to `true`.
 
-Notice: the request which initiated the replication will fail with error 500 (shutdown).
+<aside class="warning">If a replication is canceled, the request which initiated the replication fails with error 500 (shutdown).</aside>
 
-The replication ID can be obtained from the original replication request (if it's a continuous replication) or from `/_active_tasks`.
+The replication ID can be obtained from the original replication request if it is a continuous replication.
+Alternatively, the replication ID can be obtained from `/_active_tasks`.
 
-#### Example
+### Example replication sequence
+
+> Example instructions for starting a replication:
 
 ```shell
 $ curl -H 'Content-Type: application/json' -X POST 'http://username.cloudant.com/_replicate' -d @replication-doc.json
-#the file replication-doc.json has the following content:
+#the file replication-doc.json describes the intended replication.
 ```
 
 ```http
 POST /_replicate HTTP/1.1
 Content-Type: application/json
 ```
+
+> Example document describing the intended replication:
 
 ```json
 {
@@ -193,6 +216,8 @@ Content-Type: application/json
 }
 ```
 
+> Example response after starting the replication:
+
 ```json
 {
   "ok": true,
@@ -200,19 +225,19 @@ Content-Type: application/json
 }
 ```
 
-First we start the replication.
-
-###### dummy
+> Example instructions for canceling the replication:
 
 ```shell
 curl -H 'Content-Type: application/json' -X POST http://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/_replicate -d @replication-doc.json
-# where the file replication-doc.json has the following content:
+# where the file replication-doc.json specifies the replication task to be canceled.
 ```
 
 ```http
 POST /_replicate HTTP/1.1
 Content-Type: application/json
 ```
+
+> Example document specifying the replication to be canceled:
 
 ```json
 {
@@ -221,6 +246,8 @@ Content-Type: application/json
 }
 ```
 
+> Example response after successfully canceling the replication, indicated by the `"ok":true` content:
+
 ```json
 {
   "ok": true,
@@ -228,21 +255,23 @@ Content-Type: application/json
 }
 ```
 
-We use this id to cancel the replication.
-
-The `"ok": true` reply indicates that the replication was successfully canceled.
+A simple example of creating a replication task, then canceling it.
 
 ### Continuous replication
 
+> Example instructions for enabling continuous replication:
+
 ```shell
 curl -H 'Content-Type: application/json' -X POST http://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/_replicate -d @replication-doc.json
-# where the file replication-doc.json has the following content:
+# where the file replication-doc.json indicates that the replication should be continuous
 ```
 
 ```http
 POST /_replicate HTTP/1.1
 Content-Type: application/json
 ```
+
+> Example document specifying that the replication should be continuous:
 
 ```json
 {
@@ -252,9 +281,18 @@ Content-Type: application/json
 }
 ```
 
-To make replication continuous, add a `"continuous":true` parameter to the JSON. This way, the replication process will not stop when it has processed all current updates and will wait for further updates to the source database and apply them to the target.
+To make replication continuous, add a `"continuous":true` parameter to the JSON. 
+
+The effect is that the replication process does not stop when it has processed all current updates.
+Instead, the replication process continues to wait for further updates to the source database, and applies them to the target.
+
+<aside class="warning">Continuous replication forces checks to be made contiuously on the source database.
+This results in an increasing number of database accesses, even if the source database content has not changed.
+Database accesses are counted as part of the work performed by a multi-tenant database configuration.</aside>
 
 ### Filtered Replication
+
+> Simple example of a filter function:
 
 ```
 function(doc, req) {
@@ -262,11 +300,21 @@ function(doc, req) {
 }
 ```
 
-Sometimes you don't want to transfer all documents from source to target. You can include one or more filter functions in a design document on the source and then tell the replicator to use them.
+Sometimes you do not want to transfer all documents from source to target.
+To choose which documents to transfer,
+include one or more filter functions in a design document on the source.
+You can then tell the replicator to use these filter functions.
 
-A filter function takes two arguments (the document to be replicated and the the replication request) and returns true or false. If the result is true, the document is replicated.
+A filter function takes two arguments:
+
+- The document to be replicated.
+- The replication request.
+
+A filter function returns a true or false value. If the result is true, the document is replicated.
 
 ###### h6
+
+> Simple example of storing a filter function in a design document:
 
 ```json
 {
@@ -277,9 +325,11 @@ A filter function takes two arguments (the document to be replicated and the the
 }
 ```
 
-Filters live under the top-level "filters" key;
+Filters are stored under the top-level `filters` key of the design document.
 
 ###### h6
+
+> Example JSON for invoking a filtered replication:
 
 ```json
 {
@@ -289,9 +339,15 @@ Filters live under the top-level "filters" key;
 }
 ```
 
-Invoke them as follows:
+Filters are invoked by using a JSON statement that identifies:
+
+- The source database.
+- The target database.
+- The name of the filter stored under the `filters` key of the design document.
 
 ###### h6
+
+> Example JSON for invoking a filtered replication with supplied parameters:
 
 ```json
 {
@@ -304,9 +360,11 @@ Invoke them as follows:
 }
 ```
 
-You can even pass arguments to them.
+Arguments can be supplied to the filter function by including key:value pairs in the `query_params` field of the invocation.
 
 ### Named Document Replication
+
+> Example replication of specific documents:
 
 ```json
 {
@@ -316,10 +374,12 @@ You can even pass arguments to them.
 }
 ```
 
-Sometimes you only want to replicate some documents. For this simple case you do not need to write a filter function. Simply add the list of keys in the doc\_ids field.
+Sometimes you only want to replicate some documents. For this simple case, you do not need to write a filter function. To replicate specific documents, add the list of keys as an array in the `doc_ids` field.
 
 
 ### Replicating through a proxy
+
+> Example showing replication through a proxy:
 
 ```json
 {
@@ -329,9 +389,11 @@ Sometimes you only want to replicate some documents. For this simple case you do
 }
 ```
 
-Pass a "proxy" argument in the replication data to have replication go through an HTTP proxy:
+If you want replication to pass through an HTTP proxy, provide the proxy details in the `proxy` field of the replication data.
 
 ### Authentication
+
+> Example of specifying username and password values for accessing source and target databases during replication:
 
 ```json
 {
@@ -340,20 +402,15 @@ Pass a "proxy" argument in the replication data to have replication go through a
 }
 ```
 
-The source and the target database may require authentication, and if checkpoints are used (on by default), even the source will require write access. The easiest way to authenticate is to put a username and password into the URL; the replicator will use these for HTTP Basic auth:
+In any production application, security of the source and target databases is essential.
+In order for replication to proceed, authentication is necessary to access the databases.
+In addition, checkpoints for replication are [enabled by default](#checkpoints), which means that replicating the source database requires write access.
+
+To enable authentication during replication, include a username and password in the database URL.
 
 ### Performance related options
 
-These options can be set per replication by including them in the replication document.
-
--   `worker_processes` - The number of processes the replicator uses (per replication) to transfer documents from the source to the target database. Higher values can imply better throughput (due to more parallelism of network and disk IO) at the expense of more memory and eventually CPU. Default value is 4.
--   `worker_batch_size` - Workers process batches with the size defined by this parameter (the size corresponds to number of ''\_changes'' feed rows). Larger batch sizes can offer better performance, while lower values imply that checkpointing is done more frequently. Default value is 500.
--   `http_connections` - The maximum number of HTTP connections per replication. For push replications, the effective number of HTTP connections used is min(worker\_processes + 1, http\_connections). For pull replications, the effective number of connections used corresponds to this parameter's value. Default value is 20.
--   `connection_timeout` - The maximum period of inactivity for a connection in milliseconds. If a connection is idle for this period of time, its current request will be retried. Default value is 30000 milliseconds (30 seconds).
--   `retries_per_request` - The maximum number of retries per request. Before a retry, the replicator will wait for a short period of time before repeating the request. This period of time doubles between each consecutive retry attempt. This period of time never goes beyond 5 minutes and its minimum value (before the first retry is attempted) is 0.25 seconds. The default value of this parameter is 10 attempts.
--   `socket_options` - A list of options to pass to the connection sockets. The available options can be found in the [documentation for the Erlang function setopts/2 of the inet module](http://www.erlang.org/doc/man/inet.html#setopts-2). Default value is `[{keepalive, true}, {nodelay, false}]`.
-
-#### Example
+> Example of including performance options in a replication document:
 
 ```json
 {
@@ -364,6 +421,15 @@ These options can be set per replication by including them in the replication do
   "http_connections": 30
 }
 ```
+
+These options can be set for a replication by including them in the replication document.
+
+-   `worker_processes` - The number of processes the replicator uses (per replication) to transfer documents from the source to the target database. Higher values can imply better throughput (due to more parallelism of network and disk IO) at the expense of more memory and eventually CPU. Default value is 4.
+-   `worker_batch_size` - Workers process batches with the size defined by this parameter (the size corresponds to number of ''\_changes'' feed rows). Larger batch sizes can offer better performance, while lower values imply that checkpointing is done more frequently. Default value is 500.
+-   `http_connections` - The maximum number of HTTP connections per replication. For push replications, the effective number of HTTP connections used is min(worker\_processes + 1, http\_connections). For pull replications, the effective number of connections used corresponds to this parameter's value. Default value is 20.
+-   `connection_timeout` - The maximum period of inactivity for a connection in milliseconds. If a connection is idle for this period of time, its current request will be retried. Default value is 30000 milliseconds (30 seconds).
+-   `retries_per_request` - The maximum number of retries per request. Before a retry, the replicator will wait for a short period of time before repeating the request. This period of time doubles between each consecutive retry attempt. This period of time never goes beyond 5 minutes and its minimum value (before the first retry is attempted) is 0.25 seconds. The default value of this parameter is 10 attempts.
+-   `socket_options` - A list of options to pass to the connection sockets. The available options can be found in the [documentation for the Erlang function setopts/2 of the inet module](http://www.erlang.org/doc/man/inet.html#setopts-2). Default value is `[{keepalive, true}, {nodelay, false}]`.
 
 ### Advanced content
 
