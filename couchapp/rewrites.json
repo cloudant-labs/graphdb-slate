@@ -11,7 +11,7 @@
 {"from": "/api/misc.html", "to": "/_show/redirect", "method": "GET", "query": {"fragment": "advanced"} },
 {"from": "/guides/active_tasks/index.html", "to": "/_show/redirect", "method": "GET", "query": {"fragment": ""} },
 {"from": "/guides/backups.html", "to": "/_show/redirect", "method": "GET", "query": {"fragment": ""} },
-{"from": "/guides/cap.html", "to": "/_show/redirect", "method": "GET", "query": {"fragment": ""} },
+{"from": "/guides/cap.html", "to": "/_show/redirect", "method": "GET", "query": {"fragment": "cap-theorem"} },
 {"from": "/guides/cloudant-query.html", "to": "/_show/redirect", "method": "GET", "query": {"fragment": "cloudant-query"} },
 {"from": "/guides/couchapps.html", "to": "/_show/redirect", "method": "GET", "query": {"fragment": ""} },
 {"from": "/guides/eventsourcing.html", "to": "/_show/redirect", "method": "GET", "query": {"fragment": "event-sourcing"} },

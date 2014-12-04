@@ -40,7 +40,7 @@ includes:
   - guides/index
   - guides/mvcc
   - guides/transactions
-  - guides/cap_theorum
+  - guides/cap_theorem
   - guides/acid
 
 ---
