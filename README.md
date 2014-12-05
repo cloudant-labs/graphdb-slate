@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/cloudant-labs/slate.png?branch=master)](https://travis-ci.org/cloudant-labs/slate)
 
-The Cloudant documentation, built using [slate](https://github.com/tripit/slate). Check it out [here](https://docs-testa.cloudant.com/api-ref/_design/couchapp/_rewrite).
+The Cloudant documentation, built using [slate](https://github.com/tripit/slate). Check it out [here](https://docs-testb.cloudant.com/content-review/_design/couchapp/_rewrite).
 
 For more info on how the documentation works, see the [Slate wiki][].
 
