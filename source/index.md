@@ -38,6 +38,7 @@ includes:
   - api/advanced
 #  - api/errors
   - guides/index
+  - guides/active_tasks
   - guides/mvcc
   - guides/transactions
   - guides/cap_theorem
