@@ -15,6 +15,8 @@ Two versions are available:
 
 ### Java
 
+> Maven dependency details:
+
 ```
 <dependency>
   <groupId>com.cloudant</groupId>
@@ -23,7 +25,15 @@ Two versions are available:
 </dependency>
 ```
 
-[java-cloudant](https://github.com/cloudant/java-cloudant) is the official Cloudant library for Java. You can add it as a dependency to your maven build.
+> Gradle dependency details:
+
+```
+dependencies {
+  compile group: 'com.cloudant', name: 'cloudant-client', version:'1.0.0-beta1'
+}
+```
+
+[java-cloudant](https://github.com/cloudant/java-cloudant) is the official Cloudant library for Java. You can add it as a dependency to your maven or gradle builds.
 
 ### Node.js
 
