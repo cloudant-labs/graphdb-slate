@@ -43,6 +43,7 @@ includes:
   - guides/cap_theorem
   - guides/acid
   - guides/backups
+  - guides/couchapps
 
 ---
 

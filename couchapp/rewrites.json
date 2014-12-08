@@ -13,7 +13,7 @@
 {"from": "/guides/backups.html", "to": "/_show/redirect", "method": "GET", "query": {"fragment": "back-up-your-data"} },
 {"from": "/guides/cap.html", "to": "/_show/redirect", "method": "GET", "query": {"fragment": "cap-theorem"} },
 {"from": "/guides/cloudant-query.html", "to": "/_show/redirect", "method": "GET", "query": {"fragment": "cloudant-query"} },
-{"from": "/guides/couchapps.html", "to": "/_show/redirect", "method": "GET", "query": {"fragment": ""} },
+{"from": "/guides/couchapps.html", "to": "/_show/redirect", "method": "GET", "query": {"fragment": "couchapps"} },
 {"from": "/guides/eventsourcing.html", "to": "/_show/redirect", "method": "GET", "query": {"fragment": "event-sourcing"} },
 {"from": "/guides/index.html", "to": "/_show/redirect", "method": "GET", "query": {"fragment": "guides"} },
 {"from": "/guides/mapreduce.html", "to": "/_show/redirect", "method": "GET", "query": {"fragment": "creating-views"} },
