@@ -42,6 +42,7 @@ includes:
   - guides/transactions
   - guides/cap_theorem
   - guides/acid
+  - guides/backups
 
 ---
 

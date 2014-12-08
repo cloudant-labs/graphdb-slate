@@ -56,20 +56,20 @@ written to the target once.
 
 ### An example
 
+```shell
+# save base URL and the content type in shell variables
+$ url='https://<username>:<password>@<username>.cloudant.com'
+$ ct='Content-Type: application-json'
+```
+
 Let's say you have one database to back up, and you want to create a
 full backup on Monday and an incremental one on Tuesday. You can use
 curl and [jq](http://http://stedolan.github.io/jq/) to do this, but of
 course any other http client will work.
 
-You save your base URL and the content type in a variable, so that you
-don't have to enter it again and again for each request.
+<div> </div>
 
-```shell
-$ url='https://<username>:<password>@<username>.cloudant.com'
-$ ct='Content-Type: application-json'
-```
-
-You create three databases, one original and two for backups.
+###### backup example create dbs
 
 ```shell
 $ curl -X PUT "${url}/original"
@@ -77,97 +77,190 @@ $ curl -X PUT "${url}/backup-monday"
 $ curl -X PUT "${url}/backup-tuesday"
 ```
 
-You create the \_replicator database, if it does not exist yet.
+```http
+PUT /original HTTP/1.1
+```
+
+```http
+PUT /backup-monday HTTP/1.1
+```
+
+```http
+PUT /backup-tuesday HTTP/1.1
+```
+
+You create three databases, one original and two for backups.
+
+<div> </div>
+
+###### backup example create _replicator db
 
 ```shell
 $ curl -X PUT "${url}/_replicator"
 ```
 
-On Monday, you backup your data for the first time, so you replicate
-everything from `original` to `backup-monday`.
+```http
+PUT /_replicator HTTP/1.1
+```
+
+You create the \_replicator database, if it does not exist yet.
+
+<div> </div>
+
+###### backup example monday
+
+```http
+PUT /_replicator/backup-monday HTTP/1.1
+Content-Type: application/json
+```
 
 ```shell
-$ curl -X PUT "${url}/_replicator/backup-monday" -H "$ct" -d '@-' <<END
+$ curl -X PUT "${url}/_replicator/backup-monday" -H "$ct" -d @backup-monday.json
+# where backup-monday.json has the following contents:
+```
+
+```json
 {
   "_id": "backup-monday",
   "source": "${url}/original",
   "target": "${url}/backup-monday"
 }
+```
 
-END
+On Monday, you backup your data for the first time, so you replicate
+everything from `original` to `backup-monday`.
+
+<div> </div>
+
+###### backup example tuesday
+
+```http
+GET /_replicator/backup-monday HTTP/1.1
+```
+
+```shell
+$ replication_id=$(curl "${url}/_replicator/backup-monday" | jq -r '._replication_id')
 ```
 
 On Tuesday, things get more complicated. You first need to get the ID of
-the checkpoint document.
+the checkpoint document. It is stored in the `_replication_id` field of the replication document in the `_replicator` database.
 
-```shell
-$ repl_id=$(curl "${url}/_replicator/backup-monday" | jq -r '._replication_id')
+<div> </div>
+
+###### backup example recorded_seq
+
+```http
+GET /original/_local/${replication_id} HTTP/1.1
 ```
-
-Once you have that, you use it to get the `recorded_seq` value.
 
 ```shell
 $ recorded_seq=$(curl "${url}/original/_local/${repl_id}" | jq -r '.history[0].recorded_seq')
 ```
 
-And with the `recorded_seq` you can start the incremental backup for
-Tuesday.
+Once you have that, you use it to get the `recorded_seq` value from the first element of the `history` array of the `/_local/${replication_id}` document in the `original` database.
+
+<div> </div>
+
+###### backup example incremental backup tuesday
+
+```http
+PUT /_replicator/backup-tuesday HTTP/1.1
+Content-Type: application/json
+```
 
 ```shell
-$ curl -X PUT "${url}/_replicator/backup-tuesday" -H "${ct}" -d '@-' <<END
+$ curl -X PUT "${url}/_replicator/backup-tuesday" -H "${ct}" -d @backup-tuesday.json
+# where backup-tuesday.json contains the following:
+```
+
+```json
 {
   "_id": "backup-tuesday",
   "source": "${url}/original",
   "target": "${url}/backup-tuesday",
   "since_seq": "${recorded_seq}"
 }
+```
 
-END
+With the `recorded_seq` you can start the incremental backup for Tuesday.
+
+<div> </div>
+
+###### backup example restore monday
+
+```http
+PUT /_replicator/restore-monday HTTP/1.1
+Content-Type: application/json
+```
+
+```shell
+$ curl -X PUT "${url}/_replicator/restore-monday" -H "$ct" -d @restore-monday.json
+# where restore-monday.json contains the following:
+```
+
+```json
+{
+  "_id": "restore-monday",
+  "source": "${url}/backup-monday",
+  "target": "${url}/restore",
+  "create-target": true  
+}
 ```
 
 To restore from the backup, you replicate the initial full backup and
 any number of incremental backups to a new database.
 
 If you want to restore monday's state, just replicate from the
-backup-monday database:
+backup-monday database.
 
-```shell
-$ curl -X PUT "${url}/_replicator/restore-monday" -H "$ct" -d '@-' <<END
-{
-  "_id": "restore-monday",
-  "source": "${url}/backup-monday",
-  "target": "${url}/restore",
-  "create-target": true  
-}
+<div> </div>
 
-END
+###### backup example restore tuesday
+
+```http
+PUT /_replicator/restore-tuesday HTTP/1.1
+Content-Type: application/json
 ```
 
-If you want to restore tuesday's state, first replicate from
-`backup-tuesday` and then from `backup-monday`. Using this order,
-documents that were updated on tuesday will only have to be written to
-the target database once.
-
 ```shell
-$ curl -X PUT "${url}/_replicator/restore-tuesday" -H "$ct" -d '@-' <<END
+$ curl -X PUT "${url}/_replicator/restore-tuesday" -H "$ct" -d @restore-tuesday.json
+# where restore-tuesday.json contains the following json document:
+```
+
+```json
 {
   "_id": "restore-tuesday",
   "source": "${url}/backup-tuesday",
   "target": "${url}/restore",
   "create-target": true  
 }
+```
 
-END
+```http
+PUT /_replicator/restore-monday HTTP/1.1
+Content-Type: application/json
+```
 
-$ curl -X PUT "${url}/_replicator/restore-monday" -H "$ct" -d '@-' <<END
+```shell
+$ curl -X PUT "${url}/_replicator/restore-monday" -H "$ct" -d @restore-monday.json
+# where restore-monday.json contains the following json document:
+```
+
+```json
 {
   "_id": "restore-monday",
   "source": "${url}/backup-monday",
   "target": "${url}/restore"
 }
-
-END
 ```
+
+
+If you want to restore tuesday's state, first replicate from
+`backup-tuesday` and then from `backup-monday`. Using this order,
+documents that were updated on tuesday will only have to be written to
+the target database once.
+
+<div> </div>
 
 ### Additional hints and suggestions
 
@@ -184,26 +277,28 @@ busy.
 
 #### IO Priority
 
-It is also possible to change the priority of backup jobs by setting the
-x-cloudant-io-priority field in the headers object of the target and/or
-the source objects of the replication document to "low". For example:
-
-```
+```json
 {
-  'source': {
-    'url': 'https://user:pass@example.com/db',
-    'headers': {
-      'x-cloudant-io-priority': 'low'
+  "source": {
+    "url": "https://user:pass@example.com/db",
+    "headers": {
+      "x-cloudant-io-priority": "low"
     }
   },
-  'target': {
-    'url': 'https://user:pass@example.net/db',
-    'headers': {
-      'x-cloudant-io-priority': 'low'
+  "target": {
+    "url": "https://user:pass@example.net/db",
+    "headers": {
+      "x-cloudant-io-priority": "low"
     }
   }
 }
 ```
+
+It is also possible to change the priority of backup jobs by setting the
+x-cloudant-io-priority field in the headers object of the target and/or
+the source objects of the replication document to "low". For example:
+
+<div> </div>
 
 #### Design documents
 
