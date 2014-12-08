@@ -35,6 +35,7 @@ includes:
   - api/using_views
   - api/search
   - api/replication
+  - api/misc
   - api/advanced
 #  - api/errors
   - guides/index
