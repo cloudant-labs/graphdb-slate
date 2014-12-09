@@ -1,4 +1,4 @@
-## CouchApps and Tiers of Application Architecture
+## CouchApps
 
 Because Cloudant can host raw file data, like images, and serve them
 over HTTP, then theoretically it can host all the static files necessary
@@ -45,3 +45,5 @@ You can write your server layer using whatever technologies work best
 for you. We keep a list of libraries for working with Cloudant here:
 [Developing on
 Cloudant](https://cloudant.com/for-developers/faq/development/).
+
+<div style="height: 1000px;" > </div>
