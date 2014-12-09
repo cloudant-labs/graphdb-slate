@@ -1,6 +1,6 @@
 # Cloudant Basics
 
-If it's your first time here, scan this section before you scroll further. The sections on Client Libraries, API Reference, and Guides assume you know basic things about Cloudant.
+If it's your first time here, scan this section before you scroll further. The sections on [Client Libraries](#client-libraries), [API Reference](#api-reference), and [Guides](#guides) assume you know basic things about Cloudant.
 
 <div id="json"></div>
 ## JSON
@@ -8,24 +8,25 @@ Cloudant stores documents using JSON (JavaScript Object Notion) encoding, so any
 
 <div id="http_api"></div>
 ## HTTP API
-All requests to Cloudant go over the web, which means any system that can speak to the web, can speak to Cloudant. All language-specific libraries for Cloudant are really just wrappers that provide some convenience and linguistic niceties to what, under the hood, is a pretty simple API. Many users even choose to use raw HTTP libraries for working with Cloudant.
+All requests to Cloudant go over the web, which means any system that can speak to the web, can speak to Cloudant. All language-specific libraries for Cloudant are really just wrappers that provide some convenience and linguistic niceties to help you work with a simple API. Many users even choose to use raw HTTP libraries for working with Cloudant.
 
 <div id="distributed"></div>
 ## Distributed
-Cloudant's API represents the collaboration of numerous machines, called a cluster, which may live in different physical locations. Clustering means that when you need more horsepower, you just add more machines, which is more cost-effective and fault-tolerant than scaling up a single machine.
+Cloudant's API enables you to interact with a collaboration of numerous machines, called a cluster. The machines in a cluster must be in the same datacenter, but can be within different 'pods' in that datacenter. Using different pods helps improve the High Availability characteristics of Cloudant.
+
+An advantage of clustering is that when you need more computing capacity, you just add more machines. This is often more cost-effective and fault-tolerant than scaling up or enhancing an existing single machine.
 
 <div id="replication"></div>
 ## Replication
 
 [Replication](#ReplicationAPI) is a procedure followed by Cloudant, [CouchDB](http://couchdb.apache.org/), [PouchDB](http://junk.arandomurl.com/), and others. It synchronizes the state of two databases so that their contents are identical.
 
-You can continuously replicate as well, which means that a target database updates every time the source changes. Testing for source changes involves ongoing internal calls.
+You can continuously replicate. This means that a target database updates every time the source database changes. Testing for source changes involves ongoing internal calls.
 Continuous replication can be used for backups of data, aggregation across multiple databases, or for sharing data.
 
 <aside class="warning">Continuous replication can result in a large number of internal calls. This might affect costs for multi-tenant users of Cloudant systems. Continuous replication is disabled by default.</aside>
 
-Request Methods
----------------
+## Request Methods
 
 Cloudant supports the following HTTP request methods:
 
@@ -66,8 +67,7 @@ If the client (such as some web browsers) does not support using these HTTP meth
 
 If you use an unsupported HTTP request type with a URL that does not support the specified type, a 405 error will be returned, listing the supported HTTP methods. For example:
 
-HTTP Headers
-------------
+## HTTP Headers
 
 Because Cloudant uses HTTP for all external communication, you need to ensure that the correct HTTP headers are supplied (and processed on retrieval) so that you get the right format and encoding. Different environments and clients will be more or less strict on the effect of these HTTP headers (especially when not present). Where possible you should be as specific as possible.
 
@@ -156,9 +156,7 @@ The `Etag` HTTP header field is used to show the revision for a document or the 
 
 ETags cannot currently be used with views or lists, since the ETags returned from those requests are just random numbers that change on every request.
 
-
-HTTP Status Codes
------------------
+## HTTP Status Codes
 
 With the interface to Cloudant working through HTTP, error codes and statuses are reported using a combination of the HTTP status code number, and corresponding data in the body of the response data.
 
@@ -244,14 +242,23 @@ A list of the error codes returned by Cloudant and generic descriptions of the r
 
 The majority of requests and responses to and from Cloudant use the JavaScript Object Notation (JSON) for formatting the content and structure of the data and responses.
 
-JSON is used because it is the simplest and easiest to use solution for working with data within a web browser, as JSON structures can be evaluated and used as JavaScript objects within the web browser environment. JSON also integrates with the server-side JavaScript used within Cloudant. JSON documents are always UTF-8 encoded.
+JSON is used because it is the simplest and easiest solution for working with data using a web browser.
+This is because JSON structures can be evaluated and used as JavaScript objects within the web browser environment. JSON also integrates with the server-side JavaScript used within Cloudant. JSON documents are always UTF-8 encoded.
 
-### Warning
+<aside class="warning">Care should be taken to ensure that:
 
-Care should be taken when comparing strings in JSON documents retrieved from Cloudant. Unicode normalization might have been applied, so that a string stored and then retrieved is not identical on a binary level. To avoid this problem, always normalize strings before comparing them.
+-  Your JSON structures are valid. Invalid structures cause Cloudant to return an HTTP status code of [400 (bad request)](#400).
+-  You normalize strings in JSON documents retrieved from Cloudant, before you compare them. This is because Unicode normalization might have been applied, so that a string stored and then retrieved is not identical on a binary level.
+
+</aside>
 
 JSON supports the same basic types as supported by JavaScript:
 
+- [Numbers](#numbers)
+- [Strings](#strings)
+- [Booleans](#booleans)
+- [Arrays](#arrays)
+- [Objects](#objects)
 
 ### Numbers
 
@@ -267,7 +274,7 @@ Numbers can be integer or floating point values.
 "A String"
 ```
 
-String should be enclosed by double-quotes. They support Unicode characters and backslash escaping.
+String should be enclosed by double-quotes. Strings support Unicode characters and backslash escaping.
 
 ### Booleans
 
@@ -283,7 +290,7 @@ A `true` or `false` value.
 ["one", 2, "three", [], true, {"foo": "bar"}]
 ```
 
-A list of values enclosed in square brackets. The values enclosed can be any valid json.
+A list of values enclosed in square brackets. The values enclosed can be any valid JSON.
 
 
 ### Objects
@@ -301,11 +308,7 @@ A set of key/value pairs, such as an associative array, or hash. The key must be
 
 In Cloudant databases, the JSON object is used to represent a variety of structures, including all documents in a database.
 
-Parsing JSON into a JavaScript object is supported through the `JSON.parse()` function in JavaScript, or through various libraries that perform the parsing of the content into a JavaScript object for you. Libraries for parsing and generating JSON are available in all major programming languages.
-
-### Warning
-
-Care should be taken to ensure that your JSON structures are valid. Invalid structures cause Cloudant to return an HTTP status code of [400 (bad request)](#400).
+Parsing JSON into a JavaScript object is supported through the `JSON.parse()` function in JavaScript, or through various [libraries](#client-libraries) that perform the parsing of the content into a JavaScript object for you. [Libraries](#client-libraries) for parsing and generating JSON are available for many major programming languages.
 
 ## Cloudant Local
 
