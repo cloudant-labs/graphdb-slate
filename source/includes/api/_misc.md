@@ -29,7 +29,7 @@ Method | Path | Description
 -  **Path**: `/`
 -  **Response**: Welcome message and version
 
-Accessing the root of a database returns meta information about the server. The response is a JSON structure containing information about the server, including a welcome message and the version of the server. The `version` field contains the CouchDB version the server is compatible with.
+Accessing the database rather than a document within the database returns meta information about the server. The response is a JSON structure containing information about the server, including a welcome message and the version of the server. The `version` field contains the CouchDB version the server is compatible with.
 The `cloudant_build` field contains the build number of Cloudant's CouchDb implementation.
 
 ### Retrieving a list of active tasks
