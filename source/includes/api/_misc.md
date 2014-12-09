@@ -1,6 +1,6 @@
-## Monitoring cluster status, and starting replication tasks
+## Monitoring cluster status, and replication tasks
 
-These endpoints provide information about the state of the cluster and let you start replication tasks.
+These endpoints provide information about the state of the cluster and let you manage replication tasks.
 
 A list of the available methods and URL paths is as follows:
 
@@ -223,22 +223,15 @@ The specification of the replication request is controlled through the JSON cont
 -   **source**: Source database URL, including user name and password.
 -   **target**: Target database URL, including user name and password.
 
+<aside class="notice">Replication takes place in one direction only.
+To keep two databases synchronized with each other, you must replicate in both directions.
+This means that you must replicate from `databasea` to `databaseb`, and separately from `databaseb` to `databasea`.</aside>
+
 #### Replication Operation
 
-The aim of replication is that at the end of the process, all active documents on the source database are also in the destination database and all documents that were deleted in the source databases are also deleted from the destination database if they existed there.
+> Example request to replicate between a database on the source server `example.com`, and a target database on Cloudant:
 
-Replication has two forms: push or pull replication:
-
--   *Push replication* is where the `source` is a local database, and `destination` is a remote database.
-
--   *Pull replication* is where the `source` is the remote database instance, and the `destination` is the local database.
-
-Pull replication is helpful if your source database has a permanent IP address, and your destination database is local and has a dynamically assigned IP address, for example, obtained through DHCP.
-Pull replication is especially appropriate if you are replicating to a mobile or other device from a central server.
-
-For example, to request replication between a database on the server example.com, and a database on Cloudant you might use the following request:
-
-``` sourceCode
+```
 POST /_replicate
 Content-Type: application/json
 Accept: application/json
@@ -249,18 +242,33 @@ Accept: application/json
 }
 ```
 
-In all cases, the requested databases in the `source` and `target` specification must exist. If they do not, an error will be returned within the JSON object:
+> Example error reponse if one of the requested databases for a replication does not exist:
 
-``` sourceCode
+```json
 {
    "error" : "db_not_found"
    "reason" : "could not open http://username.cloudant.com/ol1ka/",
 }
 ```
 
-You can create the target database (providing your user credentials allow it) by adding the `create_target` field to the request object:
+The aim of replication is that at the end of the process, all active documents on the source database are also in the destination or 'target' database, and that all documents deleted from the source databases are also deleted from the destination database (if they existed there).
 
-``` sourceCode
+Replication has two forms: push or pull replication:
+
+-   *Push replication* is where the `source` is a local database, and `destination` is a remote database.
+
+-   *Pull replication* is where the `source` is the remote database instance, and the `destination` is the local database.
+
+Pull replication is helpful if your source database has a permanent IP address, and your destination database is local and has a dynamically assigned IP address, for example, obtained through DHCP.
+Pull replication is especially appropriate if you are replicating to a mobile or other device from a central server.
+
+In all cases, the requested databases in the `source` and `target` specification must exist. If they do not, an error is returned within the JSON object.
+
+#### Creating a target database during replication
+
+> Example request to create a target database and replicate onto it:
+
+```
 POST http://username.cloudant.com/_replicate
 Content-Type: application/json
 Accept: application/json
@@ -272,13 +280,15 @@ Accept: application/json
 }
 ```
 
+If your user credentials allow it, you can create the target database during replication by adding the `create_target` field to the request object.
+
 The `create_target` field is not destructive. If the database already exists, the replication proceeds as normal.
 
 ### Single Replication
 
-You can request replication of a database so that the two databases can be synchronized. By default, the replication process occurs one time and synchronizes the two databases together. For example, you can request a single synchronization between two databases by supplying the `source` and `target` fields within the request JSON content.
+> Example request for a single synchronization between the source database `recipes` and the target database `recipes2`.
 
-``` sourceCode
+```
 POST /_replicate
 Content-Type: application/json
 Accept: application/json
@@ -289,9 +299,9 @@ Accept: application/json
 }
 ```
 
-In the above example, the databases `recipes` and `recipes2` will be synchronized. The response will be a JSON structure containing the success (or failure) of the synchronization process, and statistics about the process:
+> Example response following a request for a single replication:
 
-``` sourceCode
+``` json
 {
    "ok" : true,
    "history" : [
@@ -314,31 +324,33 @@ In the above example, the databases `recipes` and `recipes2` will be synchronize
 }
 ```
 
-The structure defines the replication status, as described in the table below:
+Replication of a database means that the the two databases - the 'source' and the 'target' - are synchronized. By default, the replication process occurs one time, and synchronizes the two databases together.
 
--   **history [array]**: Replication History
-    -   **doc\_write\_failures**: Number of document write failures
-    -   **docs\_read**: Number of documents read
-    -   **docs\_written**: Number of documents written to target
-    -   **end\_last\_seq**: Last sequence number in changes stream
-    -   **end\_time**: Date/Time replication operation completed
-    -   **missing\_checked**: Number of missing documents checked
-    -   **missing\_found**: Number of missing documents found
-    -   **recorded\_seq**: Last recorded sequence number
-    -   **session\_id**: Session ID for this replication operation
-    -   **start\_last\_seq**: First sequence number in changes stream
-    -   **start\_time**: Date/Time replication operation started
--   **ok**: Replication status
--   **session\_id**: Unique session ID
--   **source\_last\_seq**: Last sequence number read from source database
+The response to a request for a single replication is a JSON structure containing the success or failure status of the synchronization process. The response also contains statistics about the process.
+
+The structure of the response includes details about the replication status:
+
+-  **history [array]**: Replication History
+  -  **doc\_write\_failures**: Number of document write failures
+  -  **docs\_read**: Number of documents read
+  -  **docs\_written**: Number of documents written to target
+  -  **end\_last\_seq**: Last sequence number in changes stream
+  -  **end\_time**: Date/Time replication operation completed
+  -  **missing\_checked**: Number of missing documents checked
+  -  **missing\_found**: Number of missing documents found
+  -  **recorded\_seq**: Last recorded sequence number
+  -  **session\_id**: Session ID for this replication operation
+  -  **start\_last\_seq**: First sequence number in changes stream
+  -  **start\_time**: Date/Time replication operation started
+-  **ok**: Replication status
+-  **session\_id**: Unique session ID
+-  **source\_last\_seq**: Last sequence number read from source database
 
 ### Continuous Replication
 
-Synchronization of a database with the previously noted methods happens only once, at the time the replicate request is made. To have the target database permanently replicated from the source, you must set the `continuous` field of the JSON object within the request to true.
+> Example request for a continuous replication between two databases.
 
-With continuous replication changes in the source database are replicated to the target database in perpetuity until you specifically request that replication ceases.
-
-``` sourceCode
+```
 POST /_replicate
 Content-Type: application/json
 Accept: application/json
@@ -350,19 +362,21 @@ Accept: application/json
 }
 ```
 
+By default, the synchronization of a database during replication happens only once, at the time the replicate request is made. To ensure that replication from the source database to the target database takes place continually, set the `continuous` field of the JSON object within the request to `true`.
+
+With continuous replication changes in the source database are replicated to the target database in perpetuity until you specifically request that replication ceases.
+
 Changes will be replicated between the two databases as long as a network connection is available between the two instances.
 
-> **note**
->
-> To keep two databases synchronized with each other, you need to set replication in both directions; that is, you must replicate from `databasea` to `databaseb`, and separately from `databaseb` to `databasea`.
+<aside class="warning">Replication takes place in one direction only.
+To keep two databases synchronized with each other continuously, you must also replicate in both directions, continuously.
+This means that you must enable continuous replication from `databasea` to `databaseb`, and additionally from `databaseb` to `databasea`.</aside>
 
 ### Canceling Continuous Replication
 
-You can cancel continuous replication by adding the `cancel` field to the JSON request object and setting the value to true. Note that the structure of the request must be identical to the original for the cancellation request to be honoured. For example, if you requested continuous replication, the cancellation request must also contain the `continuous` field.
+> Example replication request to create the target database if it does not exist, and to replicate continuously:
 
-For example, the replication request:
-
-``` sourceCode
+```
 POST /_replicate
 Content-Type: application/json
 Accept: application/json
@@ -375,9 +389,9 @@ Accept: application/json
 }
 ```
 
-Must be canceled using the request:
+Example request to cancel the replication, providing matching fields to the original request:
 
-``` sourceCode
+```
 POST /_replicate
 Content-Type: application/json
 Accept: application/json
@@ -391,45 +405,23 @@ Accept: application/json
 }
 ```
 
+Cancel continuous replication by including the `cancel` field in the JSON request object, and setting the value to `true`.
+
+<aside class="warning">For the cancelation request to succeed, the structure of the request must be identical to the original request. In particular, if you requested continuous replication, the cancellation request must also contain the `continuous` field.</aside>
+
 Requesting cancellation of a replication that does not exist results in a 404 error.
 
-Retrieving UUIDs
-----------------
+### Retrieving UUIDs
 
--   **Method**: `GET`
--   **Path**: `/_uuids`
--   **Response**: JSON document containing a list of UUIDs
+> Example request for a single UUID:
 
-### Query Arguments
+```
+GET /_uuids
+```
 
-<table>
-<colgroup>
-<col width="16%" />
-<col width="38%" />
-<col width="15%" />
-<col width="15%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">Argument</th>
-<th align="left">Description</th>
-<th align="left">Optional</th>
-<th align="left">Type</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left"><code>count</code></td>
-<td align="left">Number of UUIDs to return</td>
-<td align="left">yes</td>
-<td align="left">numeric</td>
-</tr>
-</tbody>
-</table>
+> Example response to a request for a single UUID:
 
-Requests one or more Universally Unique Identifiers (UUIDs). The response is a JSON object providing a list of UUIDs. For example:
-
-``` sourceCode
+``` json
 {
    "uuids" : [
       "7e4b5a14b22ec1cf8e58b9cdd0000da3"
@@ -437,15 +429,15 @@ Requests one or more Universally Unique Identifiers (UUIDs). The response is a J
 }
 ```
 
-You can use the `count` argument to specify the number of UUIDs to be returned. For example:
+> Example request for five UUIDs:
 
-``` sourceCode
+```
 GET /_uuids?count=5
 ```
 
-Returns:
+> Example response to a request for five UUIDs:
 
-``` sourceCode
+``` json
 {
    "uuids" : [
       "c9df0cdf4442f993fc5570225b405a80",
@@ -456,3 +448,15 @@ Returns:
    ]
 }
 ```
+
+-   **Method**: `GET`
+-   **Path**: `/_uuids`
+-   **Response**: JSON document containing a list of UUIDs
+
+Argument | Description | Optional | Type
+---------|-------------|----------|-----
+`count` | Number of UUIDs to return | yes | numeric
+
+This command requests one or more Universally Unique Identifiers (UUIDs). The response is a JSON object providing a list of UUIDs.
+
+Use the `count` argument to specify the number of UUIDs to be returned.
