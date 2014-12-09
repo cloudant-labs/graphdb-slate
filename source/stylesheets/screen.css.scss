@@ -82,7 +82,12 @@ html, body {
     @include transition-timing-function('linear');
     @include transition-duration(230ms);
   }
-
+  
+  a, a:visited {
+    text-decoration: none;
+    color: $nav-text;
+  }
+  
   // This is the currently selected ToC entry
   .tocify-focus {
     @include box-shadow(0px 1px 0px $nav-active-shadow);
