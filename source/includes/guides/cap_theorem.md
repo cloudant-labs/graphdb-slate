@@ -8,7 +8,6 @@ The CAP (**C**onsistency, **A**vailability, and **P**artition tolerance) theorem
 -   Availability: every request receives a response indicating success or failure.
 -   Partition Tolerance: the system continues to operate despite arbitrary message loss or failure of part of the system.
 
-*For a good time, check out the [formal proof](http://lpd.epfl.ch/sgilbert/pubs/BrewersConjecture-SigAct.pdf) of the CAP theorem.*
 
 A database can only exhibit two of these three for both theoretical and practical reasons. A database prioritizing consistency and availability is simple: a single node storing a single copy of your data. But this is difficult to scale as you must upgrade the node to get more performance, rather than leverage additional nodes. And, even a minor system failure can shut down a single-node system, while any message loss will mean significant data loss. To endure, the system must become more sophisticated.
 
@@ -22,7 +21,7 @@ Cloudant prioritizes availability and partition tolerance by employing a master-
 
 Maintaining one consistent view of our data is logical and easy to understand because a relational database does this work for you. We expect Web services interacting with database systems to behave this way, but that doesn't mean they should. Consistency isn't a given, and it takes a little work to change our approach.
 
-In fact, consistency isn't necessarily essential for many enterprise cloud services. Large, heavily used systems bring with them a high probability that a portion of the system may fail. A database engineered around this assumption that prioritizes availability and eventual consistency is better suited to keeping your application online. The consistency of application data can be addressed after the fact. As Seth Gilbert and Nancy Lynch of MIT conclude in their [proof of CAP theorem](http://lpd.epfl.ch/sgilbert/pubs/BrewersConjecture-SigAct.pdf), "most real-world systems today are forced to settle with returning 'most of the data, most of the time.'"
+In fact, consistency isn't necessarily essential for many enterprise cloud services. Large, heavily used systems bring with them a high probability that a portion of the system may fail. A database engineered around this assumption that prioritizes availability and eventual consistency is better suited to keeping your application online. The consistency of application data can be addressed after the fact. As Seth Gilbert and Nancy Lynch of MIT conclude, "most real-world systems today are forced to settle with returning 'most of the data, most of the time.'"
 
 ### Application availability vs. consistency in the enterprise
 
