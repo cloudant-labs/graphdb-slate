@@ -2,7 +2,7 @@
 
 The `/_active_tasks` endpoint provides a list of the tasks running on the server.
 For more examples on using this endpoint,
-see [Managing tasks](#managing-tasks).
+see the [Managing tasks](#managing-tasks) guide.
 
 ### Retrieving a list of active tasks
 
@@ -122,8 +122,8 @@ The returned structure includes the following fields for each task:
 
 -   **pid**: Erlang Process ID
 -   **type**: Operation Type
--   **updated\_on**: Time when the last update was made to this task record. Updates are made by the job as progress occurs. The value is in Unix time UTC.
--   **started\_on**: Time when the task was started. The value is in Unix time UTC.
+-   **updated\_on**: Time when the last update was made to this task record. Updates are made by the job as progress occurs. The value is an integer containing the Unix time UTC.
+-   **started\_on**: Time when the task was started. The value is an integer containing the Unix time UTC.
 -   **total\_changes**: Total number of documents to be processed by the task. The exact meaning depends on the type of the task.
 -   **database**: The database and shard on which the operation occurs.
 
@@ -150,12 +150,14 @@ In the `phase` field, the value indicates the stage that compaction has reached:
 
 #### Specific response fields for replication tasks
 
--   **replication\_id**: Unique identifier of the replication that can be used to cancel the task.
--   **user**: User who started the replication.
--   **changes\_pending**: Number of documents needing to be changed in the target database.
+-   **replication\_id**: Unique identifier string of the replication that can be used to cancel the task.
+-   **user**: User who started the replication, expressed as a string, or `null` if the replication was not initiated by a user.
+-   **changes\_pending**: Number of documents needing to be changed in the target database, expressed as an integer.
 -   **revisions\_checked**: Number of document revisions for which it was checked whether they are already in the target database.
--   **continuous**: Whether the replication is continuous.
--   **docs\_read**: Documents read from the source database.
+-   **continuous**: Boolean value indicating whether the replication is continuous.
+-   **docs\_read**: Number of documents read from the source database, expressed as an integer.
+-   **source**: An obfuscated URL string indicating the database from which the task is replicating.
+-   **target**: An obfuscated URL string indicating the database to which the task is replicating.
 
 #### Specific response fields for indexing tasks
 

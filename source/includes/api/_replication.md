@@ -61,6 +61,10 @@ To start a replication, [add a document](#documentCreate) to the `_replicator` d
 curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/_active_tasks
 ```
 
+```http
+GET /_active_tasks HTTP/1.1
+```
+
 ```javascript
 var nano = require('nano');
 var account = nano("https://"+$USERNAME+":"+$PASSWORD+"@"+$USERNAME+".cloudant.com");
@@ -104,21 +108,10 @@ account.request({
 ]
 ```
 
-To monitor replicators currently in process, make a GET request to `https://$USERNAME.cloudant.com/_actice_tasks`.
+To monitor replicators currently in process, make a GET request to `https://$USERNAME.cloudant.com/_active_tasks`.
 This returns any active tasks, including replications. To filter for replications, look for documents with `"type": "replication"`.
 
-Field | Description | Type
-------|-------------|------
-replication_id | Unique identifier of the replication that can be used to cancel the task | string
-user | User who started the replication | string or null
-changes_pending | Number of documents needing to be changed in the target database | integer
-revisions_checked | Number of document revisions for which it was checked whether they are already in the target database integer
-continuous | Whether the replication is continuous | boolean
-docs_read | Documents read from the source database | integer
-started_on | The replication's start date in seconds since the UNIX epoch | integer
-updated_on | When the replication was last updated, in seconds since the UNIX epoch | integer
-source | An obfuscated URL indicating the database from which the task is replicating | string
-target | An obfuscated URL indicating the database to which the task is replicating | string
+For details about the information provided by `_active_tasks`, see [Active tasks](#active-tasks).
 
 #### Delete
 
