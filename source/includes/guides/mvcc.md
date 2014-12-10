@@ -7,7 +7,7 @@ It makes both read and write operations on Cloudant databases faster because the
 
 ### Revisions
 
-Every document in a Cloudant database has a `_rev` field indicating its revision number. You must specify the previous `_rev` when [updating a document](#update) or else your request will fail and return a [409 error](#errors).
+Every document in a Cloudant database has a `_rev` field indicating its revision number. You must specify the previous `_rev` when [updating a document](#update) or else your request will fail and return a [409 error](#http-status-codes).
 
 You can query a particular revision using its `_rev`, however, older revisions are regularly deleted by a process called <a href="http://en.wikipedia.org/wiki/Data_compaction" target="blank">compaction</a>.
 A consequence of compaction is that you cannot rely on a successful response when querying a particular document revision using its `_rev` to obtain a history of revisions to your document. If you need a version history of your documents, a solution is to [create a new document](#documentCreate) for each revision.

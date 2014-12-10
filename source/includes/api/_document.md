@@ -177,6 +177,8 @@ To update (or create) a document, make a PUT request with the updated JSON conte
 <aside>If you fail to provide the latest `_rev`, Cloudant responds with a [409 error](#http-status-codes).
 This error prevents you overwriting data changed by other clients.</aside>
 
+<div id="document-delete"></div>
+
 ### Delete
 
 ```http

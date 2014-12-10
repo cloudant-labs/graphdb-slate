@@ -121,7 +121,7 @@ db.view_with_list($DESIGN_ID, $MAPREDUCE_INDEX, $LIST_FUNCTION, function (err, b
 });
 ```
 
-Use list functions to customize the format of [MapReduce](#mapreduce) query results.
+Use list functions to customize the format of [MapReduce](#using-views) query results.
 They are used when you want to access Cloudant directly from a browser, and need data to be returned in a different format, such as HTML.
 
 <aside>The result of a list function is not stored. This means that the function is executed every time a request is made.
@@ -342,7 +342,7 @@ account.db.changes($DATABASE, {
 });
 ```
 
-Filter functions format the [changes feed](#list-changes), removing changes you don't want to monitor.
+Filter functions format the [changes feed](#get-changes), removing changes you don't want to monitor.
 The filter function is run over every change in the changes feed, and only those for which the function returns `true` are returned to the client in the response.
 
 Filter functions receive two arguments: `doc` and [req](#req). `doc` represents the document currently being filtered.
