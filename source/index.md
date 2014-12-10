@@ -35,11 +35,11 @@ includes:
   - api/using_views
   - api/search
   - api/replication
-  - api/misc
+  - api/active_tasks
   - api/advanced
 #  - api/errors
   - guides/index
-  - guides/active_tasks
+  - guides/managing_tasks
   - guides/mvcc
   - guides/transactions
   - guides/cap_theorem

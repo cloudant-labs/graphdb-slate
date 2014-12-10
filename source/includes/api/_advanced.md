@@ -2,7 +2,52 @@
 
 These endpoints provide information about the state of the cluster, details about revision history, and other miscellaneous tasks.
 
+### GET /
+
+> Example request to get server meta information:
+
+```http
+GET / HTTP/1.1
+```
+
+```shell
+curl https://$USERNAME.cloudant.com/ \
+     -u $USERNAME
+```
+
+```javascript
+var nano = require('nano');
+var account = nano('https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com');
+
+account.request({
+  path: '/'
+}, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
+```
+
+> Example JSON response:
+
+```json
+{
+  "couchdb": "Welcome",
+  "version": "1.0.2",
+  "cloudant_build":"1138"
+}
+```
+
+-  **Method**: `GET`
+-  **Path**: `/`
+-  **Response**: Welcome message and version
+
+Accessing the database rather than a document within the database returns meta information about the server. The response is a JSON structure containing information about the server, including a welcome message and the version of the server. The `version` field contains the CouchDB version the server is compatible with.
+The `cloudant_build` field contains the build number of Cloudant's CouchDb implementation.
+
 ### GET /_db_updates
+
+> Example request to get a list of changes to the database:
 
 ```http
 GET /_db_updates HTTP/1.1
@@ -40,7 +85,7 @@ account.request({
 }
 ```
 
-<aside>This feature is only available to dedicated customers.</aside>
+<aside class="notify">This feature is only available to dedicated customers.</aside>
 
 Obtains a list of changes to databases, like a global [changes feed](#list-changes). Changes can be either updates to the database, creation, or deletion of a database. Like the changes feed, the feed is not guaranteed to return changes in the correct order and might contain changes more than once. Polling modes for this method works just like polling modes for [the changes feed](#list-changes).
 
@@ -331,6 +376,8 @@ Sets the maximum number of past revisions that Cloudant stores information on.
 
 ### GET /_membership
 
+> Example request to list nodes in the cluster:
+
 ```http
 GET /_membership HTTP/1.1
 ```
@@ -372,7 +419,19 @@ account.request({
 
 Returns the names of nodes in the cluster. Currently active clusters are indicated in the `cluster_nodes` field, while `all_nodes` lists all nodes active or not.
 
+-   **Method**: `GET`
+-   **Path**: `/_membership`
+-   **Response**: JSON document listing cluster nodes and all nodes
+-   **Roles permitted**: \_admin
+
+#### Response structure
+
+-   `cluster_nodes`: Array of node names (strings) of the active nodes in the cluster
+-   `all_nodes`: Array of nodes names (strings) of all nodes in the cluster
+
 ### GET /_uuids
+
+> Example request for a single UUID:
 
 ```http
 GET /_uuids HTTP/1.1
@@ -396,9 +455,9 @@ account.request({
 });
 ```
 
-> Example response:
+> Example response to a request for a single UUID:
 
-```json
+``` json
 {
    "uuids" : [
       "7e4b5a14b22ec1cf8e58b9cdd0000da3"
@@ -406,4 +465,51 @@ account.request({
 }
 ```
 
-Requests one or more Universally Unique Identifiers (UUIDs). The response is a JSON object providing a list of UUIDs. Use the `count` query argument to specify the number of UUIDs to be returned.
+> Example request for five UUIDs:
+
+```http
+GET /_uuids?count=5 HTTP/1.1
+```
+
+```shell
+curl https://$USERNAME.cloudant.com/_uuids?count=5 \
+     -u $USERNAME
+```
+
+```javascript
+var nano = require('nano');
+var account = nano('https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com');
+
+account.request({
+  path: '_uuids?count=5'
+}, function (err, body) {
+  if (!err) {
+    console.log(body);
+  }
+});
+```
+
+> Example response to a request for five UUIDs:
+
+``` json
+{
+   "uuids" : [
+      "c9df0cdf4442f993fc5570225b405a80",
+      "c9df0cdf4442f993fc5570225b405bd2",
+      "c9df0cdf4442f993fc5570225b405e42",
+      "c9df0cdf4442f993fc5570225b4061a0",
+      "c9df0cdf4442f993fc5570225b406a20"
+   ]
+}
+```
+
+This command requests one or more Universally Unique Identifiers (UUIDs). The response is a JSON object providing a list of UUIDs.
+
+-   **Method**: `GET`
+-   **Path**: `/_uuids`
+-   **Response**: JSON document containing a list of UUIDs
+
+Argument | Description | Optional | Type
+---------|-------------|----------|-----
+`count` | Number of UUIDs to return | yes | Positive integer, greater than 0 and less than or equal to 1,000.
+

@@ -463,3 +463,224 @@ These options can be set for a replication by including them in the replication 
 ### Advanced content
 
 Clients implementing the [replication protocol](http://dataprotocols.org/couchdb-replication/) should check out the [Advanced Methods](#advanced14).
+
+XXXXXXXXXXXXXXXXXX
+
+
+### Replicating a database
+
+-   **Method**: `POST`
+-   **Path**: `/_replicate`
+-   **Request**: Replication specification
+-   **Response**: TBD
+-   **Roles permitted**: \_admin
+
+#### Return Codes
+
+Code | Description
+-----|------------
+`200` | Replication request successfully completed.
+`202` | Continuous replication request has been accepted.
+`404` | Either the source or target database was not found.
+`500` | JSON specification was invalid.
+
+Use this call to request, configure, or stop, a replication operation.
+
+The specification of the replication request is controlled through the JSON content of the request. The JSON should be an object with fields defining the source, target and other options. The fields of the JSON request are as follows:
+
+-   **cancel**: (Optional) Cancels the replication.
+-   **continuous**: (Optional) Configure the replication to be continuous.
+-   **create\_target**: (Optional) Creates the target database.
+-   **doc\_ids**: (Optional) Array of document IDs to be synchronized.
+-   **proxy**: (Optional) Address of a proxy server through which replication should occur.
+-   **source**: Source database URL, including user name and password.
+-   **target**: Target database URL, including user name and password.
+
+<aside class="notice">Replication takes place in one direction only.
+To keep two databases synchronized with each other, you must replicate in both directions.
+This means that you must replicate from `databasea` to `databaseb`, and separately from `databaseb` to `databasea`.</aside>
+
+#### Replication Operation
+
+> Example request to replicate between a database on the source server `example.com`, and a target database on Cloudant:
+
+```
+POST /_replicate
+Content-Type: application/json
+Accept: application/json
+
+{
+   "source" : "http://user:pass@example.com/db",
+   "target" : "http://user:pass@user.cloudant.com/db",
+}
+```
+
+> Example error reponse if one of the requested databases for a replication does not exist:
+
+```json
+{
+   "error" : "db_not_found"
+   "reason" : "could not open http://username.cloudant.com/ol1ka/",
+}
+```
+
+The aim of replication is that at the end of the process, all active documents on the source database are also in the destination or 'target' database, and that all documents deleted from the source databases are also deleted from the destination database (if they existed there).
+
+Replication has two forms: push or pull replication:
+
+-   *Push replication* is where the `source` is a local database, and `destination` is a remote database.
+
+-   *Pull replication* is where the `source` is the remote database instance, and the `destination` is the local database.
+
+Pull replication is helpful if your source database has a permanent IP address, and your destination database is local and has a dynamically assigned IP address, for example, obtained through DHCP.
+Pull replication is especially appropriate if you are replicating to a mobile or other device from a central server.
+
+In all cases, the requested databases in the `source` and `target` specification must exist. If they do not, an error is returned within the JSON object.
+
+#### Creating a target database during replication
+
+> Example request to create a target database and replicate onto it:
+
+```
+POST http://username.cloudant.com/_replicate
+Content-Type: application/json
+Accept: application/json
+
+{
+   "create_target" : true
+   "source" : "http://user:pass@example.com/db",
+   "target" : "http://user:pass@user.cloudant.com/db",
+}
+```
+
+If your user credentials allow it, you can create the target database during replication by adding the `create_target` field to the request object.
+
+The `create_target` field is not destructive. If the database already exists, the replication proceeds as normal.
+
+### Single Replication
+
+> Example request for a single synchronization between the source database `recipes` and the target database `recipes2`.
+
+```
+POST /_replicate
+Content-Type: application/json
+Accept: application/json
+
+{
+   "source" : "http://user:pass@user.cloudant.com/recipes",
+   "target" : "http://user:pass@user.cloudant.com/recipes2",
+}
+```
+
+> Example response following a request for a single replication:
+
+``` json
+{
+   "ok" : true,
+   "history" : [
+      {
+         "docs_read" : 1000,
+         "session_id" : "52c2370f5027043d286daca4de247db0",
+         "recorded_seq" : 1000,
+         "end_last_seq" : 1000,
+         "doc_write_failures" : 0,
+         "start_time" : "Thu, 28 Oct 2010 10:24:13 GMT",
+         "start_last_seq" : 0,
+         "end_time" : "Thu, 28 Oct 2010 10:24:14 GMT",
+         "missing_checked" : 0,
+         "docs_written" : 1000,
+         "missing_found" : 1000
+      }
+   ],
+   "session_id" : "52c2370f5027043d286daca4de247db0",
+   "source_last_seq" : 1000
+}
+```
+
+Replication of a database means that the the two databases - the 'source' and the 'target' - are synchronized. By default, the replication process occurs one time, and synchronizes the two databases together.
+
+The response to a request for a single replication is a JSON structure containing the success or failure status of the synchronization process. The response also contains statistics about the process.
+
+The structure of the response includes details about the replication status:
+
+-  **history [array]**: Replication History
+  -  **doc\_write\_failures**: Number of document write failures
+  -  **docs\_read**: Number of documents read
+  -  **docs\_written**: Number of documents written to target
+  -  **end\_last\_seq**: Last sequence number in changes stream
+  -  **end\_time**: Date/Time replication operation completed
+  -  **missing\_checked**: Number of missing documents checked
+  -  **missing\_found**: Number of missing documents found
+  -  **recorded\_seq**: Last recorded sequence number
+  -  **session\_id**: Session ID for this replication operation
+  -  **start\_last\_seq**: First sequence number in changes stream
+  -  **start\_time**: Date/Time replication operation started
+-  **ok**: Replication status
+-  **session\_id**: Unique session ID
+-  **source\_last\_seq**: Last sequence number read from source database
+
+### Continuous Replication
+
+> Example request for a continuous replication between two databases.
+
+```
+POST /_replicate
+Content-Type: application/json
+Accept: application/json
+
+{
+   "continuous" : true
+   "source" : "http://user:pass@example.com/db",
+   "target" : "http://user:pass@user.cloudant.com/db",
+}
+```
+
+By default, the synchronization of a database during replication happens only once, at the time the replicate request is made. To ensure that replication from the source database to the target database takes place continually, set the `continuous` field of the JSON object within the request to `true`.
+
+With continuous replication changes in the source database are replicated to the target database in perpetuity until you specifically request that replication ceases.
+
+Changes will be replicated between the two databases as long as a network connection is available between the two instances.
+
+<aside class="warning">Replication takes place in one direction only.
+To keep two databases synchronized with each other continuously, you must also replicate in both directions, continuously.
+This means that you must enable continuous replication from `databasea` to `databaseb`, and additionally from `databaseb` to `databasea`.</aside>
+
+### Canceling Continuous Replication
+
+> Example replication request to create the target database if it does not exist, and to replicate continuously:
+
+```
+POST /_replicate
+Content-Type: application/json
+Accept: application/json
+
+{
+   "source" : "http://user:pass@example.com/db",
+   "target" : "http://user:pass@user.cloudant.com/db",
+   "create_target" : true,
+   "continuous" : true
+}
+```
+
+Example request to cancel the replication, providing matching fields to the original request:
+
+```
+POST /_replicate
+Content-Type: application/json
+Accept: application/json
+
+{
+    "cancel" : true,
+    "continuous" : true
+    "create_target" : true,
+    "source" : "http://user:pass@example.com/db",
+    "target" : "http://user:pass@user.cloudant.com/db",
+}
+```
+
+Cancel continuous replication by including the `cancel` field in the JSON request object, and setting the value to `true`.
+
+<aside class="warning">For the cancelation request to succeed, the structure of the request must be identical to the original request. In particular, if you requested continuous replication, the cancellation request must also contain the `continuous` field.</aside>
+
+Requesting cancellation of a replication that does not exist results in a 404 error.
+

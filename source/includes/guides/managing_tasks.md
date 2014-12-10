@@ -1,4 +1,4 @@
-## Monitoring indexing and replication tasks
+## Managing tasks
 
 Creating new indexes over lots of data or replicating a large database can take quite a while. So how can you see whether your tasks are making progress, or if they have completed? The `_active_tasks` endpoint provides information about all ongoing tasks. However, if you start a lot of tasks, some of them might be scheduled to run later and do not show up under `_active_tasks` until they have been started.
 
