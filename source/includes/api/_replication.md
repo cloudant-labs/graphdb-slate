@@ -132,7 +132,7 @@ DELETE /_replicator/replication-doc?rev=1-... HTTP/1.1
 curl -X DELETE https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/_replicator/replication-doc?rev=1-...
 ```
 
-To cancel a replication, simply [delete its document](#delete33) from the `_replicator` database.
+To cancel a replication, simply [delete its document](#document-delete) from the `_replicator` database.
 
 ### Replication using the /\_replicate endpoint
 
@@ -462,4 +462,4 @@ These options can be set for a replication by including them in the replication 
 
 ### Advanced content
 
-Clients implementing the [replication protocol](http://dataprotocols.org/couchdb-replication/) should check out the [Advanced Methods](#advanced14).
+Clients implementing the [replication protocol](http://dataprotocols.org/couchdb-replication/) should check out the [Advanced Methods](#advanced).

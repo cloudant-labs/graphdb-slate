@@ -64,7 +64,7 @@ $ ct='Content-Type: application-json'
 
 Let's say you have one database to back up, and you want to create a
 full backup on Monday and an incremental one on Tuesday. You can use
-curl and [jq](http://http://stedolan.github.io/jq/) to do this, but of
+curl and [jq](http://stedolan.github.io/jq/) to do this, but of
 course any other http client will work.
 
 <div> </div>

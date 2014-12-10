@@ -22,7 +22,7 @@ In the case of the shopping app, instead insert documents like the first example
 }
 ```
 
-`item` and `account` are IDs for other objects in your database. To calculate a running total for an account, we would use a [view](#mapreduce) like the second example.
+`item` and `account` are IDs for other objects in your database. To calculate a running total for an account, we would use a [view](#creating-views) like the second example.
 
 ```javascript
 {
@@ -91,7 +91,7 @@ Therefore a `_view/transactions?key={transaction_id}&include_docs=true` query re
 
 The `dbcopy` map can be used to migrate data into events, and then output them to another database, in order to better accomodate event sourcing.
 
-A document like the first example can be mapped into another database using the [view](#mapreduce) in the second example. The results will be document in the events database like the third example.
+A document like the first example can be mapped into another database using the [view](#creating-views) in the second example. The results will be document in the events database like the third example.
 
 ```javascript
 {

@@ -120,7 +120,7 @@ Here's the list of generic analyzers supported by Cloudant search:
 
 Analyzer | Description
 ---------|------------
-standard | Default analyzer; implements the Word Break rules from the [Unicode Text Segmentation algorithm](#http://www.unicode.org/reports/tr29/)
+standard | Default analyzer; implements the Word Break rules from the [Unicode Text Segmentation algorithm](http://www.unicode.org/reports/tr29/)
 email | Like standard but tries harder to match an email address as a complete token.
 keyword | Input is not tokenized at all.
 simple | Divides text at non-letters.

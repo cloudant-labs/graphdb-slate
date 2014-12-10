@@ -135,7 +135,7 @@ db.attachment.destroy($DOCUMENT_ID, $FILENAME, $REV, function (err, body) {
 
 To delete an attachment, make a DELETE request with the document's latest `_rev` to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID/$ATTACHMENT`.
 If you do not supply the latest `_rev`,
-the response is a [409 error](#errors).
+the response is a [409 error](#http-status-codes).
 
 ### Inline
 

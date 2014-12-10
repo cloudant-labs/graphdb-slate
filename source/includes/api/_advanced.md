@@ -42,7 +42,7 @@ account.request({
 
 <aside>This feature is only available to dedicated customers.</aside>
 
-Obtains a list of changes to databases, like a global [changes feed](#list-changes). Changes can be either updates to the database, creation, or deletion of a database. Like the changes feed, the feed is not guaranteed to return changes in the correct order and might contain changes more than once. Polling modes for this method works just like polling modes for [the changes feed](#list-changes).
+Obtains a list of changes to databases, like a global [changes feed](#get-changes). Changes can be either updates to the database, creation, or deletion of a database. Like the changes feed, the feed is not guaranteed to return changes in the correct order and might contain changes more than once. Polling modes for this method works just like polling modes for [the changes feed](#get-changes).
 
 
 Argument | Description | Optional | Type | Default | Supported Values
