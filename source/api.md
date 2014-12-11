@@ -31,10 +31,9 @@ includes:
   - api/using_views
   - api/search
   - api/replication
-  - api/misc
+  - api/advanced_replication
+  - api/active_tasks
   - api/advanced
 #  - api/errors
 
 ---
-
-

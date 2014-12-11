@@ -18,7 +18,7 @@ toc_footers:
 
 includes:
   - guides/index
-  - guides/active_tasks
+  - guides/managing_tasks
   - guides/mvcc
   - guides/transactions
   - guides/cap_theorem
@@ -27,5 +27,3 @@ includes:
   - guides/couchapps
 
 ---
-
-
