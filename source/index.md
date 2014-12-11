@@ -35,6 +35,7 @@ includes:
   - api/using_views
   - api/search
   - api/replication
+  - api/advanced_replication
   - api/active_tasks
   - api/advanced
 #  - api/errors
