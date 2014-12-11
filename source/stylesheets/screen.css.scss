@@ -214,11 +214,23 @@ html, body {
 ////////////////////////////////////////////////////////////////////////////////
 // This is all the stuff with the light background in the left half of the page
 
+body, html {
+  height: 100%;
+}
+
+.page-wrapper {
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  min-height: 100%;
+}
+
 .content {
   // to place content above the dark box
   position: relative;
   z-index: 30;
-
+  min-height: 100%;
 
   &>h1, &>h2, &>h3, &>h4, &>p, &>table, &>ul, &>ol, &>aside, &>dl {
     margin-right: $examples-width;
