@@ -278,7 +278,7 @@ Content-Type: application/json
 }
 ```
 
-A replication triggered by POSTing to `/_replicate/` can be canceled by POSTing the exact same JSON object but with the additional `cancel` property set to `true`.
+A replication triggered by POSTing to `/_replicate` can be canceled by POSTing the exact same JSON object but with the additional `cancel` property set to `true`.
 
 <aside class="warning">If a replication is canceled, the request which initiated the replication fails with error 500 (shutdown).</aside>
 
@@ -325,7 +325,7 @@ Accept: application/json
 }
 ```
 
-Replication of a database means that the the two databases - the 'source' and the 'target' - are synchronized. By default, the replication process occurs one time, and synchronizes the two databases together.
+Replication of a database means that the two databases - the 'source' and the 'target' - are synchronized. By default, the replication process occurs one time, and synchronizes the two databases together.
 
 The response to a request for a single replication is a JSON structure containing the success or failure status of the synchronization process. The response also contains statistics about the process.
 
@@ -349,39 +349,46 @@ The structure of the response includes details about the replication status:
 
 ### Continuous Replication
 
-> Example request for a continuous replication between two databases.
+> Example instructions for enabling continuous replication:
 
+```shell
+curl -H 'Content-Type: application/json' -X POST http://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/_replicate -d @replication-doc.json
+# where the file replication-doc.json indicates that the replication should be continuous
 ```
-POST /_replicate
-Content-Type: application/json
-Accept: application/json
 
+```http
+POST /_replicate HTTP/1.1
+Content-Type: application/json
+```
+
+> Example document specifying that the replication should be continuous:
+
+```json
 {
-   "continuous" : true
-   "source" : "http://user:pass@example.com/db",
-   "target" : "http://user:pass@user.cloudant.com/db",
+  "source": "http://username:password@example.com/foo", 
+  "target": "http://username:password@username.cloudant.com/bar", 
+  "continuous": true
 }
 ```
 
 By default, the synchronization of a database during replication happens only once, at the time the replicate request is made. To ensure that replication from the source database to the target database takes place continually, set the `continuous` field of the JSON object within the request to `true`.
 
-With continuous replication changes in the source database are replicated to the target database in perpetuity until you specifically request that replication ceases.
+With continuous replication, changes in the source database are replicated to the target database forever, until you specifically cancel the replication.
 
-Changes will be replicated between the two databases as long as a network connection is available between the two instances.
+Changes are replicated between the two databases as long as a network connection is available between the two instances.
 
-<aside class="warning">Replication takes place in one direction only.
-To keep two databases synchronized with each other continuously, you must also replicate in both directions, continuously.
-This means that you must enable continuous replication from `databasea` to `databaseb`, and additionally from `databaseb` to `databasea`.</aside>
+When in operation, the replication process does not stop when it has processed all current updates.
+Instead, the replication process continues to wait for further updates to the source database, and applies them to the target.
+
+<aside class="warning">Continuous replication forces checks to be made continuously on the source database.
+This results in an increasing number of database accesses, even if the source database content has not changed.
+Database accesses are counted as part of the work performed by a multi-tenant database configuration.</aside>
 
 ### Canceling Continuous Replication
 
 > Example replication request to create the target database if it does not exist, and to replicate continuously:
 
-```
-POST /_replicate
-Content-Type: application/json
-Accept: application/json
-
+```json
 {
    "source" : "http://user:pass@example.com/db",
    "target" : "http://user:pass@user.cloudant.com/db",
@@ -390,13 +397,9 @@ Accept: application/json
 }
 ```
 
-Example request to cancel the replication, providing matching fields to the original request:
+> Example request to cancel the replication, providing matching fields to the original request:
 
-```
-POST /_replicate
-Content-Type: application/json
-Accept: application/json
-
+```json
 {
     "cancel" : true,
     "continuous" : true
@@ -478,135 +481,3 @@ Content-Type: application/json
 
 A simple example of creating a replication task, then canceling it.
 
-### Continuous replication
-
-> Example instructions for enabling continuous replication:
-
-```shell
-curl -H 'Content-Type: application/json' -X POST http://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/_replicate -d @replication-doc.json
-# where the file replication-doc.json indicates that the replication should be continuous
-```
-
-```http
-POST /_replicate HTTP/1.1
-Content-Type: application/json
-```
-
-> Example document specifying that the replication should be continuous:
-
-```json
-{
-  "source": "http://username:password@example.com/foo", 
-  "target": "http://username:password@username.cloudant.com/bar", 
-  "continuous": true
-}
-```
-
-To make replication continuous, add a `"continuous":true` parameter to the JSON. 
-
-The effect is that the replication process does not stop when it has processed all current updates.
-Instead, the replication process continues to wait for further updates to the source database, and applies them to the target.
-
-<aside class="warning">Continuous replication forces checks to be made contiuously on the source database.
-This results in an increasing number of database accesses, even if the source database content has not changed.
-Database accesses are counted as part of the work performed by a multi-tenant database configuration.</aside>
-
-### Filtered Replication
-
-> Simple example of a filter function:
-
-```
-function(doc, req) {
-  return !!(doc.type && doc.type == "foo");
-}
-```
-
-Sometimes you do not want to transfer all documents from source to target.
-To choose which documents to transfer,
-include one or more filter functions in a design document on the source.
-You can then tell the replicator to use these filter functions.
-
-A filter function takes two arguments:
-
-- The document to be replicated.
-- The replication request.
-
-A filter function returns a true or false value. If the result is true, the document is replicated.
-
-<h3></h3>
-
-> Simple example of storing a filter function in a design document:
-
-```json
-{
-  "_id": "_design/myddoc",
-  "filters": {
-    "myfilter": "function goes here"
-  }
-}
-```
-
-Filters are stored under the top-level `filters` key of the design document.
-
-<h3></h3>
-
-> Example JSON for invoking a filtered replication:
-
-```json
-{
-  "source": "http://username:password@example.org/example-database",
-  "target": "http://username:password@username.cloudant.com/example-database",
-  "filter": "myddoc/myfilter"
-}
-```
-
-Filters are invoked by using a JSON statement that identifies:
-
-- The source database.
-- The target database.
-- The name of the filter stored under the `filters` key of the design document.
-
-<h3></h3>
-
-> Example JSON for invoking a filtered replication with supplied parameters:
-
-```json
-{
-  "source": "http://username:password@example.org/example-database",
-  "target": "http://username:password@username.cloudant.com/example-database",
-  "filter": "myddoc/myfilter",
-  "query_params": {
-    "key": "value"
-  }
-}
-```
-
-Arguments can be supplied to the filter function by including key:value pairs in the `query_params` field of the invocation.
-
-### Named Document Replication
-
-> Example replication of specific documents:
-
-```json
-{
-  "source": "http://username:password@example.org/example-database",
-  "target": "http://username:password@127.0.0.1:5984/example-database",
-  "doc_ids": ["foo", "bar", "baz"]
-}
-```
-
-Sometimes you only want to replicate some documents. For this simple case, you do not need to write a filter function. To replicate specific documents, add the list of keys as an array in the `doc_ids` field.
-
-### Replicating through a proxy
-
-> Example showing replication through a proxy:
-
-```json
-{
-  "source": "http://username:password@username.cloudant.com/example-database",
-  "target": "http://username:password@example.org/example-database",
-  "proxy": "http://my-proxy.com:8888"
-}
-```
-
-If you want replication to pass through an HTTP proxy, provide the proxy details in the `proxy` field of the replication data.

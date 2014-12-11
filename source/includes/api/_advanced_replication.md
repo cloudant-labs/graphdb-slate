@@ -21,6 +21,106 @@ In addition, checkpoints for replication are [enabled by default](#checkpoints),
 
 To enable authentication during replication, include a username and password in the database URL.
 
+### Filtered Replication
+
+> Simple example of a filter function:
+
+```
+function(doc, req) {
+  return !!(doc.type && doc.type == "foo");
+}
+```
+
+Sometimes you do not want to transfer all documents from source to target.
+To choose which documents to transfer,
+include one or more filter functions in a design document on the source.
+You can then tell the replicator to use these filter functions.
+
+A filter function takes two arguments:
+
+- The document to be replicated.
+- The replication request.
+
+A filter function returns a true or false value. If the result is true, the document is replicated.
+
+<h3></h3>
+
+> Simple example of storing a filter function in a design document:
+
+```json
+{
+  "_id": "_design/myddoc",
+  "filters": {
+    "myfilter": "function goes here"
+  }
+}
+```
+
+Filters are stored under the top-level `filters` key of the design document.
+
+<h3></h3>
+
+> Example JSON for invoking a filtered replication:
+
+```json
+{
+  "source": "http://username:password@example.org/example-database",
+  "target": "http://username:password@username.cloudant.com/example-database",
+  "filter": "myddoc/myfilter"
+}
+```
+
+Filters are invoked by using a JSON statement that identifies:
+
+- The source database.
+- The target database.
+- The name of the filter stored under the `filters` key of the design document.
+
+<h3></h3>
+
+> Example JSON for invoking a filtered replication with supplied parameters:
+
+```json
+{
+  "source": "http://username:password@example.org/example-database",
+  "target": "http://username:password@username.cloudant.com/example-database",
+  "filter": "myddoc/myfilter",
+  "query_params": {
+    "key": "value"
+  }
+}
+```
+
+Arguments can be supplied to the filter function by including key:value pairs in the `query_params` field of the invocation.
+
+### Named Document Replication
+
+> Example replication of specific documents:
+
+```json
+{
+  "source": "http://username:password@example.org/example-database",
+  "target": "http://username:password@127.0.0.1:5984/example-database",
+  "doc_ids": ["foo", "bar", "baz"]
+}
+```
+
+Sometimes you only want to replicate some documents. For this simple case, you do not need to write a filter function. To replicate specific documents, add the list of keys as an array in the `doc_ids` field.
+
+### Replicating through a proxy
+
+> Example showing replication through a proxy:
+
+```json
+{
+  "source": "http://username:password@username.cloudant.com/example-database",
+  "target": "http://username:password@example.org/example-database",
+  "proxy": "http://my-proxy.com:8888"
+}
+```
+
+If you want replication to pass through an HTTP proxy, provide the proxy details in the `proxy` field of the replication data.
+
 ### The *user\_ctx* property and delegations
 
 > Example delegated replication document:
