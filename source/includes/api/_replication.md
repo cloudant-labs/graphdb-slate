@@ -230,9 +230,7 @@ Pull replication is especially appropriate if you are replicating to a mobile or
 
 In all cases, the requested databases in the `source` and `target` specification must exist. If they do not, an error is returned within the JSON object.
 
-<h3></h3>
-
-#### Creating a target database during replication
+### Creating a target database during replication
 
 > Example request to create a target database and replicate onto it:
 
@@ -252,9 +250,7 @@ If your user credentials allow it, you can create the target database during rep
 
 The `create_target` field is not destructive. If the database already exists, the replication proceeds as normal.
 
-<h3></h3>
-
-#### Canceling replication
+### Canceling replication
 
 > Example instructions for canceling a replication:
 
@@ -384,7 +380,7 @@ Instead, the replication process continues to wait for further updates to the so
 This results in an increasing number of database accesses, even if the source database content has not changed.
 Database accesses are counted as part of the work performed by a multi-tenant database configuration.</aside>
 
-### Canceling Continuous Replication
+#### Canceling Continuous Replication
 
 > Example replication request to create the target database if it does not exist, and to replicate continuously:
 
