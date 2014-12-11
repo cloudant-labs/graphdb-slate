@@ -7,7 +7,7 @@ All documents must have two fields:
 a unique `_id` field, and a `_rev` field.
 The `_id` field is either created by you,
 or generated automatically as a [UUID](http://en.wikipedia.org/wiki/Universally_unique_identifier) by Cloudant.
-The `_rev` field is a revision number, and is [essential to Cloudant's replication protocol](#document-versioning-and-mvcc).
+The `_rev` field is a revision number, and is [essential to Cloudant's replication protocol](guides.html#document-versioning-and-mvcc).
 In addition to these two mandatory fields, documents can contain any other content expressed using JSON.
 
 <h3 id="documentCreate">Create</h3>
@@ -174,7 +174,7 @@ db.insert($JSON, $JSON._id, function (err, body, headers) {
 
 To update (or create) a document, make a PUT request with the updated JSON content *and* the latest `_rev` value (not needed for creating new documents) to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID`.
 
-<aside>If you fail to provide the latest `_rev`, Cloudant responds with a [409 error](#http-status-codes).
+<aside>If you fail to provide the latest `_rev`, Cloudant responds with a [409 error](basics.html#http-status-codes).
 This error prevents you overwriting data changed by other clients.</aside>
 
 <div id="document-delete"></div>
@@ -217,7 +217,7 @@ db.destroy($JSON._id, $REV, function (err, body, headers) {
 
 To delete a document, make a DELETE request with the document's latest `_rev` in the querystring, to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID`.
 
-<aside>If you fail to provide the latest `_rev`, Cloudant responds with a [409 error](#http-status-codes).
+<aside>If you fail to provide the latest `_rev`, Cloudant responds with a [409 error](basics.html#http-status-codes).
 This error prevents you overwriting data changed by other clients.</aside>
 
 <aside class="warning">

@@ -79,6 +79,36 @@ under the License.
       </div>
       <div id="toc">
       </div>
+      
+      <ul id="tocify-header0" class="tocify-header">
+        <% if request.path != 'index.html' %>
+          <li class="tocify-item" data-unique="cloudant-documentation" style="cursor: pointer;">
+		        <a href="index.html#documentation-overview">Documentation</a>
+		      </li>
+        <% end %>
+		    <% if request.path != 'basics.html' %>
+          <li class="tocify-item" data-unique="cloudant-basics" style="cursor: pointer;">
+		        <a href="basics.html#cloudant-basics">Cloudant Basics</a>
+		      </li>
+		    <% end %>
+		    <% if request.path != 'libraries.html' %>
+          <li class="tocify-item" data-unique="client-libraries" style="cursor: pointer;">
+		        <a href="libraries.html#client-libraries">Client Libraries</a>
+		      </li>
+		    <% end %>
+		    <% if request.path != 'api.html' %>
+          <li class="tocify-item" data-unique="api-reference" style="cursor: pointer;">
+		        <a href="api.html#api-reference">API Reference</a>
+		      </li>
+		    <% end %>
+		    <% if request.path != 'guides.html' %>
+          <li class="tocify-item" data-unique="guides" style="cursor: pointer;">
+		        <a href="guides.html#guides">Guides</a>
+		      </li>
+        <% end %>
+		    
+      </ul>
+      
       <% if current_page.data.toc_footers %>
       <ul class="toc-footer">
         <% current_page.data.toc_footers.each do |footer| %>

@@ -1,6 +1,6 @@
 # Cloudant Basics
 
-If it's your first time here, scan this section before you scroll further. The sections on [Client Libraries](#client-libraries), [API Reference](#api-reference), and [Guides](#guides) assume you know basic things about Cloudant.
+If it's your first time here, scan this section before you scroll further. The sections on [Client Libraries](libraries.html#client-libraries), [API Reference](api.html#api-reference), and [Guides](guides.html#guides) assume you know basic things about Cloudant.
 
 <div id="json"></div>
 ## JSON
@@ -19,7 +19,7 @@ An advantage of clustering is that when you need more computing capacity, you ju
 <div id="replication"></div>
 ## Replication
 
-[Replication](#ReplicationAPI) is a procedure followed by Cloudant, [CouchDB](http://couchdb.apache.org/), [PouchDB](http://pouchdb.com/), and others. It synchronizes the state of two databases so that their contents are identical.
+[Replication](api.html#ReplicationAPI) is a procedure followed by Cloudant, [CouchDB](http://couchdb.apache.org/), [PouchDB](http://pouchdb.com/), and others. It synchronizes the state of two databases so that their contents are identical.
 
 You can continuously replicate. This means that a target database updates every time the source database changes. Testing for source changes involves ongoing internal calls.
 Continuous replication can be used for backups of data, aggregation across multiple databases, or for sharing data.
@@ -308,7 +308,7 @@ A set of key/value pairs, such as an associative array, or hash. The key must be
 
 In Cloudant databases, the JSON object is used to represent a variety of structures, including all documents in a database.
 
-Parsing JSON into a JavaScript object is supported through the `JSON.parse()` function in JavaScript, or through various [libraries](#client-libraries) that perform the parsing of the content into a JavaScript object for you. [Libraries](#client-libraries) for parsing and generating JSON are available for many major programming languages.
+Parsing JSON into a JavaScript object is supported through the `JSON.parse()` function in JavaScript, or through various [libraries](libraries.html#client-libraries) that perform the parsing of the content into a JavaScript object for you. [Libraries](libraries.html#client-libraries) for parsing and generating JSON are available for many major programming languages.
 
 ## Cloudant Local
 
