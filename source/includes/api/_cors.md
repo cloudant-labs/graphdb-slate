@@ -28,8 +28,8 @@ Versions of Microsoft Internet Explorer prior to version 8 do not support CORS.<
 Storing sensitive data in databases that can be accessed using CORS is a potential security risk.
 When you place a domain in the list of allowed origins,
 you are trusting any of the Javascript from the domain.
-If the web application running on the domain is vulnerable to a cross site scripting attack,
-sensitive data might be exposed from your database.
+If the web application running on the domain is runs malicious code or has security vulnerabilities,
+sensitive data in your database might be exposed.
 
 In addition,
 allowing scripts to be loaded using HTTP rather than HTTPS,
@@ -38,8 +38,9 @@ introduces the risk that a man in the middle attack might modify the scripts.
 
 To reduce the risk:
 
--	Allow CORS requests only from HTTPS origins.
--	Ensure that web applications running on allowed origin domains do not have cross site scripting vulnerabilities.
+-	Don't allow CORS requests from all origins, i.e. `"origins": ["*"]`, unless all data in your database is meant to be publicly accessible.
+- Allow CORS requests only from HTTPS origins, not HTTP.
+-	Ensure that web applications running on allowed origin domains are trusted and do not have security vulnerabilities.
 
 ### Configuration endpoints
 
