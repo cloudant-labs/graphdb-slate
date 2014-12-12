@@ -17,10 +17,10 @@ else:
     account = cloudant.Account()
 database = account.database(DATABASE)
 
-def make_docs(headers):
+def make_docs(headers, filename):
     docs = dict()
     for header in headers:
-        doc = dict(_id=header['id'], title=header.get_text())
+        doc = dict(_id=filename + '>' + header['id'], title=header.get_text())
         children = []
         for sibling in header.next_siblings:
             if sibling.name and sibling.name in HEADINGS:
@@ -37,20 +37,24 @@ def make_docs(headers):
             docs[doc['_id']] = doc
     return docs
 
-with open('build/index.html', 'r') as f:
-    html = f.read()
-    soup = BeautifulSoup(html)
-    docs = dict()
-    for heading in HEADINGS:
-        headers = soup.find_all(heading)
-        docs.update(make_docs(headers))
-    alldocs = database.all_docs().post(params=dict(keys=docs.keys()))
-    alldocs.raise_for_status()
-    for row in alldocs.json()['rows']:
-        if 'id' not in row:
-            continue
-        _id = row['id']
-        rev = row['value']['rev']
-        docs[_id]['_rev'] = rev
-    response = database.bulk_docs(*docs.values())
-    response.raise_for_status()
+def index_file(filename):
+		with open('build/' + filename + '.html', 'r') as f:
+				html = f.read()
+				soup = BeautifulSoup(html)
+				docs = dict()
+				for heading in HEADINGS:
+					  headers = soup.find_all(heading)
+					  docs.update(make_docs(headers, filename))
+				alldocs = database.all_docs().post(params=dict(keys=docs.keys()))
+				alldocs.raise_for_status()
+				for row in alldocs.json()['rows']:
+					  if 'id' not in row:
+					      continue
+					  _id = row['id']
+					  rev = row['value']['rev']
+					  docs[_id]['_rev'] = rev
+				response = database.bulk_docs(*docs.values())
+				response.raise_for_status()
+				
+for filename in ["index","api", "guides", "libraries", "basics"]:
+		index_file(filename)
