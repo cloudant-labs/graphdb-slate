@@ -5,17 +5,17 @@ are permitted to perform certain tasks. This is called authorization.
 
 ### Roles
 
-Role      | Description
-----------|------------
-`_reader` | Gives the user permission to read documents from the database.
-`_writer` | Gives the user permission to create and modify documents in the database.
-`_admin`  | Gives the user all permissions, including setting permissions.
-`_replicate` | Gives the user permission to replicate a database, including creating checkpoints.
-`_db_updates` | Gives the user permission to use the global changes feed.
-`_design` | Gives the user access to views and design documents.
-`_shards` | Gives the user access to the `/$DB/_shards` endpoint.
-`_security` | Gives the user access to the `/$DB/_security` endpoint, letting them change roles of users.
-`_search_analyze` | Gives the user access to the `/_search_analyze` endpoint
+Role               | Description
+-------------------|------------
+`_reader`          | Gives the user permission to read documents from the database.
+`_writer`          | Gives the user permission to create and modify documents in the database.
+`_admin`           | Gives the user all permissions, including setting permissions.
+`_replicator`      | Gives the user permission to replicate a database, including creating checkpoints.
+`_db_updates`      | Gives the user permission to use the global changes feed.
+`_design`          | Gives the user access to views and design documents.
+`_shards`          | Gives the user access to the `/$DB/_shards` endpoint.
+`_security`        | Gives the user access to the `/$DB/_security` endpoint, letting them change roles of users.
+`_search_analyze`  | Gives the user access to the `/_search_analyze` endpoint
 
 
 The credentials you use to log in to the dashboard automatically have `_admin` permissions to all databases you create. Everyone and everything else, from users you share databases with to API keys you create, must be given a permission level explicitly.
