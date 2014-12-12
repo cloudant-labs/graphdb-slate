@@ -12,6 +12,26 @@ install-package mycouch.cloudant
 
 [MyCouch](https://github.com/danielwertheim/mycouch) is an asynchronous CouchDB and Cloudant client for .Net.
 
+<table>
+<tr>
+<th>Libraries and Frameworks</th>
+<th>Examples and Tutorials</th>
+</tr>
+<tr>
+<td>[MyCouch](https://github.com/danielwertheim/mycouch)
+[LoveSeat](https://github.com/soitgoes/LoveSeat)
+[Divan](https://github.com/foretagsplatsen/Divan)
+[Relax](https://github.com/arobson/Relax)
+[Hammock](http://code.google.com/p/relax-net/)
+[EasyCouchDB](https://github.com/hhariri/EasyCouchDB)
+[WDK.API.CouchDB](http://code.google.com/p/skitsanoswdk/source/browse/#svn%2Ftrunk%2FWDK10%2FWDK.API.CouchDb) from [Kanapes IDE](http://kanapeside.com/).
+</td>
+<td>
+<ul><li>[CRUD](https://github.com/cloudant/haengematte/tree/master/c%23)</li></ul>
+</td>
+</tr>
+</table>
+
 ### PHP
 
 ```
