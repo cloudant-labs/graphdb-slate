@@ -3,11 +3,14 @@
 Authentication means proving who you are.
 This is typically done by providing your user credentials for verification.
 There are two ways that clients can provide credentials (authenticate)
-with Cloudant: Basic and Cookie.
-Basic authentication is like showing an ID at a door for checking every time you want to enter.
-Cookie authentication is like having a key to the door so that you can let yourself in whenever you want.
+with Cloudant: Basic authentication and Cookie authentication.
+
+Basic authentication is similar to showing an ID at a door for checking every time you want to enter.
+Cookie authentication is similar to having a key to the door so that you can let yourself in whenever you want. The key is a cookie named `AuthSession`.
 
 ### Basic Authentication
+
+> Example of providing basic authentication credentials in a request:
 
 ```http
 GET /db/document HTTP/1.1
@@ -41,9 +44,21 @@ account.request(function (err, body) {
 
 With Basic authentication, you pass along your credentials as part of every request by adding an `Authentication` header. The value is the base-64 encoding of your username, followed by `:`, followed by your password. However, most HTTP libraries do this encoding for you.
 
-### Cookies
+### Cookie Authentication
 
-> Get a cookie
+Method | Path | Description | Headers | Form Parameters
+-------|------|-------------|---------|----------------------
+`POST` | `/_session` | Do cookie based user login | `Content-Type: application/x-www-form-urlencoded` | name, password
+`GET` | `/_session` | Returns cookie based login user information | AuthSession cookie returned by POST request | —
+`DELETE` | `/_session` | Logout cookie based user | AuthSession cookie returned by POST request | —
+ 
+Once created, you send the cookie with all requests that require you to be authenticated.
+You can use the cookie until it expires. Logging out causes the cookie to expire immediately.
+
+<h3></h3>
+#### Requesting a cookie
+
+> Request a cookie
 
 ```http
 POST /_session HTTP/1.1
@@ -54,9 +69,16 @@ Accept: */*
 name=YourUserName&password=YourPassword
 ```
 
-> Reply with Set-Cookie header.
-
+```shell
+curl https://$USERNAME.cloudant.com/_session \
+     -X POST \
+     -c /path/to/cookiefile
+     -d "name=$USERNAME&password=$PASSWORD"
 ```
+
+> Reply to request for a cookie
+
+<!-- ```http
 200 OK
 Cache-Control: must-revalidate
 Content-Length: 42
@@ -65,67 +87,15 @@ Date: Mon, 04 Mar 2013 14:06:11 GMT
 server: CouchDB/1.0.2 (Erlang OTP/R14B)
 Set-Cookie: AuthSession="a2ltc3RlYmVsOjUxMzRBQTUzOtiY2_IDUIdsTJEVNEjObAbyhrgz"; Expires=Tue, 05 Mar 2013 14:06:11 GMT; Max-Age=86400; Path=/; HttpOnly; Version=1
 x-couch-request-id: a638431d
+```
+-->
 
+```json
 {
   "ok": true,
   "name": "kimstebel",
   "roles": []
 }
-```
-
-> Once you have obtained the cookie, you can make a GET request to obtain your roles:
-
-```http
-GET /_session HTTP/1.1
-Cookie: AuthSession="a2ltc3RlYmVsOjUxMzRBQTUzOtiY2_IDUIdsTJEVNEjObAbyhrgz"; Expires=Tue, 05 Mar 2013 14:06:11 GMT; Max-Age=86400; Path=/; HttpOnly; Version=1
-Accept: application/json
-```
-
-```json
-{
-  "ok": true,
-  "info": {
-    "authentication_db": "_users",
-    "authentication_handlers": ["cookie", "default"]
-  },
-  "userCtx": {
-    "name": null,
-    "roles": []
-  }
-}
-```
-
-> To log out, you have to send a DELETE request to the same URL and sumbit the Cookie in the request.
-
-```http
-DELETE /_session HTTP/1.1
-Cookie: AuthSession="a2ltc3RlYmVsOjUxMzRBQTUzOtiY2_IDUIdsTJEVNEjObAbyhrgz"; Expires=Tue, 05 Mar 2013 14:06:11 GMT; Max-Age=86400; Path=/; HttpOnly; Version=1
-Accept: application/json
-
-200 OK
-Cache-Control: must-revalidate
-Content-Length: 12
-Content-Type: application/json
-Date: Mon, 04 Mar 2013 14:06:12 GMT
-server: CouchDB/1.0.2 (Erlang OTP/R14B)
-Set-Cookie: AuthSession=""; Expires=Fri, 02 Jan 1970 00:00:00 GMT; Max-Age=0; Path=/; HttpOnly; Version=1
-x-couch-request-id: e02e0333
-
-{
-  "ok": true
-}
-```
-
-```shell
-# get cookie
-curl https://$USERNAME.cloudant.com/_session \
-     -X POST \
-     -c /path/to/cookiefile
-     -d "name=$USERNAME&password=$PASSWORD"
-
-# use cookie
-curl https://$USERNAME.cloudant.com/_session \
-     -b /path/to/cookiefile
 ```
 
 ```python
@@ -168,14 +138,82 @@ cloudant.auth($USERNAME, $PASSWORD, function (err, body, headers) {
 });
 ```
 
-With Cookie authentication, you use your credentials to acquire a cookie which remains active for twenty-four hours. You send the cookie with all requests until it expires. Logging out causes the cookie to expire immediately.
+With Cookie authentication, you use your credentials to acquire a cookie.
+Do this by sending a `POST` request to `/_session`.
+If your credentials are valid,
+the response is a cookie which remains active for twenty-four hours.
 
-The cookie can be obtained by performing a POST request to /_session. With the cookie set, information about the logged in user can be retrieved with a GET request. With a DELETE request you can end the session. Further details are provided below.
+<h3></h3>
+#### Getting cookie information
 
-|Method |	Path |	Description |	Headers |	Form Parameters|
-|-------|------|--------------|---------|----------------------|
-|GET |	/_session |	Returns cookie based login user information |	AuthSession cookie returned by POST request |	—|
-|POST |	/_session |	Do cookie based user login |	Content-Type: application/x-www-form-urlencoded |	name, password|
-|DELETE |	/_session |	Logout cookie based user |	AuthSession cookie returned by POST request |	—|
+> Example request for cookie information:
 
+```http
+GET /_session HTTP/1.1
+Cookie: AuthSession="a2ltc3RlYmVsOjUxMzRBQTUzOtiY2_IDUIdsTJEVNEjObAbyhrgz"; Expires=Tue, 05 Mar 2013 14:06:11 GMT; Max-Age=86400; Path=/; HttpOnly; Version=1
+Accept: application/json
+```
+
+```shell
+curl https://$USERNAME.cloudant.com/_session \
+     -X GET \
+     -b /path/to/cookiefile
+```
+
+> Example response to request for cookie information.
+
+```json
+{
+  "ok": true,
+  "info": {
+    "authentication_db": "_users",
+    "authentication_handlers": ["cookie", "default"],
+    "authenticated":"cookie"
+  },
+  "userCtx": {
+    "name": warmanaibm,
+    "roles": ["_admin","_reader","_writer"]
+  }
+}
+```
+
+When a cookie has been set, information about the logged in user can be retrieved with a `GET` request.
+
+<h3></h3>
+#### Deleting a cookie
+
+> Example cookie `DELETE` request:
+
+```http
+DELETE /_session HTTP/1.1
+Cookie: AuthSession="a2ltc3RlYmVsOjUxMzRBQTUzOtiY2_IDUIdsTJEVNEjObAbyhrgz"; Expires=Tue, 05 Mar 2013 14:06:11 GMT; Max-Age=86400; Path=/; HttpOnly; Version=1
+Accept: application/json
+```
+
+```shell
+curl https://$USERNAME.cloudant.com/_session \
+     -X DELETE \
+     -b /path/to/cookiefile
+```
+
+> Example response to cookie `DELETE` request:
+
+```http
+200 OK
+Cache-Control: must-revalidate
+Content-Length: 12
+Content-Type: application/json
+Date: Mon, 04 Mar 2013 14:06:12 GMT
+server: CouchDB/1.0.2 (Erlang OTP/R14B)
+Set-Cookie: AuthSession=""; Expires=Fri, 02 Jan 1970 00:00:00 GMT; Max-Age=0; Path=/; HttpOnly; Version=1
+x-couch-request-id: e02e0333
+```
+
+```json
+{
+  "ok": true
+}
+```
+
+You can end the session by sending a `DELETE` request to the same URL used to create the cookie. The `DELETE` request must include the cookie you wish to delete.
 
