@@ -11,6 +11,9 @@ SECRET = os.environ.get('PASSWORD')
 DATABASE = sys.argv[1]
 HEADINGS = ['h1', 'h2', 'h3']
 
+print KEY
+print SECRET
+
 if KEY and SECRET:
     account = cloudant.Account(USERNAME, auth=(KEY, SECRET))
 else:
