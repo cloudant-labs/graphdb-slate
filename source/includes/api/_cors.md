@@ -38,7 +38,9 @@ introduces the risk that a man in the middle attack might modify the scripts.
 
 To reduce the risk:
 
--	Don't allow CORS requests from all origins, i.e. `"origins": ["*"]`, unless all data in your database is meant to be publicly accessible.
+-	Don't allow CORS requests from all origins. In other words, do not set `"origins": ["*"]` unless you are certain that:
+  - You want to allow all data in your databases to be publicly accessible.
+  - User credentials that give permission to modify data are never used in a browser.
 - Allow CORS requests only from HTTPS origins, not HTTP.
 -	Ensure that web applications running on allowed origin domains are trusted and do not have security vulnerabilities.
 
