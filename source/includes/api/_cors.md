@@ -28,7 +28,7 @@ Versions of Microsoft Internet Explorer prior to version 8 do not support CORS.<
 Storing sensitive data in databases that can be accessed using CORS is a potential security risk.
 When you place a domain in the list of allowed origins,
 you are trusting any of the Javascript from the domain.
-If the web application running on the domain is runs malicious code or has security vulnerabilities,
+If the web application running on the domain is running malicious code or has security vulnerabilities,
 sensitive data in your database might be exposed.
 
 In addition,
@@ -77,7 +77,7 @@ To reduce the risk:
 
 -   **enable\_cors**: boolean value to turn CORS on or off.
 -   **allow\_credentials**: boolean value to allow authentication credentials. If set to true, browser requests must be done using `withCredentials = true`.
--   **origins**: “origins”: An array of string containing allowed origin domains. You have to specify the full URL including the protocol. It is recommended that only the HTTPS protocol is used. Subdomains count as seperate domains, so you have to specify all subdomains used. See the example request below.
+-   **origins**: “origins”: An array of strings containing allowed origin domains. You have to specify the full URL including the protocol. It is recommended that only the HTTPS protocol is used. Subdomains count as seperate domains, so you have to specify all subdomains used. See the example request below.
 
 ### Setting the CORS configuration
 
