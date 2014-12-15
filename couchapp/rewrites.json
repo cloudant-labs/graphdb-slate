@@ -30,6 +30,7 @@
 {"from": "/using-cloudant-with/index.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "libraries.html#client-libraries"} },
 {"from": "/using-cloudant-with/nodejs.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "libraries.html#node.js"} },
 {"from": "/using-cloudant-with/python.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "libraries.html#python"} },
+{"from": "/api/cors.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "api.html#cors"} },
 {
     "from": "",
     "to": "index.html",
