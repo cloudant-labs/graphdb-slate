@@ -424,11 +424,13 @@ body, html {
 
 .content {
   pre, blockquote {
-    background-color: $code-bg;
+    position:relative;
+    top: -1em;
+    background-color: $code-annotation-bg;
     color: #fff;
 
-    padding: 2em $main-padding;
-    margin: 0;
+    padding: 1em $main-padding;
+    margin: 0 0 0 0;
     width: $examples-width;
 
     float:right;
@@ -455,15 +457,34 @@ body, html {
   pre {
     @extend %code-font;
   }
+  
+  blockquote:before {
+    content: "";
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-image: url("/images/triangle.gif");
+    background-repeat: no-repeat;
+    position: absolute;
+    left: -12px;
+    top: 0px;
+    z-index: 1000;
+  }
 
   blockquote {
+      background-image: url("/images/triangle.gif");
+      background-repeat: no-repeat;
+      background-position: -12px 0px;
+
+  
+    margin-top: 1em;
     &>p {
       background-color: $code-annotation-bg;
-      border-radius: 5px;
+      //border-radius: 5px;
       padding: $code-annotation-padding;
       color: #ccc;
-      border-top: 1px solid #000;
-      border-bottom: 1px solid #404040;
+      //border-top: 1px solid #000;
+      //border-bottom: 2px solid #404040;
     }
   }
 }

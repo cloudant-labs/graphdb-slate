@@ -56,6 +56,8 @@ written to the target once.
 
 ### An example
 
+> Constants used in this guide
+
 ```shell
 # save base URL and the content type in shell variables
 $ url='https://<username>:<password>@<username>.cloudant.com'
@@ -70,6 +72,8 @@ course any other http client will work.
 <div> </div>
 
 ###### backup example create dbs
+
+> Create the databases used in our example:
 
 ```shell
 $ curl -X PUT "${url}/original"
@@ -95,6 +99,8 @@ You create three databases, one original and two for backups.
 
 ###### backup example create _replicator db
 
+> Create the _replicator database
+
 ```shell
 $ curl -X PUT "${url}/_replicator"
 ```
@@ -108,6 +114,8 @@ You create the \_replicator database, if it does not exist yet.
 <div> </div>
 
 ###### backup example monday
+
+> Monday's backup
 
 ```http
 PUT /_replicator/backup-monday HTTP/1.1
@@ -134,6 +142,8 @@ everything from `original` to `backup-monday`.
 
 ###### backup example tuesday
 
+> Tuesday's backup - checkpoint ID
+
 ```http
 GET /_replicator/backup-monday HTTP/1.1
 ```
@@ -149,6 +159,8 @@ the checkpoint document. It is stored in the `_replication_id` field of the repl
 
 ###### backup example recorded_seq
 
+> Tuesday's backup - recorded_seq
+
 ```http
 GET /original/_local/${replication_id} HTTP/1.1
 ```
@@ -162,6 +174,8 @@ Once you have that, you use it to get the `recorded_seq` value from the first el
 <div> </div>
 
 ###### backup example incremental backup tuesday
+
+> Tuesday's backup - start replication
 
 ```http
 PUT /_replicator/backup-tuesday HTTP/1.1
@@ -187,6 +201,8 @@ With the `recorded_seq` you can start the incremental backup for Tuesday.
 <div> </div>
 
 ###### backup example restore monday
+
+> Restore Monday's backup
 
 ```http
 PUT /_replicator/restore-monday HTTP/1.1
@@ -217,6 +233,8 @@ backup-monday database.
 
 ###### backup example restore tuesday
 
+> Restore Tuesday's backup - latest changes first
+
 ```http
 PUT /_replicator/restore-tuesday HTTP/1.1
 Content-Type: application/json
@@ -235,6 +253,8 @@ $ curl -X PUT "${url}/_replicator/restore-tuesday" -H "$ct" -d @restore-tuesday.
   "create-target": true  
 }
 ```
+
+> Restore Tuesday's backup - monday's backup last
 
 ```http
 PUT /_replicator/restore-monday HTTP/1.1
@@ -255,7 +275,7 @@ $ curl -X PUT "${url}/_replicator/restore-monday" -H "$ct" -d @restore-monday.js
 ```
 
 
-If you want to restore tuesday's state, first replicate from
+If you want to restore tuesday's state instead, first replicate from
 `backup-tuesday` and then from `backup-monday`. Using this order,
 documents that were updated on tuesday will only have to be written to
 the target database once.
@@ -276,6 +296,8 @@ jobs at different times or at times when the cluster is usually less
 busy.
 
 #### IO Priority
+
+> Setting IO priority
 
 ```json
 {
