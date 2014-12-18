@@ -171,7 +171,7 @@ curl https://$USERNAME.cloudant.com/_session \
     "authenticated":"cookie"
   },
   "userCtx": {
-    "name": warmanaibm,
+    "name": "username",
     "roles": ["_admin","_reader","_writer"]
   }
 }
@@ -198,7 +198,7 @@ curl https://$USERNAME.cloudant.com/_session \
 
 > Example response to cookie `DELETE` request:
 
-```http
+```
 200 OK
 Cache-Control: must-revalidate
 Content-Length: 12
