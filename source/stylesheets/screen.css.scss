@@ -463,7 +463,7 @@ body, html {
     display: inline-block;
     width: 12px;
     height: 12px;
-    background-image: url("/images/triangle.gif");
+    background-image: url("../images/triangle.gif");
     background-repeat: no-repeat;
     position: absolute;
     left: -12px;
@@ -472,11 +472,7 @@ body, html {
   }
 
   blockquote {
-      background-image: url("images/triangle.gif");
-      background-repeat: no-repeat;
-      background-position: -12px 0px;
 
-  
     margin-top: 1em;
     &>p {
       background-color: $code-annotation-bg;
