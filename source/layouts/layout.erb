@@ -77,36 +77,23 @@ under the License.
           <input type="submit" value=">">
         </form>
       </div>
-      <div id="toc">
-      </div>
       
       <ul id="tocify-header0" class="tocify-header">
-        <% if request.path != 'index.html' %>
-          <li class="tocify-item" data-unique="cloudant-documentation" style="cursor: pointer;">
-		        <a href="index.html#documentation-overview">Documentation Overview</a>
-		      </li>
-        <% end %>
-		    <% if request.path != 'basics.html' %>
-          <li class="tocify-item" data-unique="cloudant-basics" style="cursor: pointer;">
-		        <a href="basics.html#cloudant-basics">Cloudant Basics</a>
-		      </li>
-		    <% end %>
-		    <% if request.path != 'libraries.html' %>
-          <li class="tocify-item" data-unique="client-libraries" style="cursor: pointer;">
-		        <a href="libraries.html#client-libraries">Client Libraries</a>
-		      </li>
-		    <% end %>
-		    <% if request.path != 'api.html' %>
-          <li class="tocify-item" data-unique="api-reference" style="cursor: pointer;">
-		        <a href="api.html#api-reference">API Reference</a>
-		      </li>
-		    <% end %>
-		    <% if request.path != 'guides.html' %>
-          <li class="tocify-item" data-unique="guides" style="cursor: pointer;">
-		        <a href="guides.html#guides">Guides</a>
-		      </li>
-        <% end %>
-		    
+        <% [
+             ['index.html', 'Documentation Overview', 'index.html#documentation-overview'],
+             ['basics.html', 'Cloudant Basics', 'basics.html#cloudant-basics'],
+             ['libraries.html', 'Client Libraries', 'libraries.html#client-libraries'],
+             ['api.html', 'API Reference', 'api.html#api-reference'],
+             ['guides.html', 'Guides', 'guides.html#guides']
+           ].each { |page| %>
+		          <% if request.path != page[0] %>
+		            <li class="tocify-item" style="cursor: pointer;">
+				          <a href="<%=page[2]%>"><%=page[1]%></a>
+				        </li>
+		          <% else %>
+		            <div id="toc"> </div>
+		          <% end %>
+        <% } %>
       </ul>
       
       <% if current_page.data.toc_footers %>
