@@ -22,6 +22,8 @@ The credentials you use to log in to the dashboard automatically have `_admin` p
 
 ### Reading Permissions
 
+> Example request to determine permissions:
+
 ```http
 GET /_api/v2/db/$DATABASE/_security HTTP/1.1
 ```
@@ -74,6 +76,8 @@ The `nobody` username indicates what rights are available to unauthenticated use
 In the example response, for instance, `nobody` has `_reader` permissions, making the database publicly readable by everyone.
 
 ### Modifying Permissions
+
+> Command to send modification request:
 
 ```http
 PUT /_api/v2/db/$DATABASE/_security HTTP/1.1
@@ -139,6 +143,8 @@ The request object's `cloudant` field contains an object whose keys are username
 
 ### Creating API Keys
 
+> Example request to create an API key:
+
 ```http
 POST /api/generate_api_key HTTP/1.1
 Host: cloudant.com
@@ -175,8 +181,3 @@ account.request({
 
 To generate an API key, use `https://cloudant.com/api/generate_api_key`. The created API key has no permissions to anything by default, and must be given permissions explicitly.
 
-<!--
-### CORS
-
-TODO
--->

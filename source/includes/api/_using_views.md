@@ -443,6 +443,8 @@ However,
 
 ### Sending several queries to a view
 
+> Example request:
+
 ```http
 POST /$DB/_design/$DESIGNDOC/_view/$VIEW HTTP/1.1
 Content-Type: application/json
@@ -464,7 +466,7 @@ curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/$DB/_design/$DESIGNDOC/_
 }
 ```
 
-> example response:
+> Example response:
 
 ```json
 {

@@ -8,6 +8,8 @@ If you don't yet have an account, [sign up](https://cloudant.com/sign-up/).
 
 ### Ping
 
+> Example of connecting to your Cloudant account:
+
 ```http
 GET / HTTP/1.1
 HOST: $USERNAME.cloudant.com

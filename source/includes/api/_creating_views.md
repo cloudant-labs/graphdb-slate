@@ -99,7 +99,9 @@ This is to make it easier for the client to work with the results.</aside>
 
 #### Indexing a field
 
-```javascript
+> Example of indexing a field:
+
+```
 function(doc) {
   if (doc.foo) {
     emit(doc._id, doc.foo);
@@ -111,7 +113,9 @@ This map function checks whether the object has a `foo` field and emits the valu
 
 #### An index for a one to many relationship
 
-```javascript
+> Example of indexing a one to many relationship:
+
+```
 function(doc) {
   if (doc.friends) {
     for (friend in friends) {
@@ -131,15 +135,15 @@ When the key is an array, view results can be grouped by a sub-section of the ke
 
 ### Reduce functions
 
-```javascript
+> Example of a reduce function:
+
+```
 function (key, values, rereduce) {
   return sum(values);
 }
 ```
 
 If a view has a reduce function, it is used to produce aggregate results for that view. A reduce function is passed a set of intermediate values and combines them to a single value. Reduce functions must accept, as input, results emitted by its corresponding map function '''as well as results returned by the reduce function itself'''. The latter case is referred to as a ''rereduce''.
-
-Here is an example of a reduce function:
 
 Reduce functions are passed three arguments in the order ''key'', ''values'', and ''rereduce''.
 
@@ -151,7 +155,7 @@ Reduce functions must handle two cases:
 -   `values` will be an array of the values emitted for the respective elements in `keys`
 -   i.e. `reduce([ [key1,id1], [key2,id2], [key3,id3] ], [value1,value2,value3], false)`
 
-1.  When `rereduce` is true:
+2.  When `rereduce` is true:
 
 -   `key` will be `null`.
 -   `values` will be an array of values returned by previous calls to the reduce function.

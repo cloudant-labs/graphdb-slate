@@ -181,6 +181,8 @@ This error prevents you overwriting data changed by other clients.</aside>
 
 ### Delete
 
+> Example instruction for deleting a document:
+
 ```http
 DELETE /$DATABASE/$DOCUMENT_ID?rev=$REV HTTP/1.1
 ```

@@ -8,6 +8,15 @@ Design documents are [documents](#documents) that have an `_id` beginning with `
 Cloudant reads specific fields and values of design documents as functions.
 Design documents are used to [build indexes](#indexes), [validate updates](#update-validators), and [format query results](#list-functions).
 
+## Creating or updating a design document
+
+-   **Method**: `GET /$DATABASE/_design/design-doc`
+-   **Request**: JSON of the design document information
+-   **Response**: JSON status
+-   **Roles permitted**: \_writer
+
+To create a design document, upload it to the specified database.
+
 In these examples,
 `$VARIABLES` might refer to standard and design documents.
 To distinguish between them,
@@ -35,6 +44,10 @@ The structure of design document is as follows:
     -   **function name** (one for each function): Function definition
 -   **lists (optional)**: List functions
     -   **function name** (one for each function): Function definition
+
+### Design Document Views
+
+An important use of design documents is for creating views. These are discussed in more detail [here](#creating-views).
 
 ### Indexes
 
@@ -65,7 +78,7 @@ Functions in design documents are run on multiple nodes for each document and mi
 
 ### List Functions
 
-> Design doc with a list function:
+> Example design document referencing a list function:
 
 ```json
 {
@@ -102,7 +115,12 @@ function (head, req) {
 }
 ```
 
-> Example queries:
+> Example query:
+
+```http
+GET /$DATABASE/$DESIGN_ID/_list/$LIST_FUNCTION/$MAPREDUCE_INDEX HTTP/1.1
+Host: $USERNAME.cloudant.com
+```
 
 ```shell
 curl https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_list/$LIST_FUNCTION/$MAPREDUCE_INDEX \
@@ -131,7 +149,7 @@ For web and mobile applications, consider whether any computations done in a lis
 List functions require two arguments: `head` and `req`.
 
 When you define a list function,
-you use it by making a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_list/$LIST_FUNCTION/$MAPREDUCE_INDEX`.
+you use it by making a `GET` request to `https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_list/$LIST_FUNCTION/$MAPREDUCE_INDEX`.
 In this request:
 
 * `$LIST_FUNCTION` is the name of list function you defined.
@@ -150,13 +168,13 @@ offset | Offset where the document list started
 
 Field | Description
 ------|-------------
-body | Request body data as string. If the request method is GET this field contains the value "undefined". If the method is DELETE or HEAD the value is "" (empty string).
+body | Request body data as string. If the request method is `GET` this field contains the value "undefined". If the method is `DELETE` or `HEAD` the value is "" (empty string).
 cookie | Cookies object.
 form | Form data object. Contains the decoded body as key-value pairs if the Content-Type header was `application/x-www-form-urlencoded`.
 headers | Request headers object.
 id | Requested document id string if it was specified or null otherwise.
 info | Database information
-method | Request method as string or array. String value is a method as one of: HEAD, GET, POST, PUT, DELETE, OPTIONS, and TRACE. Otherwise it will be represented as an array of char codes.
+method | Request method as string or array. String value is a method as one of: `HEAD`, `GET`, `POST`, `PUT`, `DELETE`, `OPTIONS`, and `TRACE`. Otherwise it will be represented as an array of char codes.
 path | List of requested path sections.
 peer | Request source IP address.
 query | URL query parameters object. Note that multiple keys are not supported and the last key value suppresses others.
@@ -191,7 +209,12 @@ function (doc, req) {
 }
 ```
 
-> Example queries:
+> Example query:
+
+```http
+GET /$DATABASE/$DESIGN_ID/_show/$SHOW_FUNCTION/$DOCUMENT_ID HTTP/1.1
+Host: $USERNAME.cloudant.com
+```
 
 ```shell
 curl https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_show/$SHOW_FUNCTION/$DOCUMENT_ID \
@@ -219,7 +242,7 @@ For web and mobile applications, consider whether any computations done in a sho
 
 Show functions receive two arguments: `doc`, and [req](#req). `doc` is the document requested by the show function.
 
-When you have defined a show function, you query it with a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID/_show/$SHOW_FUNCTION/$DESIGN_ID`,
+When you have defined a show function, you query it with a `GET` request to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID/_show/$SHOW_FUNCTION/$DESIGN_ID`,
 where `$SHOW_FUNCTION` is the name of the function that is applied to the document that has `$DESIGN_ID` as its `_id`.
 
 ### Update Handlers
@@ -253,7 +276,13 @@ function(doc, req){
 }
 ```
 
-> Example queries:
+> Example query:
+
+```http
+POST /$DATABASE/$DESIGN_ID/_update/$UPDATE_HANDLER HTTP/1.1
+Host: $USERNAME.cloudant.com
+Content-Type: application/json
+```
 
 ```shell
 curl https://$USERNAME.cloudant.com/$DATABASE/$DESIGN_ID/_update/$UPDATE_HANDLER \
@@ -321,7 +350,12 @@ function(doc, req){
 }
 ```
 
-> Example queries:
+> Example query:
+
+```http
+GET /$DATABASE/_changes?filter=$DESIGN_ID%2F$FILTER HTTP/1.1
+Host: $USERNAME.cloudant.com
+```
 
 ```shell
 curl https://$USERNAME.cloudant.com/$DATABASE/_changes?filter=$DESIGN_ID%2F$FILTER \
@@ -391,18 +425,23 @@ Update validators get four arguments:
 
 ### Retrieving information about a design document
 
-> Example to get the information for the `recipes` design document:
+> Example to get the information for the `recipesdd` design document in the `recipes` database:
 
+```http
+GET /recipes/_design/recipesdd/_info HTTP/1.1
+Host: $USERNAME.cloudant.com
 ```
-GET /recipes/_design/recipes/_info
-Content-Type: application/json
+
+```shell
+curl https://$USERNAME.cloudant.com/recipes/_design/recipesdd/_info \
+     -u $USERNAME
 ```
 
 > Example JSON structure response:
 
 ```json
 {
-   "name" : "recipes"
+   "name" : "recipesdd"
    "view_index" : {
       "compact_running" : false,
       "updater_running" : false,

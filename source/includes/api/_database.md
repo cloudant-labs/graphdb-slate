@@ -6,6 +6,8 @@ All documents must be contained in a database.
 
 ### Create
 
+> Example request to create a Cloudant database:
+
 ```http
 PUT /$DATABASE HTTP/1.1
 ```
@@ -38,6 +40,8 @@ account.db.create($DATABASE, function (err, body, headers) {
 To create a database, make a PUT request to `https://$USERNAME.cloudant.com/$DATABASE`.
 
 ### Read
+
+> Example request to read details about a Cloudant database:
 
 ```http
 GET /$DATABASE HTTP/1.1
@@ -83,6 +87,8 @@ such as how many documents it contains.
 
 ### Get Databases
 
+> Example request to list the Cloudant databases in an account:
+
 ```http
 GET /_all_dbs HTTP/1.1
 ```
@@ -119,6 +125,8 @@ To list all the databases in an account,
 make a GET request against `https://$USERNAME.cloudant.com/_all_dbs`.
 
 ### Get Documents
+
+> Example request to list the documents in a Cloudant database:
 
 ```http
 GET /_all_docs HTTP/1.1
@@ -185,6 +193,8 @@ Argument | Description | Optional | Type | Default
 `startkey` | Return records starting with the specified key | yes | string |
 
 ### Get Changes
+
+> Example request to get list of changes made to documents in a database:
 
 ```http
 GET /$DATABASE/_changes HTTP/1.1
@@ -283,6 +293,13 @@ The `filter` parameter designates a pre-defined [function to filter](#filter-fun
 
 ### Delete
 
+> Example request to delete a Cloudant database:
+
+```http
+DELETE /$DATABASE HTTP/1.1
+Host: $USERNAME.cloudant.com
+```
+
 ```shell
 curl https://$USERNAME.cloudant.com/$DATABASE \
      -X DELETE \
@@ -309,5 +326,7 @@ account.db.destroy($DATABASE, function (err, body, headers) {
 ```
 
 To delete a databases and its contents, make a DELETE request to `https://$USERNAME.cloudant.com/$DATABASE`.
+
+<aside class="warning">There is no additional check to ensure that you really intended to delete the database ("Are you sure?").</aside>
 
 

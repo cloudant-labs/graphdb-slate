@@ -105,7 +105,7 @@ curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/_api/v2/user/config/cors
 }
 ```
 
-> Response
+> Example response
 
 ```json
 { "ok": true }
@@ -146,7 +146,7 @@ Content-Length: 178
 }
 ```
 
-> If there is no CORS configuration yet, an empty JSON document is returned.
+> If there is no CORS configuration yet, an empty JSON document is returned:
 
 ```json
 {}
