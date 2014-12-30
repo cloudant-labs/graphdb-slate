@@ -9,12 +9,11 @@ Working with a Cloudant database: <a href="http://www.tricedesigns.com/2014/11/1
 
 ### C# / .NET
 
-```
-/// open up the Package manager console, and invoke:
-install-package mycouch.cloudant
-```
-
 <a href="https://github.com/danielwertheim/mycouch" target="_blank">MyCouch</a> is an asynchronous CouchDB and Cloudant client for .Net.
+
+To install the library, open up the Package manager console, and invoke:
+
+`install-package mycouch.cloudant`
 
 <table>
 <tr>
@@ -39,12 +38,11 @@ install-package mycouch.cloudant
 
 ### PHP
 
-```
-// download sag from http://www.saggingcouch.com/download.php
-require_once('./src/Sag.php');
-```
-
 [Sag](http://www.saggingcouch.com/) is PHP's CouchDB and Cloudant client. [Sag.js](https://github.com/sbisbee/sag-js) is Sag's JavaScript counterpart.
+
+To install, download sag from [http://www.saggingcouch.com/download.php](http://www.saggingcouch.com/download.php) then include the library in your application:
+
+`require_once('./src/Sag.php');`
 
 <table>
 <tr>
@@ -69,9 +67,9 @@ require_once('./src/Sag.php');
 
 ### JavaScript
 
-> To obtain PouchDB, and for setup details, refer to <a href="http://pouchdb.com/" target="_blank">PouchDB</a>.
-
 <a href="http://pouchdb.com/" target="_blank">PouchDB</a> is a JavaScript database that can sync with Cloudant, meaning you can make your apps offline-ready just by using PouchDB. For more info, see [our blog post](https://cloudant.com/blog/pouchdb) on PouchDB.
+
+To obtain PouchDB, and for setup details, refer to <a href="http://pouchdb.com/" target="_blank">PouchDB</a>.
 
 <aside class="notice">PouchDB is also available for Node.js: `npm install pouchdb`</aside>
 
@@ -104,11 +102,11 @@ require_once('./src/Sag.php');
 
 ### Ruby
 
-```
-gem install couchrest
-```
-
 [CouchRest](https://github.com/couchrest/couchrest) is a CouchDB and Cloudant client with extensions for working with Rails using [CouchRest Model](https://github.com/couchrest/couchrest_model).
+
+To install CouchRest, run the command:
+
+`gem install couchrest`
 
 <table>
 <tr>

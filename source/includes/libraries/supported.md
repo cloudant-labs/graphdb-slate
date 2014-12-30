@@ -18,25 +18,20 @@ as are details of <a target="_blank" href="https://cloudant.com/cloudant-sync-re
 
 ### Java
 
-> Maven dependency details:
-
-```
-<dependency>
-  <groupId>com.cloudant</groupId>
-  <artifactId>cloudant-client</artifactId> 
-  <version>1.0.0-beta1</version>
-</dependency>
-```
-
-> Gradle dependency details:
-
-```
-dependencies {
-  compile group: 'com.cloudant', name: 'cloudant-client', version:'1.0.0-beta1'
-}
-```
-
 <a target="_blank" href="https://github.com/cloudant/java-cloudant">java-cloudant</a> is the official Cloudant library for Java. You can add it as a dependency to your maven or gradle builds.
+
+#### Maven dependency details
+`<dependency>`<br/>
+&nbsp;&nbsp;`<groupId>com.cloudant</groupId>`<br/>
+&nbsp;&nbsp;`<artifactId>cloudant-client</artifactId>`<br/>
+&nbsp;&nbsp;`<version>1.0.0-beta1</version>`<br/>
+`</dependency>`
+
+#### Gradle dependency details
+
+`dependencies {`<br/>
+&nbsp;&nbsp;`compile group: 'com.cloudant', name: 'cloudant-client', version:'1.0.0-beta1'`<br/>
+`}`
 
 <table>
 <tr>
@@ -62,11 +57,9 @@ dependencies {
 
 ### Node.js
 
-```
-npm install cloudant
-```
+<a target="_blank" href="https://github.com/cloudant/nodejs-cloudant">nodejs-cloudant</a> is the official Cloudant library for Node.js. You can install it with npm:
 
-<a target="_blank" href="https://github.com/cloudant/nodejs-cloudant">nodejs-cloudant</a> is the official Cloudant library for Node.js. You can install it with npm.
+`npm install cloudant`
 
 <table>
 <tr>
@@ -110,11 +103,9 @@ npm install cloudant
 
 ### Python
 
-```
-pip install cloudant
-```
+[Cloudant-Python](https://github.com/cloudant-labs/cloudant-python) is Cloudant's official Python library. Install it using pip:
 
-[Cloudant-Python](https://github.com/cloudant-labs/cloudant-python) is Cloudant's official Python library. Install it using pip.
+`pip install cloudant`
 
 <table>
 <tr>
