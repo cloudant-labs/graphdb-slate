@@ -10,6 +10,8 @@ or generated automatically as a [UUID](http://en.wikipedia.org/wiki/Universally_
 The `_rev` field is a revision number, and is [essential to Cloudant's replication protocol](guides.html#document-versioning-and-mvcc).
 In addition to these two mandatory fields, documents can contain any other content expressed using JSON.
 
+<aside>Cloudant uses an [eventually consistent](./basics.html#consistency) model for data. This means that under some conditions, it is possible that if your application performs a document write or update, followed immediately by a read of the same document, older document content is retrieved. In other words, your application would see the document content as it was *before* the write or update occurred. For more information about this, see the topic on [Consistency](./basics.html#consistency).</aside>
+
 <h3 id="documentCreate">Create</h3>
 
 > Example instruction for creating a document:

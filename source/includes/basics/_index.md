@@ -2,6 +2,22 @@
 
 If it's your first time here, scan this section before you scroll further. The sections on [Client Libraries](libraries.html#client-libraries), [API Reference](api.html#api-reference), and [Guides](guides.html#guides) assume you know basic things about Cloudant.
 
+<div id="consistency"></div>
+## Consistency
+
+Cloudant uses an '[Eventually Consistent](http://en.wikipedia.org/wiki/Eventual_consistency)' model. To understand how this works, and why it is an essential part of using Cloudant, we must first consider what is meant by Consistency.
+
+Consistency is one of the three attributes in the [CAP theorem](./guides.html#cap_theorem), which states that it is not possible for a distributed computer system - such as Cloudant - to simultaneously guarantee three attributes:
+
+- Consistency, where all nodes see the same data at the same time.
+- Availability, which guarantees that every request receives a response about whether it succeeded or failed.
+- Partition tolerance, where the system continues to operate even if any one part of the system is lost or fails.
+
+In an eventually consistent model, like Cloudant, an update made to one part of the system is *eventually* seen by other parts of the system. As the update propagates, the system is said to 'converge' on complete consistency.
+
+Eventual consistency is good for performance. With a strong consistency model, a system would have to wait for any updates to propagate completely and successfully before a write or update request could be completed. With an eventually consistent model, the write or update request can return almost immediately, while the propagation across the system continues 'behind the scenes'.
+
+
 <div id="json"></div>
 ## JSON
 Cloudant stores documents using JSON (JavaScript Object Notion) encoding, so anything encoded into JSON can be stored as a document. Files like images, videos, and audio are called BLObs (binary large objects) and can be stored as attachments within documents.
