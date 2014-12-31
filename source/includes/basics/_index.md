@@ -233,6 +233,8 @@ A list of the error codes returned by Cloudant and generic descriptions of the r
 
     The requested content type is not supported by the server.
 
+<div id="409"></div>
+
 -   `409 - Conflict`
 
     Request resulted in an update conflict.

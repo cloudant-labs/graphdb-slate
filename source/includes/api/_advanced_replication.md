@@ -4,6 +4,61 @@ This section contains details about more advanced replication concepts and tasks
 
 You might also find it helpful to review details of the underlying [replication protocol](http://dataprotocols.org/couchdb-replication/), as well as reviewing the [Advanced Methods](#advanced) material.
 
+### Replication Status
+
+> Example replication document, `PUT` into `/_replicator`:
+
+```json
+{
+  "_id": "my_rep",
+  "source":  "https://username:password@myserver.com:5984/fromthis",
+  "target":  "https://username:password@username.cloudant.com/tothat",
+  "create_target":  true
+}
+```
+
+> Example of automatic document update once replication starts:
+
+```json
+{
+  "_id": "my_rep",
+  "source":  "https://username:password@myserver.com:5984/fromthis",
+  "target":  "https://username:password@username.cloudant.com/tothat",
+  "create_target":  true
+  "_replication_id":  "c0ebe9256695ff083347cbf95f93e280",
+  "_replication_state":  "triggered",
+  "_replication_state_time":  "2011-06-07T16:54:35+01:00"
+}
+```
+
+When replication is managed by storing a document in the `/_replicator` database, the contents of the document are updated as the replication status changes.
+
+In particular, once replication starts, three new fields are added automatically to the replication document. The fields all have the prefix: `_replication_`
+
+Field | Detail
+------|-------
+`_replication_id` | This is the internal ID assigned to the replication. It is the same ID that appears in the output from `/_active_tasks/`.
+`_replication_state` | The current state of the replication. The possible states are:<dl><dt>`triggered`</dt><dd>The replication has started and is in progress.</dd><dt>`completed`</dt><dd>The replication completed successfully.</dd><dt>`error`</dt><dd>An error occurred during replication.</dd><dl>
+`_replication_state_time` | An <a href="https://www.ietf.org/rfc/rfc3339.txt" target="_blank">RFC 3339</a> compliant timestamp that reports when the current replication state defined in `_replication_state` was set.
+
+> Example replication document once replication has completed:
+
+```json
+{
+  "_id": "my_rep",
+  "source":  "https://username:password@myserver.com:5984/fromthis",
+  "target":  "https://username:password@username.cloudant.com/tothat",
+  "create_target":  true,
+  "_replication_id":  "c0ebe9256695ff083347cbf95f93e280",
+  "_replication_state":  "completed",
+  "_replication_state_time":  "2011-06-07T16:56:21+01:00"
+}
+```
+
+When the replication finishes, it updates the `_replication_state` field with the value `completed`, and the `_replication_state_time` field with the time that the completion status was recorded.
+
+A continuous replication can never have a `completed` state.
+
 ### Authentication
 
 > Example of specifying username and password values for accessing source and target databases during replication:
@@ -19,7 +74,7 @@ In any production application, security of the source and target databases is es
 In order for replication to proceed, authentication is necessary to access the databases.
 In addition, checkpoints for replication are [enabled by default](#checkpoints), which means that replicating the source database requires write access.
 
-To enable authentication during replication, include a username and password in the database URL.
+To enable authentication during replication, include a username and password in the database URL. The replication process uses the supplied values for HTTP Basic Authentication.
 
 ### Filtered Replication
 

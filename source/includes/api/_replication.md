@@ -21,21 +21,31 @@ Replications are created in one of two ways:
 
 ### Replication document format
 
+<aside class="warning">You must use the *full* URL when specifying the source and target databases in a replication document.</aside>
+
 The format of the document used to describe a replication is as follows:
 
 Field Name | Required | Description
 -----------|----------|-------------
-source | yes | Identifies the database to copy revisions from. Can be a database URL, or an object whose url property contains the full URL of the database.
-target | yes | Identifies the database to copy revisions to. Same format and interpretation as source.
-continuous | no | Continuously syncs state from the source to the target, only stopping when deleted.
-create_target | no | A value of true tells the replicator to create the target database if it does not exist.
-doc_ids | no | Array of document IDs; if given, only these documents will be replicated.
-filter | no | Name of a [filter function](#filter-functions) that can choose which documents get replicated.
-proxy | no | Proxy server URL.
-query_params | no | Object containing properties that are passed to the filter function.
-<div id="checkpoints">use_checkpoints</div> | no | Whether to create checkpoints. Checkpoints greatly reduce the time and resources needed for repeated replications. Setting this to false removes the requirement for write access to the source database. Defaults to true.
+`source` | yes | Identifies the database to copy revisions from. Can be a database URL, or an object whose url property contains the full URL of the database.
+`target` | yes | Identifies the database to copy revisions to. Same format and interpretation as source. Does not have to be the same value as the `source` field.
+`continuous` | no | Continuously syncs state from the `source` to the `target`, only stopping when deleted.
+`create_target` | no | A value of `true` tells the replicator to create the `target` database if it does not exist.
+`doc_ids` | no | Array of document IDs; if given, only these documents are replicated.
+`filter` | no | Name of a [filter function](#filter-functions) that can choose which documents get replicated.
+`proxy` | no | Proxy server URL.
+`query_params` | no | Object containing properties that are passed to the filter function.
+<div id="checkpoints">`use_checkpoints`</div> | no | Indicate whether to create checkpoints. Checkpoints greatly reduce the time and resources needed for repeated replications. Setting this to `false` removes the requirement for write access to the `source` database. Defaults to `true`.
 
 ### The `/_replicator` database
+
+The `/_replicator` database is a special database where you can `PUT` or `POST` documents to trigger replications, or `DELETE` to cancel ongoing replications. These documents have exactly the same content as the JSON documents you can `POST` to the [`/_replicate/`](#the-/_replicate-endpoint) endpoint. The fields supplied in the replication document are `source`, `target`, `continuous`, `create_target`, `doc_ids`, `filter`, `proxy`, `query_params`, `use_checkpoints`. These fields are described in the [Replication document format](#replication-document-format).
+
+Replication documents can have a user defined `_id`.
+
+The names of the source and target databases do not have to be the same.
+
+<aside class="notify">All design documents and `_local` documents added to the `/_replicator` database are ignored.</aside>
 
 #### Creating a replication
 
@@ -93,7 +103,7 @@ account.request({
 });
 ```
 
-> Example response of active tasks, including replications:
+> Example response of active task including continuous replication:
 
 ```json
 [
@@ -121,6 +131,31 @@ account.request({
 ]
 ```
 
+> Example response of active task including single replication:
+
+```json
+[
+  {
+    "pid": "<0.1303.0>",
+    "replication_id": "e42a443f5d08375c8c7a1c3af60518fb+create_target",
+    "checkpointed_source_seq": 17333,
+    "continuous": false,
+    "doc_write_failures": 0,
+    "docs_read": 17833,
+    "docs_written": 17833,
+    "missing_revisions_found": 17833,
+    "progress": 3,
+    "revisions_checked": 17833,
+    "source": "http://username.cloudant.com/db/",
+    "source_seq": 551202,
+    "started_on": 1316229471,
+    "target": "test_db",
+    "type": "replication",
+    "updated_on": 1316230082
+  }
+]
+```
+
 To monitor replicators currently in process, make a `GET` request to `https://$USERNAME.cloudant.com/_active_tasks`.
 This returns any active tasks, including replications. To filter for replications, look for documents with `"type": "replication"`.
 
@@ -141,6 +176,8 @@ curl -X DELETE https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/_replicator/re
 ```
 
 To cancel a replication, simply [delete its replication document](#document-delete) from the `_replicator` database.
+
+If the replication is in an [`error` state](#replication-status), the replicator makes repeated attempts to achieve a successful replication. A consequence is that the replication document is updated with each attempt. This also changes the document revision value. Therefore, you should get the revision value immediately before deleting the document, otherwise you might get an [HTTP 409 "document update conflict"](./basics.html#409) response.
 
 ### The /\_replicate endpoint
 
@@ -164,7 +201,8 @@ Content-Type: application/json
 }
 ```
 
-Replication can be triggered by sending a `POST` request to the `/_replicate` URL. The `POST` contains a JSON document that describes the desired replication.
+You are encouraged to use the [Replicator Database](#the-/_replicator-database) to manage replication.
+However, replication can also be triggered by sending a `POST` request directly to the `/_replicate` API URL. The `POST` contains a JSON document that describes the desired replication.
 
 -   **Method**: `POST`
 -   **Path**: `/_replicate`
@@ -274,7 +312,7 @@ Content-Type: application/json
 }
 ```
 
-A replication triggered by POSTing to `/_replicate` can be canceled by POSTing the exact same JSON object but with the additional `cancel` property set to `true`.
+A replication triggered by `POST`ing to `/_replicate` can be canceled by `POST`ing the exact same JSON object but with the additional `cancel` property set to `true`.
 
 <aside class="warning">If a replication is canceled, the request which initiated the replication fails with error 500 (shutdown).</aside>
 
