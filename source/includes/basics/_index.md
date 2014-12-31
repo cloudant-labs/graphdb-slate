@@ -208,13 +208,22 @@ A list of the error codes returned by Cloudant and generic descriptions of the r
 
     The requested item or operation is forbidden.
 
+<div id="404"></div>
+
+> Example detail supplied in JSON format, following 404 status code:
+
 ```
-{"error":"not_found","reason":"no_db_file"}
+{
+  "error":"not_found",
+  "reason":"no_db_file"
+}
 ```
 
 -   `404 - Not Found`
 
     The requested resource could not be found. The content includes further information as a JSON object, if available. The structure contains two keys, `error` and `reason`.
+
+<div id="405"></div>
 
 -   `405 - Resource Not Allowed`
 
