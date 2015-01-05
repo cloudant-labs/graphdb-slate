@@ -281,6 +281,8 @@ Argument | Description | Optional | Type | Supported Values
 `sort` | Specifies the sort order of the results. In a grouped search (i.e. when group_field is used), this specifies the sort order within a group. The default sort order is relevance. | yes | JSON | A JSON string of the form "fieldname<type>" or -fieldname<type> for descending order, where fieldname is the name of a string or number field and type is either number or string or a JSON array of such strings. The type part is optional and defaults to number. Some examples are "foo", "-foo", "bar<string>", "-foo<number>" and ["-foo<number>", "bar<string>"]. String fields used for sorting must not be analyzed fields. The field(s) used for sorting must be indexed by the same indexer used for the search query.
 `stale` | Don't wait for the index to finish building to return results. | yes | string | ok
 
+<aside class="warning">Do not combine the `bookmark` and `stale` options. The reason is that both these options constrain the choice of shard replicas to use for determining the response. When used together, the options can result in problems when attempting to contact slow or unavailable replicas.</aside>
+
 ### Query Syntax
 
 > Example search query:
