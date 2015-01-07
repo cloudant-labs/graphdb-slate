@@ -25,7 +25,7 @@ under the License.
 ////////////////////
 $nav-bg: #163960;
 $examples-bg: #323232;
-$code-bg: #292929;
+$code-bg: #231f20;
 $code-annotation-bg: #1c1c1c;
 $nav-subitem-bg: #163960;
 $nav-active-bg: none;
@@ -55,9 +55,9 @@ $nav-width: 276px; // width of the navbar
 $examples-width: 50%; // portion of the screen taken up by code examples
 $logo-margin: 20px; // margin between nav items and logo
 $main-padding: 28px; // padding to left and right of content & examples
-$nav-padding: 15px; // padding to left and right of navbar
-$nav-indent: 10px; // extra padding for ToC subitems
-$code-annotation-padding: 0; // padding inside code annotations
+$nav-padding: 40px; // padding to left and right of navbar
+$nav-indent: 20px; // extra padding for ToC subitems
+$code-annotation-padding: 13px; // padding inside code annotations
 $h1-margin-bottom: 21px; // padding under the largest header tags
 
 
@@ -81,11 +81,11 @@ $h1-margin-bottom: 21px; // padding under the largest header tags
 
 // OTHER
 ////////////////////
-$nav-active-shadow: #000;
-$nav-footer-border-color: #666;
-$nav-embossed-border-top: 1px solid #000;
-$nav-embossed-border-bottom: 1px solid #404040;
-$main-embossed-text-shadow: 0px 1px 0px #fff;
+$nav-active-shadow: none;
+$nav-footer-border-color:none;
+$nav-embossed-border-top: none;
+$nav-embossed-border-bottom: none;
+$main-embossed-text-shadow: none;
 
 
 ////////////////////////////////////////////////////////////////////////////////
