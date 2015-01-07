@@ -105,7 +105,7 @@ html, body {
     );
     .tocify-item>a {
       padding-left: $nav-padding + $nav-indent;
-      font-size: 12px;
+      font-size: 14px;
     }
     // These items make for a slight embossed look for the subheader.
     // "Why not put the borders in the subheader?" you ask.
@@ -130,7 +130,7 @@ html, body {
     }
 
     a:hover {
-      text-decoration: underline;
+      text-decoration: none;
     }
 
     li {
@@ -234,7 +234,8 @@ html, body {
 
   h1 {
     @extend %header-font;
-    font-size: 30px;
+    font-size: 24px;
+    font-weight: 500;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     border-bottom: 1px solid #ccc;
@@ -255,7 +256,8 @@ html, body {
 
   h2 {
     @extend %header-font;
-    font-size: 20px;
+    font-size: 22px;
+    font-weight: 500;
     margin-top: 4em;
     margin-bottom: 0;
     border-top: 1px solid #ccc;
