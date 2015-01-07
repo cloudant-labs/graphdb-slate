@@ -27,6 +27,10 @@ body {
   @extend %default-font;
 }
 
+#searchbox form {
+  margin-left: 40px;
+}
+
 .tocify, .toc-footer {
   display: none;
 }
