@@ -367,7 +367,8 @@ body, html {
   }
 
   code {
-    background-color: rgba(0,0,0,0.05);
+    background-color: #e1e6e7;
+    color: #388bc0;
     padding: 3px;
     border-radius: 3px;
     @extend %break-words;
