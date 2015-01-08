@@ -82,6 +82,11 @@ body {
  * Addresses `outline` inconsistency between Chrome and other browsers.
  */
 
+a {
+  text-decoration: none;
+  color: #388bc0;
+}
+
 a:focus {
     outline: thin dotted;
 }
@@ -93,7 +98,26 @@ a:focus {
 a:active,
 a:hover {
     outline: 0;
+    text-decoration: none;
+    color: #e75d37;
 }
+
+/*
+* Navigation link styles
+*/
+
+.tocify-wrapper a {
+  color: #fff;
+}
+
+.tocify-wrapper a:hover {
+  color: #e75d37;
+}
+
+.tocify-wrapper a.active{
+  color: #408cbc;
+}
+
 
 /* ==========================================================================
    Typography
@@ -263,13 +287,17 @@ legend {
  * 3. Addresses margins set differently in Firefox 4+, Safari 5, and Chrome
  */
 
+
 button,
 input,
 select,
 textarea {
+    background-color: #0e2132;
+    color: #fff;
+    padding: 4px;
     font-family: inherit; /* 1 */
     font-size: 100%; /* 2 */
-    margin: 0; /* 3 */
+    margin-left: 40px; /* 3 */
 }
 
 /*
@@ -280,6 +308,9 @@ textarea {
 button,
 input {
     line-height: normal;
+    border: none;
+    width: 80%;
+    font-size: 16px;
 }
 
 /*
