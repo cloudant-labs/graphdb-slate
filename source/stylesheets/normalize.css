@@ -297,6 +297,8 @@ button,
 input,
 select,
 textarea {
+  width: 156px;
+  height: 20px;
     background-color: #0e2132;
     color: #fff;
     font-style: italic;
@@ -318,6 +320,8 @@ input {
     border: none;
     font-size: 16px;
     padding-left: 20px;
+    z-index: -500;
+    margin-top: -4px;
 }
 
 /*
@@ -334,8 +338,9 @@ input[type="reset"],
 input[type="submit"] {
     -webkit-appearance: button; /* 2 */
     cursor: pointer; /* 3 */
+    margin-left: -50px;
     width: 40px;
-    margin-left: -20px;
+    height: 32px;
 }
 
 /*
