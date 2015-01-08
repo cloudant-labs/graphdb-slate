@@ -114,9 +114,11 @@ a:hover {
   color: #e75d37;
 }
 
-.tocify-wrapper a.active{
+.tocify-focus a {
   color: #408cbc;
 }
+
+
 
 
 /* ==========================================================================
