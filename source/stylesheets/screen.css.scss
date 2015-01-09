@@ -234,17 +234,12 @@ html, body {
 
   h1 {
     @extend %header-font;
-    font-size: 24px;
-    font-weight: 500;
+    font-size: 22px;
+    font-weight: 300;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
-    border-bottom: 1px solid #ccc;
     margin-top: 2em;
     margin-bottom: $h1-margin-bottom;
-    border-top: 1px solid #ddd;
-    @include background-image(
-      linear-gradient(top, #fff, #f9f9f9)
-    );
   }
 
   // The header at the very top of the page
@@ -256,16 +251,12 @@ html, body {
 
   h2 {
     @extend %header-font;
-    font-size: 22px;
+    font-size: 16px;
     font-weight: 500;
     margin-top: 4em;
     margin-bottom: 0;
-    border-top: 1px solid #ccc;
     padding-top: 1.2em;
     padding-bottom: 1.2em;
-    @include background-image(
-      linear-gradient(top, rgba(#fff,0.4), rgba(#fff, 0))
-    );
   }
 
   // h2s right after h1s should bump right up
@@ -360,11 +351,14 @@ html, body {
   aside {
     padding-top: 1em;
     padding-bottom: 1em;
-    text-shadow: 0 1px 0 lighten($aside-notice-bg, 15%);
     margin-top: 1.5em;
     margin-bottom: 1.5em;
     background: $aside-notice-bg;
     line-height: 1.6;
+    font-weight: 400;
+    font-size: 16px;
+    opacity: 0.5;
+    font-style: italic;
 
     &.warning {
       background-color: $aside-warning-bg;
@@ -384,7 +378,6 @@ html, body {
   aside:before {
     vertical-align: middle;
     padding-right: 0.5em;
-    font-size: 14px;
   }
 
   aside.notice:before {
