@@ -29,8 +29,12 @@ else:
 database = account.database(DATABASE)
 
 def make_docs(headers, filename):
+    print "make_docs called with filename = " + filename
     docs = dict()
     for header in headers:
+        if not 'id' in header.attrs:
+            print 'header does not have an id attribute'
+            continue;
         doc = dict(_id=filename + '-' + header['id'], title=header.get_text())
         children = []
         for sibling in header.next_siblings:

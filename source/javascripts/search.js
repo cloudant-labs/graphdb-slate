@@ -16,20 +16,26 @@ $(function () {
     }
   };
 
-  function compute_suggestions (query, cb) {
+  function compute_suggestions(query, cb) {
     $.get(query_url, { q: query + '*' }).done(function (response) {
       var res = JSON.parse(response);
       cb(res.rows);
     });
   }
 
-  function on_submit (event) {
+  function on_submit(event) {
+    console.log("onsubmit called");
     var section_id = $(query_input).val();
-    
-    $('html, body').animate({
+    var index = section_id.indexOf('-');
+    var page = section_id.substring(0,index);
+    var fragment = section_id.substring(index+1);
+    var url = page + ".html#" + fragment;
+    console.log("url = " + url);
+    window.location.href = url;
+    /* $('html, body').animate({
         scrollTop: $(document.getElementById(section_id)).offset().top
     }, 200);
-
+    */
     return false;
   }
 
