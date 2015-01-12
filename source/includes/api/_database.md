@@ -6,16 +6,15 @@ All documents must be contained in a database.
 
 ### Create
 
-> Example request to create a Cloudant database:
+> Create a database
 
 ```http
 PUT /$DATABASE HTTP/1.1
+HOST: $ACCOUNT.cloudant.com
 ```
 
 ```shell
-curl https://$USERNAME.cloudant.com/$DATABASE \
-    -X PUT \
-    -u $USERNAME
+curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/$DATABASE -X PUT
 ```
 
 ```javascript
@@ -29,19 +28,38 @@ account.db.create($DATABASE, function (err, body, headers) {
 });
 ```
 
-> Example response:
+To create a database, make a PUT request to `https://$USERNAME.cloudant.com/$DATABASE`.
+
+The database name must start with a lowercase letter and contain only the following characters:
+
+ - Lowercase characters (a-z)
+ - Digits (0-9)
+ - Any of the characters _, $, (, ), +, -, and /
+
+###### h6
+
+> Response for successful creation:
 
 ```
+HTTP/1.1 201 Created
+
 {
   "ok": true
 }
 ```
 
-To create a database, make a PUT request to `https://$USERNAME.cloudant.com/$DATABASE`.
+If creation succeeded, you will get a 201 response. In case of an error, the HTTP status code tells you what went wrong:
+
+Code | Description
+-----|--------------
+201 |	Database created successfully
+202 |	The database has been successfully created on some nodes, but the number of nodes is less than the write quorum.
+403 |	Invalid database name.
+412 |	Database aleady exists.
 
 ### Read
 
-> Example request to read details about a Cloudant database:
+> Create a database
 
 ```http
 GET /$DATABASE HTTP/1.1
@@ -63,9 +81,15 @@ account.db.get($DATABASE, function (err, body, headers) {
 });
 ```
 
+Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE` returns details about the database,
+such as how many documents it contains.
+
+
+###### h6
+
 > Example response:
 
-```
+```json
 {
   "update_seq": "0-g1AAAADneJzLYWBgYMlgTmFQSElKzi9KdUhJMtbLTS3KLElMT9VLzskvTUnMK9HLSy3JAapkSmRIsv___39WIgOqHkM8epIcgGRSPTZt-KzKYwGSDA1ACqhzP0k2QrQegGgF2ZoFAGdBTTo",
   "db_name": "db",
@@ -82,12 +106,24 @@ account.db.get($DATABASE, function (err, body, headers) {
 }
 ```
 
-Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE` returns details about the database,
-such as how many documents it contains.
+The elements of the returned structure are shown in the table below:
+
+Field |	Description
+------|------------
+compact_running |	Set to true if the database compaction routine is operating on this database.
+db_name |	The name of the database.
+disk_format_version |	The version of the physical format used for the data when it is stored on disk.
+disk_size |	Size in bytes of the data as stored on the disk. Views indexes are not included in the calculation.
+doc_count |	A count of the documents in the specified database.
+doc_del_count |	Number of deleted documents
+instance_start_time |	Always 0.
+purge_seq |	The number of purge operations on the database.
+update_seq |	An opaque string describing the state of the database. It should not be relied on for counting the number of updates.
+other |	Json object containing a data_size field.
 
 ### Get Databases
 
-> Example request to list the Cloudant databases in an account:
+> Get all databases
 
 ```http
 GET /_all_dbs HTTP/1.1
@@ -126,15 +162,14 @@ make a GET request against `https://$USERNAME.cloudant.com/_all_dbs`.
 
 ### Get Documents
 
-> Example request to list the documents in a Cloudant database:
+> Getting all documents in a database
 
 ```http
 GET /_all_docs HTTP/1.1
 ```
 
 ```shell
-curl https://$USERNAME.cloudant.com/$DATABASE/_all_docs \
-     -u $USERNAME
+curl https://%USERNAME:$PASSWORD@$USERNAME.cloudant.com/$DATABASE/_all_docs
 ```
 
 ```javascript
@@ -149,9 +184,26 @@ db.list(function (err, body, headers) {
 });
 ```
 
+To list all the documents in a database, make a GET request against `https://$USERNAME.cloudant.com/$DATABASE/_all_docs`.
+
+The method accepts these query arguments:
+
+Argument | Description | Optional | Type | Default
+---------|-------------|----------|------|--------
+`descending` | Return the documents in descending by key order | yes | boolean | false
+`endkey` | Stop returning records when the specified key is reached | yes | string |  
+`include_docs` | Include the full content of the documents in the return | yes | boolean | false
+`inclusive_end` | Include rows whose key equals the endkey | yes | boolean | true
+`key` | Return only documents that match the specified key | yes | string |  
+`limit` | Limit the number of the returned documents to the specified number | yes | numeric | 
+`skip` | Skip this number of records before starting to return the results | yes | numeric | 0
+`startkey` | Return records starting with the specified key | yes | string |
+
+###### h6
+
 > Example response:
 
-```
+```json
 {
   "total_rows": 3,
   "offset": 0,
@@ -177,20 +229,14 @@ db.list(function (err, body, headers) {
 }
 ```
 
-To list all the documents in a database, make a GET request against `https://$USERNAME.cloudant.com/$DATABASE/_all_docs`.
+The response is a JSON object containing all documents in the database matching the parameters. The following table describes the meaning of the individual fields:
 
-The method accepts these query arguments:
-
-Argument | Description | Optional | Type | Default
----------|-------------|----------|------|--------
-`descending` | Return the documents in descending by key order | yes | boolean | false
-`endkey` | Stop returning records when the specified key is reached | yes | string |  
-`include_docs` | Include the full content of the documents in the return | yes | boolean | false
-`inclusive_end` | Include rows whose key equals the endkey | yes | boolean | true
-`key` | Return only documents that match the specified key | yes | string |  
-`limit` | Limit the number of the returned documents to the specified number | yes | numeric | 
-`skip` | Skip this number of records before starting to return the results | yes | numeric | 0
-`startkey` | Return records starting with the specified key | yes | string |
+Field |	Description |	Type
+------|-------------|-------
+offset |	Offset where the document list started |	numeric
+rows |	Array of document objects |	array
+total_rows |	Number of documents in the database/view matching the parameters of the query |	numeric
+update_seq |	Current update sequence for the database |	string
 
 ### Get Changes
 
