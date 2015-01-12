@@ -5,6 +5,10 @@ import cloudant
 import os
 import sys
 
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
 USERNAME = 'docs-testb'
 KEY = os.environ.get('USERNAME')
 SECRET = os.environ.get('PASSWORD')
@@ -13,17 +17,21 @@ HEADINGS = ['h1', 'h2', 'h3']
 
 print KEY
 print SECRET
+print "database" + DATABASE
 
 if KEY and SECRET:
+    print "account with auth"
     account = cloudant.Account(USERNAME, auth=(KEY, SECRET))
 else:
+    print "account without auth"
     account = cloudant.Account()
+
 database = account.database(DATABASE)
 
 def make_docs(headers, filename):
     docs = dict()
     for header in headers:
-        doc = dict(_id=filename + '>' + header['id'], title=header.get_text())
+        doc = dict(_id=filename + '-' + header['id'], title=header.get_text())
         children = []
         for sibling in header.next_siblings:
             if sibling.name and sibling.name in HEADINGS:
