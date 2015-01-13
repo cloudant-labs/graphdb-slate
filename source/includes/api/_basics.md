@@ -1,4 +1,4 @@
-# Cloudant Basics
+# ![alt tag](images/cloudantbasics_icon.png) Cloudant Basics
 
 If it's your first time here, scan this section before you scroll further. The API Reference, Client Libraries and Guides that follow assume you know these things about Cloudant.
 

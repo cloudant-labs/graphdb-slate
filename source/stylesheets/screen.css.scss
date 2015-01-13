@@ -174,7 +174,7 @@ html, body {
     position: fixed;
     width: 100%;
     z-index: 50;
-    font-weight: bold;
+    font-weight: 300;
     background-color: $lang-select-bg;
     border-bottom: 5px solid $lang-select-active-bg;
     a {
@@ -240,6 +240,13 @@ html, body {
     padding-bottom: 0.5em;
     margin-top: 2em;
     margin-bottom: $h1-margin-bottom;
+  }
+
+  h1 img {
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+    margin-bottom: -7px;
   }
 
   // The header at the very top of the page
