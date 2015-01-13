@@ -14,7 +14,7 @@ In addition to these two mandatory fields, documents can contain any other conte
 
 <h3 id="documentCreate">Create</h3>
 
-> Example instruction for creating a document:
+> Creating a document:
 
 ```http
 POST /$DATABASE HTTP/1.1
@@ -22,9 +22,8 @@ Content-Type: application/json
 ```
 
 ```shell
-curl https://$USERNAME.cloudant.com/$DATABASE \
+curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/$DATABASE \
      -X POST \
-     -u $USERNAME \
      -H "Content-Type: application/json" \
      -d "$JSON"
 ```
@@ -40,8 +39,6 @@ db.insert($JSON, function (err, body, headers) {
   }
 });
 ```
-
-> Example document to be created:
 
 ```json
 {
@@ -70,15 +67,14 @@ If you do not provide an `_id` field, Cloudant generates one automatically as a 
 
 ### Read
 
-> Example instruction for reading a document:
+> Reading a document:
 
 ```http
 GET /$DATABASE/$DOCUMENT_ID HTTP/1.1
 ```
 
 ```shell
-curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID \
-     -u $USERNAME
+curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID
 ```
 
 ```javascript
@@ -118,7 +114,7 @@ To fetch many documents at once, [query the database](#get-documents).
 
 ### Update
 
-> Example instruction for updating a document:
+> Updating a document
 
 ```http
 PUT /$DATABASE/$DOCUMENT_ID HTTP/1.1
@@ -126,9 +122,8 @@ PUT /$DATABASE/$DOCUMENT_ID HTTP/1.1
 
 ```shell
 // make sure $JSON contains the correct `_rev` value!
-curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID \
+curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID \
      -X PUT \
-     -u $USERNAME \
      -H "Content-Type: application/json" \
      -d "$JSON"
 ```
@@ -147,8 +142,6 @@ db.insert($JSON, $JSON._id, function (err, body, headers) {
   }
 });
 ```
-
-> Example request body:
 
 ```json
 {
@@ -183,7 +176,7 @@ This error prevents you overwriting data changed by other clients.</aside>
 
 ### Delete
 
-> Example instruction for deleting a document:
+> Delete request
 
 ```http
 DELETE /$DATABASE/$DOCUMENT_ID?rev=$REV HTTP/1.1
@@ -191,9 +184,7 @@ DELETE /$DATABASE/$DOCUMENT_ID?rev=$REV HTTP/1.1
 
 ```shell
 // make sure $JSON contains the correct `_rev` value!
-curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID?rev=$REV \
-     -X DELETE \
-     -u $USERNAME \
+curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID?rev=$REV -X DELETE
 ```
 
 ```javascript
@@ -209,7 +200,7 @@ db.destroy($JSON._id, $REV, function (err, body, headers) {
 });
 ```
 
-> Example response:
+> Deletion response:
 
 ```json
 {
@@ -230,7 +221,7 @@ CouchDB doesn’t completely delete the specified document. Instead, it leaves a
 
 ### Bulk Operations
 
-> Example instruction for performing bulk operations:
+> Request to update/create/delete multiple documents:
 
 ```http
 POST /$DATABASE/_bulk_docs HTTP/1.1
@@ -238,11 +229,7 @@ Content-Type: application/json
 ```
 
 ```shell
-curl https://$USERNAME.cloudant.com/$DATABASE/_bulk_docs \
-     -X POST \
-     -u $USERNAME \
-     -H "Content-Type: application/json" \
-     -d "$JSON"
+curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/$DATABASE/_bulk_docs -X POST -H "Content-Type: application/json" -d "$JSON"
 ```
 
 ```javascript
@@ -256,8 +243,6 @@ db.bulk($JSON, function (err, body) {
   }
 });
 ```
-
-> Example request body:
 
 ```json
 {
@@ -283,6 +268,78 @@ db.bulk($JSON, function (err, body) {
 }
 ```
 
+The bulk document API allows you to create and update multiple documents at the same time within a single request. The basic operation is similar to creating or updating a single document, except that you batch the document structure and information. When creating new documents the document ID is optional. For updating existing documents, you must provide the document ID, revision information, and new document values.
+
+#### Request Body
+
+For both inserts and updates the basic structure of the JSON document in the request is the same:
+
+<table>
+<colgroup>
+<col width="15%" />
+<col width="36%" />
+<col width="26%" />
+<col width="15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Field</th>
+<th align="left">Description</th>
+<th align="left">Type</th>
+<th align="left">Optional</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>docs</code></td>
+<td align="left">Bulk Documents Document</td>
+<td align="left">array of objects</td>
+<td align="left">no</td>
+</tr>
+</tbody>
+</table>
+
+#### Object in `docs` array
+
+<table>
+<colgroup>
+<col width="15%" />
+<col width="41%" />
+<col width="10%" />
+<col width="33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Field</th>
+<th align="left">Description</th>
+<th align="left">Type</th>
+<th align="left">Optional</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>_id</code></td>
+<td align="left">Document ID</td>
+<td align="left">string</td>
+<td align="left">optional only for new documents</td>
+</tr>
+<tr class="even">
+<td align="left"><code>_rev</code></td>
+<td align="left">Document revision</td>
+<td align="left">string</td>
+<td align="left">mandatory for updates and deletes, not used for new documents</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>_deleted</code></td>
+<td align="left">Whether the document should be deleted</td>
+<td align="left">boolean</td>
+<td align="left">yes</td>
+</tr>
+</tbody>
+</table>
+
+#### Response
+
 > Example response:
 
 ```json
@@ -298,5 +355,174 @@ db.bulk($JSON, function (err, body) {
 }]
 ```
 
-To make multiple, simultaneous requests such as insertions, updates, or deletes, make a POST request to `https://$USERNAME.cloudant.com/$DATABASE/_bulk_docs`.
-Cloudant processes and returns the results for each of the requested actions.
+The HTTP status code tells you whether the request was fully or partially successful. In the request body, you get an array with detailed information for each document in the request.
+
+<table>
+<colgroup>
+<col width="7%" />
+<col width="92%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Code</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">201</td>
+<td align="left">All documents have been created or updated.</td>
+</tr>
+<tr class="even">
+<td align="left">202</td>
+<td align="left">For at least one document, the write quorum (specified by w) has not been met.</td>
+</tr>
+</tbody>
+</table>
+
+#### Inserting Documents in Bulk
+
+To insert documents in bulk into a database you need to supply a JSON structure with the array of documents that you want to add to the database. You can either include a document ID for each document, or allow the document ID to be automatically generated.
+
+For example, the following inserts three new documents with the supplied document IDs. If you omit the document ID, it will be generated:
+
+The return type from a bulk insertion will be 201, with the content of the returned structure indicating specific success or otherwise messages on a per-document basis.
+
+The return structure from the example above contains a list of the documents created, here with the combination and their revision IDs:
+
+The content and structure of the returned JSON will depend on the transaction semantics being used for the bulk update; see bulk-semantics for more information. Conflicts and validation errors when updating documents in bulk must be handled separately; see bulk-validation.
+
+#### Updating Documents in Bulk
+
+The bulk document update procedure is similar to the insertion procedure, except that you must specify the document ID and current revision for every document in the bulk update JSON string.
+
+For example, you could send the following request:
+
+The return structure is the JSON of the updated documents, with the new revision and ID information:
+
+You can optionally delete documents during a bulk update by adding the `_deleted` field with a value of `true` to each document ID/revision combination within the submitted JSON structure.
+
+The return type from a bulk insertion will be 201, with the content of the returned structure indicating specific success or otherwise messages on a per-document basis.
+
+The content and structure of the returned JSON will depend on the transaction semantics being used for the bulk update; see bulk-semantics for more information. Conflicts and validation errors when updating documents in bulk must be handled separately; see bulk-validation.
+
+#### Bulk Documents Transaction Semantics
+
+> Response with errors
+
+```json
+[
+   {
+      "id" : "FishStew",
+      "error" : "conflict",
+      "reason" : "Document update conflict."
+   },
+   {
+      "id" : "LambStew",
+      "error" : "conflict",
+      "reason" : "Document update conflict."
+   },
+   {
+      "id" : "7f7638c86173eb440b8890839ff35433",
+      "error" : "conflict",
+      "reason" : "Document update conflict."
+   }
+]
+```
+
+Cloudant will only guarantee that some of the documents will be saved if your request yields a 202 response. The response will contain the list of documents successfully inserted or updated during the process.
+
+The response structure will indicate whether the document was updated by supplying the new `_rev` parameter indicating a new document revision was created. If the update failed, then you will get an `error` of type `conflict`.
+
+In this case no new revision has been created and you will need to submit the document update with the correct revision tag, to update the document.
+
+#### Bulk Document Validation and Conflict Errors
+
+The JSON returned by the `_bulk_docs` operation consists of an array of JSON structures, one for each document in the original submission. The returned JSON structure should be examined to ensure that all of the documents submitted in the original request were successfully added to the database.
+
+The structure of the returned information is:
+
+<table>
+<colgroup>
+<col width="20%" />
+<col width="36%" />
+<col width="26%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Field</th>
+<th align="left">Description</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">docs [array]</td>
+<td align="left">Bulk Documents Document</td>
+<td align="left">array of objects</td>
+</tr>
+</tbody>
+</table>
+
+#### Fields of objects in docs array
+
+<table>
+<colgroup>
+<col width="12%" />
+<col width="50%" />
+<col width="12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Field</th>
+<th align="left">Description</th>
+<th align="left">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">id</td>
+<td align="left">Document ID</td>
+<td align="left">string</td>
+</tr>
+<tr class="even">
+<td align="left">error</td>
+<td align="left">Error type</td>
+<td align="left">string</td>
+</tr>
+<tr class="odd">
+<td align="left">reason</td>
+<td align="left">Error string with extended reason</td>
+<td align="left">string</td>
+</tr>
+</tbody>
+</table>
+
+When a document (or document revision) is not correctly committed to the database because of an error, you should check the `error` field to determine error type and course of action. Errors will be one of the following type:
+
+#### `conflict`
+
+    The document as submitted is in conflict. If you used the default bulk transaction mode then the new revision will not have been created and you will need to re-submit the document to the database.
+
+    Conflict resolution of documents added using the bulk docs interface is identical to the resolution procedures used when resolving conflict errors during replication.
+
+#### `forbidden`
+
+> in validation function
+
+```
+throw({forbidden: 'invalid recipe ingredient'});
+```
+
+> Error from validation function
+
+```json
+{
+   "id" : "7f7638c86173eb440b8890839ff35433",
+   "error" : "forbidden",
+   "reason" : "invalid recipe ingredient"
+}
+```
+
+Entries with this error type indicate that the validation routine applied to the document during submission has returned an error.
+

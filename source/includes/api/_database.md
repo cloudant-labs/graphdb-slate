@@ -317,17 +317,19 @@ Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE/_changes`
 
 `_changes` accepts these query arguments:
 
-Argument | Description | Optional | Type | Default | Supported Values
----------|-------------|----------|------|---------|-----------------
-`doc_ids` | List of documents IDs to use to filter updates | yes | array of strings
-`feed` | Type of feed | yes | string | normal | `continuous`, `longpoll`, `normal`
-`filter` | Name of filter function from a design document to get updates | yes | string | |
-`heartbeat` Time in milliseconds after which an empty line is sent during longpoll or continuous if there have been no changes | yes | numeric | 60000 | 
-`include_docs` | Include the document with the result | yes | boolean | false |
-`limit` Maximum number of rows to return | yes | numeric | none |  
-`since` Start the results from changes after the specified sequence number. If since is 0 (the default), the request will return all changes. | yes | string | 0 | 
-`descending` | Return the changes in sequential order | yes | boolean | false | 
-`timeout` Number of milliseconds to wait for data before terminating the response. If heartbeat supersedes timeout if both are supplied. | yes | numeric | |
+Argument | Description | Supported Values | Default 
+---------|-------------|------------------|---------
+`doc_ids` | List of documents IDs to use to filter updates | array of strings with valid document IDs | all documents
+`feed` | Type of feed | `"continuous"`, `"longpoll"`, `"normal"` | `"normal"`
+`filter` | Name of filter function from a design document to get updates | string | no filter
+`heartbeat` | Time in milliseconds after which an empty line is sent during longpoll or continuous if there have been no changes | any positive number | 60000 | 
+`include_docs` | Include the document with the result | boolean | false |
+`limit` | Maximum number of rows to return | any non-negative number | none |  
+`since` | Start the results from changes after the specified sequence number. If since is 0 (the default), the request will return all changes. | string | 0 | 
+`descending` | Return the changes in sequential order | boolean | false | 
+`timeout` | Number of milliseconds to wait for data before terminating the response. If heartbeat supersedes timeout if both are supplied. | any positive number | |
+
+All arguments are optional.
 
 The `feed` argument changes how Cloudant sends the response. By default, changes feed in entirety and the connection closes.
 
