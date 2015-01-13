@@ -322,7 +322,7 @@ input {
     border: none;
     font-size: 16px;
     padding-left: 20px;
-    z-index: -500;
+    //z-index: -500; commented out because it caused issues on FF/Chrome
     margin-top: -4px;
 }
 
