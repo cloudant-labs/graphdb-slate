@@ -301,14 +301,14 @@ select,
 textarea {
   width: 156px;
   height: 20px;
-    background-color: #0e2132;
-    color: #fff;
-    font-style: italic;
-    font-weight: 300;
-    padding: 6px;
-    font-family: inherit; /* 1 */
-    font-size: 100%; /* 2 */
-    margin-left: 40px; /* 3 */
+  background-color: #222222;
+  color: #fff;
+  font-style: italic;
+  font-weight: 300;
+  padding: 7px;
+  font-family: inherit;
+  font-size: 100%;
+  margin-left: 40px;
 }
 
 /*
@@ -321,9 +321,9 @@ input {
     line-height: normal;
     border: none;
     font-size: 16px;
-    padding-left: 20px;
+    padding-left: 15px;
     //z-index: -500; commented out because it caused issues on FF/Chrome
-    margin-top: -4px;
+    margin-top: -5px;
 }
 
 /*
@@ -420,3 +420,4 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
+

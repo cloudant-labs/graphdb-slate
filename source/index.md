@@ -18,7 +18,7 @@ toc_footers:
 
 ---
 
-# Documentation Overview
+# ![alt tag](images/documentation_icon.png) Documentation Overview
 
 This is the online documentation for the [Cloudant database-as-a-service](https://cloudant.com/). Here you'll find a quick overview of Cloudant Basics, our API Reference, Client Libraries to help you get going quickly, and Guides that explore more advanced concepts in detail.
 
