@@ -43,6 +43,7 @@ $aside-success-bg: #6ac174;
 ////////////////////
 $main-text: #333; // main content text color
 $nav-text: #808080;
+$nav-tertiary: #2f2f2f;
 $nav-active-text: #2467af;
 $lang-select-text: #fff; // color of unselected language tab text
 $lang-select-active-text: #fff; // color of selected language tab text
@@ -75,7 +76,7 @@ $h1-margin-bottom: 21px; // padding under the largest header tags
 
 %code-font {
   font-family: Monaco, "Courier New", monospace;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 
