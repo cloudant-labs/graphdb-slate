@@ -38,7 +38,14 @@ $(function () {
     */
     return false;
   }
+  
+  function on_select(event, suggestion, dataset) {
+    console.log(event);
+    console.log(suggestion);
+    console.log(dataset);
+  }
 
   $(query_input).typeahead(typeahead_opts, typeahead_data);
+  $(query_input).bind('typeahead:selected', on_select);
   $(search_box).submit(on_submit);
 });
