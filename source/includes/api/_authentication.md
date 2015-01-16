@@ -76,28 +76,6 @@ curl https://$USERNAME.cloudant.com/_session \
      -d "name=$USERNAME&password=$PASSWORD"
 ```
 
-> Reply to request for a cookie
-
-<!-- ```http
-200 OK
-Cache-Control: must-revalidate
-Content-Length: 42
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 04 Mar 2013 14:06:11 GMT
-server: CouchDB/1.0.2 (Erlang OTP/R14B)
-Set-Cookie: AuthSession="a2ltc3RlYmVsOjUxMzRBQTUzOtiY2_IDUIdsTJEVNEjObAbyhrgz"; Expires=Tue, 05 Mar 2013 14:06:11 GMT; Max-Age=86400; Path=/; HttpOnly; Version=1
-x-couch-request-id: a638431d
-```
--->
-
-```json
-{
-  "ok": true,
-  "name": "kimstebel",
-  "roles": []
-}
-```
-
 ```python
 import cloudant
 
@@ -140,8 +118,34 @@ cloudant.auth($USERNAME, $PASSWORD, function (err, body, headers) {
 
 With Cookie authentication, you use your credentials to acquire a cookie.
 Do this by sending a `POST` request to `/_session`.
-If your credentials are valid,
-the response is a cookie which remains active for twenty-four hours.
+
+<div></div>
+
+###### h6
+
+> Reply to request for a cookie
+
+```
+200 OK
+Cache-Control: must-revalidate
+Content-Length: 42
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 04 Mar 2013 14:06:11 GMT
+server: CouchDB/1.0.2 (Erlang OTP/R14B)
+Set-Cookie: AuthSession="a2ltc3RlYmVsOjUxMzRBQTUzOtiY2_IDUIdsTJEVNEjObAbyhrgz"; Expires=Tue, 05 Mar 2013 14:06:11 GMT; Max-Age=86400; Path=/; HttpOnly; Version=1
+x-couch-request-id: a638431d
+```
+
+```json
+{
+  "ok": true,
+  "name": "kimstebel",
+  "roles": []
+}
+```
+
+If your credentials are valid, the response contains a cookie which remains active for twenty-four hours.
+
 
 <h3></h3>
 #### Getting cookie information
@@ -160,6 +164,12 @@ curl https://$USERNAME.cloudant.com/_session \
      -b /path/to/cookiefile
 ```
 
+When a cookie has been set, information about the logged in user can be retrieved with a `GET` request.
+
+<div> </div>
+
+###### h6
+
 > Example response to request for cookie information.
 
 ```json
@@ -177,7 +187,7 @@ curl https://$USERNAME.cloudant.com/_session \
 }
 ```
 
-When a cookie has been set, information about the logged in user can be retrieved with a `GET` request.
+The response contains the username, the user's roles and which authentication mechanism was used.
 
 <h3></h3>
 #### Deleting a cookie
@@ -195,6 +205,12 @@ curl https://$USERNAME.cloudant.com/_session \
      -X DELETE \
      -b /path/to/cookiefile
 ```
+
+You can end the session by sending a `DELETE` request to the same URL used to create the cookie. The `DELETE` request must include the cookie you wish to delete.
+
+<div> </div>
+
+###### h6
 
 > Example response to cookie `DELETE` request:
 
@@ -215,5 +231,6 @@ x-couch-request-id: e02e0333
 }
 ```
 
-You can end the session by sending a `DELETE` request to the same URL used to create the cookie. The `DELETE` request must include the cookie you wish to delete.
+The response confirms deletion of the session and sets the `AuthSession` Cookie to `""`.
+
 

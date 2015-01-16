@@ -47,6 +47,12 @@ account.request({
 });
 ```
 
+To see who has permissions to read, write, and manage the database, make a GET request against `https://$USERNAME.cloudant.com/$DB/_security`.
+
+<div></div>
+
+###### h6
+
 > Example response:
 
 ```json
@@ -70,14 +76,14 @@ account.request({
 }
 ```
 
-To see who has permissions to read, write, and manage the database, make a GET request against `https://$USERNAME.cloudant.com/$DB/_security`.
 The `cloudant` field in the response object contains an object with keys that are the usernames that have permission to interact with the database.
 The `nobody` username indicates what rights are available to unauthenticated users -- that is, any request made without authentication credentials.
-In the example response, for instance, `nobody` has `_reader` permissions, making the database publicly readable by everyone.
+In the example response, for instance, `nobody` has `_reader` permissions, making the database publicly readable.
+
 
 ### Modifying Permissions
 
-> Command to send modification request:
+> Modification request:
 
 ```http
 PUT /_api/v2/db/$DATABASE/_security HTTP/1.1
@@ -107,8 +113,6 @@ account.request({
 });
 ```
 
-> Example request:
-
 ```json
 {
   "cloudant": {
@@ -129,6 +133,14 @@ account.request({
 }
 ```
 
+To modify who has permissions to read, write, and manage a database, make a PUT request against `https://$USERNAME.cloudant.com/_api/v2/db/$DB/_security`. To see what roles you can assign, see [Roles](#roles).
+
+The request object's `cloudant` field contains an object whose keys are usernames with permissions to interact with the database. The `nobody` username indicates what rights are available to unauthenticated users -- that is, anybody. In the example request, for instance, `nobody` has `_reader` permissions, making the database publicly readable.
+
+<div></div>
+
+###### h6
+
 > Example response:
 
 ```json
@@ -137,9 +149,7 @@ account.request({
 }
 ```
 
-To modify who has permissions to read, write, and manage a database, make a PUT request against `https://$USERNAME.cloudant.com/_api/v2/db/$DB/_security`. To see what roles you can assign, see [Roles](#roles).
-
-The request object's `cloudant` field contains an object whose keys are usernames with permissions to interact with the database. The `nobody` username indicates what rights are available to unauthenticated users -- that is, anybody. In the example request, for instance, `nobody` has `_reader` permissions, making the database publicly readable.
+The response tells you whether the update has been successful.
 
 ### Creating API Keys
 
@@ -169,15 +179,21 @@ account.request({
 });
 ```
 
+To generate an API key, use `https://cloudant.com/api/generate_api_key`. The created API key has no permissions to anything by default, and must be given permissions explicitly.
+
+<div></div>
+
+###### h6
+
 > Response body:
 
-```
+```json
 {
   "password": "generatedPassword",
-   "ok": true,
-   "key": "generatedKey"
+  "ok": true,
+  "key": "generatedKey"
 }
 ```
 
-To generate an API key, use `https://cloudant.com/api/generate_api_key`. The created API key has no permissions to anything by default, and must be given permissions explicitly.
+The response contains the generated key and password.
 
