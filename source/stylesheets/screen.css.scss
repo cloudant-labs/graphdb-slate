@@ -123,6 +123,9 @@ html, body {
       box-shadow: none; // otherwise it'll overflow out of the subheader
     }
   }
+  .tocify-subheader ul {
+    padding-left: $nav-indent;
+  }
 
   .toc-footer {
     padding: 1em 0;
