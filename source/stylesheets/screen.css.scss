@@ -179,7 +179,7 @@ html, body {
     position: fixed;
     width: 100%;
     z-index: 50;
-    font-weight: bold;
+    font-weight: 300;
     background-color: $lang-select-bg;
     border-bottom: 5px solid $lang-select-active-bg;
     a {
@@ -257,6 +257,13 @@ body, html {
     padding-bottom: 0.5em;
     margin-top: 2em;
     margin-bottom: $h1-margin-bottom;
+  }
+
+  h1 img {
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+    margin-bottom: -7px;
   }
 
   // The header at the very top of the page
@@ -479,3 +486,9 @@ body, html {
     }
   }
 }
+
+
+//code colors //
+
+.highlight .s, .highlight .sb, .highlight .sc, .highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx, .highlight .s1 {
+  color: #00a69f; }
