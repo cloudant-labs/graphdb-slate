@@ -105,14 +105,20 @@ curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/_api/v2/user/config/cors
 }
 ```
 
+`PUT`ting a json document with the example structure to `/_api/v2/user/config/cors` sets the CORS configuration. The configuration applies to all databases and all account level endpoints in your account.
+
+
+<div></div>
+
+###### h6
+
 > Example response
 
 ```json
 { "ok": true }
 ```
 
-`PUT`ting a json document with the example structure to `/_api/v2/user/config/cors` sets the CORS configuration. The configuration applies to all databases and all account level endpoints in your account.
-
+The response tells you whether the configuration has been updated successfully.
 
 ### Reading the CORS configuration
 
@@ -126,6 +132,12 @@ Host: username.cloudant.com
 ```shell
 curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/_api/v2/user/config/cors
 ```
+
+`GET`ting `/_api/v2/user/config/cors` ...
+
+<div> </div>
+
+###### h6
 
 > Example response
 
@@ -146,11 +158,5 @@ Content-Length: 178
 }
 ```
 
-> If there is no CORS configuration yet, an empty JSON document is returned:
-
-```json
-{}
-```
-
-`GET`ting `/_api/v2/user/config/cors` returns the CORS config in a JSON document.
+... returns the CORS config in a JSON document.
 
