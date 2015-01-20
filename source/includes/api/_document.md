@@ -52,6 +52,12 @@ db.insert($JSON, function (err, body, headers) {
 }
 ```
 
+To create a document, make a POST request with the document's JSON content to `https://$USERNAME.cloudant.com/$DATABASE`.
+
+<div></div>
+
+###### h6
+
 > Example response:
 
 ```json
@@ -62,8 +68,7 @@ db.insert($JSON, function (err, body, headers) {
 }
 ```
 
-To create a document, make a POST request with the document's JSON content to `https://$USERNAME.cloudant.com/$DATABASE`.
-If you do not provide an `_id` field, Cloudant generates one automatically as a [UUID](http://en.wikipedia.org/wiki/Universally_unique_identifier). 
+The response is a JSON document containing the ID of the created document, the revision string, and `"ok": true`. If you did not provide an `_id` field, Cloudant generates one automatically as a [UUID](http://en.wikipedia.org/wiki/Universally_unique_identifier). If creation of the document failed, the response contains a description of the error.
 
 ### Read
 
@@ -89,6 +94,14 @@ db.get($JSON._id, function (err, body, headers) {
 });
 ```
 
+To retrieve a document, make a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID`.
+If you do not know the `_id` for a particular document,
+you can [query the database](#get-documents) for all documents.
+
+<div></div>
+
+###### h6
+
 > Example response:
 
 ```json
@@ -104,9 +117,7 @@ db.get($JSON._id, function (err, body, headers) {
 }
 ```
 
-To retrieve a document, make a GET request to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID`.
-If you do not know the `_id` for a particular document,
-you can [query the database](#get-documents) for all documents.
+The response contains the document you requested or a description of the error, if the document could not be retrieved.
 
 ### Read Many
 
@@ -157,6 +168,15 @@ db.insert($JSON, $JSON._id, function (err, body, headers) {
 }
 ```
 
+To update (or create) a document, make a PUT request with the updated JSON content *and* the latest `_rev` value (not needed for creating new documents) to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID`.
+
+<aside>If you fail to provide the latest `_rev`, Cloudant responds with a [409 error](basics.html#http-status-codes).
+This error prevents you overwriting data changed by other processes.</aside>
+
+<div></div>
+
+###### h6
+
 > Example response:
 
 ```json
@@ -167,10 +187,7 @@ db.insert($JSON, $JSON._id, function (err, body, headers) {
 }
 ```
 
-To update (or create) a document, make a PUT request with the updated JSON content *and* the latest `_rev` value (not needed for creating new documents) to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID`.
-
-<aside>If you fail to provide the latest `_rev`, Cloudant responds with a [409 error](basics.html#http-status-codes).
-This error prevents you overwriting data changed by other clients.</aside>
+The response contains the ID and the new revision of the document or an error message in case the update failed.
 
 <div id="document-delete"></div>
 
@@ -200,16 +217,6 @@ db.destroy($JSON._id, $REV, function (err, body, headers) {
 });
 ```
 
-> Deletion response:
-
-```json
-{
-   "id" : "apple",
-   "ok" : true,
-   "rev" : "3-2719fd4118"
-}
-```
-
 To delete a document, make a DELETE request with the document's latest `_rev` in the querystring, to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID`.
 
 <aside>If you fail to provide the latest `_rev`, Cloudant responds with a [409 error](basics.html#http-status-codes).
@@ -218,6 +225,20 @@ This error prevents you overwriting data changed by other clients.</aside>
 <aside class="warning">
 CouchDB doesn’t completely delete the specified document. Instead, it leaves a tombstone with very basic information about the document. The tombstone is required so that the delete action can be replicated. Since the tombstones stay in the database indefinitely, creating new documents and deleting them increases the disk space usage of a database and the query time for the primary index, which is used to look up documents by their ID.
 </aside>
+
+###### h6
+
+> Deletion response:
+
+```json
+{
+  "id" : "apple",
+  "ok" : true,
+  "rev" : "3-2719fd4118"
+}
+```
+
+The response contains the ID and the new revision of the document or an error message in case the update failed.
 
 ### Bulk Operations
 
