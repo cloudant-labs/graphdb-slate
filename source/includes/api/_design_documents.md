@@ -334,6 +334,13 @@ Where `$DESIGN_ID` is the `_id` of the document defining the update handler, `$U
 }
 ```
 
+Filter functions filter the [changes feed](#get-changes), removing changes you don't want to monitor.
+The filter function is run over every change in the changes feed, and only those for which the function returns `true` are returned to the client in the response.
+
+<div></div>
+
+###### h6
+
 > Example filter function:
 
 ```
@@ -349,6 +356,12 @@ function(doc, req){
   return true; // passed!
 }
 ```
+
+Filter functions receive two arguments: `doc` and [req](#req). `doc` represents the document being filtered and `req` contains information about the http request. In most cases, only the `doc` parameter will be used.
+
+<div></div>
+
+###### h6
 
 > Example query:
 
@@ -376,12 +389,7 @@ account.db.changes($DATABASE, {
 });
 ```
 
-Filter functions format the [changes feed](#get-changes), removing changes you don't want to monitor.
-The filter function is run over every change in the changes feed, and only those for which the function returns `true` are returned to the client in the response.
-
-Filter functions receive two arguments: `doc` and [req](#req). `doc` represents the document currently being filtered.
-
-To use a filter function on the changes feed, specify the function in the `_changes` query. See the examples for more details.
+To use a filter function on the changes feed, specify the `filter` parameter in the `_changes` query.
 
 ### Update Validators
 
