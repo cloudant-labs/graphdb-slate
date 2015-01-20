@@ -145,9 +145,14 @@ account.db.list(function (err, body, headers) {
 });
 ```
 
+To list all the databases in an account,
+make a GET request against `https://$USERNAME.cloudant.com/_all_dbs`.
+
+###### h6
+
 > Example response:
 
-```
+```json
 [
    "_users",
    "contacts",
@@ -157,8 +162,7 @@ account.db.list(function (err, body, headers) {
 ]
 ```
 
-To list all the databases in an account,
-make a GET request against `https://$USERNAME.cloudant.com/_all_dbs`.
+The response is an array with all database names.
 
 ### Get Documents
 
@@ -365,6 +369,12 @@ account.db.destroy($DATABASE, function (err, body, headers) {
 });
 ```
 
+To delete a databases and its contents, make a DELETE request to `https://$USERNAME.cloudant.com/$DATABASE`.
+
+<aside class="warning">There is no additional check to ensure that you really intended to delete the database ("Are you sure?").</aside>
+
+###### h6
+
 > Example response:
 
 ```
@@ -373,8 +383,4 @@ account.db.destroy($DATABASE, function (err, body, headers) {
 }
 ```
 
-To delete a databases and its contents, make a DELETE request to `https://$USERNAME.cloudant.com/$DATABASE`.
-
-<aside class="warning">There is no additional check to ensure that you really intended to delete the database ("Are you sure?").</aside>
-
-
+The response confirms successful deletion of the database or describes any errors that occured, i.e. if you try to delete a database that does not exist.
