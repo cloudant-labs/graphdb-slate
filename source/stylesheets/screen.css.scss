@@ -112,6 +112,10 @@ html, body {
       padding-left: $nav-padding + $nav-indent;
       font-size: 16px;
     }
+      .tocify-tertiary {
+        color: $nav-tertiary;
+      }
+
     // These items make for a slight embossed look for the subheader.
     // "Why not put the borders in the subheader?" you ask.
     // "Because then the animation isn't as smooth," I reply.
@@ -491,7 +495,9 @@ body, html {
 }
 
 
-//code colors //
+/////////////////////////////////////////////////////////////////////
+//THIRD COLUMN CODE COLORS 
+/////////////////////////////////////////////////////////////////////
 
 .highlight .s, .highlight .sb, .highlight .sc, .highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx, .highlight .s1 {
   color: #00a69f; }
