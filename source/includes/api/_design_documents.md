@@ -8,7 +8,7 @@ Design documents are [documents](#documents) that have an `_id` beginning with `
 Cloudant reads specific fields and values of design documents as functions.
 Design documents are used to [build indexes](#indexes), [validate updates](#update-validators), and [format query results](#list-functions).
 
-## Creating or updating a design document
+### Creating or updating a design document
 
 -   **Method**: `GET /$DATABASE/_design/design-doc`
 -   **Request**: JSON of the design document information
@@ -45,7 +45,7 @@ The structure of design document is as follows:
 -   **lists (optional)**: List functions
     -   **function name** (one for each function): Function definition
 
-### Design Document Views
+### Views
 
 An important use of design documents is for creating views. These are discussed in more detail [here](#creating-views).
 

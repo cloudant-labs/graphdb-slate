@@ -182,19 +182,23 @@ The Cloudant Query language is expressed as a JSON object describing documents o
 
 #### Selector basics
 
-> A simple selector to match any documents with the `name` "Paul":
+> A simple selector
 
 ```json
 {"name": "Paul"}
 ```
 
-> A more complex selector that matches any document with `name` "Paul", and that also has a `location` field with the value "Boston":
+Elementary selector syntax requires you to specify one or more fields, and the corresponding values required for those fields. This selector matches all documents whose `"name"` field has the value `"Paul"`.
+
+###### selector with two fields
+
+> A more complex selector
 
 ```json
 {"name": "Paul", "location": "Boston"}
 ```
 
-Elementary selector syntax requires you to specify one or more fields, and the corresponding values required for those fields.
+This selector matches any document with `name` "Paul" that also has a `location` field with the value "Boston".
 
 ### Subfields
 
@@ -204,14 +208,19 @@ Elementary selector syntax requires you to specify one or more fields, and the c
 {"location": {"city": "Omaha"}}
 ```
 
+A more complex selector enables you to specify the values for field of nested objects, i.e. subfields.
+For example, you might use the standard JSON structure for specifying a field and subfield.
+
+<div></div>
+
+###### h6
+
 > Example of an equivalent dot-notation field and subfield selector:
 
 ```json
 {"location.city": "Omaha"}
 ```
 
-A more complex selector enables you to specify the values for fields and subfields.
-For example, you might use the standard JSON structure for specifying a field and subfield.
 However, an abbreviated equivalent uses a dot notation to combine the field and subfield names into a single name.
 
 ### Operators
@@ -242,42 +251,6 @@ The exact implicit operator is determined by the structure of the selector expre
 
 ### Implicit Operators
 
-> Example of the equality implicit operator, where there must be a field `foo` in a matching document, and the field must have a value exactly equal to "bar":
-
-```json
-{"foo": "bar"}
-```
-
-> Example of an explicit operator providing the equivalent test of matching for equality:
-
-```json
-{"foo": {"$eq": "bar"}}
-```
-
-> Example of implicit operator applied to a subfield test, where the required field `foo` in a matching document must also have a subfield `bar` with a value exactly equal to "baz":
-
-```json
-{"foo": {"bar": "baz"}}
-```
-
-> Example of an explicit operator providing the equivalent test of matching for equality in subfields:
-
-```json
-{"foo": {"$eq": {"bar": "baz"}}}
-```
-
-> Example of an implicit `$and` operator, requiring that the field `foo` must be present and contain the value `bar` _and_ that the field `baz` must exist can contain the value `true`:
-
-```json
-{"foo": "bar", "baz": true}
-```
-
-> Example of using explicit `$and` and `$eq` operators, in an equivalent test:
-
-```json
-{"$and": [{"foo": {"$eq": "bar"}}, {"baz": {"$eq": true}}]}
-```
-
 There are two implicit operators:
 
 - Equality
@@ -287,6 +260,74 @@ In a selector, any field containing a JSON value, but that has no operators in i
 The implicit equality test applies also for fields and subfields.
 
 Any JSON object that is not the argument to a condition operator is an implicit `$and` operator on each field.
+
+###### h6
+
+> Example of the implicit equality operator
+
+```json
+{"foo": "bar"}
+```
+
+In this example, there must be a field `foo` in a matching document, and the field must have a value exactly equal to "bar".
+
+<div></div>
+
+###### h6
+
+> Example of an explicit equality operator
+
+```json
+{"foo": {"$eq": "bar"}}
+```
+
+You can also make the equality operator explicit.
+
+<div></div>
+
+###### h6
+
+> Example of implicit operator applied to a subfield test
+
+```json
+{"foo": {"bar": "baz"}}
+```
+
+With subfields, the required field `foo` in a matching document must also have a subfield `bar` with a value exactly equal to "baz".
+
+<div></div>
+
+> Example of an explicit equality operator
+
+```json
+{"foo": {"$eq": {"bar": "baz"}}}
+```
+
+Again, you can make the equality operator explicit.
+
+<div></div>
+
+###### h6
+
+> Example of an implicit `$and` operator
+
+```json
+{"foo": "bar", "baz": true}
+```
+
+In this example, the field `foo` must be present and contain the value `bar` _and_ the field `baz` must exist and have the value `true`.
+
+<div></div>
+
+###### h6
+
+> Example of using explicit `$and` and `$eq` operators
+
+```json
+{"$and": [{"foo": {"$eq": "bar"}}, {"baz": {"$eq": true}}]}
+```
+
+You can make both the `and` and the equality operator explicit like this:
 
 ### Combination Operators
 
