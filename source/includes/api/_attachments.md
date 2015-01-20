@@ -20,8 +20,7 @@ Content-Type: $$ATTACHMENT_MIME_TYPE
 ```
 
 ```shell
-curl https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID/$ATTACHMENT?rev=$REV \
-     -u $USERNAME \
+curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID/$ATTACHMENT?rev=$REV \
      -X PUT \
      -H "Content-Type: $ATTACHMENT_MIME_TYPE" \
      --data-binary @$ATTACHMENT_FILEPATH
@@ -45,16 +44,6 @@ fs.readFile($FILEPATH, function (err, data) {
 });
 ```
 
-> Example response:
-
-```json
-{
-  "id" : "FishStew",
-  "ok" : true,
-  "rev" : "9-247bb19a41bfd9bfdaf5ee6e2e05be74"
-}
-```
-
 To create a new attachment at the same time as creating a new document,
 include the attachment as an '[inline](#inline)' component of the JSON content.
 
@@ -65,7 +54,23 @@ The attachment's [content type][mime] must be specified using the `Content-Type`
 The `$ATTACHMENT` value is the name by which the attachment is associated with the document.
 
 <aside>You can create more than one attachment for a document;
-simply ensure that the `$ATTACHMENT` value for each attachment is unique with the document.</aside>
+simply ensure that the `$ATTACHMENT` value for each attachment is unique within the document.</aside>
+
+<div></div>
+
+###### h6
+
+> Example response:
+
+```json
+{
+  "id" : "FishStew",
+  "ok" : true,
+  "rev" : "9-247bb19a41bfd9bfdaf5ee6e2e05be74"
+}
+```
+
+The response contains the document ID and the new document revision. Note that attachments do not have their own revisions. Instead, updating or creating an attachment changes the revision of the document it is attached to.
 
 ### Read
 
@@ -123,6 +128,14 @@ db.attachment.destroy($DOCUMENT_ID, $FILENAME, $REV, function (err, body) {
 });
 ```
 
+To delete an attachment, make a DELETE request with the document's latest `_rev` to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID/$ATTACHMENT`.
+If you do not supply the latest `_rev`,
+the response is a [409 error](basics.html#http-status-codes).
+
+<div></div>
+
+###### h6
+
 > Example response:
 
 ```json
@@ -133,9 +146,7 @@ db.attachment.destroy($DOCUMENT_ID, $FILENAME, $REV, function (err, body) {
 }
 ```
 
-To delete an attachment, make a DELETE request with the document's latest `_rev` to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID/$ATTACHMENT`.
-If you do not supply the latest `_rev`,
-the response is a [409 error](basics.html#http-status-codes).
+If the deletion is successful, the response contains `"ok": true`, and the ID and new revision of the document.
 
 ### Inline
 
