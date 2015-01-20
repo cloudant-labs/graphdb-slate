@@ -40,9 +40,14 @@ $(function () {
   }
   
   function on_select(event, suggestion, dataset) {
-    console.log(event);
-    console.log(suggestion);
-    console.log(dataset);
+    console.log("onsubmit called");
+    var section_id = suggestion.id;
+    var index = section_id.indexOf('-');
+    var page = section_id.substring(0,index);
+    var fragment = section_id.substring(index+1);
+    var url = page + ".html#" + fragment;
+    console.log("url = " + url);
+    window.location.href = url;
   }
 
   $(query_input).typeahead(typeahead_opts, typeahead_data);
