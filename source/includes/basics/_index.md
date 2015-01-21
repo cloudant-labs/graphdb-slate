@@ -13,7 +13,7 @@ Consistency is one of the three attributes in the [CAP theorem](./guides.html#ca
 - Availability, which guarantees that every request receives a response about whether it succeeded or failed.
 - Partition tolerance, where the system continues to operate even if any one part of the system is lost or fails.
 
-In an eventually consistent model, like Cloudant, an update made to one part of the system is *eventually* seen by other parts of the system. As the update propagates, the system is said to 'converge' on complete consistency.
+The impossibility of guaranteeing all three attributes means that Cloudant does not guarantee the Consistency attribute. In an eventually consistent model, like Cloudant, an update made to one part of the system is *eventually* seen by other parts of the system. As the update propagates, the system is said to 'converge' on complete consistency.
 
 Eventual consistency is good for performance. With a strong consistency model, a system would have to wait for any updates to propagate completely and successfully before a write or update request could be completed. With an eventually consistent model, the write or update request can return almost immediately, while the propagation across the system continues 'behind the scenes'.
 
@@ -144,6 +144,7 @@ The use of `Accept` in queries to Cloudant is not required, but is highly recomm
 
 If you specify a data type using the `Accept` header, Cloudant will honor the specified type in the `Content-type` header field returned. For example, if you explicitly request `application/json` in the `Accept` of a request, the returned HTTP headers will use the value in the returned `Content-type` field.
 
+<div></div>
 #### If-None-Match
 
 This header can optionally be sent to find out whether a document has been modified since it was last read or updated. The value of the `If-None-Match` header should match the last `Etag` value received. If the value matches the current revision of the document, the server sends a `304 Not Modified` status code and the response will not have a body. If not, you should get a normal 200 response, provided the document still exists and no other errors occur.
@@ -184,11 +185,11 @@ A list of the error codes returned by Cloudant and generic descriptions of the r
 
 -   `201 - Created`
 
-    Resource created successfully.
+    Resource created or updated successfully. The resource could be a database or a document, for example.
 
 -   `202 - Accepted`
 
-    Request has been accepted, but the corresponding operation may not have completed. This is used for background operations, such as database compaction or for bulk operations where some updates might have led to a conflict.
+    Request has been accepted, but the corresponding operation may not have completed. This is used for background operations, such as database compaction or for bulk operations where some updates might have led to a conflict. This code can also be returned following an attempt to create or update a document.
 
 -   `304 - Not Modified`
 
@@ -343,8 +344,6 @@ Parsing JSON into a JavaScript object is supported through the `JSON.parse()` fu
 
 Cloudant Local provides you with the same basic capabilities as the full Cloudant single-tenant offering,
 but hosted within your own data center installation.
-The local nature means that some characteristics are distinctive to Cloudant Local.
-In particular, replication is only meaningful within your organizational installation, not to other external installations.
 
 A more detailed overview of Cloudant Local is <a href="http://www-01.ibm.com/support/knowledgecenter/SSTPQH_1.0.0/com.ibm.cloudant.local.install.doc/topics/clinstall_cloudant_local_overview.html?lang=en-us" target="_blank">available</a>.
 

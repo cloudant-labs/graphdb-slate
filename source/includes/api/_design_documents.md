@@ -180,7 +180,7 @@ peer | Request source IP address.
 query | URL query parameters object. Note that multiple keys are not supported and the last key value suppresses others.
 requested_path | List of actual requested path section.
 raw_path | Raw requested path string.
-secObj | The database's [security object](#reading-permissions)
+secObj | The database's [security object](#viewing-permissions)
 userCtx | Context about the currently authenticated user, specifically their `name` and `roles` within the current database.
 uuid | A generated UUID
 
@@ -429,7 +429,7 @@ Update validators get four arguments:
 * `newDoc`: the version of the document passed in the request.
 * `oldDoc`: the version of the document currently in the database, or `null` if there is none.
 * `userCtx`: context about the currently authenticated user, such as `name` and `roles`..
-* `secObj`: the database's [security object](#reading-permissions)
+* `secObj`: the database's [security object](#viewing-permissions)
 
 ### Retrieving information about a design document
 
