@@ -328,7 +328,7 @@ body, html {
     th,td {
       text-align: left;
       vertical-align: top;
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
     th {
@@ -363,7 +363,7 @@ body, html {
   }
 
   p, li, dt, dd {
-    line-height: 1.6;
+    line-height: 1.7;
     margin-top: 0;
   }
 
@@ -384,8 +384,8 @@ body, html {
     padding-bottom: 1em;
     margin-top: 1.5em;
     margin-bottom: 1.5em;
-    background: $aside-notice-bg;
-    line-height: 1.6;
+    background: $aside-notice-bg; 
+    line-height: 1.7;
     font-weight: 400;
     font-size: 16px;
     opacity: 0.5;
