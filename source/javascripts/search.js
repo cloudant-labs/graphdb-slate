@@ -24,7 +24,7 @@ $(function () {
   }
 
   function on_submit(event) {
-    $.get(query_url, { q: query + '*' }).done(function (response) {
+    $.get(query_url, { q: $(query_input).val() + '*' }).done(function (response) {
       var res = JSON.parse(response);
       if (res.total_rows > 0) {
         on_select(null, res.rows[0], null);
