@@ -24,7 +24,13 @@ $(function () {
   }
 
   function on_submit(event) {
-    console.log("onsubmit called");
+    $.get(query_url, { q: $(query_input).val() + '*' }).done(function (response) {
+      var res = JSON.parse(response);
+      if (res.total_rows > 0) {
+        on_select(null, res.rows[0], null);
+      }
+    });
+    /* console.log("onsubmit called");
     var section_id = $(query_input).val();
     var index = section_id.indexOf('-');
     var page = section_id.substring(0,index);
@@ -32,7 +38,7 @@ $(function () {
     var url = page + ".html#" + fragment;
     console.log("url = " + url);
     window.location.href = url;
-    /* $('html, body').animate({
+    $('html, body').animate({
         scrollTop: $(document.getElementById(section_id)).offset().top
     }, 200);
     */
