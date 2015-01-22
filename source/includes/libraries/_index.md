@@ -8,7 +8,6 @@ These include:
 - [Mobile](#mobile)
 - [Java](#java)
 - [Node.js](#node.js)
-- [Python](#python)
 
 A supported library is one where you can contact Cloudant if you encounter a specific, reproducible problem with the library.
 

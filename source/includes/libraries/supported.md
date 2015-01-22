@@ -100,34 +100,3 @@ as are details of <a target="_blank" href="https://cloudant.com/cloudant-sync-re
 </td>
 </tr>
 </table>
-
-### Python
-
-[Cloudant-Python](https://github.com/cloudant-labs/cloudant-python) is Cloudant's official Python library. Install it using pip:
-
-`pip install cloudant`
-
-<table>
-<tr>
-<th>Libraries and Frameworks</th>
-<th>Examples and Tutorials</th>
-</tr>
-<tr>
-<td>
-<ul>
-<li><a href="https://github.com/cloudant-labs/cloudant-python">Cloudant-Python</a> with <a href="https://github.com/cloudant-labs/cloudant-python">blog post</a></li>
-<li><a href="http://pythonhosted.org/CouchDB/">CouchDB</a></li>
-<li><a href="http://docs.python-requests.org/en/latest/">requests</a></li>
-<li><a href="http://couchdbkit.org/">couchdbkit</a></li>
-</ul>
-</td>
-<td>
-<ul>
-<li><a href="https://github.com/cloudant/haengematte/tree/master/python">CRUD</a> using requests.</li>
-<li><a href="https://cloudant.com/blog/using-python-with-cloudant/">Using Python with Cloudant</a></li>
-<li><a href="https://github.com/claudiusli/csv-import">csv-import</a> - script to import .csv files.</li>
-<li><a href="https://github.com/michaelbreslin/flaskr">flaskr</a> - Python Flask example application Flaskr using different data layers of Cloudant, Couchdbkit, sqlite, and json files.</li>
-</ul>
-</td>
-</tr>
-</table>
