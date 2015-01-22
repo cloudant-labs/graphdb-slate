@@ -40,6 +40,10 @@ body {
   display: block;
 }
 
+blockquote code.prettyprint {
+background-color: transparent;
+}
+
 .content {
   font-size: 12px;
 
