@@ -259,7 +259,7 @@ body, html {
   h1 {
     @extend %header-font;
     font-size: 22px;
-    font-weight: 300;
+    font-weight: 400;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     margin-top: 2em;
@@ -267,8 +267,8 @@ body, html {
   }
 
   h1 img {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
     margin-right: 10px;
     margin-bottom: -7px;
   }
