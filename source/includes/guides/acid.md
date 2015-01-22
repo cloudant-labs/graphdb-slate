@@ -2,7 +2,7 @@
 
 <div id="acid"></div>
 
-ACID is an acronym for [atomic](#acid_atomic), [consistent](#acid_consistent), [isolated](#acid_isolated), [durable](#acid_durable), simply a set of properties which guarantee that transactions with a database are processed and reported reliably. Cloudant is AcID: the “c” is lowercase because Cloudant is eventually consistent rather than strongly consistent.
+ACID is an acronym for [atomic](#acid_atomic), [consistent](#acid_consistent), [isolated](#acid_isolated), [durable](#acid_durable), simply a set of properties which guarantee that transactions with a database are processed and reported reliably. Cloudant is AcID: the “c” is lowercase because Cloudant is [eventually consistent](basics.html#consistency) rather than strongly consistent.
 
 ### Atomic
 
