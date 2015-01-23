@@ -121,7 +121,7 @@ a:hover {
 /*code transparent background */
 
 blockquote code.prettyprint {
-background-color: transparent;
+  background-color: transparent;
 }
 
 
