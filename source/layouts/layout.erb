@@ -82,11 +82,11 @@ under the License.
       
       <ul id="tocify-header0" class="tocify-header">
         <% [
-             ['index.html', 'Documentation Overview', 'index.html#documentation-overview'],
-             ['basics.html', 'Cloudant Basics', 'basics.html#cloudant-basics'],
+             ['index.html', 'Overview', 'index.html#-overview'],
+             ['basics.html', 'Cloudant Basics', 'basics.html#-cloudant-basics'],
              ['libraries.html', 'Client Libraries', 'libraries.html#client-libraries'],
-             ['api.html', 'API Reference', 'api.html#api-reference'],
-             ['guides.html', 'Guides', 'guides.html#guides']
+             ['api.html', 'API Reference', 'api.html#-api-reference'],
+             ['guides.html', 'Guides', 'guides.html#-guides']
            ].each { |page| %>
 		          <% if request.path != page[0] %>
 		            <li class="tocify-item" style="cursor: pointer;">
@@ -109,12 +109,13 @@ under the License.
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <%= yield %>
         <% if current_page.data.includes %>
           <% current_page.data.includes.each do |include| %>
             <%= partial "includes/#{include}" %>
           <% end %>
         <% end %>
+        <%= yield %>
+        <div style="height: 60px"> </div>
       </div>
       <div class="dark-box">
         <div id="lang-selector">

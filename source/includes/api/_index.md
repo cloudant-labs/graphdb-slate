@@ -1,5 +1,3 @@
-<div id="api-reference"></div>
-
 # ![alt tag](images/apireference_icon.png) API Reference
 
 The Cloudant API reference is intended to be a comprehensive and living catalog of Cloudant's capabilities. Contributions are welcome through [Cloudant Labs on GitHub](https://github.com/cloudant-labs/slate). The API reference content is built with [Slate](https://github.com/tripit/slate).

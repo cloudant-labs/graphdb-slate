@@ -1,6 +1,6 @@
 # ![alt tag](images/cloudantbasics_icon.png) Cloudant Basics
 
-If it's your first time here, scan this section before you scroll further. The sections on [Client Libraries](libraries.html#client-libraries), [API Reference](api.html#api-reference), and [Guides](guides.html#guides) assume you know basic things about Cloudant.
+If it's your first time here, scan this section before you scroll further. The sections on [Client Libraries](libraries.html#client-libraries), [API Reference](api.html#-api-reference), and [Guides](guides.html#-guides) assume you know basic things about Cloudant.
 
 <div id="consistency"></div>
 ## Consistency

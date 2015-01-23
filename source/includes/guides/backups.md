@@ -71,7 +71,7 @@ course any other http client will work.
 
 <div> </div>
 
-###### backup example create dbs
+#### backup example create dbs
 
 > Create the databases used in our example:
 
@@ -97,7 +97,7 @@ You create three databases, one original and two for backups.
 
 <div> </div>
 
-###### backup example create _replicator db
+#### backup example create _replicator db
 
 > Create the _replicator database
 
@@ -113,7 +113,7 @@ You create the \_replicator database, if it does not exist yet.
 
 <div> </div>
 
-###### backup example monday
+#### backup example monday
 
 > Monday's backup
 
@@ -140,7 +140,7 @@ everything from `original` to `backup-monday`.
 
 <div> </div>
 
-###### backup example tuesday
+#### backup example tuesday
 
 > Tuesday's backup - checkpoint ID
 
@@ -157,7 +157,7 @@ the checkpoint document. It is stored in the `_replication_id` field of the repl
 
 <div> </div>
 
-###### backup example recorded_seq
+#### backup example recorded_seq
 
 > Tuesday's backup - recorded_seq
 
@@ -173,7 +173,7 @@ Once you have that, you use it to get the `recorded_seq` value from the first el
 
 <div> </div>
 
-###### backup example incremental backup tuesday
+#### backup example incremental backup tuesday
 
 > Tuesday's backup - start replication
 
@@ -200,7 +200,7 @@ With the `recorded_seq` you can start the incremental backup for Tuesday.
 
 <div> </div>
 
-###### backup example restore monday
+#### backup example restore monday
 
 > Restore Monday's backup
 
@@ -231,7 +231,7 @@ backup-monday database.
 
 <div> </div>
 
-###### backup example restore tuesday
+#### backup example restore tuesday
 
 > Restore Tuesday's backup - latest changes first
 
@@ -338,7 +338,7 @@ create several databases, backup jobs will need to be created for each
 new database. Make sure that the replication jobs don't all start at the
 same time.
 
-## Need help?
+### Need help?
 
 Replication and backups can be a tricky topic, so if you're having any trouble, have a look at the <a href="http://docs.cloudant.com/guides/repl-index.html">replication guide</a>, talk to us on IRC (#cloudant on freenode), or email <a href="mailto:support@cloudant.com">support</a>.
 

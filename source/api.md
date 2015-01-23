@@ -37,3 +37,7 @@ includes:
 #  - api/errors
 
 ---
+
+Next: [Guides](guides.html#-guides)
+
+

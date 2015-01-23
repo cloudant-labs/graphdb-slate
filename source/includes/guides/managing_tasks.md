@@ -6,7 +6,7 @@ This guide tells you how to use the `_active_tasks` endpoint to monitor long-run
 The `curl` command is used to access the endpoint.
 The `jq` command-line JSON processor is used to process the JSON response.
 
-Since this is a task-focused tutorial, it covers only what is essential to accomplish this task. Please refer to the [API reference](api.html#api-reference) for a complete guide to the available options.
+Since this is a task-focused tutorial, it covers only what is essential to accomplish this task. Please refer to the [API reference](api.html#-api-reference) for a complete guide to the available options.
 
 ### curl and jq basics
 
@@ -20,7 +20,7 @@ To get all active tasks and format the output nicely, call your account using `c
 and pipe the output to `jq`.
 
 `jq` lets you filter a list of documents by their field values.
-This makes it easier to get all replication documents, or the details of just one particular view indexing task. The [API reference](api.html#api-reference) has more information about the options.
+This makes it easier to get all replication documents, or the details of just one particular view indexing task. The [API reference](api.html#-api-reference) has more information about the options.
 
 ### Monitoring view builds and search indexes
 

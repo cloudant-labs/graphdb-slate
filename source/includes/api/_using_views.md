@@ -226,28 +226,23 @@ You can reverse the order of the returned view information by setting the `desce
 
 ### Specifying Start and End Values
 
-> Example of filtering using `startkey` and `endkey` query arguments:
+> Example of querying using `startkey` and `endkey` query arguments:
 
 ```http
-GET /recipes/_design/recipes/_view/by_ingredient?startkey=%22carrots%22&endkey=%22egg%22 HTTP/1.1
+GET /recipes/_design/recipes/_view/by_ingredient?startkey=%22alpha%22&endkey=%22beta%22 HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 ```
 
-> Useful results would be returned, because "carrots" is alphabetically before "egg".
+> Reversing the order of start and end key will not yield any results:
 
 ```http
-```
-
-> Example of <i>incorrect</i> filtering and reversing the order of output using the `descending` query argument:
-
-```http
-GET /recipes/_design/recipes/_view/by_ingredient?descending=true&startkey=%22carrots%22&endkey=%22egg%22 HTTP/1.1
+GET /recipes/_design/recipes/_view/by_ingredient?descending=true&startkey=%22beta%22&endkey=%22alpha%22 HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 ```
 
-> The view request returns no entries, because "carrots" is alphabetically before "egg". The returned result is empty:
+> The view request returns no entries, because "alpha" is alphabetically before "beta". The returned result is empty:
 
 ```json
 {
@@ -255,14 +250,6 @@ Content-Type: application/json
    "rows" : [],
    "offset" : 21882
 }
-```
-
-> Example of <i>correct</i> filtering and reversing the order of output by using the `descending` query argument, and reversing the `startkey` and `endkey` query arguments:
-
-```http
-GET /recipes/_design/recipes/_view/by_ingredient?descending=true&startkey=%22egg%22&endkey=%22carrots%22 HTTP/1.1
-Accept: application/json
-Content-Type: application/json
 ```
 
 The `startkey` and `endkey` query arguments can be used to specify the range of values to be displayed when querying the view.
@@ -276,6 +263,18 @@ if you have a database that returns ten results when viewing with a `startkey` o
 you would get no results when reversing the order.
 The reason is that the entries in the view are reversed before the key filter is applied.
 Therefore the `endkey` of "beta" is seen before the `startkey` of "alpha", resulting in an empty list.
+
+<div></div>
+
+###### h6
+
+> Example of <i>correct</i> filtering and reversing the order of output by using the `descending` query argument, and reversing the `startkey` and `endkey` query arguments:
+
+```http
+GET /recipes/_design/recipes/_view/by_ingredient?descending=true&startkey=%22egg%22&endkey=%22carrots%22 HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+```
 
 The solution is to reverse not just the sort order,
 but also the `startkey` and `endkey` parameter values.
