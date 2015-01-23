@@ -45,5 +45,3 @@ You can write your server layer using whatever technologies work best
 for you. We keep a list of libraries for working with Cloudant here:
 [Developing on
 Cloudant](https://cloudant.com/for-developers/faq/development/).
-
-<div style="height: 1000px;" > </div>

@@ -25,5 +25,6 @@ includes:
   - guides/acid
   - guides/backups
   - guides/couchapps
+  - guides/cloudant-geo
 
 ---
