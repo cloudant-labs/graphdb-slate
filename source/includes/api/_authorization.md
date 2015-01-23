@@ -20,7 +20,7 @@ Role               | Description
 
 The credentials you use to log in to the dashboard automatically have `_admin` permissions to all databases you create. Everyone and everything else, from users you share databases with to API keys you create, must be given a permission level explicitly.
 
-### Reading Permissions
+### Viewing Permissions
 
 > Example request to determine permissions:
 
@@ -178,6 +178,8 @@ account.request({
   }
 });
 ```
+
+API keys allow you to give access to a person or application without having to create a new Cloudant account. An API key consists of a randomly generated username and password. The key is given the desired access permissions. Once generated, the API key can be used in the same way as a normal user account, for example by granting read, write, or admin access permissions. 
 
 To generate an API key, use `https://cloudant.com/api/generate_api_key`. The created API key has no permissions to anything by default, and must be given permissions explicitly.
 

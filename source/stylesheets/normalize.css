@@ -118,7 +118,11 @@ a:hover {
   color: #408cbc;
 }
 
+/*code transparent background */
 
+blockquote code.prettyprint {
+  background-color: transparent;
+}
 
 
 /* ==========================================================================
@@ -236,7 +240,7 @@ sub {
  */
 
 img {
-    border: 0;
+  border: 0;
 }
 
 /*
