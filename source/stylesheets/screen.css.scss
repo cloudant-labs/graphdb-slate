@@ -35,6 +35,36 @@ html, body {
   background-color: $main-bg;
 }
 
+
+////////////////////////////////////////////////////////////////////////////////
+// HEADER
+////////////////////////////////////////////////////////////////////////////////
+
+.main-header {
+  height: 50px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1024;
+  background: #0c161f;
+  box-shadow: 0 1px 3px #000;
+  
+  img {
+    display: inline-block;
+    margin: $logo-margin;
+    width: 150px;
+  }
+
+  .header-title {
+    font-weight: 400;
+    color: #58585b;
+    display: inline-block;
+    position: relative;
+    top: -12px;
+  }
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // TABLE OF CONTENTS
 ////////////////////////////////////////////////////////////////////////////////
@@ -43,7 +73,7 @@ html, body {
   overflow-y: auto;
   overflow-x: hidden;
   position: fixed;
-  top: 0;
+  top: 50px;
   left: 0;
   bottom: 0;
   width: $nav-width;
@@ -51,16 +81,9 @@ html, body {
   font-size: 18px;
   font-weight: 500;
 
-  // This is the logo at the top of the ToC
-  &>img {
-    display: block;
-    margin: $logo-margin;
-    width: 150px;
-  }
-
-  .tocify-item>a, .toc-footer li {
+  .tocify-item>a {
     padding: 0 $nav-padding 0 $nav-padding;
-    display:block;
+    display: block;
     overflow-x:hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -81,6 +104,14 @@ html, body {
     @include transition-property('background');
     @include transition-timing-function('linear');
     @include transition-duration(230ms);
+  }
+  
+  // Adjust top of first toc header for search box, and
+  // bottom of last header for footer
+  .first-header {
+    margin-top: 80px;
+    height: calc(100% - 166px);
+    overflow: scroll;
   }
   
   a, a:visited {
@@ -132,9 +163,13 @@ html, body {
   }
 
   .toc-footer {
+    position: fixed;
+    bottom: 0;
     padding: 1em 0;
-    margin-top: 1em;
-    border-top: 1px dashed $nav-footer-border-color;
+    width: $nav-width;
+    box-shadow: 0px 0px 8px -1px #222;
+    padding-left: 38px;
+    padding-top: 26px;
 
     li,a {
       color: $nav-text;
@@ -146,9 +181,23 @@ html, body {
     }
 
     li {
-      font-size: 0.8em;
-      line-height: 1.7;
       text-decoration: none;
+      display: inline-block;
+      padding: 0;
+      margin-left: 10px;
+    }
+  }
+  
+  // typeahead search box
+  #searchbox {
+    width: $nav-width;
+    margin: 0;
+    padding: 24px 0 28px 0;
+    position: fixed;
+    background-color: $nav-bg;
+    
+    form {
+     margin: 0;
     }
   }
 
@@ -165,6 +214,8 @@ html, body {
   position: relative;
   z-index: 10;
   background-color: $main-bg;
+  
+  top: 50px;
 
   padding-bottom: 1px; // prevent margin overflow
 
@@ -186,6 +237,7 @@ html, body {
     position: fixed;
     width: 100%;
     z-index: 50;
+    top: 50px;
     font-weight: 300;
     background-color: $lang-select-bg;
     border-bottom: 5px solid $lang-select-active-bg;
@@ -273,11 +325,8 @@ body, html {
     margin-bottom: -7px;
   }
 
-  // The header at the very top of the page
-  // shouldn't have top margin.
-  // (the div is because of tocify)
-  h1:first-child, div:first-child + h1 {
-    margin-top: 0;
+  h1:first-of-type {
+    margin-top: 12px;
   }
 
   h2 {
