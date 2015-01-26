@@ -69,8 +69,13 @@ under the License.
   </head>
 
   <body class="<%= page_classes %>">
-    <div class="tocify-wrapper">
+        
+    <div class="main-header">
       <%= image_tag "ibm_cloudant.png" %>
+      <div class="header-title">Documentation</div>
+    </div>
+    
+    <div class="tocify-wrapper">
       <div id="searchbox">
         <form>
           <input type="text" name="search" placeholder="Search">
@@ -80,7 +85,7 @@ under the License.
         </form>
       </div>
       
-      <ul id="tocify-header0" class="tocify-header">
+      <ul id="tocify-header0" class="tocify-header first-header">
         <% [
              ['index.html', 'Overview', 'index.html#-overview'],
              ['basics.html', 'Cloudant Basics', 'basics.html#-cloudant-basics'],
@@ -98,13 +103,13 @@ under the License.
         <% } %>
       </ul>
       
-      <% if current_page.data.toc_footers %>
       <ul class="toc-footer">
-        <% current_page.data.toc_footers.each do |footer| %>
-          <li><%= footer %></li>
-        <% end %>
+        <li><a href="https://cloudant.com/"><%= image_tag "cloudant_icon.png" %></a></li>
+        <li><a href="http://webchat.freenode.net/?channels=cloudant"><%= image_tag "irc_icon.png" %></a></li>
+        <li><a href="https://github.com/cloudant-labs/slate"><%= image_tag "github_icon.png" %></a></li>
+        <li><a href="http://stackoverflow.com/questions/tagged/cloudant"><%= image_tag "stackoverflow_icon.png" %></a></li>
+        <li><a href="mailto:support@cloudant.com"><%= image_tag "email_icon.png" %></a></li>
       </ul>
-      <% end %>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
