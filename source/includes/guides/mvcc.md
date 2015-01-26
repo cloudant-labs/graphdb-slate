@@ -35,6 +35,9 @@ To find conflicts, add the query parameter `conflicts=true` when retrieving a do
 
 To find conflicts for multiple documents in a database, write a view. To the right is a map function that emits all conflicting revisions for every document that has a conflict.
 
+
+> map function to find conflicts:
+
 ```
 function (doc) {
   if (doc._conflicts) {
@@ -56,6 +59,8 @@ Once you've found a conflict, you can resolve it in 4 steps.
 
 Let's look at an example of how this can be done. Suppose you have a database of products for an online shop. The first version of a document might look like this example on the right.
 
+> first revision of the document
+
 ```json
 {
   "_id": "74b2be56045bed0c8c9d24b939000dbe",
@@ -68,6 +73,8 @@ Let's look at an example of how this can be done. Suppose you have a database of
 
 As the document doesn't have a description yet, someone might add one.
 
+> second revision of the document
+
 ```json
 {
   "_id": "74b2be56045bed0c8c9d24b939000dbe",
@@ -79,6 +86,8 @@ As the document doesn't have a description yet, someone might add one.
 ```
 
 At the same time, someone else - working with a replicated database - reduces the price.
+
+> also second revision, conflicts with the previous one
 
 ```json
 {
@@ -99,6 +108,8 @@ You get the document with `conflicts=true` like this:
 `http://$USERNAME.cloudant.com/products/$_ID?conflicts=true`
 
 And get the following response:
+
+> example response showing conflicting revisions
 
 ```json
 {
@@ -133,6 +144,8 @@ Other conflict resolution strategies are:
 
 In this example, you produce the document to your right and update the database with it.
 
+> third revision, merging changes from the two conflicting second revisions
+
 ```json
 {
   "_id": "74b2be56045bed0c8c9d24b939000dbe",
@@ -146,6 +159,8 @@ In this example, you produce the document to your right and update the database 
 #### Delete old revisions
 
 Then to delete the old revisions, send a DELETE request to the URLs with the revisions we want to delete.
+
+> example requests to delete old revisions
 
 ```http
 DELETE http://$USERNAME.cloudant.com/products/$_ID?rev=2-61ae00e029d4f5edd2981841243ded13

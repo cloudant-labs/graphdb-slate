@@ -74,6 +74,8 @@ If the client (such as some web browsers) does not support using these HTTP meth
 
 ### Method not allowed error
 
+> error message
+
 ```json
 {
     "error":"method_not_allowed",
@@ -290,6 +292,8 @@ JSON supports the same basic types as supported by JavaScript:
 
 ### Numbers
 
+> numbers
+
 ```json
 123
 ```
@@ -297,6 +301,8 @@ JSON supports the same basic types as supported by JavaScript:
 Numbers can be integer or floating point values.
 
 ### Strings
+
+> strings
 
 ```json
 "A String"
@@ -306,6 +312,8 @@ String should be enclosed by double-quotes. Strings support Unicode characters a
 
 ### Booleans
 
+> booleans
+
 ```json
 { "value": true}
 ```
@@ -313,6 +321,8 @@ String should be enclosed by double-quotes. Strings support Unicode characters a
 A `true` or `false` value.
 
 ### Arrays
+
+> arrays
 
 ```json
 ["one", 2, "three", [], true, {"foo": "bar"}]
@@ -322,6 +332,8 @@ A list of values enclosed in square brackets. The values enclosed can be any val
 
 
 ### Objects
+
+> objects
 
 ```json
 {
