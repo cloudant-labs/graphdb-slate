@@ -31,7 +31,36 @@ under the License.
     <%= javascript_include_tag  "all" %>
 
     <script>
+   
       $(function() {
+      
+        function hideCode() {
+          $('pre').hide();
+          $('blockquote').hide();
+          $('.dark-box').hide();
+          $('#hideCodeButton').hide();
+          $('#showCodeButton').show();
+          var contentTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'p', 'table', 'ul', 'ol', 'aside', 'dl'];
+          for (var i in contentTags) {
+            $('.content ' + contentTags[i]).css('margin-right', '0');
+          }
+        };
+
+        function showCode() {
+          $('pre').show();
+          $('blockquote').show();
+          $('.dark-box').show();
+          $('#hideCodeButton').show();
+          $('#showCodeButton').hide();
+          var contentTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'p', 'table', 'ul', 'ol', 'aside', 'dl'];
+          for (var i in contentTags) {
+            $('.content ' + contentTags[i]).css('margin-right', '50%');
+          }
+        };
+
+        $('#hideCodeButton').click(hideCode);
+        $('#showCodeButton').click(showCode);
+        
         var toc = $("#toc").tocify({
           selectors: "h1,h2,h3",
           extendPage: false,
@@ -65,6 +94,7 @@ under the License.
           <% end %>
         ]);
       });
+      
     </script>
   </head>
 
@@ -114,6 +144,8 @@ under the License.
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
+        <button class="showHideButton" id="hideCodeButton" title="hide code column"> </button>
+        <button class="showHideButton" id="showCodeButton" title="show code column"> </button>
         <% if current_page.data.includes %>
           <% current_page.data.includes.each do |include| %>
             <%= partial "includes/#{include}" %>

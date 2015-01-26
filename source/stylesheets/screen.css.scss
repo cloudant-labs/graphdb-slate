@@ -557,7 +557,30 @@ body, html {
   }
 }
 
+.showHideButton {
+  position: fixed;
+  margin: 0;
+  margin-left: $nav-width / 2;
+  padding: 0;
+  background-color: transparent;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  z-index: 9999999;
+}
 
+#hideCodeButton {
+  left:50%;
+  color: #000;
+  background-image: url("../images/hide-code-button.png");
+}
+
+#showCodeButton {
+  color: #fff;
+  right: 0px;
+  display: none;
+  background-image: url("../images/show-code-button.png");
+}
 /////////////////////////////////////////////////////////////////////
 //THIRD COLUMN CODE COLORS 
 /////////////////////////////////////////////////////////////////////
