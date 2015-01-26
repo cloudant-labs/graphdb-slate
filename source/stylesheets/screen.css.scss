@@ -80,7 +80,13 @@ html, body {
   background-color: $nav-bg;
   font-size: 18px;
   font-weight: 500;
+  
+  .tocify-header {
+    overflow-y: auto;
+    overflow-x: hidden;
 
+  }
+  
   .tocify-item>a {
     padding: 0 $nav-padding 0 $nav-padding;
     display: block;
@@ -111,7 +117,6 @@ html, body {
   .first-header {
     margin-top: 80px;
     height: calc(100% - 166px);
-    overflow: scroll;
   }
   
   a, a:visited {
