@@ -1,6 +1,6 @@
 # ![alt tag](images/cloudantbasics_icon.png) Cloudant Basics
 
-If it's your first time here, scan this section before you scroll further. The sections on [Client Libraries](libraries.html#client-libraries), [API Reference](api.html#-api-reference), and [Guides](guides.html#-guides) assume you know basic things about Cloudant.
+If it's your first time here, scan this section before you scroll further. The sections on [Client Libraries](libraries.html#-client-libraries), [API Reference](api.html#-api-reference), and [Guides](guides.html#-guides) assume you know basic things about Cloudant.
 
 <div id="consistency"></div>
 ## Consistency
@@ -336,7 +336,7 @@ A set of key/value pairs, such as an associative array, or hash. The key must be
 
 In Cloudant databases, the JSON object is used to represent a variety of structures, including all documents in a database.
 
-Parsing JSON into a JavaScript object is supported through the `JSON.parse()` function in JavaScript, or through various [libraries](libraries.html#client-libraries) that perform the parsing of the content into a JavaScript object for you. [Libraries](libraries.html#client-libraries) for parsing and generating JSON are available for many major programming languages.
+Parsing JSON into a JavaScript object is supported through the `JSON.parse()` function in JavaScript, or through various [libraries](libraries.html#-client-libraries) that perform the parsing of the content into a JavaScript object for you. [Libraries](libraries.html#-client-libraries) for parsing and generating JSON are available for many major programming languages.
 
 ## Cloudant Local
 

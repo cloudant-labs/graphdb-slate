@@ -25,7 +25,7 @@ This is the online documentation for the [Cloudant database-as-a-service](https:
 ## Contents
 
  * [Cloudant Basics](basics.html#-cloudant-basics): If it’s your first time here, scan this section before you read further. It will tell you the most basic things you need to know about Cloudant. The rest of the documentation will assume you know these basics.
- * [Client Libraries](libraries.html#client-libraries): Client libraries are the tools that let you develop your own applications to work with Cloudant databases.
+ * [Client Libraries](libraries.html#-client-libraries): Client libraries are the tools that let you develop your own applications to work with Cloudant databases.
  * [Cloudant API reference](api.html#-api-reference): The API reference is intended to be a comprehensive and living catalog of Cloudant’s capabilities. Contributions are welcome through Cloudant Labs on GitHub. The API reference content is built with Slate.
  * [Guides](guides.html#-guides): These guides provide discussions about specific problems and use cases, as well as in-depth explorations of the important concepts behind the mechanics of a Cloudant database.
 
