@@ -37,19 +37,19 @@ under the License.
         function hideCode() {
           $('pre').hide();
           $('blockquote').hide();
-          $('.dark-box').hide();
+          $('.dark-box').css('width', '20px');
           $('#hideCodeButton').hide();
           $('#showCodeButton').show();
           var contentTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'p', 'table', 'ul', 'ol', 'aside', 'dl'];
           for (var i in contentTags) {
-            $('.content ' + contentTags[i]).css('margin-right', '0');
+            $('.content ' + contentTags[i]).css('margin-right', '20px');
           }
         };
 
         function showCode() {
           $('pre').show();
           $('blockquote').show();
-          $('.dark-box').show();
+          $('.dark-box').css('width', '50%');
           $('#hideCodeButton').show();
           $('#showCodeButton').hide();
           var contentTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'p', 'table', 'ul', 'ol', 'aside', 'dl'];
