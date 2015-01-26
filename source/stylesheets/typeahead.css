@@ -4,8 +4,9 @@
 }
 
 .tt-dropdown-menu {
+  color: $nav-text;
   padding: 16px;
-  background-color: #fff;
+  background-color: $nav-bg;
   border: 1px solid #000;
   margin-left: 40px;
 }
