@@ -2,6 +2,9 @@ $(function () {
   var search_box = '#searchbox form';
   var query_input = search_box + ' input[name="search"]';
   var query_url = '_search/docs';
+  if (window.location.host == 'docs.cloudant.com') { //different search url for production
+    query_url = '/root/_design/couchapp/_search/docs';
+  }
 
   var typeahead_opts = {
     minLength: 3,
