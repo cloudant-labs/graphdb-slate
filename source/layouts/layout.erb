@@ -33,8 +33,8 @@ under the License.
     <script>
    
       $(function() {
-      
         function hideCode() {
+          var location = window.location;
           $('pre').hide();
           $('blockquote').hide();
           $('.dark-box').css('width', '20px');
@@ -44,9 +44,12 @@ under the License.
           for (var i in contentTags) {
             $('.content ' + contentTags[i]).css('margin-right', '20px');
           }
+          window.location = location;
+          $(window).trigger('resize');
         };
 
         function showCode() {
+          var location = window.location;
           $('pre').show();
           $('blockquote').show();
           $('.dark-box').css('width', '50%');
@@ -56,6 +59,8 @@ under the License.
           for (var i in contentTags) {
             $('.content ' + contentTags[i]).css('margin-right', '50%');
           }
+          window.location = location;
+          $(window).trigger('resize');
         };
 
         $('#hideCodeButton').click(hideCode);
