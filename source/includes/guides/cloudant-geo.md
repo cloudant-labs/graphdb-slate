@@ -1,5 +1,4 @@
-Cloudant Geospatial
--------------------
+## Cloudant Geospatial
 
 Cloudant Geospatial, or 'Cloudant Geo', combines the advanced geospatial queries of a Geographic Information System (GIS) with the flexibility and scalability of Cloudant's database-as-a-service (DBaaS) capabilities.
 
@@ -47,8 +46,6 @@ A GeoJSON document is simply a JSON document containing three distinct key:value
 #### `type`
 
 This is a simple key:value pair. It must be present, and must contain the value `Feature`.
-
-This
 
 #### `geometry`
 
@@ -110,7 +107,6 @@ Within that design document, you create an object called `st_indexes` to hold on
   "language": "javascript",
   "st_indexes": {
     "geoidx": {
-  "analyzer": "standard",
   "index": "function(doc) {
       if (doc.geometry && doc.geometry.coordinates) {
         st_index(doc.geometry);
@@ -179,7 +175,7 @@ The valid `<query-parameters>` are as follows:
 </tr>
 <tr class="odd">
 <td align="left"><code>relation</code></td>
-<td align="left">Used in a query. Specify a geometric relationship. Requires a geometry value <code>g</code>.</td>
+<td align="left">Used in a query. Specify a geometric relationship. Used in conjunction with <code>ellipse</code>, <code>g</code>, or <code>radius</code> parameters.</td>
 </tr>
 <tr class="even">
 <td align="left"><code>stale=ok</code></td>
