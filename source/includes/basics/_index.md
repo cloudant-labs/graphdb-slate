@@ -2,49 +2,16 @@
 
 If it's your first time here, scan this section before you scroll further. The sections on [Client Libraries](libraries.html#-client-libraries), [API Reference](api.html#-api-reference), and [Guides](guides.html#-guides) assume you know basic things about Cloudant.
 
-<div id="consistency"></div>
-## Consistency
-
-Cloudant uses an '[Eventually Consistent](http://en.wikipedia.org/wiki/Eventual_consistency)' model. To understand how this works, and why it is an essential part of using Cloudant, we must first consider what is meant by Consistency.
-
-Consistency is one of the three attributes in the [CAP theorem](./guides.html#cap_theorem), which states that it is not possible for a distributed computer system - such as Cloudant - to simultaneously guarantee three attributes:
-
-- Consistency, where all nodes see the same data at the same time.
-- Availability, which guarantees that every request receives a response about whether it succeeded or failed.
-- Partition tolerance, where the system continues to operate even if any one part of the system is lost or fails.
-
-The impossibility of guaranteeing all three attributes means that Cloudant does not guarantee the Consistency attribute. In an eventually consistent model, like Cloudant, an update made to one part of the system is *eventually* seen by other parts of the system. As the update propagates, the system is said to 'converge' on complete consistency.
-
-Eventual consistency is good for performance. With a strong consistency model, a system would have to wait for any updates to propagate completely and successfully before a write or update request could be completed. With an eventually consistent model, the write or update request can return almost immediately, while the propagation across the system continues 'behind the scenes'.
-
-
-<div id="json"></div>
-## JSON
-Cloudant stores documents using JSON (JavaScript Object Notion) encoding, so anything encoded into JSON can be stored as a document. Files like images, videos, and audio are called BLObs (binary large objects) and can be stored as attachments within documents.
-
-More information about JSON can be found in the [Guides](guides.html#json).
+<div id="dbaas"></div>
+## Database as a Service
+As a hosted and managed database-as-a-service (DBaaS), Cloudant provides an [HTTP API](#http_api) to your [JSON](#json) data, and 24-hour operational support and maintenance.
+Cloudant is based on [Apache CouchDB](http://couchdb.apache.org/), and is delivered as a multi-tenant, dedicated, and installed service.
 
 <div id="http_api"></div>
 ## HTTP API
 All requests to Cloudant go over the web, which means any system that can speak to the web, can speak to Cloudant. All language-specific libraries for Cloudant are really just wrappers that provide some convenience and linguistic niceties to help you work with a simple API. Many users even choose to use raw HTTP libraries for working with Cloudant.
 
-<div id="distributed"></div>
-## Distributed
-Cloudant's API enables you to interact with a collaboration of numerous machines, called a cluster. The machines in a cluster must be in the same datacenter, but can be within different 'pods' in that datacenter. Using different pods helps improve the High Availability characteristics of Cloudant.
-
-An advantage of clustering is that when you need more computing capacity, you just add more machines. This is often more cost-effective and fault-tolerant than scaling up or enhancing an existing single machine.
-
-<div id="replication"></div>
-## Replication
-
-[Replication](api.html#ReplicationAPI) is a procedure followed by Cloudant, [CouchDB](http://couchdb.apache.org/), [PouchDB](http://pouchdb.com/), and others. It synchronizes the state of two databases so that their contents are identical.
-
-You can continuously replicate. This means that a target database updates every time the source database changes. Testing for source changes involves ongoing internal calls.
-Continuous replication can be used for backups of data, aggregation across multiple databases, or for sharing data.
-
-<aside class="warning">Continuous replication can result in a large number of internal calls. This might affect costs for multi-tenant users of Cloudant systems. Continuous replication is disabled by default.</aside>
-
-## Request Methods
+### Request Methods
 
 Cloudant supports the following HTTP request methods:
 
@@ -86,6 +53,30 @@ If the client (such as some web browsers) does not support using these HTTP meth
 ```
 
 If you use an unsupported HTTP request type with a URL that does not support the specified type, a 405 error will be returned, listing the supported HTTP methods. For example:
+
+<div id="jsonbasics"></div>
+## JSON
+Cloudant stores documents using JSON (JavaScript Object Notion) encoding, so anything encoded into JSON can be stored as a document. Files like images, videos, and audio are called BLObs (binary large objects) and can be stored as attachments within documents.
+
+More information about JSON can be found in the [Guides](guides.html#json).
+
+<div id="distributed"></div>
+## Distributed
+Cloudant's API enables you to interact with a collaboration of numerous machines, called a cluster. The machines in a cluster must be in the same datacenter, but can be within different 'pods' in that datacenter. Using different pods helps improve the High Availability characteristics of Cloudant.
+
+An advantage of clustering is that when you need more computing capacity, you just add more machines. This is often more cost-effective and fault-tolerant than scaling up or enhancing an existing single machine.
+
+For more information about Cloudant and distributed system concepts, see the [CAP Theorem](guides.html#cap-theorem) guide. 
+
+<div id="replication"></div>
+## Replication
+
+[Replication](api.html#ReplicationAPI) is a procedure followed by Cloudant, [CouchDB](http://couchdb.apache.org/), [PouchDB](http://pouchdb.com/), and others. It synchronizes the state of two databases so that their contents are identical.
+
+You can continuously replicate. This means that a target database updates every time the source database changes. Testing for source changes involves ongoing internal calls.
+Continuous replication can be used for backups of data, aggregation across multiple databases, or for sharing data.
+
+<aside class="warning">Continuous replication can result in a large number of internal calls. This might affect costs for multi-tenant users of Cloudant systems. Continuous replication is disabled by default.</aside>
 
 ## HTTP Headers
 
