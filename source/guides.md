@@ -18,6 +18,7 @@ toc_footers:
 
 includes:
   - guides/index
+  - guides/json
   - guides/managing_tasks
   - guides/mvcc
   - guides/transactions
