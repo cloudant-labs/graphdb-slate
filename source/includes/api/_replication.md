@@ -177,7 +177,7 @@ curl -X DELETE https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/_replicator/re
 
 To cancel a replication, simply [delete its replication document](#document-delete) from the `_replicator` database.
 
-If the replication is in an [`error` state](#replication-status), the replicator makes repeated attempts to achieve a successful replication. A consequence is that the replication document is updated with each attempt. This also changes the document revision value. Therefore, you should get the revision value immediately before deleting the document, otherwise you might get an [HTTP 409 "document update conflict"](./basics.html#409) response.
+If the replication is in an [`error` state](#replication-status), the replicator makes repeated attempts to achieve a successful replication. A consequence is that the replication document is updated with each attempt. This also changes the document revision value. Therefore, you should get the revision value immediately before deleting the document, otherwise you might get an [HTTP 409 "document update conflict"](api.html#409) response.
 
 ### The /\_replicate endpoint
 
