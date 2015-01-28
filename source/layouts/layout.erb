@@ -42,7 +42,7 @@ under the License.
           $('#showCodeButton').show();
           var contentTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'p', 'table', 'ul', 'ol', 'aside', 'dl'];
           for (var i in contentTags) {
-            $('.content ' + contentTags[i]).css('margin-right', '20px');
+            $('.content > ' + contentTags[i]).css('margin-right', '20px');
           }
           window.location = location;
           $(window).trigger('resize');
@@ -57,7 +57,7 @@ under the License.
           $('#showCodeButton').hide();
           var contentTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'p', 'table', 'ul', 'ol', 'aside', 'dl'];
           for (var i in contentTags) {
-            $('.content ' + contentTags[i]).css('margin-right', '50%');
+            $('.content > ' + contentTags[i]).css('margin-right', '50%');
           }
           window.location = location;
           $(window).trigger('resize');
