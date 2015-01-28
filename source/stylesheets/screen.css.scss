@@ -500,19 +500,11 @@ body, html {
     top: -1em;
     background-color: $code-annotation-bg;
     color: #fff;
-
-<<<<<<< HEAD
-    padding: 20px 40px;
-    margin: 0 0 0 0;
-=======
     padding: 0.5em $main-padding;
     margin: 0;
->>>>>>> b632399446f611054bdfa4c277d2dca54e586838
     width: $examples-width;
-
     float:right;
     clear:right;
-
     @include box-sizing(border-box);
     @include text-shadow(none);
 
