@@ -16,6 +16,7 @@ toc_footers:
 
 includes:
   - api/index
+  - api/http
   - api/account
   - api/authentication
   - api/authorization

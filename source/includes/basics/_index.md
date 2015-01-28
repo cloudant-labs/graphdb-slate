@@ -11,7 +11,7 @@ Cloudant is based on [Apache CouchDB](http://couchdb.apache.org/), and is delive
 ## HTTP API
 All requests to Cloudant go over the web, which means any system that can speak to the web, can speak to Cloudant. All language-specific libraries for Cloudant are really just wrappers that provide some convenience and linguistic niceties to help you work with a simple API. Many users even choose to use raw HTTP libraries for working with Cloudant.
 
-### Request Methods
+Specific details about how Cloudant uses HTTP is provided in the [HTTP topic of the API Reference](api.html#http).
 
 Cloudant supports the following HTTP request methods:
 
@@ -52,7 +52,7 @@ If the client (such as some web browsers) does not support using these HTTP meth
 }
 ```
 
-If you use an unsupported HTTP request type with a URL that does not support the specified type, a 405 error is returned, listing the supported HTTP methods, as shown in the example.
+If you use an unsupported HTTP request type with a URL that does not support the specified type, a [405](api.html#405) error is returned, listing the supported HTTP methods, as shown in the example.
 
 <div id="jsonbasics"></div>
 ## JSON

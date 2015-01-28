@@ -10,11 +10,11 @@ Where possible, you should be as specific as possible.
 
 #### Request headers
 
-##### Content-Type
+The supported HTTP request headers include:
 
-Specifies the content type of the information being supplied within the request. The specification uses MIME type specifications. For the majority of requests this will be JSON (`application/json`). For some settings the MIME type will be plain text. When uploading attachments it should be the corresponding MIME type for the attachment or binary (`application/octet-stream`).
-
-The use of the `Content-type` on a request is highly recommended.
+*	[`Accept`](#accept)
+*	[`Content-Type`](#content-type)
+*	[`If-None-Match`](#if-none-match)
 
 ##### Accept
 
@@ -26,7 +26,7 @@ Host: username.cloudant.com
 Accept: */*
 ```
 
-> The returned headers are:
+> The returned headers are similar to the following. Note that the returned content type is `text/plain` even though the information returned by the request is in JSON format:
 
 ```
 Server: CouchDB/1.0.2 (Erlang OTP/R14B)
@@ -36,7 +36,11 @@ Content-Length: 227
 Cache-Control: must-revalidate
 ```
 
-> Note that the returned content type is `text/plain` even though the information returned by the request is in JSON format.
+Specifies the list of accepted data types to be returned by the server (i.e. that are accepted/understandable by the client). The format should be a list of one or more MIME types, separated by colons.
+
+For the majority of requests the definition should be for JSON data (`application/json`). For attachments you can either specify the MIME type explicitly, or use `*/*` to specify that all file types are supported. If the `Accept` header is not supplied, then the `*/*` MIME type is assumed (i.e. client accepts all formats).
+
+<div></div>
 
 > Explicitly specifying the `Accept` header:
 
@@ -56,15 +60,17 @@ Content-Length: 227
 Cache-Control: must-revalidate
 ```
 
-Specifies the list of accepted data types to be returned by the server (i.e. that are accepted/understandable by the client). The format should be a list of one or more MIME types, separated by colons.
-
-For the majority of requests the definition should be for JSON data (`application/json`). For attachments you can either specify the MIME type explicitly, or use `*/*` to specify that all file types are supported. If the `Accept` header is not supplied, then the `*/*` MIME type is assumed (i.e. client accepts all formats).
-
 The use of `Accept` in queries to Cloudant is not required, but is highly recommended as it helps to ensure that the data returned can be processed by the client.
 
 If you specify a data type using the `Accept` header, Cloudant will honor the specified type in the `Content-type` header field returned. For example, if you explicitly request `application/json` in the `Accept` of a request, the returned HTTP headers will use the value in the returned `Content-type` field.
 
 <div></div>
+##### Content-Type
+
+Specifies the content type of the information being supplied within the request. The specification uses MIME type specifications. For the majority of requests this is JSON (`application/json`). For some settings the MIME type is plain text. When uploading attachments it should be the corresponding MIME type for the attachment or binary (`application/octet-stream`).
+
+The use of the `Content-type` on a request is highly recommended.
+
 ##### If-None-Match
 
 This header can optionally be sent to find out whether a document has been modified since it was last read or updated. The value of the `If-None-Match` header should match the last `Etag` value received. If the value matches the current revision of the document, the server sends a `304 Not Modified` status code and the response will not have a body. If not, you should get a normal 200 response, provided the document still exists and no other errors occur.
@@ -73,11 +79,14 @@ This header can optionally be sent to find out whether a document has been modif
 
 Response headers are returned by the server when sending back content and include a number of different header fields, many of which are standard HTTP response header and have no significance to how Cloudant operates. The list of response headers important to Cloudant are listed below.
 
+The supported HTTP response headers include:
+
+*	[`Cache-Control`](#cache-control)
+*	[`Content-Length`](#content-length)
+*	[`Content-Type`](#content-type-response)
+*	[`Etag`](#etag)
+
 The Cloudant design document API and the functions when returning HTML (for example as part of a show or list) enable you to include custom HTTP headers through the `headers` field of the return object.
-
-##### Content-Type
-
-Specifies the MIME type of the returned data. For most request, the returned MIME type is `text/plain`. All text is encoded in Unicode (UTF-8), and this is explicitly stated in the returned `Content-type`, as `text/plain;charset=utf-8`.
 
 ##### Cache-Control
 
@@ -87,9 +96,14 @@ The cache control HTTP response header provides a suggestion for client caching 
 
 The length (in bytes) of the returned content.
 
+<div id="content-type-response"></div>
+##### Content-Type
+
+Specifies the MIME type of the returned data. For most request, the returned MIME type is `text/plain`. All text is encoded in Unicode (UTF-8), and this is explicitly stated in the returned `Content-type`, as `text/plain;charset=utf-8`.
+
 ##### Etag
 
-The `Etag` HTTP header field is used to show the revision for a document or the response from a show function. For documents, the value is identical to the revision of the document. The value can be used with an `If-None-Match` request header to get a `304 Not Modified` response if the revision is still current.
+The `Etag` HTTP header field is used to show the revision for a document or the response from a show function. For documents, the value is identical to the revision of the document. The value can be used with an `If-None-Match` request header to get a [`304 Not Modified`](#304) response if the revision is still current.
 
 ETags cannot currently be used with views or lists, since the ETags returned from those requests are just random numbers that change on every request.
 
@@ -110,6 +124,8 @@ A list of the error codes returned by Cloudant and generic descriptions of the r
 -   `202 - Accepted`
 
     Request has been accepted, but the corresponding operation may not have completed. This is used for background operations, such as database compaction or for bulk operations where some updates might have led to a conflict. This code can also be returned following an attempt to create or update a document.
+
+<div id="304"></div>
 
 -   `304 - Not Modified`
 
