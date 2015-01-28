@@ -93,6 +93,7 @@ html, body {
     overflow-x:hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    cursor: pointer;
   }
 
   // The Table of Contents is composed of multiple nested
@@ -173,7 +174,7 @@ html, body {
     padding: 1em 0;
     width: $nav-width;
     box-shadow: 0px 0px 8px -1px #222;
-    padding-left: 38px;
+    padding-left: 30px;
     padding-top: 26px;
 
     li,a {
@@ -189,7 +190,7 @@ html, body {
       text-decoration: none;
       display: inline-block;
       padding: 0;
-      margin-left: 10px;
+      margin-left: 8px;
     }
   }
   
@@ -197,12 +198,20 @@ html, body {
   #searchbox {
     width: $nav-width;
     margin: 0;
-    padding: 24px 0 28px 0;
+    padding: 28px 0 28px 0;
     position: fixed;
     background-color: $nav-bg;
     
     form {
-     margin: 0;
+      margin: 0;
+      
+      input {
+        width: 140px;
+      }
+      button {
+        margin-left: -5px;
+        height: 34px;
+      }
     }
   }
 
@@ -300,6 +309,7 @@ body, html {
   position: relative;
   z-index: 30;
   min-height: 100%;
+  padding-bottom: 60px;
 
   &>h1, &>h2, &>h3, &>h4, &>p, &>table, &>ul, &>ol, &>aside, &>dl {
     margin-right: $examples-width;
@@ -327,16 +337,16 @@ body, html {
     margin-top: 2em;
     margin-bottom: $h1-margin-bottom;
   }
+  
+  h1:first-of-type {
+    margin-top: 12px;
+  }
 
   h1 img {
     width: 30px;
     height: 30px;
     margin-right: 10px;
     margin-bottom: -7px;
-  }
-
-  h1:first-of-type {
-    margin-top: 12px;
   }
 
   h2 {

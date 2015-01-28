@@ -102,7 +102,7 @@
 
             // **highlightOffset**: Accepts a number
             // The offset distance in pixels to trigger the next active table of contents item
-            highlightOffset: 40,
+            highlightOffset: 0,
 
             // **theme**: Accepts a string: "bootstrap", "jqueryui", or "none"
             // Determines if Twitter Bootstrap, jQueryUI, or Tocify classes should be added to the table of contents
@@ -114,7 +114,7 @@
 
             // **extendPageOffset**: Accepts a number: pixels
             // How close to the bottom of the page a user must scroll before the page is extended
-            extendPageOffset: 100,
+            extendPageOffset: 0,
 
             // **history**: Accepts a boolean: true or false
             // Adds a hash to the page url to maintain history

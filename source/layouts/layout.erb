@@ -76,7 +76,7 @@ under the License.
           ignoreSelector: ".toc-ignore",
           hashGenerator: 'pretty',
           highlightOffset: 60,
-          scrollTo: 48,
+          scrollTo: 64,
           scrollHistory: true,
           hashGenerator: function(text, element) {
             return element[0].getAttribute('id');
@@ -129,7 +129,7 @@ under the License.
              ['guides.html', 'Guides', 'guides.html#-guides']
            ].each { |page| %>
 		          <% if request.path != page[0] %>
-		            <li class="tocify-item" style="cursor: pointer;">
+		            <li class="tocify-item">
 				          <a href="<%=page[2]%>"><%=page[1]%></a>
 				        </li>
 		          <% else %>
@@ -157,7 +157,7 @@ under the License.
           <% end %>
         <% end %>
         <%= yield %>
-        <div style="height: 60px"> </div>
+        
       </div>
       <div class="dark-box">
         <div id="lang-selector">
