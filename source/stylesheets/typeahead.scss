@@ -1,13 +1,17 @@
+@charset "utf-8";
+@import 'variables';
+
 .typeahead-wrapper {
   display: block;
   margin: 50px 0;
 }
 
 .tt-dropdown-menu {
-  margin-left: 40px;
+  color: $nav-text;
   padding: 16px;
-  background-color: #fff;
+  background-color: $nav-bg;
   border: 1px solid #000;
+  margin-left: 40px;
 }
 
 .tt-suggestion.tt-cursor {

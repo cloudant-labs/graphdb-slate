@@ -1,13 +1,19 @@
 ##CAP Theorem
 
 <div id="cap_theorem"></div>
+<div id="consistency"></div>
 
-The CAP (**C**onsistency, **A**vailability, and **P**artition tolerance) theorem states that a distributed computing system can only exhibit two of the three following characteristics:
+Cloudant uses an '[Eventually Consistent](http://en.wikipedia.org/wiki/Eventual_consistency)' model. To understand how this works, and why it is an essential part of using Cloudant, we must first consider what is meant by Consistency.
 
--   Consistency: all nodes see the same data at the same time.
--   Availability: every request receives a response indicating success or failure.
--   Partition Tolerance: the system continues to operate despite arbitrary message loss or failure of part of the system.
+Consistency is one of the three attributes in the CAP (**C**onsistency, **A**vailability, and **P**artition tolerance) theorem, which states that it is not possible for a distributed computer system - such as Cloudant - to simultaneously guarantee three attributes:
 
+- Consistency, where all nodes see the same data at the same time.
+- Availability, which guarantees that every request receives a response about whether it succeeded or failed.
+- Partition tolerance, where the system continues to operate even if any one part of the system is lost or fails.
+
+The impossibility of guaranteeing all three attributes means that Cloudant does not guarantee the Consistency attribute. In an eventually consistent model, like Cloudant, an update made to one part of the system is *eventually* seen by other parts of the system. As the update propagates, the system is said to 'converge' on complete consistency.
+
+Eventual consistency is good for performance. With a strong consistency model, a system would have to wait for any updates to propagate completely and successfully before a write or update request could be completed. With an eventually consistent model, the write or update request can return almost immediately, while the propagation across the system continues 'behind the scenes'.
 
 A database can only exhibit two of these three for both theoretical and practical reasons. A database prioritizing consistency and availability is simple: a single node storing a single copy of your data. But this is difficult to scale as you must upgrade the node to get more performance, rather than leverage additional nodes. And, even a minor system failure can shut down a single-node system, while any message loss will mean significant data loss. To endure, the system must become more sophisticated.
 

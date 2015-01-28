@@ -31,7 +31,41 @@ under the License.
     <%= javascript_include_tag  "all" %>
 
     <script>
+   
       $(function() {
+        function hideCode() {
+          var location = window.location;
+          $('pre').hide();
+          $('blockquote').hide();
+          $('.dark-box').css('width', '20px');
+          $('#hideCodeButton').hide();
+          $('#showCodeButton').show();
+          var contentTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'p', 'table', 'ul', 'ol', 'aside', 'dl'];
+          for (var i in contentTags) {
+            $('.content > ' + contentTags[i]).css('margin-right', '20px');
+          }
+          window.location = location;
+          $(window).trigger('resize');
+        };
+
+        function showCode() {
+          var location = window.location;
+          $('pre').show();
+          $('blockquote').show();
+          $('.dark-box').css('width', '50%');
+          $('#hideCodeButton').show();
+          $('#showCodeButton').hide();
+          var contentTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'p', 'table', 'ul', 'ol', 'aside', 'dl'];
+          for (var i in contentTags) {
+            $('.content > ' + contentTags[i]).css('margin-right', '50%');
+          }
+          window.location = location;
+          $(window).trigger('resize');
+        };
+
+        $('#hideCodeButton').click(hideCode);
+        $('#showCodeButton').click(showCode);
+        
         var toc = $("#toc").tocify({
           selectors: "h1,h2,h3",
           extendPage: false,
@@ -42,7 +76,7 @@ under the License.
           ignoreSelector: ".toc-ignore",
           hashGenerator: 'pretty',
           highlightOffset: 60,
-          scrollTo: -2,
+          scrollTo: 48,
           scrollHistory: true,
           hashGenerator: function(text, element) {
             return element[0].getAttribute('id');
@@ -65,12 +99,18 @@ under the License.
           <% end %>
         ]);
       });
+      
     </script>
   </head>
 
   <body class="<%= page_classes %>">
-    <div class="tocify-wrapper">
+        
+    <div class="main-header">
       <%= image_tag "ibm_cloudant.png" %>
+      <div class="header-title">Documentation</div>
+    </div>
+    
+    <div class="tocify-wrapper">
       <div id="searchbox">
         <form>
           <input type="text" name="search" placeholder="Search">
@@ -80,11 +120,11 @@ under the License.
         </form>
       </div>
       
-      <ul id="tocify-header0" class="tocify-header">
+      <ul id="tocify-header0" class="tocify-header first-header">
         <% [
              ['index.html', 'Overview', 'index.html#-overview'],
              ['basics.html', 'Cloudant Basics', 'basics.html#-cloudant-basics'],
-             ['libraries.html', 'Client Libraries', 'libraries.html#client-libraries'],
+             ['libraries.html', 'Client Libraries', 'libraries.html#-client-libraries'],
              ['api.html', 'API Reference', 'api.html#-api-reference'],
              ['guides.html', 'Guides', 'guides.html#-guides']
            ].each { |page| %>
@@ -98,17 +138,17 @@ under the License.
         <% } %>
       </ul>
       
-      <% if current_page.data.toc_footers %>
       <ul class="toc-footer">
-        <% current_page.data.toc_footers.each do |footer| %>
-          <li><%= footer %></li>
-        <% end %>
+        <li><a href="https://cloudant.com/"><%= image_tag "cloudant_icon.png" %></a></li>
+        <li><a href="https://github.com/cloudant-labs/slate"><%= image_tag "github_icon.png" %></a></li>
+        <li><a href="http://stackoverflow.com/questions/tagged/cloudant"><%= image_tag "stackoverflow_icon.png" %></a></li>
       </ul>
-      <% end %>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
+        <button class="showHideButton" id="hideCodeButton" title="hide code column"> </button>
+        <button class="showHideButton" id="showCodeButton" title="show code column"> </button>
         <% if current_page.data.includes %>
           <% current_page.data.includes.each do |include| %>
             <%= partial "includes/#{include}" %>

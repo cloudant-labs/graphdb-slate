@@ -224,7 +224,7 @@ Objects (according to the values of keys, in key order using the order given in 
 
 You can reverse the order of the returned view information by setting the `descending` query value <code>true</code>.
 
-### Specifying Start and End Values
+### Specifying Start and End Keys
 
 > Example of querying using `startkey` and `endkey` query arguments:
 
@@ -234,6 +234,16 @@ Accept: application/json
 Content-Type: application/json
 ```
 
+The `startkey` and `endkey` query arguments can be used to specify the range of values to be displayed when querying the view.
+
+The sort direction is always applied first.
+Next, filtering is applied using the `startkey` and `endkey` query arguments.
+This means that it is possible to have empty view results because the sorting and filtering do not make sense in combination.
+
+<div></div>
+
+###### h6
+
 > Reversing the order of start and end key will not yield any results:
 
 ```http
@@ -241,6 +251,15 @@ GET /recipes/_design/recipes/_view/by_ingredient?descending=true&startkey=%22bet
 Accept: application/json
 Content-Type: application/json
 ```
+
+For example,
+if you have a database that returns ten results when viewing with a `startkey` of "alpha" and an `endkey` of "beta",
+you would get no results when reversing the order.
+The reason is that the entries in the view are reversed before the key filter is applied.
+
+<div></div>
+
+###### h6
 
 > The view request returns no entries, because "alpha" is alphabetically before "beta". The returned result is empty:
 
@@ -252,16 +271,6 @@ Content-Type: application/json
 }
 ```
 
-The `startkey` and `endkey` query arguments can be used to specify the range of values to be displayed when querying the view.
-
-The sort direction is always applied first.
-Next, filtering is applied using the `startkey` and `endkey` query arguments.
-This means that it is possible to have empty view results because the sorting and filtering do not make sense in combination.
-
-For example,
-if you have a database that returns ten results when viewing with a `startkey` of "alpha" and an `endkey` of "beta",
-you would get no results when reversing the order.
-The reason is that the entries in the view are reversed before the key filter is applied.
 Therefore the `endkey` of "beta" is seen before the `startkey` of "alpha", resulting in an empty list.
 
 <div></div>
@@ -284,18 +293,36 @@ but also the `startkey` and `endkey` parameter values.
 > Example request to return all recipes, where the key for the view matches either "clear apple juice" or "lemonade":
 
 ```http
-POST /recipes/_design/recipes/_view/by_ingredient HTTP/1.1
+POST /$DB/_design/$DDOC/_view/$VIEWNAME HTTP/1.1
 Content-Type: application/json
+```
 
+```shell
+curl -X POST "https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/$DB/_design/$DDOC/_view/$VIEWNAME" -d @request.json
+```
+
+```json
 {
    "keys" : [
-      "clear apple juice",
-      "lemonade"
+      "some-key",
+      "some-other-key"
    ]
 }
 ```
 
-> Example returned view data, containing the standard view information, but only where the keys match:
+This method of requesting information from a database executes the specified `view-name` from the specified `design-doc` design document. However,
+unlike using [`GET`](#querying-a-view) to access views,
+the `POST` method allows you to specify the keys to use when retrieving the view results.
+In all other aspects,
+the `POST` method is identical to the [`GET`](#querying-a-view) API request.
+
+<div></div>
+
+###### h6
+
+The response contains the standard view information, but only where the keys match:
+
+> Example returned view data
 
 ```json
 {
@@ -319,17 +346,6 @@ Content-Type: application/json
    "offset" : 6324
 }
 ```
-
--   **Method**: `POST /db/_design/design-doc/_view/view-name`
--   **Request**: List of keys to be returned from specified view
--   **Response**: JSON of the documents returned by the view
--   **Roles permitted**: \_reader
-
-This method of requesting information from a database executes the specified `view-name` from the specified `design-doc` design document. However,
-unlike using [`GET`](#querying-a-view) to access views,
-the `POST` method allows you to specify the keys to use when retrieving the view results.
-In all other aspects,
-the `POST` method is identical to the [`GET`](#querying-a-view) API request.
 
 ### Multi-document Fetching
 

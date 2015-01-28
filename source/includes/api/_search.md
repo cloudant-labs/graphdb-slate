@@ -133,23 +133,6 @@ classic | The standard Lucene analyzer circa release 3.1. You'll know if you nee
 
 These analyzers will omit very common words in the specific language, and many also [remove prefixes and suffixes](http://en.wikipedia.org/wiki/Stemming). The name of the language is also the name of the analyzer.
 
-<script type="text/javascript">
-function toggleMe(a){
-var e=document.getElementById(a);
-if(!e)return true;
-if(e.style.display=="none"){
-e.style.display="block"
-}
-else{
-e.style.display="none"
-}
-return true;
-}
-</script>
-
-<input type="button" onclick="return toggleMe('lang')" value="Languages">
-<div id="lang" style="display:none">
-
 * arabic
 * armenian
 * basque
@@ -184,7 +167,6 @@ return true;
 * swedish
 * thai
 * turkish
-</div>
 
 #### Per-Field Analyzers
 

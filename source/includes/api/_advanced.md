@@ -101,6 +101,8 @@ descending | Whether results should be returned in descending order, i.e. the la
 
 ### GET /$DB/_shards
 
+> Example request
+
 ```http
 GET /$DATABASE/_shards HTTP/1.1
 ```
@@ -179,7 +181,9 @@ The response's `shards` field contains an object whose keys are the hash value r
 
 ### GET /$DB/_missing_revs
 
-```
+> Example request
+
+```http
 GET /$DATABASE/_missing_revs
 Content-Type: application/json
 ```
@@ -209,8 +213,6 @@ account.request({
 });
 ```
 
-> Example request:
-
 ```json
 {
   "$DOCUMENT_ID": [
@@ -235,6 +237,8 @@ account.request({
 Given a list of document revisions, returns the document revisions that do not exist in the database.
 
 ### POST /$DB/_revs_diff
+
+> Example request
 
 ```http
 POST /$DATABASE/_revs_diff HTTP/1.1
@@ -295,6 +299,8 @@ Given a set of document/revision IDs, returns the subset of those that do not co
 
 ### GET /$DB/_revs_limit
 
+> Example request
+
 ```javascript
 var nano = require('nano');
 var account = nano('https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com');
@@ -330,6 +336,8 @@ Gets the number of past revisions of a document that Cloudant stores information
 
 ### PUT /$DB/_revs_limit
 
+> Example request
+
 ```http
 PUT /$DB/_revs_limit HTTP/1.1
 ```
@@ -355,8 +363,6 @@ account.request({
   }
 });
 ```
-
-> Example request:
 
 ```
 1000
