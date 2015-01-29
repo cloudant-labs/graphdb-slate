@@ -40,6 +40,7 @@ under the License.
           $('.dark-box').css('width', '20px');
           $('#hideCodeButton').hide();
           $('#showCodeButton').show();
+          $('#expand-collapse-code').toggleClass('hide-code-column');
           var contentTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'p', 'table', 'ul', 'ol', 'aside', 'dl'];
           for (var i in contentTags) {
             $('.content ' + contentTags[i]).css('margin-right', '20px');
@@ -55,6 +56,8 @@ under the License.
           $('.dark-box').css('width', '50%');
           $('#hideCodeButton').show();
           $('#showCodeButton').hide();
+          
+          $('#expand-collapse-code').toggleClass('hide-code-column');
           var contentTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'p', 'table', 'ul', 'ol', 'aside', 'dl'];
           for (var i in contentTags) {
             $('.content ' + contentTags[i]).css('margin-right', '50%');
@@ -76,7 +79,7 @@ under the License.
           ignoreSelector: ".toc-ignore",
           hashGenerator: 'pretty',
           highlightOffset: 60,
-          scrollTo: 64,
+          scrollTo: 48,
           scrollHistory: true,
           hashGenerator: function(text, element) {
             return element[0].getAttribute('id');
@@ -140,17 +143,17 @@ under the License.
       
       <ul class="toc-footer">
         <li><a href="https://cloudant.com/"><%= image_tag "cloudant_icon.png" %></a></li>
-        <li><a href="http://webchat.freenode.net/?channels=cloudant"><%= image_tag "irc_icon.png" %></a></li>
         <li><a href="https://github.com/cloudant-labs/slate"><%= image_tag "github_icon.png" %></a></li>
         <li><a href="http://stackoverflow.com/questions/tagged/cloudant"><%= image_tag "stackoverflow_icon.png" %></a></li>
-        <li><a href="mailto:support@cloudant.com"><%= image_tag "email_icon.png" %></a></li>
       </ul>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <button class="showHideButton" id="hideCodeButton" title="hide code column"> </button>
-        <button class="showHideButton" id="showCodeButton" title="show code column"> </button>
+        <div id="expand-collapse-code">
+          <button class="showHideButton" id="hideCodeButton" title="hide code column"> </button>
+          <button class="showHideButton" id="showCodeButton" title="show code column"> </button>
+        </div>
         <% if current_page.data.includes %>
           <% current_page.data.includes.each do |include| %>
             <%= partial "includes/#{include}" %>

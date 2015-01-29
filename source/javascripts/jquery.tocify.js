@@ -114,7 +114,7 @@
 
             // **extendPageOffset**: Accepts a number: pixels
             // How close to the bottom of the page a user must scroll before the page is extended
-            extendPageOffset: 0,
+            extendPageOffset: 100,
 
             // **history**: Accepts a boolean: true or false
             // Adds a hash to the page url to maintain history

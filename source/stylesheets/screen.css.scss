@@ -58,7 +58,7 @@ html, body {
 
   .header-title {
     font-weight: 400;
-    color: #58585b;
+    color: #626262;
     display: inline-block;
     position: relative;
     top: -12px;
@@ -174,7 +174,7 @@ html, body {
     padding: 1em 0;
     width: $nav-width;
     box-shadow: 0px 0px 8px -1px #222;
-    padding-left: 30px;
+    padding-left: 54px;
     padding-top: 26px;
 
     li,a {
@@ -190,7 +190,7 @@ html, body {
       text-decoration: none;
       display: inline-block;
       padding: 0;
-      margin-left: 8px;
+      margin-left: 18px;
     }
   }
   
@@ -567,30 +567,38 @@ body, html {
   }
 }
 
-.showHideButton {
+#expand-collapse-code {
+  width: calc(40% - 9px);
+  height: 64px;
   position: fixed;
-  margin: 0;
-  margin-left: $nav-width / 2;
-  padding: 0;
-  background-color: transparent;
-  width: 20px;
-  height: 20px;
-  top: 50%;
-  z-index: 9999999;
+  top: 50px;
+
+  .showHideButton {
+    position: absolute;
+    margin: 0;
+    right: 20px;
+    padding: 0;
+    width: 12px;
+    height: 12px;
+    top: 50%;
+    z-index: 9999999;
+  }
+
+  #hideCodeButton {
+    background: url("../images/code_collapse_icon.png");
+  }
+
+  #showCodeButton {
+    display: none;
+    right: 40px;
+    background: url("../images/code_expand_icon.png");
+  }
+  
+  &.hide-code-column {
+    width: calc(78% - 5px);
+  }
 }
 
-#hideCodeButton {
-  left:50%;
-  color: #000;
-  background-image: url("../images/hide-code-button.png");
-}
-
-#showCodeButton {
-  color: #fff;
-  right: 20px;
-  display: none;
-  background-image: url("../images/show-code-button.png");
-}
 /////////////////////////////////////////////////////////////////////
 //THIRD COLUMN CODE COLORS 
 /////////////////////////////////////////////////////////////////////
