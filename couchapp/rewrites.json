@@ -21,6 +21,11 @@
 {"from": "/guides/mvcc.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "guides.html#document-versioning-and-mvcc"} },
 {"from": "/guides/repl-index.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "api.html#ReplicationAPI"} },
 {"from": "/guides/search.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "api.html#search"} },
+{"from": "/guides", "to": "/_show/redirect", "method": "GET", "query": {"target": "guides.html#-guides"} },
+{"from": "/guides/replication/replication.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "api.html#ReplicationAPI"} },
+{"from": "/api", "to": "/_show/redirect", "method": "GET", "query": {"target": "api.html#-api-reference"} },
+{"from": "/api/search.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "api.html#search"} },
+
 {"from": "/tutorials/basics/index.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "basics.html#-cloudant-basics"} },
 {"from": "/tutorials/crud/index.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "api.html#documents"} },
 {"from": "/tutorials/index.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "guides.html#-guides"} },
