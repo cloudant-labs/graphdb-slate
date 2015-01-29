@@ -40,6 +40,7 @@ under the License.
           $('.dark-box').css('width', '20px');
           $('#hideCodeButton').hide();
           $('#showCodeButton').show();
+          $('#expand-collapse-code').toggleClass('hide-code-column');
           var contentTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'p', 'table', 'ul', 'ol', 'aside', 'dl'];
           for (var i in contentTags) {
             $('.content > ' + contentTags[i]).css('margin-right', '20px');
@@ -55,6 +56,7 @@ under the License.
           $('.dark-box').css('width', '50%');
           $('#hideCodeButton').show();
           $('#showCodeButton').hide();
+          $('#expand-collapse-code').toggleClass('hide-code-column');
           var contentTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'p', 'table', 'ul', 'ol', 'aside', 'dl'];
           for (var i in contentTags) {
             $('.content > ' + contentTags[i]).css('margin-right', '50%');
@@ -129,7 +131,7 @@ under the License.
              ['guides.html', 'Guides', 'guides.html#-guides']
            ].each { |page| %>
 		          <% if request.path != page[0] %>
-		            <li class="tocify-item" style="cursor: pointer;">
+		            <li class="tocify-item">
 				          <a href="<%=page[2]%>"><%=page[1]%></a>
 				        </li>
 		          <% else %>
@@ -147,15 +149,17 @@ under the License.
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <button class="showHideButton" id="hideCodeButton" title="hide code column"> </button>
-        <button class="showHideButton" id="showCodeButton" title="show code column"> </button>
+        <div id="expand-collapse-code">
+          <button class="showHideButton" id="hideCodeButton" title="hide code column"> </button>
+          <button class="showHideButton" id="showCodeButton" title="show code column"> </button>
+        </div>
         <% if current_page.data.includes %>
           <% current_page.data.includes.each do |include| %>
             <%= partial "includes/#{include}" %>
           <% end %>
         <% end %>
         <%= yield %>
-        <div style="height: 60px"> </div>
+        
       </div>
       <div class="dark-box">
         <div id="lang-selector">
