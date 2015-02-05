@@ -594,9 +594,9 @@
             // Reset height cache on scroll
 
             $(window).on('resize', function() {
-                console.log("resizing" + self.cachedHeights);
+                //console.log("resizing" + self.cachedHeights);
                 self.calculateHeights();
-                console.log("done" + self.cachedHeights);
+                //console.log("done" + self.cachedHeights);
             });
 
             // Window scroll event handler
