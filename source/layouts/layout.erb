@@ -147,12 +147,13 @@ under the License.
       </ul>
     </div>
     <div class="page-wrapper">
+      <div id="expand-collapse-code">
+        <button class="showHideButton" id="hideCodeButton" title="hide code column"> </button>
+        <button class="showHideButton" id="showCodeButton" title="show code column"> </button>
+      </div>
       <div class="dark-box"></div>
       <div class="content">
-        <div id="expand-collapse-code">
-          <button class="showHideButton" id="hideCodeButton" title="hide code column"> </button>
-          <button class="showHideButton" id="showCodeButton" title="show code column"> </button>
-        </div>
+        
         <% if current_page.data.includes %>
           <% current_page.data.includes.each do |include| %>
             <%= partial "includes/#{include}" %>

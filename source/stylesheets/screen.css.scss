@@ -172,7 +172,7 @@ html, body {
     position: fixed;
     bottom: 0;
     padding: 1em 0;
-    width: $nav-width;
+    width: $nav-width - 54px;
     box-shadow: 0px 0px 8px -1px #222;
     padding-left: 54px;
     padding-top: 26px;
@@ -207,6 +207,10 @@ html, body {
       
       input {
         width: 140px;
+        
+        &:focus {
+          outline: none;
+        }
       }
       button {
         margin-left: -5px;
@@ -253,16 +257,17 @@ html, body {
   }
 
   #lang-selector {
+    position: absolute;
+    width: calc(50% - 138px);
     position: fixed;
-    width: 100%;
     z-index: 50;
     top: 50px;
     font-weight: 300;
     background-color: $lang-select-bg;
     border-bottom: 5px solid $lang-select-active-bg;
     a {
-      display: block;
-      float:left;
+      display: inline-block;
+      float: right;
       color: $lang-select-text;
       text-decoration: none;
       padding: 0 10px;
@@ -379,6 +384,10 @@ body, html {
     font-size: 14px;
     margin-top: 1.5em;
     margin-bottom: 0.5em;
+  }
+  
+  h5 {
+    padding-left: 40px;
   }
   
   h6 {
@@ -535,6 +544,11 @@ body, html {
   }
   pre {
     @extend %code-font;
+    
+    &:last-of-type {
+      border-top: 0.2em solid $examples-bg;
+      margin-top: -0.2em;
+    }
   }
   
   blockquote:before {
@@ -551,8 +565,7 @@ body, html {
   }
 
   blockquote {
-
-    margin-top: 1em;
+    border-top: 1em solid $examples-bg;
     &>p {
       background-color: $code-annotation-bg;
       //border-radius: 5px;
@@ -565,10 +578,12 @@ body, html {
 }
 
 #expand-collapse-code {
-  width: calc(40% - 9px);
-  height: 64px;
+  height: 40px;
   position: fixed;
-  top: 50px;
+  top: 40px;
+  width: 40px;
+  left: calc(50% + 138px);
+  z-index: 1000;
 
   .showHideButton {
     position: absolute;
@@ -578,7 +593,7 @@ body, html {
     width: 12px;
     height: 12px;
     top: 50%;
-    z-index: 9999999;
+    z-index: 9999998;
   }
 
   #hideCodeButton {
@@ -592,7 +607,7 @@ body, html {
   }
   
   &.hide-code-column {
-    width: calc(78% - 5px);
+    left: calc(100% - 38px);
   }
 }
 
