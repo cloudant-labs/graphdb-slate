@@ -544,6 +544,11 @@ body, html {
   }
   pre {
     @extend %code-font;
+    
+    &:last-of-type {
+      border-top: 0.2em solid $examples-bg;
+      margin-top: -0.2em;
+    }
   }
   
   blockquote:before {
@@ -560,8 +565,7 @@ body, html {
   }
 
   blockquote {
-
-    margin-top: 1em;
+    border-top: 1em solid $examples-bg;
     &>p {
       background-color: $code-annotation-bg;
       //border-radius: 5px;
