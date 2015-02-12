@@ -9,9 +9,11 @@
 .tt-dropdown-menu {
   color: $nav-text;
   padding: 16px;
-  background-color: $nav-bg;
-  border: 1px solid #000;
+  background-color: #0E2132;
+  opacity: 0.9;
   margin-left: 40px;
+  overflow-y: scroll;
+  max-height: 300px;
 }
 
 .tt-suggestion.tt-cursor {
