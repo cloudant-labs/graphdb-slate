@@ -16,8 +16,14 @@
   max-height: 300px;
 }
 
-.tt-suggestion.tt-cursor {
-  background-color: #ccc;
+.tt-suggestion {
+    font-weight: 300;
+    font-size: 16px;
+    color: #999;
+
+  &.tt-cursor {
+    background-color: #ccc;
+  }
 }
 
 .triggered-events {
