@@ -67,7 +67,7 @@ The `index` function also provides a third, options parameter that receives a Ja
 <tbody>
 <tr class="odd">
 <td align="left"><code>boost</code></td>
-<td align="left">Anaolgous to the <code>boost</code> query string parameter, but done at index time rather than query time.</td>
+<td align="left">Analogous to the <code>boost</code> query string parameter, but done at index time rather than query time.</td>
 <td align="left">Float</td>
 <td align="left"><code>1.0</code> (no boosting)</td>
 </tr>
