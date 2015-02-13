@@ -218,6 +218,11 @@ html, body {
       }
     }
   }
+  @-moz-document url-prefix() {
+    #searchbox button {
+      padding-bottom: 6px;
+    }
+  }
 
 }
 
