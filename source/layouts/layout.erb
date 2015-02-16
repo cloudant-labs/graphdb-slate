@@ -28,11 +28,13 @@ under the License.
     <%= stylesheet_link_tag "typeahead", media: 'screen' %>
     <%= stylesheet_link_tag "print", media: 'print' %>
     <%= javascript_include_tag  "all" %>
-
+    
+    <script src="/javascripts/jquery.cookie-1.4.1.min.js"></script>
     <script>
    
       $(function() {
         function hideCode() {
+          $.cookie('hide-code-column', 'true');
           var location = window.location;
           $('pre').hide();
           $('blockquote').hide();
@@ -49,6 +51,7 @@ under the License.
         };
 
         function showCode() {
+          $.removeCookie('hide-code-column');
           var location = window.location;
           $('pre').show();
           $('blockquote').show();
@@ -63,7 +66,9 @@ under the License.
           window.location = location;
           $(window).trigger('resize');
         };
-
+        if ($.cookie('hide-code-column')) {
+          hideCode();
+        }
         $('#hideCodeButton').click(hideCode);
         $('#showCodeButton').click(showCode);
         
