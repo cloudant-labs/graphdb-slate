@@ -14,7 +14,7 @@ HOST: $ACCOUNT.cloudant.com
 ```
 
 ```shell
-curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/$DATABASE -X PUT
+curl https://$USERNAME:$PASSWORD@$ACCOUNT.cloudant.com/$DATABASE -X PUT
 ```
 
 ```javascript
@@ -35,8 +35,28 @@ The database name must start with a lowercase letter and contain only the follow
  - Lowercase characters (a-z)
  - Digits (0-9)
  - Any of the characters _, $, (, ), +, -, and /
+ 
+#### Query Parameters
 
-###### h6
+> Create a database with non-default values for `n` and `q`
+
+```shell
+curl -X PUT 'http://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/$DATABASE?n=2&q=32'
+```
+
+```http
+PUT /$DATABASE?n=2&q=32 HTTP/1.1
+HOST: $ACCOUNT.cloudant.com
+```
+
+There are two configuration parameters that control the sharding topology of a database. The defaults are specified in the server configuration and may be overridden at database creation time on dedicated database clusters. N specifies the number of replicas of each document, while Q fixes the number of partitions of the database. On multi-tenant clusters, the default can not be overwritten.
+
+Parameter | Description | Default
+----------|-------------|----------
+n         | number of replicas of each document | 3
+q         | number of partitions of the database | 4
+
+#### Response
 
 > Response for successful creation:
 
