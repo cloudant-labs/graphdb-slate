@@ -7,10 +7,10 @@ If it's your first time here, scan this section before you scroll further. The s
 As a hosted and managed database-as-a-service (DBaaS), Cloudant provides an [HTTP API](#http_api) to your [JSON](#json) data, and 24-hour operational support and maintenance.
 Cloudant is based on [Apache CouchDB](http://couchdb.apache.org/), and is delivered as a multi-tenant, dedicated, and installed service.
 
-Signing up for a Cloudant account is free and easy:
+Signing up for a Cloudant account is free and easy:<br/>
 <iframe width="280" height="158" src="https://www.youtube.com/embed/kMl7NoeKkQ0?rel=0" frameborder="0" allowfullscreen></iframe>
 
-Working with Cloudant to create databases and store information is simplified through the user-friendly dashboard, as this overview explains:
+Working with Cloudant to create databases and store information is simplified through the user-friendly dashboard, as this overview explains:<br/>
 <iframe width="280" height="158" src="https://www.youtube.com/embed/LNMQgAQ8Xzg?rel=0" frameborder="0" allowfullscreen></iframe>
 
 <div id="http_api"></div>
