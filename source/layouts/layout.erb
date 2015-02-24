@@ -35,7 +35,7 @@ under the License.
       $(function() {
         function hideCode() {
           $.cookie('hide-code-column', 'true');
-          var location = window.location;
+          var hash = window.location.hash;
           $('pre').hide();
           $('blockquote').hide();
           $('.dark-box').css('width', '20px');
@@ -46,15 +46,13 @@ under the License.
           for (var i in contentTags) {
             $('.content > ' + contentTags[i]).css('margin-right', '20px');
           }
-          if (window.location != location) {
-            window.location = location;
-          }
+          window.location.hash = hash;
           $(window).trigger('resize');
         };
 
         function showCode() {
           $.removeCookie('hide-code-column');
-          var location = window.location;
+          var hash = window.location.hash;
           $('pre').show();
           $('blockquote').show();
           $('.dark-box').css('width', '50%');
@@ -65,7 +63,7 @@ under the License.
           for (var i in contentTags) {
             $('.content > ' + contentTags[i]).css('margin-right', '50%');
           }
-          window.location = location;
+          window.location.hash = hash;
           $(window).trigger('resize');
         };
         if ($.cookie('hide-code-column')) {
