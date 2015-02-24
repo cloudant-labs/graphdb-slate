@@ -46,7 +46,9 @@ under the License.
           for (var i in contentTags) {
             $('.content > ' + contentTags[i]).css('margin-right', '20px');
           }
-          window.location = location;
+          if (window.location != location) {
+            window.location = location;
+          }
           $(window).trigger('resize');
         };
 
