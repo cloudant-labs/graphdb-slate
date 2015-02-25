@@ -45,7 +45,10 @@ under the License.
           for (var i in contentTags) {
             $('.content > ' + contentTags[i]).css('margin-right', '20px');
           }
-          window.location.hash = hash;
+          if ($(hash).offset()) {
+            $(document).scrollTop($(hash).offset().top);
+          }
+          window.location.hash = hash; 
           $(window).trigger('resize');
         };
 
@@ -62,7 +65,10 @@ under the License.
           for (var i in contentTags) {
             $('.content > ' + contentTags[i]).css('margin-right', '50%');
           }
-          window.location.hash = hash;
+          if ($(hash).offset()) {
+            $(document).scrollTop($(hash).offset().top);
+          }
+          window.location.hash = hash; 
           $(window).trigger('resize');
         };
         if ($.cookie('hide-code-column')) {
