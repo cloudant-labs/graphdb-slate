@@ -17,7 +17,6 @@ under the License.
 <html>
   <head>
     <meta charset="utf-8">
-
     <!-- Always force latest IE rendering engine or request Chrome Frame -->
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
 
@@ -46,7 +45,10 @@ under the License.
           for (var i in contentTags) {
             $('.content > ' + contentTags[i]).css('margin-right', '20px');
           }
-          window.location.hash = hash;
+          if ($(hash).offset()) {
+            $(document).scrollTop($(hash).offset().top);
+          }
+          window.location.hash = hash; 
           $(window).trigger('resize');
         };
 
@@ -63,7 +65,10 @@ under the License.
           for (var i in contentTags) {
             $('.content > ' + contentTags[i]).css('margin-right', '50%');
           }
-          window.location.hash = hash;
+          if ($(hash).offset()) {
+            $(document).scrollTop($(hash).offset().top);
+          }
+          window.location.hash = hash; 
           $(window).trigger('resize');
         };
         if ($.cookie('hide-code-column')) {
@@ -72,8 +77,12 @@ under the License.
         $('#hideCodeButton').click(hideCode);
         $('#showCodeButton').click(showCode);
         
+        var headerSelectors = "h1,h2,h3";
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+          headerSelectors = "h1,h2";
+        }
         var toc = $("#toc").tocify({
-          selectors: "h1,h2,h3",
+          selectors: headerSelectors,
           extendPage: false,
           theme: "none",
           smoothScroll: false,
