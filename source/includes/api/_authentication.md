@@ -14,7 +14,7 @@ Cookie authentication is similar to having a key to the door so that you can let
 
 ```http
 GET /db/document HTTP/1.1
-Authentication dXNlcm5hbWU6cGFzc3dvcmQ=
+Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
 ```
 
 ```shell
@@ -42,7 +42,7 @@ account.request(function (err, body) {
 });
 ```
 
-With Basic authentication, you pass along your credentials as part of every request by adding an `Authentication` header. The value is the base-64 encoding of your username, followed by `:`, followed by your password. However, most HTTP libraries do this encoding for you.
+With Basic authentication, you pass along your credentials as part of every request by adding an `Authorization` header. The value is the authentication scheme (`Basic`), followed by the base-64 encoding of a string created by concatenating your username, the `:` character, and your password. However, most HTTP libraries do this encoding for you.
 
 ### Cookie Authentication
 
