@@ -84,7 +84,8 @@ Argument | Description | Optional | Type | Default | Supported values
 `group_level` | Only applicable if the view uses complex keys: keys that are JSON arrays. Groups reduce results for the specified number of array fields. | yes | Numeric | | 
 `include_docs` | Include the full content of the documents in the response. | yes | Boolean | false | 
 `inclusive_end` | Include rows with the specified endkey. | yes | Boolean | true | 
-`key` | Return only documents that match the specified key. Note: Keys are JSON values, and must be URL encoded. | yes | String | | 
+`key` | Return only documents that match the specified key. Note: Keys are JSON values, and must be URL encoded. | yes | JSON strings or arrays | | 
+`keys` | Return only documents that match the specified keys. Note: Keys are JSON values and must be URL encoded. | yes | Array of JSON strings or arrays | |
 `limit` | Limit the number of returned documents to the specified count. | yes | Numeric | | 
 `reduce` | Use the reduce function. | yes | Boolean | true | 
 `skip` | Skip this number of rows from the start. | yes | Numeric | 0 | 
@@ -310,11 +311,9 @@ curl -X POST "https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/$DB/_design/$DD
 }
 ```
 
-This method of requesting information from a database executes the specified `view-name` from the specified `design-doc` design document. However,
-unlike using [`GET`](#querying-a-view) to access views,
+This method of requesting information from a database executes the specified `view-name` from the specified `design-doc` design document. Like the `keys` parameter for the [`GET`](#querying-a-view) method,
 the `POST` method allows you to specify the keys to use when retrieving the view results.
-In all other aspects,
-the `POST` method is identical to the [`GET`](#querying-a-view) API request.
+In all other aspects, the `POST` method is identical to the [`GET`](#querying-a-view) API request, in particular, you can use any of its query parameters.
 
 <div></div>
 
