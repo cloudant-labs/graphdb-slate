@@ -262,12 +262,36 @@ html, body {
     position: fixed;
     z-index: 50;
     top: 50px;
+    height: 55px;
     font-weight: 300;
     background-color: $lang-select-bg;
     border-bottom: 5px solid $lang-select-active-bg;
+    #selected-language {
+      position: relative;
+      top: 25px;
+      margin-right: 20px;
+      float: right;
+      background-color: #323232;
+      color: #fff;
+      cursor: pointer;
+      padding: 0 10px;
+      line-height: 30px;
+    }
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      top: 55px;
+      right: -46px;
+      position: relative;
+      float: right;
+      display: none;
+    }
+    li {
+      display: block;
+    }
     a {
       display: inline-block;
-      float: right;
       color: $lang-select-text;
       text-decoration: none;
       padding: 0 10px;
@@ -580,7 +604,7 @@ body, html {
 #expand-collapse-code {
   height: 40px;
   position: fixed;
-  top: 40px;
+  top: 64px;
   width: 40px;
   left: calc(50% + 138px);
   z-index: 1000;

@@ -114,6 +114,14 @@ under the License.
         ]);
       });
       
+      var languageInit = $('#lang-selector li.active').text();
+      $('#selected-language').text(languageInit);
+      $('#selected-language').click(langDropdown);
+        
+      function langDropdown() {
+        $('#lang-selector ul').show();
+      }
+      
     </script>
   </head>
 
@@ -176,15 +184,18 @@ under the License.
       </div>
       <div class="dark-box">
         <div id="lang-selector">
+          <div id="selected-language"></div>
+          <ul>
           <% if current_page.data.language_tabs %>
             <% current_page.data.language_tabs.each do |lang| %>
               <% if lang.is_a? Hash %>
-                <a href="#" data-language-name="<%= lang.keys[0] %>"><%= lang.values[0] %></a>
+                <li data-language-name="<%= lang.keys[0] %>"><a href="#" data-language-name="<%= lang.keys[0] %>"><%= lang.values[0] %></a></li>
               <% else %>
-                <a href="#" data-language-name="<%= lang %>"><%= lang %></a>
+                <li data-language-name="<%= lang %>"><a href="#" data-language-name="<%= lang %>"><%= lang %></a></li>
               <% end %>
             <% end %>
           <% end %>
+          </ul>
         </div>
       </div>
     </div>
