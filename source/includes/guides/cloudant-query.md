@@ -183,3 +183,33 @@ curl -X POST -H "Content-Type: application/json" \
   "bookmark": "g2w ... c2o"
 }
 ```
+
+> Example of searching within a range:
+
+```
+curl -X POST -H "Content-Type: application/json" \
+        https://<user:password>@<user>.cloudant.com/my-movies-demo/_find \
+        -d '{"selector": {"Person_name":"Robert De Niro", "Movie_year": { "$in": [1974, 2009]}}}'
+```
+
+> Example result from the search:
+
+```
+{
+  "docs": [
+    {
+      "_id": "d9e6a7ae2363d6cfe81af75a392eb9f2",
+      "_rev": "1-9faa75d7ea524448b1456a6c69a4391a",
+      "Movie_runtime": 183,
+      "Movie_rating": "R",
+      "Person_name": "Robert De Niro",
+      "Movie_genre": "DW",
+      "Movie_name": "Deer Hunter, The",
+      "Person_pob": "New York, New York, USA",
+      "Movie_year": 1978,
+      "Person_dob": "1943-08-17"
+    }
+  ],
+  "bookmark": "g2w ... c2o"
+}
+```
