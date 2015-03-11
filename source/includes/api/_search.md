@@ -532,23 +532,21 @@ curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/examples/_design/ddoc/_s
 
 You can try out search requests right here and output will be shown in the code column to the right. We have put together some sample data and a search index so that you can play with lucene search straight away.
 
-<form action="#" class="testForm" id="testSearchForm">
+<form action="#" class="test-form">
     <label for="query">Search query (q)</label><br>
     <input size="100" style="width: 400px; display:block;" type="text" name="query" id="test-search-query">
     <input type="submit" value="search" class="submit-button"></input>
 </form>
 
 <style type="text/css">
-.testForm input {
-  margin: 10px 10px 10px 0;
-  display: block;
-  
-  
-}
-.testForm .submit-button {
-  width: 100px;
-  padding: 0;
-}
+  .test-form input {
+    margin: 10px 10px 10px 0;
+    display: block;
+  }
+  .test-form .submit-button {
+    width: 100px;
+    padding: 0;
+  }
 </style>
 
 <div>

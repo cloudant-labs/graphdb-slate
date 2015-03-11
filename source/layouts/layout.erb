@@ -26,6 +26,7 @@ under the License.
     <%= stylesheet_link_tag "screen", media: 'screen' %>
     <%= stylesheet_link_tag "typeahead", media: 'screen' %>
     <%= stylesheet_link_tag "print", media: 'print' %>
+    <%= stylesheet_link_tag "jquery.snippet.min", media: 'screen' %>
     <%= javascript_include_tag  "all" %>
     
     <script type="text/javascript">
@@ -130,16 +131,15 @@ under the License.
     
     <script type="text/javascript">
       $(document).ready(function() {
-        var queryInput = $('#test-search-query');
+        var queryInput = $('.test-form #test-search-query');
         queryInput.val('author:John');
-        var form = $("#testSearchForm");
+        var form = $(".test-form");
         var outputField = $("#search-output-marker").next();
         var httpRequestField = $("#search-request-http-marker").next();
         var curlRequestField = $("#search-request-curl-marker").next();
-        queryInput.change(function(){
+        queryInput.on("change keyup keypress", function() {
           httpRequestField.text('GET /examples/_design/ddoc/_search/books?q=' + queryInput.val() + ' HTTP/1.1');
           curlRequestField.text('curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/examples/_design/ddoc/_search/books?q=' + queryInput.val());
-          
         });
         form.submit(function(event) {
           var query = queryInput.val();
@@ -156,6 +156,7 @@ under the License.
               
               outputField.show();
               outputField.text(result);
+              outputField.snippet("javascript");
             }
           });
           event.preventDefault();
