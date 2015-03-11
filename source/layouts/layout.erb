@@ -144,7 +144,7 @@ under the License.
         form.submit(function(event) {
           var query = queryInput.val();
           jQuery.ajax({
-            url: '/examples/_design/ddoc/_search/books?q=' + query,
+            url: '//examples.cloudant.com/docs-examples/_design/ddoc/_search/books?q=' + query,
             type: 'GET',
             beforeSend: function(xhr) {
               xhr.setRequestHeader("Authorization", "Basic " + btoa('thereencespedgetytolisir:c1IimpBSAC3b3A66N8LHKwKF'));
