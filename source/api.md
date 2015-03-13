@@ -25,6 +25,7 @@ includes:
   - api/document
   - api/attachments
   - api/cloudant_query
+  - api/cqsearch
   - api/design_documents
   - api/creating_views
   - api/using_views
