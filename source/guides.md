@@ -25,5 +25,6 @@ includes:
   - guides/backups
   - guides/couchapps
   - guides/cloudant-geo
+  - guides/DesignDocumentManagement
 
 ---
