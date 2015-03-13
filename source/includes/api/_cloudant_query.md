@@ -52,7 +52,7 @@ Creates a new index in the specified database using the information supplied in 
 -   **index**:
     -   **fields**: A JSON array of field names following the [sort syntax](#sort-syntax). Nested fields are also allowed, e.g. `"person.name"`.
 -   **ddoc (optional)**: Name of the design document in which the index will be created. By default, each index will be created in its own design document. Indexes can be grouped into design documents for efficiency. However, a change to one index in a design document will invalidate all other indexes in the same document.
--   **type (optional)**: Defaults to json, which is currently the only supported type. Full text indexes and geospatial indexes will be provided in the future.
+-   **type (optional)**: Can be ``"json"`` or ``"text"``. Defaults to json. Geospatial indexes will be supported in the future.
 -   **name (optional)**: Name of the index. If no name is provided, one will be generated automatically.
 
 #### Return Codes
