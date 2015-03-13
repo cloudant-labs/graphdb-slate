@@ -21,6 +21,11 @@ There are four basic steps to work with FTI:
 
 > Example command to create a Cloudant database:
 
+```http
+PUT /dbname HTTP/1.1
+Host: user.cloudant.com
+```
+
 ```shell
 curl -X PUT https://user.cloudant.com/dbname
 ```
@@ -29,6 +34,17 @@ curl -X PUT https://user.cloudant.com/dbname
 #### 2. Create a text index
 
 > Example command to create a text index within the database:
+
+```http
+POST /dbname/_index HTTP/1.1
+Content-Type: application/json
+Host: user.cloudant.com
+
+{
+  "index": {},
+  "type": "text"
+}
+```
 
 ```shell
 curl -X POST -H "Content-Type: application/json" \
@@ -41,6 +57,18 @@ curl -X POST -H "Content-Type: application/json" \
 
 > Example command to create a simple document:
 
+```http
+POST /dbname HTTP/1.1
+Content-Type: application/json
+Host: user.cloudant.com
+
+{
+  "character":"Frodo Baggins",
+  "type": "Hobbit",
+  "height":4
+}
+```
+
 ```shell
 curl -X POST -H "Content-Type: application/json" \
   https://user.cloudant.com/dbname \
@@ -51,6 +79,18 @@ curl -X POST -H "Content-Type: application/json" \
 #### 4. Query for the document
 
 > Example command to query for a document that matches text precisely:
+
+```http
+POST /dbname/_find HTTP/1.1
+HOST: user.cloudant.com
+Content-Type: application/json
+
+{
+  "selector": {
+    "$text": "Frodo"
+  }
+}
+```
 
 ```shell
 curl -X POST -H "Content-Type: application/json" \
@@ -70,6 +110,19 @@ curl -X POST -H "Content-Type: application/json" \
 
 > Obtaining a copy of the Cloudant Query movie database:
 
+```http
+POST /_replicate HTTP/1.1
+Host: user.cloudant.com
+Content-Type: application/json
+
+{
+  "source": "https://examples.cloudant.com/movies-demo",
+  "target": "https://<user:password>@<user>.cloudant.com/my-movies-demo",
+  "create_target": true,
+  "use_checkpoints": false
+}
+```
+
 ```shell
 curl 'https://<user:password>@<user>.cloudant.com/_replicate' \
   -X POST \
@@ -84,7 +137,7 @@ curl 'https://<user:password>@<user>.cloudant.com/_replicate' \
 
 > Results after successful replication of the Cloudant Query movie database:
 
-```shell
+```json
 {
   "ok": true,
   "use_checkpoints": false
@@ -102,6 +155,17 @@ The sample database contains approximately 3,000 documents, and is just under 1 
 
 > Creating a _text_ index for your sample database:
 
+```http
+POST /my-movies-demo/_index HTTP/1.1
+Host: user.cloudant.com
+Content-Type: application/json
+
+{
+  "index": {},
+  "type": "text"
+}
+```
+
 ```shell
 curl 'https://<user:password>@<user>.cloudant.com/my-movies-demo/_index' \
   -X POST \
@@ -111,8 +175,10 @@ curl 'https://<user:password>@<user>.cloudant.com/my-movies-demo/_index' \
 
 > Response after creating a text index:
 
-```
-{"result":"created"}
+```json
+{
+  "result": "created"
+}
 ```
 
 Before we can search the content, we must index it. We do this by creating a text index for the documents.
@@ -121,6 +187,18 @@ Before we can search the content, we must index it. We do this by creating a tex
 <div></div>
 
 > Searching for a specific document within the database:
+
+```http
+POST /my-movies-demo/_find HTTP/1.1
+Host: user.cloudant.com
+Content-Type: application/json
+
+{
+  "selector": {
+    "Person_name":"Zoe Saldana"
+  }
+}
+```
 
 ```shell
 curl -X POST -H "Content-Type: application/json" \
@@ -159,6 +237,19 @@ The most obvious difference in the results you get when using FTI is the inclusi
 
 > Example of a slightly more complex search:
 
+```http
+POST /my-movies-demo/_find HTTP/1.1
+Host: user.cloudant.com
+Content-Type: application/json
+
+{
+  "selector": {
+    "Person_name":"Robert De Niro",
+    "Movie_year": 1978
+  }
+}
+```
+
 ```shell
 curl -X POST -H "Content-Type: application/json" \
         https://<user:password>@<user>.cloudant.com/my-movies-demo/_find \
@@ -188,6 +279,21 @@ curl -X POST -H "Content-Type: application/json" \
 ```
 
 > Example of searching within a range:
+
+```http
+POST /my-movies-demo/_find HTTP/1.1
+Host: user.cloudant.com
+Content-Type: application/json
+
+{
+  "selector": {
+    "Person_name":"Robert De Niro",
+    "Movie_year": {
+      "$in": [1974, 2009]
+    }
+  }
+}
+```
 
 ```shell
 curl -X POST -H "Content-Type: application/json" \
@@ -224,7 +330,7 @@ selector. For more information on the available Lucene syntax, have a look at th
 
 ### Other Query Parameters
 
-Here's a full list of query parameters supported by Cloudant Query.
+> Example using all available query parameters
 
 ```json
 {
