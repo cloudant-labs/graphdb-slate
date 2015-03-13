@@ -1,4 +1,4 @@
-Cloudant Query
+Query
 --------------
 
 The Cloudant Query endpoints can be used to create, list, update, and delete indexes in a database and to query data using these indexes.
