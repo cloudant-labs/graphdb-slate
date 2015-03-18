@@ -496,62 +496,7 @@ You can combine sorting by distance with any other search query, such as range s
 
 ### Try it!
 
-<p id="search-request-http-marker"></p>
-
-```http
-GET /examples/_design/ddoc/_search/books?q=author:John HTTP/1.1
-```
-
-<p id="search-request-curl-marker"></p>
-
-```shell
-curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/examples/_design/ddoc/_search/books?q=author:John
-```
-
-<p id="search-output-marker"></p>
-
-```json
-{
-  "total_rows": 1,
-  "bookmark": "g2wAAAABaANkACFkYmNvcmVAZGIxMS5tZXJpdGFnZS5jbG91ZGFudC5uZXRsAAAAAm4EAAAAAIBuBAD___-_amgCRkACik3gAAAAYRtq",
-  "rows": [
-    {
-      "id": "book91",
-      "order": [
-        2.3175313472747803,
-        27
-      ],
-      "fields": {
-        "author": "John Steinbeck",
-        "title_English": "The Grapes of Wrath"
-      }
-    }
-  ]
-}
-```
-
-You can try out search requests right here and output will be shown in the code column to the right. We have put together some sample data and a search index so that you can play with lucene search straight away.
-
-<form action="#" class="test-form">
-    <label for="query">Search query (q)</label><br>
-    <input size="100" style="width: 400px; display:block;" type="text" name="query" id="test-search-query">
-    <input type="submit" value="search" class="submit-button"></input>
-</form>
-
-<style type="text/css">
-  .test-form input {
-    margin: 10px 10px 10px 0;
-    display: block;
-  }
-  .test-form .submit-button {
-    width: 100px;
-    padding: 0;
-  }
-</style>
-
-<div>
-
-</div>
+Use our [test form](try.html) to try any search query against our book database.
 
 #### Sample Data
 

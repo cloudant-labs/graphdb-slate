@@ -35,7 +35,7 @@ includes:
   - api/active_tasks
   - api/advanced
   - api/backup
-#  - api/errors
+  - api/try.md
 
 ---
 

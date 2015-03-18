@@ -26,8 +26,10 @@ under the License.
     <%= stylesheet_link_tag "screen", media: 'screen' %>
     <%= stylesheet_link_tag "typeahead", media: 'screen' %>
     <%= stylesheet_link_tag "print", media: 'print' %>
-    <%= stylesheet_link_tag "jquery.snippet.min", media: 'screen' %>
     <%= javascript_include_tag  "all" %>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
     
     <script type="text/javascript">
    
@@ -128,42 +130,6 @@ under the License.
 
       
     </script>
-    
-    <script type="text/javascript">
-      $(document).ready(function() {
-        var queryInput = $('.test-form #test-search-query');
-        queryInput.val('author:John');
-        var form = $(".test-form");
-        var outputField = $("#search-output-marker").next();
-        var httpRequestField = $("#search-request-http-marker").next();
-        var curlRequestField = $("#search-request-curl-marker").next();
-        queryInput.on("change keyup keypress", function() {
-          httpRequestField.text('GET /examples/_design/ddoc/_search/books?q=' + queryInput.val() + ' HTTP/1.1');
-          curlRequestField.text('curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/examples/_design/ddoc/_search/books?q=' + queryInput.val());
-        });
-        form.submit(function(event) {
-          var query = queryInput.val();
-          jQuery.ajax({
-            url: '//examples.cloudant.com/docs-examples/_design/ddoc/_search/books?q=' + query,
-            type: 'GET',
-            beforeSend: function(xhr) {
-              xhr.setRequestHeader("Authorization", "Basic " + btoa('thereencespedgetytolisir:c1IimpBSAC3b3A66N8LHKwKF'));
-            },
-            error: function(one, two) {
-            },
-            complete: function(jqXHR, textStatus) {
-              var result = JSON.stringify(jQuery.parseJSON(jqXHR.responseText), null, '    ');
-              
-              outputField.show();
-              outputField.text(result);
-              outputField.snippet("javascript");
-            }
-          });
-          event.preventDefault();
-        });
-      });
-    </script>
-
     
   </head>
 
