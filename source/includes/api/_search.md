@@ -496,7 +496,7 @@ You can combine sorting by distance with any other search query, such as range s
 
 ### Try it!
 
-Use our [test form](try.html) to try any search query against our book database.
+Use our [test form](try.html) to try any search query against our books database.
 
 #### Sample Data
 
