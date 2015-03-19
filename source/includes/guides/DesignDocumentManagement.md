@@ -72,6 +72,16 @@ It's worth remembering at this point that:
 -	While the initial index build is in progress, **any queries made against that index block**.
 -	Querying a view triggers the 'mapping' of any documents that haven't yet been incrementally indexed. This ensures we get an up-to-date view of the data. (See [The '`stale`' parameter](#stale) discussion, below, for exceptions to this rule.)
 
+### Multiple views in the same design document
+
+If we define several views in the same design document, then they are built efficiently at the same time. Each document is only read once, and passed through each view's Map function.  The downside of this approach is that modifying a design document _invalidates all of the existing MapReduce views_ defined in that document, even if some of the views remain unaltered. 
+
+If MapReduce views must be altered independently of each other, place their definitions in separate design documents. 
+
+<aside class="note">This behaviour does not apply to Lucene search indexes. They can be altered within the same design document without invalidating other unchanged indexes in the same document.</aside>
+
+![Illustration of Design Document version change](images/DesDocMan02.png)
+
 ### Managing changes to a design document
 
 Imagine at some point in the future we decide to change the design of our view. Now, instead of returning the actual timestamp result, we are only interested in the count of how many documents match the criteria. To achieve this, the map function remains the same, but we now use a *reduce* of "`_count`". The effect is that our design document becomes:
