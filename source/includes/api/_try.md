@@ -22,10 +22,10 @@
     var requestTypes = {
       search: {
         renderHttpRequest: function() {
-          return 'GET /examples/_design/ddoc/_search/books?q=' + searchQueryInput.val() + ' HTTP/1.1';
+          return 'GET /docs-examples/_design/ddoc/_search/books?q=' + searchQueryInput.val() + ' HTTP/1.1';
         },
         renderCurlRequest: function() {
-          return 'curl https://$USERNAME:$PASSWORD@$ACCOUNT.cloudant.com/examples/_design/ddoc/_search/books?q=' + searchQueryInput.val();
+          return "curl 'https://examples.cloudant.com/docs-examples/_design/ddoc/_search/books?q=" + searchQueryInput.val() + "'";
         },
         doAjaxRequest: function() {
         
@@ -36,7 +36,7 @@
           return 'POST /movies-demo-with-indexes/_find HTTP/1.1\nHost: examples.cloudant.com\n\n' + cqQueryInput.val();
         },
         renderCurlRequest: function() {
-          return "curl https://$USERNAME:$PASSWORD@$ACCOUNT.cloudant.com/movies-demo-with-indexes/_find -X POST -d '" + cqQueryInput.val() + "'";
+          return "curl 'https://examples.cloudant.com/movies-demo-with-indexes/_find' -X POST -d '" + cqQueryInput.val() + "'";
         }
       }
     };
@@ -91,6 +91,7 @@
     }
     initForm('search', predefinedQueries.search['author-is-john']);
     initForm('cq', predefinedQueries.cq['actor-is-zoe-saldana']);
+    requestChanged('search');
     highlight(outputField);
     highlight(httpRequestField);
     highlight(curlRequestField);
@@ -131,7 +132,24 @@
       });
       event.preventDefault();
     });
+    //init form from query param values
+    function getParameterByName(name) {
+      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+      var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex.exec(location.search);
+      return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+    var requestType = getParameterByName('requestType');
+    var predefinedQuery = getParameterByName('predefinedQuery');
+    if (requestType) {
+      requestTypeSelect.val(requestType);
+      showSelectedType(requestType);
+      if (predefinedQuery) {
+        $('form.' + requestType + ' .predefined').val(predefinedQuery);
+      }
+      requestChanged(requestType);
+    }
   });
+  
 </script>
 
 ## Try it!
