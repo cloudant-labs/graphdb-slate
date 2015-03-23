@@ -179,7 +179,9 @@ account.request({
 });
 ```
 
-API keys allow you to give access to a person or application without having to create a new Cloudant account. An API key consists of a randomly generated username and password. The key is given the desired access permissions. Once generated, the API key can be used in the same way as a normal user account, for example by granting read, write, or admin access permissions. 
+API keys allow you to give access to a person or application without having to create a new Cloudant account. An API key consists of a randomly generated username and password. The key is given the desired access permissions. Once generated, the API key can be used in the same way as a normal user account, for example by granting read, write, or admin access permissions.
+
+<aside class="warning">IBM Cloudant Data Layer Local Edition ("Cloudant Local") does not support API Keys. For a similar capability, create "CouchDB" style users, as described in the [IBM Knowledge Center](http://www-01.ibm.com/support/knowledgecenter/SSTPQH_1.0.0/com.ibm.cloudant.local.install.doc/topics/clinstall_db_security.html).</aside>
 
 To generate an API key, use `https://cloudant.com/api/generate_api_key`. The created API key has no permissions to anything by default, and must be given permissions explicitly.
 
