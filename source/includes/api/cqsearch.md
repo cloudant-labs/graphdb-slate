@@ -156,7 +156,7 @@ almost all cases this should be left enabled. Do this by setting the value to `t
 or simply not including the enabled field.
 
 The `analyzer` key in the `default_field` can be used to choose how to analyze text included
-in the index. See the (Cloudant Search documentation)[http://docs.cloudant.com/api.html#analyzers] for alternative analyzers.
+in the index. See the [Cloudant Search documentation](./api.html#analyzers) for alternative analyzers.
 You might choose to use an alternative analyzer when documents are indexed in languages other than English,
 or when you have other special requirements for the analyser such as matching email addresses.
 
@@ -168,8 +168,9 @@ If you only need to distinguish documents by type, it is easier to use one index
 The `fields` array contains a list of fields that should be indexed for each document. If you
 know that an index queries only on specific fields, then this can be used to limit
 the size of the index. Each field must also specify a type to be indexed. The acceptable
-types are `"boolean"` , `"string"`, and `"number"`.<!-- An explanation of what these types mean
-can be found in the implementation notes. -->
+types are `"boolean"` , `"string"`, and `"number"`.
+
+<!-- An explanation of what these types mean can be found in the implementation notes. -->
 
 ### Query Parameters
 
@@ -200,20 +201,22 @@ can be found in the implementation notes. -->
 }
 ```
 
-The format of the `selector` field is as described in the (Cloudant Query documentation)[http://docs.cloudant.com/api.html#cloudant-query] with the
+The format of the `selector` field is as described in the [Cloudant Query documentation](./api.html#cloudant-query) with the
 exception of the new `$text` operator. This operator applies to all strings found in the
 document. In the selector, it must be placed at the very top level. It is invalid to place this
 operator in the context of a field name.
 
 The `fields` array is a list of fields that should be returned for each document. The provided
 field names can use dotted notation to access subfields.
-<!-- Array elements can be accessed
-using integers indexes. -->
+
+<!-- Array elements can be accessed using integers indexes. -->
 
 The `sort` field contains a list of field name and direction pairs. For field names in text search sorts, it is
 sometimes necessary for a field type to be specified, as shown in the example. If possible, an
 attempt is made to discover the field type based on the selector. In ambiguous cases the field type must
-be provided explicitly.<!-- You can discover the reason for this type specification in the
+be provided explicitly.
+
+<!-- You can discover the reason for this type specification in the
 implementation notes below. -->
 
 <aside class="warning">
@@ -448,10 +451,11 @@ curl -X POST -H "Content-Type: application/json" \
 #### The $text operator
 
 The `$text` operator is based on a Lucene search with a standard analyzer. This means the operator is not case sensitive, and matches on any words.
+
 <aside class="note">The `$text` operator does not support full Lucene syntax, such as wildcards, fuzzy matches, or proximity detection.
-For more information on the available Lucene syntax, have a look at the (Cloudant Search documentation)[http://docs.cloudant.com/api.html#search].</aside>
-The resulting query is `AND`'ed with the rest of the
-selector.
+For more information on the available Lucene syntax, have a look at the [Cloudant Search documentation](./api.html#search).</aside>
+
+The resulting query is `AND`'ed with the rest of the selector.
 
 NEED AN EXAMPLE HERE.
 
@@ -735,7 +739,7 @@ returning both documents from the index and discarding the dresser document.
 {"age": {"$gt": 5}}
 ```
 
-> Lucene query
+> Corresponding Lucene query
 
 ```
 (age_3anumber:{5 TO Infinity])
@@ -744,7 +748,7 @@ returning both documents from the index and discarding the dresser document.
 A standard Lucene search expression would not necessarily fully 'understand' Cloudant's JSON based query syntax. Therefore, a translation between the two formats takes place.
 
 In the example given, the JSON query approximates to the English phrase: "match if the age expressed
-as a number is greater than five and less than or equal to infinity". The Lucene query corresponds to that phrase, where the text `_3a` within the fieldname is an example of the document content expansion mentioned earlier.
+as a number is greater than five and less than or equal to infinity". The Lucene query corresponds to that phrase, where the text `_3a` within the fieldname corresponds to the `age:number` field, and is an example of the document content expansion mentioned earlier.
 
 #### A more complex example
 
@@ -763,7 +767,7 @@ as a number is greater than five and less than or equal to infinity". The Lucene
 }
 ```
 
-> Lucene query (the '#' comment is not valid Lucene syntax, but helps explain the query construction):
+> Corresponding Lucene query<br/>(the '#' comment is not valid Lucene syntax, but helps explain the query construction):
 
 ```
 (
