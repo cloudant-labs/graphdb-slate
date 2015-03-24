@@ -262,20 +262,75 @@ html, body {
     position: fixed;
     z-index: 50;
     top: 50px;
+    height: 55px;
     font-weight: 300;
-    background-color: $lang-select-bg;
+    background-color: $examples-bg;
     border-bottom: 5px solid $lang-select-active-bg;
+    #selected-language {
+      position: relative;
+      top: 18px;
+      width: 200px;
+      margin-right: 20px;
+      float: right;
+      background-color: #323232;
+      color: #fff;
+      cursor: pointer;
+      padding: 4px 14px;
+      line-height: 30px;
+      border: 1px solid #bdbec0;
+      #selected-language-label {
+        color: #6f6f6f;
+        text-transform: uppercase;
+      }
+      #selected-language-value {
+        color: #bdbec0;
+        font-weight: bold;
+      }
+      #selected-language-icon {
+        display: inline-block;
+        width: 19px;
+        height: 13px;
+        background: url("../images/language_down_arrow.png") no-repeat;
+        position: absolute;
+        right: 20px;
+        top: 12px;
+        &.open {
+          background: url("../images/language_up_arrow.png") no-repeat;
+        }
+      }
+    }
+    ul {
+      list-style-type: none;
+      width: 228px;
+      margin: 0;
+      padding: 0;
+      top: 70px;
+      right: -230px;
+      position: relative;
+      float: right;
+      display: none;
+      border: 1px solid #b5b5b7;
+    }
+    li {
+      display: block;
+    }
     a {
       display: inline-block;
-      float: right;
-      color: $lang-select-text;
+      color: #787778;
       text-decoration: none;
-      padding: 0 10px;
-      line-height: 30px;
+      line-height: 36px;
+      width: 100%;
+      background: #323232;
+      span {
+        padding: 0 15px;
+      }
 
       &.active {
-        background-color: $lang-select-active-bg;
-        color: $lang-select-active-text;
+        background-color: #d1d2d4;
+        color: #333;
+        background-image: url("../images/language_check.png");
+        background-position: right 22px bottom 8px;
+        background-repeat: no-repeat;
       }
 
       &:active {
@@ -580,7 +635,7 @@ body, html {
 #expand-collapse-code {
   height: 40px;
   position: fixed;
-  top: 40px;
+  top: 64px;
   width: 40px;
   left: calc(50% + 138px);
   z-index: 1000;
