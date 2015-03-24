@@ -33,6 +33,7 @@ includes:
   - api/advanced_replication
   - api/active_tasks
   - api/advanced
+  - api/backup
 #  - api/errors
 
 ---
