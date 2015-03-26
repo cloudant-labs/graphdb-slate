@@ -17,6 +17,12 @@ Working with Cloudant to create databases and store information is simplified th
 ## HTTP API
 All requests to Cloudant go over the web, which means any system that can speak to the web, can speak to Cloudant. All language-specific libraries for Cloudant are really just wrappers that provide some convenience and linguistic niceties to help you work with a simple API. Many users even choose to use raw HTTP libraries for working with Cloudant.
 
+This overview explains how the HTTP API works:<br/>
+<iframe width="280" height="158" src="https://www.youtube.com/embed/HtGlyrosN8M?rel=0" frameborder="0" allowfullscreen></iframe>
+
+Several tools are available to help you work with the HTTP API:<br/>
+<iframe width="280" height="158" src="https://www.youtube.com/embed/Z3CxsM47a9U?rel=0" frameborder="0" allowfullscreen></iframe>
+
 Specific details about how Cloudant uses HTTP is provided in the [HTTP topic of the API Reference](api.html#http).
 
 Cloudant supports the following HTTP request methods:

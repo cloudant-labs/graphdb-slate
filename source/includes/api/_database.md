@@ -4,6 +4,9 @@ Cloudant databases contain JSON objects.
 These JSON objects are called [documents](#documents).
 All documents must be contained in a database.
 
+You interact with Cloudant databases and documents using API commands, as this overview explains:<br/>
+<iframe width="280" height="158" src="https://www.youtube.com/embed/47qQMaYJVUU?rel=0" frameborder="0" allowfullscreen></iframe>
+
 ### Create
 
 > Create a database
