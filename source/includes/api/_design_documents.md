@@ -195,6 +195,132 @@ using the `rev` query argument.
 
 An important use of design documents is for creating views. These are discussed in more detail [here](#creating-views).
 
+### Rewrite rules
+
+> Example rewrite rules:
+
+```json
+"rewrites": [
+  {
+    "from": "/",
+    "to": "index.html",
+    "method": "GET",
+    "query": {}
+  },
+  {
+    "from": "/foo/:var",
+    "to": "/foo",
+    "method": "GET",
+    "query": {"v": "var"}
+  }
+]
+```
+
+A design document can contain rules for URL rewriting, by using an array in the `rewrites` field.
+Requests that match the rewrite rules must have a URL path that starts with `/$DATABASE/_design/doc/_rewrite`.
+
+Each rule is a JSON object with 4 fields:
+
+<table>
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>from</code></td>
+<td>A path relative to <code>/$DATABASE/_design/doc/_rewrite</code>, used to match URLs to rewrite rules. Path elements that start with a <code>:</code> are treated as variables and match any string that does not contain a <code>/</code>. A <code>*</code> can only appear at the end of the string, and matches any string - including slashes.</td>
+</tr>
+<tr>
+<td><code>to</code></td>
+<td>The path (relative to <code>/$DATABASE/_design/doc/</code> and not including the query part of the URL) that is the result of the rewriting step. Variables captured in <code>from</code> can be used in <code>to</code>. <code>*</code> can also be used and contains everything captured by the pattern in <code>from</code>.</td>
+</tr>
+<tr>
+<td><code>method</code></td>
+<td>The HTTP method that should be matched on.</td>
+</tr>
+<tr>
+<td><code>query</code></td>
+<td>The query part of the resulting URL. This is a JSON object containing the key/value pairs of the query.</td>
+</tr>
+</tbody>
+</table>
+
+#### Example rewrite rules
+
+<table>
+<colgroup>
+<col width="30%" />
+<col width="30%" />
+<col width="30%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr>
+<th>Rule</th>
+<th>URL</th>
+<th>Rewrite to</th>
+<th>Tokens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>{"from": "/a/b", "to": "/some/"}</code></td>
+<td><code>/$DATABASE/_design/doc/_rewrite/a/b?k=v</code></td>
+<td><code>/$DATABASE/_design/doc/some/k=v</code></td>
+<td>k = v</td>
+</tr>
+<tr>
+<td><code>{"from": "/a/b", "to": "/some/:var"}</code></td>
+<td><code>/$DATABASE/_design/doc/_rewrite/a/b</code></td>
+<td><code>/$DATABASE/_design/doc/some/b?var=b</code></td>
+<td>var = b</td>
+</tr>
+<tr>
+<td><code>{"from": "/a", "to": "/some/*"}</code></td>
+<td><code>/$DATABASE/_design/doc/_rewrite/a</code></td>
+<td><code>/$DATABASE/_design/doc/some</code></td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><code>{"from": "/a/*", "to": "/some/*}</code></td>
+<td><code>/$DATABASE/_design/doc/_rewrite/a/b/c</code></td>
+<td><code>/$DATABASE/_design/doc/some/b/c</code></td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><code>{"from": "/a", "to": "/some/*"}</code></td>
+<td><code>/$DATABASE/_design/doc/_rewrite/a</code></td>
+<td><code>/$DATABASE/_design/doc/some</code></td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><code>{"from": "/a/:foo/*","to": "/some/:foo/*"}</code></td>
+<td><code>/$DATABASE/_design/doc/_rewrite/a/b/c</code></td>
+<td><code>/$DATABASE/_design/doc/some/b/c?foo=b</code></td>
+<td>foo = b</td>
+</tr>
+<tr>
+<td><code>{"from": "/a/:foo", "to": "/some", "query": { "k": ":foo" }}</code></td>
+<td><code>/$DATABASE/_design/doc/_rewrite/a/b</code></td>
+<td><code>/$DATABASE/_design/doc/some/?k=b&foo=b</code></td>
+<td>foo =:= b</td>
+</tr>
+<tr>
+<td><code>{"from": "/a", "to": "/some/:foo" }</code></td>
+<td><code>/$DATABASE/_design/doc/_rewrite/a?foo=b</code></td>
+<td><code>/$DATABASE/_design/doc/some/b&foo=b</code></td>
+<td>foo = b</td>
+</tr>
+</tbody>
+</table>
+
 ### Indexes
 
 All queries operate on pre-defined indexes defined in design documents.
