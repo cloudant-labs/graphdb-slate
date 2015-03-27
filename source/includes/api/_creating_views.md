@@ -149,21 +149,17 @@ Reduce functions are passed three arguments in the order ''key'', ''values'', an
 
 Reduce functions must handle two cases:
 
-1.  When `rereduce` is false:
+1.	When `rereduce` is false:
+  -	`key` will be an array whose elements are arrays of the form `[key,id]`, where `key` is a key emitted by the map function and ''id'' is that of the document from which the key was generated.
+  -	`values` will be an array of the values emitted for the respective elements in `keys`, for example: `reduce([ [key1,id1], [key2,id2], [key3,id3] ], [value1,value2,value3], false)`
 
--   `key` will be an array whose elements are arrays of the form `[key,id]`, where `key` is a key emitted by the map function and ''id'' is that of the document from which the key was generated.
--   `values` will be an array of the values emitted for the respective elements in `keys`
--   i.e. `reduce([ [key1,id1], [key2,id2], [key3,id3] ], [value1,value2,value3], false)`
+2.	When `rereduce` is true:
+  -	`key` will be `null`.
+  -	`values` will be an array of values returned by previous calls to the reduce function, for example: `reduce(null, [intermediate1,intermediate2,intermediate3], true)`\`
 
-2.  When `rereduce` is true:
+Reduce functions should return a single value, suitable for both the "value" field of the final view and as a member of the "values" array passed to the reduce function.
 
--   `key` will be `null`.
--   `values` will be an array of values returned by previous calls to the reduce function.
--   i.e. `reduce(null, [intermediate1,intermediate2,intermediate3], true)`\`
-
-Reduce functions should return a single value, suitable for both the ''value'' field of the final view and as a member of the ''values'' array passed to the reduce function.
-
-Often, reduce functions can be written to handle rereduce calls without any extra code, like the summation function above. In that case, the ''rereduce'' argument can be ignored.
+Often, reduce functions can be written to handle rereduce calls without any extra code, like the summation function described previously. In that case, the `rereduce` argument can be ignored.
 
 #### Built-in reduce functions
 
