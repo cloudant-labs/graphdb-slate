@@ -45,9 +45,281 @@ The structure of design document is as follows:
 -   **lists (optional)**: List functions
     -   **function name** (one for each function): Function definition
 
+### Copying a Design Document
+
+You can copy the latest version of a design document to a new document
+by specifying the base document and target document.
+The copy is requested using the `COPY` HTTP request.
+
+<aside class="warning">`COPY` is a non-standard HTTP command.</aside>
+
+<div></div>
+
+>  Example command to copy a design document:
+
+```http
+COPY /recipes/_design/recipes HTTP/1.1
+Content-Type: application/json
+Destination: /recipes/_design/recipelist
+```
+
+> Example response to copy command:
+
+```json
+{
+  "id" : "recipes/_design/recipelist"
+  "rev" : "1-9c65296036141e575d32ba9c034dd3ee",
+}
+```
+
+An example request to copy the design document `recipes` to the new
+design document `recipelist` produces a response containing the ID and revision of
+the new document.
+
+<aside class="notice">Copying a design document does not automatically reconstruct the view
+indexes. Like other views, these are recreated the first
+time the new view is accessed.</aside>
+
+<div></div>
+
+#### The structure of the copy command
+
+-	 **Method**: `COPY /$DATABASE/_design/design-doc`
+-	 **Request**: None
+-	 **Response**: JSON describing the new document and revision
+-	 **Roles permitted**: \_writer
+-	 **Query Arguments**:
+    -	**Argument**: `rev`
+        -	**Description**:  Revision to copy from
+        -	**Optional**: yes
+        -	**Type**: string
+-	**HTTP Headers**
+    -	**Header**: `Destination`
+        -	**Description**: Destination document (and optional revision)
+        -	**Optional**: no
+
+The source design document is specified on the request line, with the
+`Destination` HTTP Header of the request specifying the target
+document.
+
+<div></div>
+
+#### Copying from a specific revision
+
+>  Example command to copy a specific revision of the design document:
+
+```http
+COPY /recipes/_design/recipes?rev=1-e23b9e942c19e9fb10ff1fde2e50e0f5 HTTP/1.1
+Content-Type: application/json
+Destination: recipes/_design/recipelist
+```
+
+To copy *from* a specific version, add the `rev` argument to the query
+string.
+
+The new design document is created using the specified revision of
+the source document.
+
+<div></div>
+
+#### Copying to an existing design document
+
+>  Example command to overwrite an existing copy of the design document:
+
+```http
+COPY /recipes/_design/recipes
+Content-Type: application/json
+Destination: recipes/_design/recipelist?rev=1-9c65296036141e575d32ba9c034dd3ee
+```
+
+> Example response to overwriting successfully an existing design document:
+
+```json
+{
+    "id" : "recipes/_design/recipes"
+    "rev" : "2-55b6a1b251902a2c249b667dab1c6692",
+}
+```
+
+To copy to an existing document, specify the current revision
+string for the target document, using the `rev` parameter to the
+``Destination`` HTTP Header string.
+
+The return value is the new revision of the copied document.
+
+### Deleting a design document
+
+> Example command to delete a design document:
+
+```http
+DELETE /recipes/_design/recipes?rev=2-ac58d589b37d01c00f45a4418c5a15a8 HTTP/1.1
+Content-Type: application/json
+```
+
+> Example response, containing the delete document ID and revision:
+
+```json
+{
+  "id" : "recipe/_design/recipes"
+  "ok" : true,
+  "rev" : "3-7a05370bff53186cb5d403f861aca154",
+}
+```
+
+You can delete an existing design document. Deleting a design document also
+deletes all of the associated view indexes, and recovers the
+corresponding space on disk for the indexes in question.
+
+To delete successfully, you must specify the current revision of the design document
+using the `rev` query argument.
+
+<div></div>
+
+#### The structure of the delete command
+
+-	 **Method**: `DELETE /db/_design/design-doc`
+-	 **Request**:  None
+-	 **Response**:  JSON of deleted design document
+-	 **Roles permitted**: _writer
+-	 **Query Arguments**:
+    -	**Argument**: `rev`
+        -	**Description**: Current revision of the document for validation
+        -	**Optional**: yes
+        -	**Type**: string
+-	**HTTP Headers**
+    -	**Header**: `If-Match`
+        -	**Description**: Current revision of the document for validation
+        -	**Optional**: yes
+
 ### Views
 
 An important use of design documents is for creating views. These are discussed in more detail [here](#creating-views).
+
+### Rewrite rules
+
+> Example rewrite rules:
+
+```json
+"rewrites": [
+  {
+    "from": "/",
+    "to": "index.html",
+    "method": "GET",
+    "query": {}
+  },
+  {
+    "from": "/foo/:var",
+    "to": "/foo",
+    "method": "GET",
+    "query": {"v": "var"}
+  }
+]
+```
+
+A design document can contain rules for URL rewriting, by using an array in the `rewrites` field.
+Requests that match the rewrite rules must have a URL path that starts with `/$DATABASE/_design/doc/_rewrite`.
+
+Each rule is a JSON object with 4 fields:
+
+<table>
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>from</code></td>
+<td>A path relative to <code>/$DATABASE/_design/doc/_rewrite</code>, used to match URLs to rewrite rules. Path elements that start with a <code>:</code> are treated as variables and match any string that does not contain a <code>/</code>. A <code>*</code> can only appear at the end of the string, and matches any string - including slashes.</td>
+</tr>
+<tr>
+<td><code>to</code></td>
+<td>The path (relative to <code>/$DATABASE/_design/doc/</code> and not including the query part of the URL) that is the result of the rewriting step. Variables captured in <code>from</code> can be used in <code>to</code>. <code>*</code> can also be used and contains everything captured by the pattern in <code>from</code>.</td>
+</tr>
+<tr>
+<td><code>method</code></td>
+<td>The HTTP method that should be matched on.</td>
+</tr>
+<tr>
+<td><code>query</code></td>
+<td>The query part of the resulting URL. This is a JSON object containing the key/value pairs of the query.</td>
+</tr>
+</tbody>
+</table>
+
+#### Example rewrite rules
+
+<table>
+<colgroup>
+<col width="30%" />
+<col width="30%" />
+<col width="30%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr>
+<th>Rule</th>
+<th>URL</th>
+<th>Rewrite to</th>
+<th>Tokens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>{"from": "/a/b", "to": "/some/"}</code></td>
+<td><code>/$DATABASE/_design/doc/_rewrite/a/b?k=v</code></td>
+<td><code>/$DATABASE/_design/doc/some/k=v</code></td>
+<td>k = v</td>
+</tr>
+<tr>
+<td><code>{"from": "/a/b", "to": "/some/:var"}</code></td>
+<td><code>/$DATABASE/_design/doc/_rewrite/a/b</code></td>
+<td><code>/$DATABASE/_design/doc/some/b?var=b</code></td>
+<td>var = b</td>
+</tr>
+<tr>
+<td><code>{"from": "/a", "to": "/some/*"}</code></td>
+<td><code>/$DATABASE/_design/doc/_rewrite/a</code></td>
+<td><code>/$DATABASE/_design/doc/some</code></td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><code>{"from": "/a/*", "to": "/some/*}</code></td>
+<td><code>/$DATABASE/_design/doc/_rewrite/a/b/c</code></td>
+<td><code>/$DATABASE/_design/doc/some/b/c</code></td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><code>{"from": "/a", "to": "/some/*"}</code></td>
+<td><code>/$DATABASE/_design/doc/_rewrite/a</code></td>
+<td><code>/$DATABASE/_design/doc/some</code></td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><code>{"from": "/a/:foo/*","to": "/some/:foo/*"}</code></td>
+<td><code>/$DATABASE/_design/doc/_rewrite/a/b/c</code></td>
+<td><code>/$DATABASE/_design/doc/some/b/c?foo=b</code></td>
+<td>foo = b</td>
+</tr>
+<tr>
+<td><code>{"from": "/a/:foo", "to": "/some", "query": { "k": ":foo" }}</code></td>
+<td><code>/$DATABASE/_design/doc/_rewrite/a/b</code></td>
+<td><code>/$DATABASE/_design/doc/some/?k=b&foo=b</code></td>
+<td>foo =:= b</td>
+</tr>
+<tr>
+<td><code>{"from": "/a", "to": "/some/:foo" }</code></td>
+<td><code>/$DATABASE/_design/doc/_rewrite/a?foo=b</code></td>
+<td><code>/$DATABASE/_design/doc/some/b&foo=b</code></td>
+<td>foo = b</td>
+</tr>
+</tbody>
+</table>
 
 ### Indexes
 
