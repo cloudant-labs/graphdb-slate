@@ -185,30 +185,43 @@ The Cloudant Query language is expressed as a JSON object describing documents o
 > A simple selector
 
 ```json
-{"name": "Paul"}
+{
+  "name": "Paul"
+}
 ```
 
 Elementary selector syntax requires you to specify one or more fields, and the corresponding values required for those fields. This selector matches all documents whose `"name"` field has the value `"Paul"`.
+
+You can create more complex selector expressions by combining operators.
+However, you cannot use 'combination' or 'array logical' operators such as `$regex` as the *basis* of a query. Only the equality operators such as `$eq`, `$gt`, `$gte`, `$lt`, `$lte` and `$ne` can be used as the basis of a more complex query.
+For more information about creating complex selector expressions, see [Creating selector expressions](#creating-selector-expressions).
 
 ###### selector with two fields
 
 > A more complex selector
 
 ```json
-{"name": "Paul", "location": "Boston"}
+{
+  "name": "Paul",
+  "location": "Boston"
+}
 ```
 
-This selector matches any document with `name` "Paul" that also has a `location` field with the value "Boston".
+This selector matches any document with a `name` containing "Paul", that also has a `location` field with the value "Boston".
 
 ### Subfields
 
 > Example of a field and subfield selector, using a standard JSON structure:
 
 ```json
-{"location": {"city": "Omaha"}}
+{
+  "location": {
+    "city": "Omaha"
+  }
+}
 ```
 
-A more complex selector enables you to specify the values for field of nested objects, i.e. subfields.
+A more complex selector enables you to specify the values for field of nested objects, or subfields.
 For example, you might use the standard JSON structure for specifying a field and subfield.
 
 <div></div>
@@ -218,10 +231,12 @@ For example, you might use the standard JSON structure for specifying a field an
 > Example of an equivalent dot-notation field and subfield selector:
 
 ```json
-{"location.city": "Omaha"}
+{
+  "location.city": "Omaha"
+}
 ```
 
-However, an abbreviated equivalent uses a dot notation to combine the field and subfield names into a single name.
+An abbreviated equivalent uses a dot notation to combine the field and subfield names into a single name.
 
 ### Operators
 
@@ -229,10 +244,14 @@ However, an abbreviated equivalent uses a dot notation to combine the field and 
 where the `age` field has a value greater than 20:
 
 ```json
-{"age": {"$gt": 20}}
+{
+  "age": {
+    "$gt": 20
+  }
+}
 ```
 
-Operators are identified by the use of a dollar sign ($) prefix in the name field.
+Operators are identified by the use of a dollar sign (`$`) prefix in the name field.
 
 There are two core types of operators in the selector syntax:
 
@@ -266,10 +285,12 @@ Any JSON object that is not the argument to a condition operator is an implicit 
 > Example of the implicit equality operator
 
 ```json
-{"foo": "bar"}
+{
+  "foo": "bar"
+}
 ```
 
-In this example, there must be a field `foo` in a matching document, and the field must have a value exactly equal to "bar".
+In this example, there must be a field `foo` in a matching document, *and* the field must have a value exactly equal to "bar".
 
 <div></div>
 
@@ -278,7 +299,11 @@ In this example, there must be a field `foo` in a matching document, and the fie
 > Example of an explicit equality operator
 
 ```json
-{"foo": {"$eq": "bar"}}
+{
+  "foo": {
+    "$eq": "bar"
+  }
+}
 ```
 
 You can also make the equality operator explicit.
@@ -290,29 +315,43 @@ You can also make the equality operator explicit.
 > Example of implicit operator applied to a subfield test
 
 ```json
-{"foo": {"bar": "baz"}}
+{
+  "foo": {
+    "bar": "baz"
+  }
+}
 ```
 
-With subfields, the required field `foo` in a matching document must also have a subfield `bar` with a value exactly equal to "baz".
+In the example using subfields,
+the required field `foo` in a matching document *must* also have a subfield `bar` *and* the subfield *must* have a value exactly equal to "baz".
 
 <div></div>
 
 > Example of an explicit equality operator
 
 ```json
-{"foo": {"$eq": {"bar": "baz"}}}
+{
+  "foo": {
+    "$eq": {
+      "bar": "baz"
+    }
+  }
+}
 ```
 
 Again, you can make the equality operator explicit.
 
-<div></div>
+<div id="combined-expressions"></div>
 
 ###### h6
 
 > Example of an implicit `$and` operator
 
 ```json
-{"foo": "bar", "baz": true}
+{
+  "foo": "bar",
+  "baz": true
+}
 ```
 
 In this example, the field `foo` must be present and contain the value `bar` _and_ the field `baz` must exist and have the value `true`.
@@ -324,16 +363,29 @@ In this example, the field `foo` must be present and contain the value `bar` _an
 > Example of using explicit `$and` and `$eq` operators
 
 ```json
-{"$and": [{"foo": {"$eq": "bar"}}, {"baz": {"$eq": true}}]}
+{
+  "$and": [
+    {
+      "foo": {
+        "$eq": "bar"
+      }
+    },
+    {
+      "baz": {
+        "$eq": true
+      }
+    }
+  ]
+}
 ```
 
-You can make both the `and` and the equality operator explicit like this:
+You can make both the `and` operator and the equality operator explicit.
 
 ### Combination Operators
 
 Combination operators are used to combine selectors.
 In addition to the common boolean operators found in most programming languages,
-there are two operators that help you work with JSON arrays.
+there are two combination operators (`$all` and `$elemMatch`) that help you work with JSON arrays.
 
 A combination operator takes a single argument.
 The argument is either another selector, or an array of selectors.
@@ -373,15 +425,81 @@ Miscellaneous | `$mod` | [Divisor, Remainder] | Divisor and Remainder are both p
 
 <aside class="warning">Regular expressions do not work with indexes, so they should not be used to filter large data sets.</aside>
 
-<aside class="notice">The matching algorithms use by the `$regex` operator are currently based on the Perl Compatible Regular Expression (PCRE) library.
+### Creating selector expressions
+
+We have seen examples of combining selector expressions,
+such as [using explicit `$and` and `$eq` operators](#combined-expressions).
+In general,
+whenever you have an operator that takes an argument,
+that argument can itself be another operator with arguments of its own.
+This enables us to build up more complex selector expressions.
+
+However, not all operators can be used as the base or starting point of the selector expression.
+
+<aside class="warning">You cannot use combination or array logical operators such as `$regex` as the *basis* of a query. Only equality operators such as `$eq`, `$gt`, `$gte`, `$lt`, `$lte` and `$ne` can be used as the basis of a query.</aside>
+
+<div></div>
+
+> Example of an invalid selector expression:
+
+```json
+{
+  "selector": {
+    "afieldname": {
+      "$regex": "^A"
+    }
+  }
+}
+```
+
+> Example response to an invalid selector expression:
+
+```json
+{
+  error: "no_usable_index"
+  reason: "There is no operator in this selector can used with an index."
+}
+```
+
+For example,
+if you try to perform a query that attempts to match all documents that have a field called `afieldname` containing a value that begins with the letter `A`,
+you get an `error: "no_usable_index"` error message.
+
+<div></div>
+
+> Example use of an equality operator to enable a selector expression:
+
+```json
+{
+  "selector": {
+    "_id": {
+      "$gt": null
+    },
+    "afieldname": {
+      "$regex": "^A"
+    }
+  }
+}
+```
+
+A solution is to use an equality operator as the basis of the query.
+You can add a 'null' or always true expression as the basis of the query.
+For example,
+you could first test that the document has an `_id` value:
+
+  `"_id": { "$gt": null }`
+
+This expression is always be true,
+enabling the remainder of the selector expression to be applied.
+
+<aside class="warning">Using `{"_id": { "$gt":null } }` induces a full-table scan, and is not efficient for large databases.</aside>
+
+Most selector expressions work exactly as you would expect for the given operator.
+The matching algorithms used by the `$regex` operator are currently based on the Perl Compatible Regular Expression (PCRE) library.
 However, not all of the PCRE library is implemented,
 and some parts of the `$regex` operator go beyond what PCRE offers.
 For more information about what is implemented,
-see the <a href="http://erlang.org/doc/man/re.html" target="_blank">Erlang Regular Expression</a> information.</aside>
-
-
-
-
+see the <a href="http://erlang.org/doc/man/re.html" target="_blank">Erlang Regular Expression</a> information.
 
 ### Sort Syntax
 
