@@ -207,7 +207,7 @@ For more information about creating complex selector expressions, see [Creating 
 }
 ```
 
-This selector matches any document with a `name` containing "Paul", that also has a `location` field with the value "Boston".
+This selector matches any document with a `name` field containing "Paul", that also has a `location` field with the value "Boston".
 
 ### Subfields
 
