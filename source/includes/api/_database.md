@@ -346,6 +346,7 @@ Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE/_changes`
 
 Argument | Description | Supported Values | Default 
 ---------|-------------|------------------|---------
+`descending` | Return the changes in sequential order | boolean | false | 
 `doc_ids` | List of documents IDs to use to filter updates | array of strings with valid document IDs | all documents
 `feed` | Type of feed | `"continuous"`, `"longpoll"`, `"normal"` | `"normal"`
 `filter` | Name of filter function from a design document to get updates | string | no filter
@@ -353,7 +354,7 @@ Argument | Description | Supported Values | Default
 `include_docs` | Include the document with the result | boolean | false |
 `limit` | Maximum number of rows to return | any non-negative number | none |  
 `since` | Start the results from changes after the specified sequence number. If since is 0 (the default), the request will return all changes. | string | 0 | 
-`descending` | Return the changes in sequential order | boolean | false | 
+`style` | Specifies how many revisions are returned in the changes array. The default, `main_only`, only returns the current "winning" revision; `all_docs` returns all leaf revisions, including conflicts and deleted former conflicts. | `main_only`, `all_docs` | `main_only` | 
 `timeout` | Number of milliseconds to wait for data before terminating the response. If heartbeat supersedes timeout if both are supplied. | any positive number | |
 
 All arguments are optional.
