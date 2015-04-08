@@ -25,7 +25,7 @@
           return 'GET /docs-examples/_design/ddoc/_search/books?q=' + searchQueryInput.val() + ' HTTP/1.1';
         },
         renderCurlRequest: function() {
-          return "curl 'https://examples.cloudant.com/docs-examples/_design/ddoc/_search/books?q=" + searchQueryInput.val() + "'";
+          return 'curl "https://examples.cloudant.com/docs-examples/_design/ddoc/_search/books?q= \\\n' + searchQueryInput.val() + '"';
         },
         doAjaxRequest: function() {
         
