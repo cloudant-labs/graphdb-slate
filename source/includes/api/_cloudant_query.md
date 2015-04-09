@@ -489,7 +489,7 @@ you could first test that the document has an `_id` value:
 
   `"_id": { "$gt": null }`
 
-This expression is always be true,
+This expression is always true,
 enabling the remainder of the selector expression to be applied.
 
 <aside class="warning">Using `{"_id": { "$gt":null } }` induces a full-table scan, and is not efficient for large databases.</aside>
