@@ -193,7 +193,7 @@ The Cloudant Query language is expressed as a JSON object describing documents o
 Elementary selector syntax requires you to specify one or more fields, and the corresponding values required for those fields. This selector matches all documents whose `"name"` field has the value `"Paul"`.
 
 You can create more complex selector expressions by combining operators.
-However, you cannot use 'combination' or 'array logical' operators such as `$regex` as the *basis* of a query. Only the equality operators such as `$eq`, `$gt`, `$gte`, `$lt`, `$lte` and `$ne` can be used as the basis of a more complex query.
+However, you cannot use 'combination' or 'array logical' operators such as `$regex` as the *basis* of a query. Only the equality operators such as `$eq`, `$gt`, `$gte`, `$lt`, and `$lte` (but not `$ne`) can be used as the basis of a more complex query.
 For more information about creating complex selector expressions, see [Creating selector expressions](#creating-selector-expressions).
 
 ###### selector with two fields
@@ -489,7 +489,7 @@ you could first test that the document has an `_id` value:
 
   `"_id": { "$gt": null }`
 
-This expression is always be true,
+This expression is always true,
 enabling the remainder of the selector expression to be applied.
 
 <aside class="warning">Using `{"_id": { "$gt":null } }` induces a full-table scan, and is not efficient for large databases.</aside>
