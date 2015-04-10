@@ -119,6 +119,10 @@ you can [query the database](#get-documents) for all documents.
 
 The response contains the document you requested or a description of the error, if the document could not be retrieved.
 
+<aside class="warning">
+Due to the distributed, eventually consistent nature of Cloudant, reads might return stale data. In particular, data that has just been written, even by the same client, might not be returned from a read request immediately following the write request. To work around this behaviour, a client can cache state locally. Caching also helps to keep request counts down and thus increase application performance and decrease load on the database cluster. This also applies to requests to map-reduce and search indexes.
+</aside>
+
 ### Read Many
 
 To fetch many documents at once, [query the database](#get-documents).
