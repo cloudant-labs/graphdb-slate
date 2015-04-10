@@ -193,7 +193,7 @@ The Cloudant Query language is expressed as a JSON object describing documents o
 Elementary selector syntax requires you to specify one or more fields, and the corresponding values required for those fields. This selector matches all documents whose `"name"` field has the value `"Paul"`.
 
 You can create more complex selector expressions by combining operators.
-However, you cannot use 'combination' or 'array logical' operators such as `$regex` as the *basis* of a query. Only the equality operators such as `$eq`, `$gt`, `$gte`, `$lt`, `$lte` and `$ne` can be used as the basis of a more complex query.
+However, you cannot use 'combination' or 'array logical' operators such as `$regex` as the *basis* of a query. Only the equality operators such as `$eq`, `$gt`, `$gte`, `$lt`, and `$lte` (but not `$ne`) can be used as the basis of a more complex query.
 For more information about creating complex selector expressions, see [Creating selector expressions](#creating-selector-expressions).
 
 ###### selector with two fields
@@ -436,7 +436,7 @@ This enables us to build up more complex selector expressions.
 
 However, not all operators can be used as the base or starting point of the selector expression.
 
-<aside class="warning">You cannot use combination or array logical operators such as `$regex` as the *basis* of a query. Only equality operators such as `$eq`, `$gt`, `$gte`, `$lt`, `$lte` and `$ne` can be used as the basis of a query.</aside>
+<aside class="warning">You cannot use combination or array logical operators such as `$regex` as the *basis* of a query. Only equality operators such as `$eq`, `$gt`, `$gte`, `$lt`, and `$lte` (but not `$ne`) can be used as the basis of a query.</aside>
 
 <div></div>
 
