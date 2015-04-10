@@ -436,7 +436,7 @@ This enables us to build up more complex selector expressions.
 
 However, not all operators can be used as the base or starting point of the selector expression.
 
-<aside class="warning">You cannot use combination or array logical operators such as `$regex` as the *basis* of a query. Only equality operators such as `$eq`, `$gt`, `$gte`, `$lt`, `$lte` and `$ne` can be used as the basis of a query.</aside>
+<aside class="warning">You cannot use combination or array logical operators such as `$regex` as the *basis* of a query. Only equality operators such as `$eq`, `$gt`, `$gte`, `$lt`, and `$lte` (but not `$ne`) can be used as the basis of a query.</aside>
 
 <div></div>
 
