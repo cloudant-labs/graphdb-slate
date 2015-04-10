@@ -140,6 +140,8 @@ Other conflict resolution strategies are:
 * reporting conflicts to users and letting them decide on the best resolution
 * more sophisticated merging algorithms, e.g. 3-way merges of text fields
 
+For a practical example of how to implement these changes, see [this project with sample code](https://github.com/glynnbird/deconflict).
+
 #### Upload the new revision
 
 In this example, you produce the document to your right and update the database with it.
