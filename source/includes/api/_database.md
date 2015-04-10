@@ -347,7 +347,6 @@ Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE/_changes`
 Argument | Description | Supported Values | Default 
 ---------|-------------|------------------|---------
 `descending` | Return the changes in sequential order | boolean | false | 
-`doc_ids` | List of documents IDs to use to filter updates | array of strings with valid document IDs | all documents
 `feed` | Type of feed | `"continuous"`, `"longpoll"`, `"normal"` | `"normal"`
 `filter` | Name of filter function from a design document to get updates | string | no filter
 `heartbeat` | Time in milliseconds after which an empty line is sent during longpoll or continuous if there have been no changes | any positive number | 60000 | 
