@@ -28,7 +28,7 @@ Replications are created in one of two ways:
 
 The format of the document used to describe a replication is as follows:
 
-Field Name | Required | Description
+Field&nbsp;Name | Required | Description
 -----------|----------|-------------
 `source` | yes | Identifies the database to copy revisions from. Can be a database URL, or an object whose url property contains the full URL of the database.
 `target` | yes | Identifies the database to copy revisions to. Same format and interpretation as source. Does not have to be the same value as the `source` field.
@@ -39,6 +39,7 @@ Field Name | Required | Description
 `proxy` | no | Proxy server URL.
 `query_params` | no | Object containing properties that are passed to the filter function.
 <div id="checkpoints">`use_checkpoints`</div> | no | Indicate whether to create checkpoints. Checkpoints greatly reduce the time and resources needed for repeated replications. Setting this to `false` removes the requirement for write access to the `source` database. Defaults to `true`.
+`user_ctx` | no | An object containing the username and optionally an array of roles, e.g.: `"user_ctx": {"name": "jane", "roles": ["admin"]} `. This is needed for the replication to show up in the output of `/_active_tasks`.
 
 ### The `/_replicator` database
 
