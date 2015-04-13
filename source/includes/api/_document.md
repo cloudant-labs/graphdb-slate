@@ -70,6 +70,8 @@ To create a document, make a POST request with the document's JSON content to `h
 
 The response is a JSON document containing the ID of the created document, the revision string, and `"ok": true`. If you did not provide an `_id` field, Cloudant generates one automatically as a [UUID](http://en.wikipedia.org/wiki/Universally_unique_identifier). If creation of the document failed, the response contains a description of the error.
 
+<aside>If the write quorum cannot be met, a [`202` response](api.html#http-status-codes) is returned.</aside>
+
 ### Read
 
 > Reading a document:
@@ -174,8 +176,8 @@ db.insert($JSON, $JSON._id, function (err, body, headers) {
 
 To update (or create) a document, make a PUT request with the updated JSON content *and* the latest `_rev` value (not needed for creating new documents) to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID`.
 
-<aside>If you fail to provide the latest `_rev`, Cloudant responds with a [409 error](basics.html#http-status-codes).
-This error prevents you overwriting data changed by other processes.</aside>
+<aside>If you fail to provide the latest `_rev`, Cloudant responds with a [409 error](api.html#http-status-codes).
+This error prevents you overwriting data changed by other processes. If the write quorum cannot be met, a [`202` response](api.html#http-status-codes) is returned.</aside>
 
 <div></div>
 
@@ -224,7 +226,7 @@ db.destroy($JSON._id, $REV, function (err, body, headers) {
 To delete a document, make a DELETE request with the document's latest `_rev` in the querystring, to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID`.
 
 <aside>If you fail to provide the latest `_rev`, Cloudant responds with a [409 error](basics.html#http-status-codes).
-This error prevents you overwriting data changed by other clients.</aside>
+This error prevents you overwriting data changed by other clients. If the write quorum cannot be met, a [`202` response](api.html#http-status-codes) is returned.</aside>
 
 <aside class="warning">
 CouchDB doesn’t completely delete the specified document. Instead, it leaves a tombstone with very basic information about the document. The tombstone is required so that the delete action can be replicated. Since the tombstones stay in the database indefinitely, creating new documents and deleting them increases the disk space usage of a database and the query time for the primary index, which is used to look up documents by their ID.
