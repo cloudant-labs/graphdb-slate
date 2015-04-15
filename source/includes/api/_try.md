@@ -2,44 +2,45 @@
   $(document).ready(function() {
     var searchForm = $('form.search');
     var cqForm = $('form.cq');
-    var outputField = $("#search-output-marker").next();
-    var httpRequestField = $("#search-request-http-marker").next();
-    var curlRequestField = $("#search-request-curl-marker").next();
-    var forms = [searchForm, cqForm];
-    var formNames = ['search', 'cq'];
-    var predefinedQueries = {
-      search: {
-        'author-is-john': {query: 'author:John'},
-        'sorting': {query: ''}
-      },
-      cq: {
-        'actor-is-zoe-saldana': {query: '{ "selector": { "Person_name": "Zoe Saldana" } }'},
-        'sorting': {query: ''}
-      }
-    };
-    var searchQueryInput = $('form.search #test-search-query');
-    var cqQueryInput = $('form.cq .query');
+    var outputField = $("#output-marker").next();
+    var httpRequestField = $("#request-http-marker").next();
+    var curlRequestField = $("#request-curl-marker").next();
     var requestTypes = {
       search: {
+        queryInput: $('form.search #test-search-query'),
+        form: searchForm,
+        queries: {
+          'author-is-john': {query: 'author:John'},
+          'sorting': {query: ''},
+          default: {query: 'author:John'}
+        },
         renderHttpRequest: function() {
-          return 'GET /docs-examples/_design/ddoc/_search/books?q=' + searchQueryInput.val() + ' HTTP/1.1';
+          return 'GET /docs-examples/_design/ddoc/_search/books?q=' + this.queryInput.val() + ' HTTP/1.1';
         },
         renderCurlRequest: function() {
-          return 'curl "https://examples.cloudant.com/docs-examples/_design/ddoc/_search/books?q= \\\n' + searchQueryInput.val() + '"';
+          return 'curl "https://examples.cloudant.com/docs-examples/_design/ddoc/_search/books?q= \\\n' + this.queryInput.val() + '"';
         },
         doAjaxRequest: function() {
         
         }
       },
       cq: {
+        queryInput: $('form.cq .query'),
+        form: cqForm,
+        queries: {
+          'actor-is-zoe-saldana': {query: '{ "selector": { "Person_name": "Zoe Saldana" } }'},
+          'sorting': {query: ''},
+          default: {query: '{ "selector": { "Person_name": "Zoe Saldana" } }'}
+        },
         renderHttpRequest: function() {
-          return 'POST /movies-demo-with-indexes/_find HTTP/1.1\nHost: examples.cloudant.com\n\n' + cqQueryInput.val();
+          return 'POST /movies-demo-with-indexes/_find HTTP/1.1\nHost: examples.cloudant.com\n\n' + this.queryInput.val();
         },
         renderCurlRequest: function() {
-          return "curl 'https://examples.cloudant.com/movies-demo-with-indexes/_find' -X POST -d '" + cqQueryInput.val() + "'";
+          return "curl 'https://examples.cloudant.com/movies-demo-with-indexes/_find' -X POST -d '" + this.queryInput.val() + "'";
         }
       }
     };
+        
     var highlight = function(elem) {
       elem.each(function(i, block) {
         hljs.highlightBlock(block);
@@ -55,70 +56,62 @@
     
     var requestTypeSelect = $('div.test-form-container select.request-type');
     var showSelectedType = function() {
-      for (i in forms) {
-        forms[i].hide();
+      for (requestType in requestTypes) {
+        requestTypes[requestType].form.hide();
       }
       var type = requestTypeSelect.val();
-      if (type == 'search') {
-        searchForm.show();    
-      }
-      if (type == 'cq') {
-        cqForm.show();    
-      }
+      requestTypes[type].form.show();
       requestChanged(type);
     };
     requestTypeSelect.on("change", showSelectedType);
     showSelectedType();
 
     var initForm = function(formName, request) {
-      console.log('initForm called with ', formName, request);
       for (field in request) {
         $('form.' + formName + ' .' + field).val(request[field]);
       }
     };
     var initPredefinedSelect = function(formName) {
-      console.log('initPredefinedSelect called');
       var predefinedSelect = $('form.' + formName + ' select.predefined');
       predefinedSelect.on('change', function() {
         var request = predefinedSelect.val();
-        console.log(formName, request, predefinedQueries[formName][request]);
-        initForm(formName, predefinedQueries[formName][request]);
+        initForm(formName, requestTypes[formName].queries[request]);
         requestChanged(formName);
       });
     };
-    for (i in formNames) {
-      initPredefinedSelect(formNames[i]);
+    for (requestType in requestTypes) {
+      initPredefinedSelect(requestType);
     }
-    initForm('search', predefinedQueries.search['author-is-john']);
-    initForm('cq', predefinedQueries.cq['actor-is-zoe-saldana']);
+    for (rt in requestTypes) {
+      initForm(rt, requestTypes[rt].queries.default);
+    }
     requestChanged('search');
     highlight(outputField);
     highlight(httpRequestField);
     highlight(curlRequestField);
-    searchQueryInput.on('change keyup keypress', function() {requestChanged('search');});
-    cqQueryInput.on('change keyup keypress', function() {requestChanged('cq');});
+    requestTypes.search.queryInput.on('change keyup keypress', function() {requestChanged('search');});
+    requestTypes.cq.queryInput.on('change keyup keypress', function() {requestChanged('cq');});
     var displayResult = function(jqXHR, textStatus) {
       var result = JSON.stringify(jQuery.parseJSON(jqXHR.responseText), null, '    ');
       outputField.show();
       outputField.text(result);
       highlight(outputField);
     }
-    searchForm.submit(function(event) {
-      var query = searchQueryInput.val();
+    requestTypes.search.form.submit(function(event) {
+      var query = requestTypes.search.queryInput.val();
       jQuery.ajax({
         url: '//examples.cloudant.com/docs-examples/_design/ddoc/_search/books?q=' + query,
         type: 'GET',
         beforeSend: function(xhr) {
           xhr.setRequestHeader("Authorization", "Basic " + btoa('thereencespedgetytolisir:c1IimpBSAC3b3A66N8LHKwKF'));
         },
-        error: function(one, two) {
-        },
+        error: function(one, two) {},
         complete: displayResult
       });
       event.preventDefault();
     });
-    cqForm.submit(function(event){
-      var query = cqQueryInput.val();
+    requestTypes.cq.form.submit(function(event){
+      var query = requestTypes.cq.queryInput.val();
       jQuery.ajax({
         url: '//examples.cloudant.com/movies-demo-with-indexes/_find',
         type: 'POST',
@@ -126,8 +119,7 @@
         beforeSend: function(xhr) {
           xhr.setRequestHeader("Authorization", "Basic " + btoa('thereencespedgetytolisir:c1IimpBSAC3b3A66N8LHKwKF'));
         },
-        error: function(one, two) {
-        },
+        error: function(one, two) {},
         complete: displayResult
       });
       event.preventDefault();
@@ -156,13 +148,13 @@
 
 > Request
 
-<p id="search-request-http-marker"></p>
+<p id="request-http-marker"></p>
 
 ```http
 GET /examples/_design/ddoc/_search/books?q=author:John HTTP/1.1
 ```
 
-<p id="search-request-curl-marker"></p>
+<p id="request-curl-marker"></p>
 
 ```shell
 curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/examples/_design/ddoc/_search/books?q=author:John
@@ -170,7 +162,7 @@ curl https://$USERNAME:$PASSWORD@$USERNAME.cloudant.com/examples/_design/ddoc/_s
 
 > Response
 
-<p id="search-output-marker"></p>
+<p id="output-marker"></p>
 
 ```json
 {
@@ -223,8 +215,8 @@ You can try out requests and output will be shown in the code column to the righ
     <input class="submit-button" type="submit" value="query"></input>
   </form>
     
-
 </div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 <style type="text/css">
   .test-form-container textarea {
