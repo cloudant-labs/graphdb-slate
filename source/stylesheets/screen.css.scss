@@ -218,15 +218,18 @@ html, body {
       }
     }
   }
-  @-moz-document url-prefix() {
-    #searchbox button {
-      padding-bottom: 6px;
-    }
-  }
+
 
 
 }
 
+
+  @-moz-document url-prefix() {
+    #searchbox button {
+      padding-top: 6px;
+      padding-bottom: 12px;
+    }
+  }
 
 ////////////////////////////////////////////////////////////////////////////////
 // PAGE LAYOUT AND CODE SAMPLE BACKGROUND
