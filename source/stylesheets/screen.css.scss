@@ -271,13 +271,13 @@ html, body {
     position: fixed;
     z-index: 50;
     top: 50px;
-    height: 66px;
+    height: 52px;
     font-weight: 300;
     background-color: $examples-bg;
     border-bottom: 5px solid $lang-select-active-bg;
     #selected-language {
       position: relative;
-      top: 23px;
+      top: 9px;
       width: 200px;
       margin-right: 20px;
       float: right;
@@ -314,7 +314,7 @@ html, body {
       width: 228px;
       margin: 0;
       padding: 0;
-      top: 70px;
+      top: 56px;
       right: -230px;
       position: relative;
       float: right;
