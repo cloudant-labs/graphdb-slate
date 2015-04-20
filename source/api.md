@@ -25,7 +25,7 @@ includes:
   - api/document
   - api/attachments
   - api/cloudant_query
-  - api/cqsearch
+#  - api/cqsearch
   - api/design_documents
   - api/creating_views
   - api/using_views
@@ -34,8 +34,8 @@ includes:
   - api/advanced_replication
   - api/active_tasks
   - api/advanced
-  - api/backup
-  - api/try.md
+#  - api/backup
+#  - api/try.md
 
 ---
 
