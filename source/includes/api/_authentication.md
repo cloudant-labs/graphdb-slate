@@ -120,8 +120,6 @@ Do this by sending a `POST` request to `/_session`.
 
 <div></div>
 
-###### h6
-
 > Reply to request for a cookie
 
 ```
@@ -167,8 +165,6 @@ When a cookie has been set, information about the logged in user can be retrieve
 
 <div> </div>
 
-###### h6
-
 > Example response to request for cookie information.
 
 ```json
@@ -188,7 +184,8 @@ When a cookie has been set, information about the logged in user can be retrieve
 
 The response contains the username, the user's roles and which authentication mechanism was used.
 
-<h3></h3>
+<div></div>
+
 #### Deleting a cookie
 
 > Example cookie `DELETE` request:
@@ -207,9 +204,7 @@ curl https://$USERNAME.cloudant.com/_session \
 
 You can end the session by sending a `DELETE` request to the same URL used to create the cookie. The `DELETE` request must include the cookie you wish to delete.
 
-<div> </div>
-
-###### h6
+<div></div>
 
 > Example response to cookie `DELETE` request:
 

@@ -56,8 +56,6 @@ To create a document, make a POST request with the document's JSON content to `h
 
 <div></div>
 
-###### h6
-
 > Example response:
 
 ```json
@@ -101,8 +99,6 @@ If you do not know the `_id` for a particular document,
 you can [query the database](#get-documents) for all documents.
 
 <div></div>
-
-###### h6
 
 > Example response:
 
@@ -181,8 +177,6 @@ This error prevents you overwriting data changed by other processes. If the writ
 
 <div></div>
 
-###### h6
-
 > Example response:
 
 ```json
@@ -232,7 +226,7 @@ This error prevents you overwriting data changed by other clients. If the write 
 CouchDB doesn’t completely delete the specified document. Instead, it leaves a tombstone with very basic information about the document. The tombstone is required so that the delete action can be replicated. Since the tombstones stay in the database indefinitely, creating new documents and deleting them increases the disk space usage of a database and the query time for the primary index, which is used to look up documents by their ID.
 </aside>
 
-###### h6
+<div></div>
 
 > Deletion response:
 

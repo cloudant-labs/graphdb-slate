@@ -611,8 +611,6 @@ The filter function is run over every change in the changes feed, and only those
 
 <div></div>
 
-###### h6
-
 > Example filter function:
 
 ```
@@ -632,8 +630,6 @@ function(doc, req){
 Filter functions receive two arguments: `doc` and [req](#req). `doc` represents the document being filtered and `req` contains information about the http request. In most cases, only the `doc` parameter will be used.
 
 <div></div>
-
-###### h6
 
 > Example query:
 
