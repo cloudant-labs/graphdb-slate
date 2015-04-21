@@ -2,7 +2,7 @@
 
 Cloudant’s replication capabilities are best-of-class. Data can be copied from one database to another in the same Cloudant account, across accounts and across data centers. Data can even be replicated to and from a Cloudant account and a mobile device using [Cloudant Sync](https://cloudant.com/product/cloudant-features/sync/) or [PouchDB](http://pouchdb.com/). Replication can run in one direction or in both directions, as one-shot or continuous operation and can be finely tuned with optional parameters.
 
-Cloudant’s replication protocol is compatible with a range of other databases and libraries as we’ll see in part two of this series, making it a great fit for Internet of Things (IoT) and mobile applications. 
+Cloudant’s replication protocol is compatible with a range of other databases and libraries, making it a great fit for Internet of Things (IoT) and mobile applications. 
 
 This guide introduces Cloudant’s replication functionality, discuss common use-cases and shows how to make your application replicate successfully.
 
@@ -77,7 +77,7 @@ curl
 }
 ```
 
-Every Cloudant account has a special database called “_replicator” into which replication jobs can be inserted. Simply add a document into the _replicator database to initiate replication.
+Every Cloudant account has a special database called `_replicator`, into which replication jobs can be inserted. Simply add a document into the `_replicator` database to initiate replication.
 
  * `_id` - Supplying an _id field is optional, but can be useful in order to identify replication tasks. Cloudant will generate a value for you if you do not supply one.
  * `source` - the URL of the source Cloudant database, including login credentials
@@ -95,7 +95,7 @@ Admin access is required to insert a document into the `_replicator` database, b
  * write documents at the destination end
  * write checkpoint documents at both ends 
 
-Cloudant has a special _replicator user permission which allows the creation of checkpoint documents, but does not allow the creation of ordinary documents in a database. It is recommended that you create API keys that have
+Cloudant has a special `_replicator` user permission which allows the creation of checkpoint documents, but does not allow the creation of ordinary documents in a database. It is recommended that you create API keys that have
 
  * `_reader` and `_replicator` access at the source side
  * `_writer` access at the destination side
@@ -179,7 +179,7 @@ Authorization: ...
 
 Cloudant’s `_replicator` database can be interrogated at any time using the Dashboard or via the API:
 
-If replication has failed (e.g. if the authentication credentials were invalid), then the error state will be recorded in the _replicator document. In addition, the Cloudant account’s “_active_tasks” endpoint can be used to see replication work as it progresses (see https://docs.cloudant.com/guides/replication/replicator-database.html for more details).
+If replication has failed (e.g. if the authentication credentials were invalid), then the error state will be recorded in the `_replicator` document. In addition, the Cloudant account’s `/_active_tasks` endpoint can be used to see replication work as it progresses (see https://docs.cloudant.com/guides/replication/replicator-database.html for more details).
 
 ### Cancelling replication
 
@@ -392,9 +392,9 @@ API keys are generated in the Cloudant Dashboard and each key can be given indiv
 
 #### Replication document is conflicted
 
-Another consequence of setting user permissions incorrectly is that the _replicator document itself (the document that  records the current state of the replication process) becomes conflicted. In extreme examples, the document can become huge (because it contains many unresolved conflicts) eating into available space and causing extra server load. 
+Another consequence of setting user permissions incorrectly is that the `_replicator` document itself (the document that  records the current state of the replication process) becomes conflicted. In extreme examples, the document can become huge (because it contains many unresolved conflicts) eating into available space and causing extra server load. 
 
-Check the size of your _replicator database by doing `GET https://myaccount.cloudant.com/_replicator` and looking for the `disk_size` in the returned JSON. If this indicates a size of over 1GB, then please contact [Cloudant support](https://cloudant.com/support/) for further advice.
+Check the size of your `_replicator` database by doing `GET https://myaccount.cloudant.com/_replicator` and looking for the `disk_size` in the returned JSON. If this indicates a size of over 1GB, then please contact [Cloudant support](https://cloudant.com/support/) for further advice.
 
 An individual `_replicator` document can be checked for conflicts by querying `GET https://myaccount.cloudant.com/_replicator/<<docid>>?conflicts=true`.
 
