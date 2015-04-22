@@ -534,6 +534,8 @@ Sometimes it is useful to get the context in which a search term was mentioned s
 
 In the response, a `highlights` field will be added with one subfield per field name. For each field, you will receive an array of fragments with the search term highlighted.
 
+<aside>For highlighting to work, you need to have the field stored in the index by using the `store: true` option.</aside>
+
 <div> </div>
 
 <!--
