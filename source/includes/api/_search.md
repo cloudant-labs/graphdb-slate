@@ -273,7 +273,33 @@ Argument | Description | Optional | Type | Supported Values
 
 <aside class="warning">Do not combine the `bookmark` and `stale` options. The reason is that both these options constrain the choice of shard replicas to use for determining the response. When used together, the options can result in problems when attempting to contact slow or unavailable replicas.</aside>
 
-### Query Syntax
+#### POSTing search queries
+
+> Search request using the POST API
+
+```http
+POST /db/_design/ddoc/_search/searchname HTTP/1.1
+Content-Type: application/json
+Host: account.cloudant.com
+```
+
+```shell
+curl 'https://account.cloudant.com/db/_design/ddoc/_search/searchname' -X POST -H 'Content-Type: application/json' -d @search.json
+```
+
+```json
+{
+  "q": "index:my query",
+  "sort": "foo",
+  "limit": 3
+}
+```
+
+Instead of using the `GET` HTTP method, you can also use `POST`. The main advantage of `POST` queries is, that they can have a request body, so you can specify the request as a JSON object. Each parameter in the table above corresponds to a field in the JSON object in the request body.
+
+<div> </div>
+
+### Lucene Query Syntax
 
 > Example search query:
 
@@ -507,13 +533,13 @@ You can combine sorting by distance with any other search query, such as range s
 > Search query with highlighting enabled
 
 ```http
-GET /movies/_design/searches/_search?q=movie_name:Azazel&highlight_fields=\[\"movie_name\"\]&highlight_pre_tag=\"<b>\"&highlight_post_tag=\"b/>\""&highlights_size=30&highlights_number=2 HTTP/1.1
+GET /movies/_design/searches/_search/movies?q=movie_name:Azazel&highlight_fields=\[\"movie_name\"\]&highlight_pre_tag=\"<b>\"&highlight_post_tag=\"b/>\""&highlights_size=30&highlights_number=2 HTTP/1.1
 HOST: account.cloudant.com
 Authorization: ...
 ```
 
 ```shell
-curl "https://user:password@account.cloudant.com/movies/_design/searches/_search?q=movie_name:Azazel&highlight_fields=\[\"movie_name\"\]&highlight_pre_tag=\"<b>\"&highlight_post_tag=\"b/>\""&highlights_size=30&highlights_number=2
+curl "https://user:password@account.cloudant.com/movies/_design/searches/_search/movies?q=movie_name:Azazel&highlight_fields=\[\"movie_name\"\]&highlight_pre_tag=\"<b>\"&highlight_post_tag=\"b/>\""&highlights_size=30&highlights_number=2
 ```
 
 > Search result with highlights
