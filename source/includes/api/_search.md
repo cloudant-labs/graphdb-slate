@@ -96,7 +96,7 @@ The `index` function also provides a third, options parameter that receives a Ja
 
 Option | Description | Values | Default
 -------|-------------|--------|---------
-store | If `true`, the value will be returned in the search result; otherwise, it will not be. | `true`, `false` | `false`
+store | If `true`, the value will be stored and returned in search results (unless `include_fields` is set and the field is not included). | `true`, `false` | `false`
 index | whether (and how) the data is indexed. See [Analyzers](#analyzers) for more info. | `analyzed`, `analyzed_no_norms`, `no`, `not_analyzed`, `not_analyzed_no_norms` | analyzed
 facet | creates a faceted index. See [Faceting](#faceting) for more info. | `true`, `false` | `false`
 
@@ -267,9 +267,7 @@ Argument | Description | Optional | Type | Supported Values
 `highlight_post_tag` | A string inserted after the highlighted word in the highlights output | yes, defaults to `<em>` | String | 
 `highlight_number` | Number of fragments returned in highlights. If the search term occurs less often than the number of fragments specified, longer fragments are returned. | yes, defaults to 1 | Numeric |
 `highlight_size` | Number of characters in each fragment for highlights. | yes, defaults to 100 characters | Numeric |
-
-
-
+`include_fields` | A JSON array of field names to include in search results. Any fields included must have been indexed with the `store:true` option. | yes, the default is all fields | Array of strings |
 
 <aside class="warning">Do not combine the `bookmark` and `stale` options. The reason is that both these options constrain the choice of shard replicas to use for determining the response. When used together, the options can result in problems when attempting to contact slow or unavailable replicas.</aside>
 
@@ -635,5 +633,5 @@ The database also contains design documents, which are used to define and create
 
 As you can see, the design document contains one index called "books". The index has an analyzer and an index function. The :ref:`analyzer <search-guide-analyzers>` is a per field analyzer, meaning different analyzers can be used for different search fields. Which analyzers are actually used is defined in the "fields" object. If the search uses a field not defined in the fields object, the default analyzer is used, in this case "english". The index function is called for each new or updates document in the database and defines what data gets indexed. Since the index function is stored in a string in a JSON document, it can't be split over multiple lines. Here is a nicely formatted version:
 
-The function calls ``index`` with three arguments. The first is the name of the search field. The second is the data to be indexed and the third is an options object. ``'facet': true`` turns on :ref:`faceting <search-guide-faceting>` and ``'store': true`` stores the indexed data in the index, so that it will be returned with the search result. For more information about design documents and indexing, have a look at the :ref:`API reference <index-functions>`.
+The function calls ``index`` with three arguments. The first is the name of the search field. The second is the data to be indexed and the third is an options object. ``'facet': true`` turns on :ref:`faceting <search-guide-faceting>` and ``'store': true`` stores the indexed data in the index, so that it will be returned with the search result (unless `include_fields` is used to limit the fields returned). For more information about design documents and indexing, have a look at the :ref:`API reference <index-functions>`.
 
