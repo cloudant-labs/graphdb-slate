@@ -269,6 +269,7 @@ Argument | Description | Optional | Type | Supported Values
 `highlight_size` | Number of characters in each fragment for highlights. | yes, defaults to 100 characters | Numeric |
 `include_fields` | A JSON array of field names to include in search results. Any fields included must have been indexed with the `store:true` option. | yes, the default is all fields | Array of strings |
 
+
 <aside class="warning">Do not combine the `bookmark` and `stale` options. The reason is that both these options constrain the choice of shard replicas to use for determining the response. When used together, the options can result in problems when attempting to contact slow or unavailable replicas.</aside>
 
 #### POSTing search queries
@@ -582,7 +583,6 @@ Use our [test form](try.html) to try any search query against our books database
 
 Our sample data is a database with information about best selling books. The database contains about 100 JSON documents like this one:
 
-
 ### Design Documents
 
 > Design document for faceted search and different analyzers per field
@@ -633,4 +633,5 @@ As you can see, the design document contains one index called "books". The index
 The function calls ``index`` with three arguments. The first is the name of the search field. The second is the data to be indexed and the third is an options object. ``'facet': true`` turns on :ref:`faceting <search-guide-faceting>` and ``'store': true`` stores the indexed data in the index, so that it will be returned with the search result (unless `include_fields` is used to limit the fields returned). For more information about design documents and indexing, have a look at the :ref:`API reference <index-functions>`.
 
 -->
+
 
