@@ -262,6 +262,14 @@ Argument | Description | Optional | Type | Supported Values
 `ranges` | This field defines ranges for faceted, numeric search fields. The value is a JSON object where the fields names are numeric, faceted search fields and the values of the fields are again JSON objects. Their field names are names for ranges. The values are Strings describing the range, for example `"[0 TO 10]"` | yes | JSON | The value must be on object whose fields again have objects as their values. These objects must have string describing ranges as their field values.
 `sort` | Specifies the sort order of the results. In a grouped search (i.e. when group_field is used), this specifies the sort order within a group. The default sort order is relevance. | yes | JSON | A JSON string of the form `"fieldname<type>"` or `-fieldname<type>` for descending order, where fieldname is the name of a string or number field and type is either number or string or a JSON array of such strings. The type part is optional and defaults to number. Some examples are `"foo"`, `"-foo"`, `"bar<string>"`, `"-foo<number>"` and `["-foo<number>", "bar<string>"]`. String fields used for sorting must not be analyzed fields. The field(s) used for sorting must be indexed by the same indexer used for the search query.
 `stale` | Don't wait for the index to finish building to return results. | yes | string | ok
+`highlight_fields` | Specifies which fields should be highlighted. If specified, the result object will contain a `highlights` field with an entry for each specified field. | yes | Array of strings | 
+`highlight_pre_tag` | A string inserted before the highlighted word in the highlights output | yes, defaults to `<em>` | String | 
+`highlight_post_tag` | A string inserted after the highlighted word in the highlights output | yes, defaults to `<em>` | String | 
+`highlight_number` | Number of fragments returned in highlights. If the search term occurs less often than the number of fragments specified, longer fragments are returned. | yes, defaults to 1 | Numeric |
+`highlight_size` | Number of characters in each fragment for highlights. | yes, defaults to 100 characters | Numeric |
+
+
+
 
 <aside class="warning">Do not combine the `bookmark` and `stale` options. The reason is that both these options constrain the choice of shard replicas to use for determining the response. When used together, the options can result in problems when attempting to contact slow or unavailable replicas.</aside>
 
@@ -494,6 +502,42 @@ You can then query using the special <distance...> sort field which takes 5 para
 
 You can combine sorting by distance with any other search query, such as range searches on the latitude and longitude or queries involving non-geographical information. That way, you can search in a bounding box and narrow down the search with additional criteria. 
 
+### Highlighting Search Terms
+
+> Search query with highlighting enabled
+
+```http
+GET /movies/_design/searches/_search?q=movie_name:Azazel&highlight_fields=\[\"movie_name\"\]&highlight_pre_tag=\"<b>\"&highlight_post_tag=\"b/>\""&highlights_size=30&highlights_number=2 HTTP/1.1
+HOST: account.cloudant.com
+Authorization: ...
+```
+
+```shell
+curl "https://user:password@account.cloudant.com/movies/_design/searches/_search?q=movie_name:Azazel&highlight_fields=\[\"movie_name\"\]&highlight_pre_tag=\"<b>\"&highlight_post_tag=\"b/>\""&highlights_size=30&highlights_number=2
+```
+
+> Search result with highlights
+
+```json
+{
+  
+  "highlights": {
+    "movie_name": [
+      " on the <b>Azazel</b> Orient Express",
+      " <b>Azazel</b> manuals, you"
+    ]
+  }
+}
+```
+
+Sometimes it is useful to get the context in which a search term was mentioned so that you can display more detailed results to a user. To do this, you add the `search_highlights` parameter to the search query, specifying the field names for which you would like excerpts with the highlighted search term to be returned. By defaults, the search term is placed in `<em` tags to highlight it, but this can be overridden using the `highlights_pre_tag` and `highlights_post_tag` parameters. The length of the fragments is 100 characters by default. A different length can be requested with the `hightlights_size` parameter. The `highlights_number` parameter controls the number of fragments returned, which defaults to 1.
+
+In the response, a `highlights` field will be added with one subfield per field name. For each field, you will receive an array of fragments with the search term highlighted.
+
+<div> </div>
+
+<!--
+
 ### Try it!
 
 Use our [test form](try.html) to try any search query against our books database.
@@ -512,7 +556,13 @@ Use our [test form](try.html) to try any search query against our books database
 
 Our sample data is a database with information about best selling books. The database contains about 100 JSON documents like this one:
 
-#### Design Documents
+-->
+
+
+
+### Design Documents
+
+> Design document for faceted search and different analyzers per field
 
 ```json
 {
