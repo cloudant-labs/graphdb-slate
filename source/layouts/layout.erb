@@ -151,22 +151,47 @@ under the License.
       </div>
       
       <ul id="tocify-header0" class="tocify-header first-header">
-        <% [
-             ['index.html', 'Overview', 'index.html#-overview'],
-             ['basics.html', 'Cloudant Basics', 'basics.html#-cloudant-basics'],
-             ['libraries.html', 'Client Libraries', 'libraries.html#-client-libraries'],
-             ['api.html', 'API Reference', 'api.html#-api-reference'],
-             ['guides.html', 'Guides', 'guides.html#-guides']
-           ].each { |page| %>
-		          <% if request.path != page[0] %>
+        <%
+           class Page
+             def initialize(path, name, link, subpages)
+               @path = path
+               @name = name
+               @link = link
+             end
+             attr_reader :path
+             attr_reader :name
+             attr_reader :link
+           end
+           [
+             Page.new('index.html', 'Overview', 'index.html#-overview', []),
+             Page.new('basics.html', 'Cloudant Basics', 'basics.html#-cloudant-basics', []),
+             Page.new('libraries.html', 'Client Libraries', 'libraries.html#-client-libraries', []),
+             Page.new('api/index.html', 'API Reference', 'api/index.html#-api-reference', [
+               [
+                 Page.new('api/http.html', 'HTTP', '/api/http.html', []),
+                 Page.new('api/http.html', 'Account', '/api/account.html', [])
+               ]
+             ]),
+             Page.new('guides.html', 'Guides', 'guides.html#-guides', [])
+           ].each { |page|
+              s = request.path.split('/')
+              dir = s[0]
+              file = s[1]
+		          
+        <% } %>
+      </ul>
+      
+      
+              if request.path != page.path %>
 		            <li class="tocify-item">
-				          <a href="<%=page[2]%>"><%=page[1]%></a>
+				          <a href="<%=page.link%>"><%=page.name%></a>
 				        </li>
 		          <% else %>
 		            <div id="toc"> </div>
 		          <% end %>
-        <% } %>
-      </ul>
+      
+      
+      
       
       <ul class="toc-footer">
         <li><a href="https://cloudant.com/"><img src="images/cloudant_icon.png" alt="Cloudant icon"/></a></li>
