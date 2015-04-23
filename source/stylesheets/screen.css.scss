@@ -226,9 +226,11 @@ html, body {
 
   @-moz-document url-prefix() {
     #searchbox button {
-      padding-top: 6px;
       padding-bottom: 12px;
     }
+  }
+  #searchbox button {
+    padding-top: 6px;
   }
 
 ////////////////////////////////////////////////////////////////////////////////
