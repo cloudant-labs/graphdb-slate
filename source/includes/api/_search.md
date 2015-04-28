@@ -563,6 +563,7 @@ In the response, a `highlights` field will be added with one subfield per field 
 <div> </div>
 
 <!--
+
 ### Try it!
 
 Use our [test form](try.html) to try any search query against our books database.
@@ -632,3 +633,4 @@ As you can see, the design document contains one index called "books". The index
 The function calls ``index`` with three arguments. The first is the name of the search field. The second is the data to be indexed and the third is an options object. ``'facet': true`` turns on :ref:`faceting <search-guide-faceting>` and ``'store': true`` stores the indexed data in the index, so that it will be returned with the search result (unless `include_fields` is used to limit the fields returned). For more information about design documents and indexing, have a look at the :ref:`API reference <index-functions>`.
 
 -->
+
