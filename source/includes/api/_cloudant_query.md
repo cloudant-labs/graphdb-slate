@@ -226,8 +226,6 @@ For example, you might use the standard JSON structure for specifying a field an
 
 <div></div>
 
-###### h6
-
 > Example of an equivalent dot-notation field and subfield selector:
 
 ```json
@@ -280,7 +278,7 @@ The implicit equality test applies also for fields and subfields.
 
 Any JSON object that is not the argument to a condition operator is an implicit `$and` operator on each field.
 
-###### h6
+<div></div>
 
 > Example of the implicit equality operator
 
@@ -293,8 +291,6 @@ Any JSON object that is not the argument to a condition operator is an implicit 
 In this example, there must be a field `foo` in a matching document, *and* the field must have a value exactly equal to "bar".
 
 <div></div>
-
-###### h6
 
 > Example of an explicit equality operator
 
@@ -309,8 +305,6 @@ In this example, there must be a field `foo` in a matching document, *and* the f
 You can also make the equality operator explicit.
 
 <div></div>
-
-###### h6
 
 > Example of implicit operator applied to a subfield test
 
@@ -343,8 +337,6 @@ Again, you can make the equality operator explicit.
 
 <div id="combined-expressions"></div>
 
-###### h6
-
 > Example of an implicit `$and` operator
 
 ```json
@@ -357,8 +349,6 @@ Again, you can make the equality operator explicit.
 In this example, the field `foo` must be present and contain the value `bar` _and_ the field `baz` must exist and have the value `true`.
 
 <div></div>
-
-###### h6
 
 > Example of using explicit `$and` and `$eq` operators
 

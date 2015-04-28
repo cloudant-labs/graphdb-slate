@@ -58,8 +58,6 @@ simply ensure that the `$ATTACHMENT` value for each attachment is unique within 
 
 <div></div>
 
-###### h6
-
 > Example response:
 
 ```json
@@ -133,8 +131,6 @@ If you do not supply the latest `_rev`,
 the response is a [409 error](basics.html#http-status-codes).
 
 <div></div>
-
-###### h6
 
 > Example response:
 

@@ -8,20 +8,20 @@ As a hosted and managed database-as-a-service (DBaaS), Cloudant provides an [HTT
 Cloudant is based on [Apache CouchDB](http://couchdb.apache.org/), and is delivered as a multi-tenant, dedicated, and installed service.
 
 Signing up for a Cloudant account is free and easy:<br/>
-<iframe width="280" height="158" src="https://www.youtube.com/embed/GDIiV_wdIJY?rel=0" frameborder="0" allowfullscreen></iframe>
+<iframe width="280" height="158" src="https://www.youtube.com/embed/GDIiV_wdIJY?rel=0" frameborder="0" allowfullscreen title="Signing up for Cloudant, overview video"></iframe>
 
 Working with Cloudant to create databases and store information is simplified through the user-friendly dashboard, as this overview explains:<br/>
-<iframe width="280" height="158" src="https://www.youtube.com/embed/zESROlotu-g?rel=0" frameborder="0" allowfullscreen></iframe>
+<iframe width="280" height="158" src="https://www.youtube.com/embed/zESROlotu-g?rel=0" frameborder="0" allowfullscreen title="Dashboard overview video"></iframe>
 
 <div id="http_api"></div>
 ## HTTP API
 All requests to Cloudant go over the web, which means any system that can speak to the web, can speak to Cloudant. All language-specific libraries for Cloudant are really just wrappers that provide some convenience and linguistic niceties to help you work with a simple API. Many users even choose to use raw HTTP libraries for working with Cloudant.
 
 This overview explains how the HTTP API works:<br/>
-<iframe width="280" height="158" src="https://www.youtube.com/embed/HtGlyrosN8M?rel=0" frameborder="0" allowfullscreen></iframe>
+<iframe width="280" height="158" src="https://www.youtube.com/embed/HtGlyrosN8M?rel=0" frameborder="0" allowfullscreen title="HTTP API overview video"></iframe>
 
 Several tools are available to help you work with the HTTP API:<br/>
-<iframe width="280" height="158" src="https://www.youtube.com/embed/Z3CxsM47a9U?rel=0" frameborder="0" allowfullscreen></iframe>
+<iframe width="280" height="158" src="https://www.youtube.com/embed/Z3CxsM47a9U?rel=0" frameborder="0" allowfullscreen title="Tools for working with HTTP API, video"></iframe>
 
 Specific details about how Cloudant uses HTTP is provided in the [HTTP topic of the API Reference](api.html#http).
 

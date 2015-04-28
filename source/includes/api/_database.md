@@ -5,7 +5,7 @@ These JSON objects are called [documents](#documents).
 All documents must be contained in a database.
 
 You interact with Cloudant databases and documents using API commands, as this overview explains:<br/>
-<iframe width="280" height="158" src="https://www.youtube.com/embed/47qQMaYJVUU?rel=0" frameborder="0" allowfullscreen></iframe>
+<iframe width="280" height="158" src="https://www.youtube.com/embed/47qQMaYJVUU?rel=0" frameborder="0" allowfullscreen title="API overview video"></iframe>
 
 ### Create
 
@@ -107,8 +107,7 @@ account.db.get($DATABASE, function (err, body, headers) {
 Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE` returns details about the database,
 such as how many documents it contains.
 
-
-###### h6
+<div></div>
 
 > Example response:
 
@@ -171,7 +170,7 @@ account.db.list(function (err, body, headers) {
 To list all the databases in an account,
 make a GET request against `https://$USERNAME.cloudant.com/_all_dbs`.
 
-###### h6
+<div></div>
 
 > Example response:
 
@@ -226,7 +225,7 @@ Argument | Description | Optional | Type | Default
 `skip` | Skip this number of records before starting to return the results | yes | numeric | 0
 `startkey` | Return records starting with the specified key | yes | string |
 
-###### h6
+<div></div>
 
 > Example response:
 
@@ -396,7 +395,7 @@ To delete a databases and its contents, make a DELETE request to `https://$USERN
 
 <aside class="warning">There is no additional check to ensure that you really intended to delete the database ("Are you sure?").</aside>
 
-###### h6
+<div></div>
 
 > Example response:
 

@@ -51,8 +51,6 @@ To see who has permissions to read, write, and manage the database, make a GET r
 
 <div></div>
 
-###### h6
-
 > Example response:
 
 ```json
@@ -139,8 +137,6 @@ The request object's `cloudant` field contains an object whose keys are username
 
 <div></div>
 
-###### h6
-
 > Example response:
 
 ```json
@@ -186,8 +182,6 @@ API keys allow you to give access to a person or application without having to c
 To generate an API key, use `https://cloudant.com/api/generate_api_key`. The created API key has no permissions to anything by default, and must be given permissions explicitly.
 
 <div></div>
-
-###### h6
 
 > Response body:
 
