@@ -494,6 +494,8 @@ You can then query using the special <distance...> sort field which takes 5 para
 
 You can combine sorting by distance with any other search query, such as range searches on the latitude and longitude or queries involving non-geographical information. That way, you can search in a bounding box and narrow down the search with additional criteria. 
 
+<!-- 
+
 ### Try it!
 
 Use our [test form](try.html) to try any search query against our books database.
@@ -559,3 +561,4 @@ As you can see, the design document contains one index called "books". The index
 
 The function calls ``index`` with three arguments. The first is the name of the search field. The second is the data to be indexed and the third is an options object. ``'facet': true`` turns on :ref:`faceting <search-guide-faceting>` and ``'store': true`` stores the indexed data in the index, so that it will be returned with the search result. For more information about design documents and indexing, have a look at the :ref:`API reference <index-functions>`.
 
+-->
