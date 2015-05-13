@@ -152,44 +152,52 @@ under the License.
       
       <ul id="tocify-header0" class="tocify-header first-header">
         <%
-           class Page
-             def initialize(path, name, link, subpages)
-               @path = path
-               @name = name
-               @link = link
-             end
-             attr_reader :path
-             attr_reader :name
-             attr_reader :link
-           end
-           [
-             Page.new('index.html', 'Overview', 'index.html#-overview', []),
-             Page.new('basics.html', 'Cloudant Basics', 'basics.html#-cloudant-basics', []),
-             Page.new('libraries.html', 'Client Libraries', 'libraries.html#-client-libraries', []),
-             Page.new('api/index.html', 'API Reference', 'api/index.html#-api-reference', [
-               [
-                 Page.new('api/http.html', 'HTTP', '/api/http.html', []),
-                 Page.new('api/http.html', 'Account', '/api/account.html', [])
-               ]
-             ]),
-             Page.new('guides.html', 'Guides', 'guides.html#-guides', [])
-           ].each { |page|
-              s = request.path.split('/')
-              dir = s[0]
-              file = s[1]
-		          
-        <% } %>
+          class Page
+            def initialize(name, link, subpages)
+              @name = name
+              @link = link
+              @subpages = subpages
+            end
+            attr_reader :subpages
+            attr_reader :name
+            attr_reader :link
+          end
+          [
+            Page.new('Overview', '/index.html#-overview', []),
+            Page.new('Cloudant Basics', '/basics.html#-cloudant-basics', []),
+            Page.new('Client Libraries', '/libraries.html#-client-libraries', []),
+            Page.new('API Reference', '/api.html#-api-reference', [
+              Page.new('HTTP', '/http.html', []),
+              Page.new('Account', '/account.html', [])
+            ]),
+            Page.new('Guides', '/guides.html#-guides', [])
+          ].each { |page|
+            %>
+		        <li class="tocify-item">
+				      <a href="<%=page.link%>"><%=page.name%></a>
+				    </li>
+				    <%
+				    if !page.subpages.empty? && (page.subpages.any? { |subpage| subpage.link.split('#')[0] == '/' + request.path } || page.link.split('#')[0] == '/' + request.path)
+				      %> <ul class="tocify-subheader" style="display: block;"> <%
+				      page.subpages.each { |subpage|
+				        %>
+		            <li class="tocify-item">
+				          <a href="<%=subpage.link%>"><%=subpage.name%></a>
+				        </li>
+				        <%
+				        #if current page is subpage, insert tocify menu
+				        if subpage.link == '/' + request.path
+				          %>
+				            <div id="toc" class="tocify"> </div>
+				          <%
+				        end
+				      }
+				      %> </ul> <%
+				    end
+          } %>
       </ul>
       
-      
-              if request.path != page.path %>
-		            <li class="tocify-item">
-				          <a href="<%=page.link%>"><%=page.name%></a>
-				        </li>
-		          <% else %>
-		            <div id="toc"> </div>
-		          <% end %>
-      
+    
       
       
       
