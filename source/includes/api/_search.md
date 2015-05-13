@@ -93,8 +93,10 @@ if (doc.min_length) {
 ```
 
 The `index` function requires the name of the data field to index as the second parameter.
-However, if that data field does not exist for the document, an error occurs.
-The solution is to use a 'guard clause' that checks if the field exists,
+However,
+if that data field does not exist for the document,
+an error occurs.
+The solution is to use an appropriate 'guard clause' that checks if the field exists,
 and contains the expected type of data,
 _before_ attempting to create the corresponding index.
 
@@ -108,14 +110,37 @@ if (typeof(doc.min_length) === 'number') {
 }
 ```
 
-For example,
-you might use the javascript `typeof` function to determine the type of the data field;
-if the field exists _and_ has the expected type,
+You might use the javascript `typeof` function to perform the guard clause test.
+If the field exists _and_ has the expected type,
 the correct type name is returned,
 so the guard clause test succeeds and it is safe to use the index function.
 If the field does not exist,
 you would not get back the expected type of the field,
 therefore you would not attempt to index the field.
+
+Whatever guard clause test you decide to use,
+remember that Javascript considers a result to be false if one of the following values is tested:
+
+-	'undefined'
+-	null
+-	The number +0
+-	The number -0
+-	NaN (not a number)
+-	"" (the empty string)
+
+<div></div>
+
+> A 'generic' guard clause:
+
+```
+if (typeof(doc.min_length) !== 'undefined') {
+  // The field exists, and does have a type, so we can proceed to index using it.
+  ...
+}
+```
+
+Therefore,
+a possible generic guard clause simply tests to ensure that the type of the candidate data field is defined.
 
 ### Analyzers
 
