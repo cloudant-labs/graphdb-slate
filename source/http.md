@@ -1,5 +1,5 @@
 ---
-title: Cloudant Documentation
+title: Cloudant API - HTTP
 
 language_tabs:
   - http 

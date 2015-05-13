@@ -79,10 +79,7 @@ under the License.
         $('#hideCodeButton').click(hideCode);
         $('#showCodeButton').click(showCode);
         
-        var headerSelectors = "h1,h2,h3";
-        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-          headerSelectors = "h1,h2";
-        }
+        var headerSelectors = "h3";
         var toc = $("#toc").tocify({
           selectors: headerSelectors,
           extendPage: false,
@@ -150,7 +147,7 @@ under the License.
         </form>
       </div>
       
-      <ul id="tocify-header0" class="tocify-header first-header">
+      <ul class="tocify-header first-header">
         <%
           class Page
             def initialize(name, link, subpages)
@@ -163,14 +160,14 @@ under the License.
             attr_reader :link
           end
           [
-            Page.new('Overview', '/index.html#-overview', []),
-            Page.new('Cloudant Basics', '/basics.html#-cloudant-basics', []),
-            Page.new('Client Libraries', '/libraries.html#-client-libraries', []),
-            Page.new('API Reference', '/api.html#-api-reference', [
+            Page.new('Overview', '/index.html', []),
+            Page.new('Cloudant Basics', '/basics.html', []),
+            Page.new('Client Libraries', '/libraries.html', []),
+            Page.new('API Reference', '/api.html', [
               Page.new('HTTP', '/http.html', []),
               Page.new('Account', '/account.html', [])
             ]),
-            Page.new('Guides', '/guides.html#-guides', [])
+            Page.new('Guides', '/guides.html', [])
           ].each { |page|
             %>
 		        <li class="tocify-item">
@@ -178,17 +175,16 @@ under the License.
 				    </li>
 				    <%
 				    if !page.subpages.empty? && (page.subpages.any? { |subpage| subpage.link.split('#')[0] == '/' + request.path } || page.link.split('#')[0] == '/' + request.path)
-				      %> <ul class="tocify-subheader" style="display: block;"> <%
+				      %> <ul class="tocify-subheader-styles" style="display: block;"> <%
 				      page.subpages.each { |subpage|
 				        %>
 		            <li class="tocify-item">
 				          <a href="<%=subpage.link%>"><%=subpage.name%></a>
 				        </li>
 				        <%
-				        #if current page is subpage, insert tocify menu
 				        if subpage.link == '/' + request.path
 				          %>
-				            <div id="toc" class="tocify"> </div>
+				            <div id="toc"></div>
 				          <%
 				        end
 				      }

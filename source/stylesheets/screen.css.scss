@@ -134,7 +134,7 @@ html, body {
 
   // Subheaders are the submenus that slide open
   // in the table of contents.
-  .tocify-subheader {
+  .tocify-subheader , .tocify-subheader-styles {
     display: none; // tocify will override this when needed
     background-color: $nav-subitem-bg;
     font-weight: 400;
@@ -164,7 +164,7 @@ html, body {
       box-shadow: none; // otherwise it'll overflow out of the subheader
     }
   }
-  .tocify-subheader ul {
+  .tocify-subheader ul, .tocify-subheader-styles ul {
     padding-left: $nav-indent;
   }
 
@@ -411,7 +411,7 @@ body, html {
     margin-bottom: $h1-margin-bottom;
   }
   
-  h1:first-of-type {
+  h1:first-of-type, h2:first-of-type {
     margin-top: 12px;
   }
 
@@ -431,7 +431,7 @@ body, html {
     padding-top: 1.2em;
     padding-bottom: 1.2em;
   }
-
+  
   // h2s right after h1s should bump right up
   // against the h1s.
   h1 + h2, h1 + div + h2 {
