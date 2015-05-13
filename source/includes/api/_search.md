@@ -17,15 +17,15 @@ Search indexes, defined in design documents, allow databases to be queried using
 
 ### Index functions
 
-> Example search index function:
+> Example search index function (see also [index guard clauses](#index-guard-clauses)):
 
 ```
 function(doc){
   index("default", doc._id);
-  if(doc.min_length){
+  if (doc.min_length){
     index("min_length", doc.min_length, {"store": "yes"});
   }
-  if(doc.diet){
+  if (doc.diet){
     index("diet", doc.diet, {"store": "yes"});
   }
   if (doc.latin_name){
@@ -36,6 +36,9 @@ function(doc){
   }
 }
 ```
+
+<aside class="warning">Attempting to index using a data field that does not exist will fail.
+To avoid this problem, use an appropriate [guard clause](#index-guard-clauses).</aside>
 
 The function contained in the index field is a Javascript function that is called for each document in the database. It takes the document as a parameter, extracts some data from it and then calls the `index` function to index that data. The `index` function takes 3 parameters, where the third parameter is optional. The first parameter is the name of the index. If the special value `"default"` is used, the data is stored in the default index, which is queried if no index name is specified in the search. The second parameter is the data to be indexed. The third parameter is an object that can contain the fields `store` and `index`. If the `store` field contains the value `yes`, the value will be returned in search results, otherwise, it will only be indexed. The `index` field can have the following values describing whether and how the data is indexed:
 
@@ -92,13 +95,46 @@ The `index` function also provides a third, options parameter that receives a Ja
 </tbody>
 </table>
 
-
-
 Option | Description | Values | Default
 -------|-------------|--------|---------
 store | If `true`, the value will be returned in the search result; otherwise, it will not be. | `true`, `false` | `false`
 index | whether (and how) the data is indexed. See [Analyzers](#analyzers) for more info. | `analyzed`, `analyzed_no_norms`, `no`, `not_analyzed`, `not_analyzed_no_norms` | analyzed
 facet | creates a faceted index. See [Faceting](#faceting) for more info. | `true`, `false` | `false`
+
+#### Index Guard Clauses
+
+> Example of failing to check if the index data field exists:
+
+```
+if (doc.min_length) {
+  index("min_length", doc.min_length, {"store": "yes"});
+}
+```
+
+The `index` function requires the name of the data field to index as the second parameter.
+However, if that data field does not exist for the document, an error occurs.
+The solution is to use a 'guard clause' that checks if the field exists,
+and contains the expected type of data,
+_before_ attempting to create the corresponding index.
+
+<div></div>
+
+> Using a guard clause to check if the required data field exists, and holds a number, _before_ attempting to index:
+
+```
+if (typeof(doc.min_length) === 'number') {
+  index("min_length", doc.min_length, {"store": "yes"});
+}
+```
+
+For example,
+you might use the javascript `typeof` function to determine the type of the data field;
+if the field exists _and_ has the expected type,
+the correct type name is returned,
+so the guard clause test succeeds and it is safe to use the index function.
+If the field does not exist,
+you would not get back the expected type of the field,
+therefore you would not attempt to index the field.
 
 ### Analyzers
 
