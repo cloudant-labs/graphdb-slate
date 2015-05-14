@@ -71,5 +71,42 @@ def index_file(filename):
 				response = database.bulk_docs(*docs.values())
 				response.raise_for_status()
 				
-for filename in ["index","api", "guides", "libraries", "basics"]:
+for filename in [
+'account',
+'acid',
+'active_tasks',
+'advanced',
+'advanced_replication',
+'api',
+'attachments',
+'authentication',
+'authorization',
+'backup-guide',
+'backup',
+'basics',
+'cap_theorem',
+'cloudant_query',
+'cors',
+'couchapps',
+'cqsearch',
+'creating_views',
+'database',
+'design_document_management',
+'design_documents',
+'document',
+'geo',
+'guides',
+'http',
+'index',
+'json',
+'libraries',
+'managing_tasks',
+'mvcc',
+'replication_guide',
+'replication',
+'search',
+'transactions',
+'try',
+'using_views'
+]:
 		index_file(filename)
