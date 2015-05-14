@@ -2,7 +2,6 @@
 
 If it's your first time here, scan this section before you scroll further. The sections on [Client Libraries](libraries.html#-client-libraries), [API Reference](api.html#-api-reference), and [Guides](guides.html#-guides) assume you know basic things about Cloudant.
 
-<div id="dbaas"></div>
 ## Database as a Service
 As a hosted and managed database-as-a-service (DBaaS), Cloudant provides an [HTTP API](#http_api) to your [JSON](#json) data, and 24-hour operational support and maintenance.
 Cloudant is based on [Apache CouchDB](http://couchdb.apache.org/), and is delivered as a multi-tenant, dedicated, and installed service.
@@ -13,7 +12,6 @@ Signing up for a Cloudant account is free and easy:<br/>
 Working with Cloudant to create databases and store information is simplified through the user-friendly dashboard, as this overview explains:<br/>
 <iframe width="280" height="158" src="https://www.youtube.com/embed/zESROlotu-g?rel=0" frameborder="0" allowfullscreen title="Dashboard overview video"></iframe>
 
-<div id="http_api"></div>
 ## HTTP API
 All requests to Cloudant go over the web, which means any system that can speak to the web, can speak to Cloudant. All language-specific libraries for Cloudant are really just wrappers that provide some convenience and linguistic niceties to help you work with a simple API. Many users even choose to use raw HTTP libraries for working with Cloudant.
 
@@ -66,13 +64,11 @@ If the client (such as some web browsers) does not support using these HTTP meth
 
 If you use an unsupported HTTP request type with a URL that does not support the specified type, a [405](api.html#405) error is returned, listing the supported HTTP methods, as shown in the example.
 
-<div id="jsonbasics"></div>
 ## JSON
 Cloudant stores documents using JSON (JavaScript Object Notion) encoding, so anything encoded into JSON can be stored as a document. Files like images, videos, and audio are called BLObs (binary large objects) and can be stored as attachments within documents.
 
 More information about JSON can be found in the [Guides](guides.html#json).
 
-<div id="distributed"></div>
 ## Distributed
 Cloudant's API enables you to interact with a collaboration of numerous machines, called a cluster. The machines in a cluster must be in the same datacenter, but can be within different 'pods' in that datacenter. Using different pods helps improve the High Availability characteristics of Cloudant.
 
@@ -80,7 +76,6 @@ An advantage of clustering is that when you need more computing capacity, you ju
 
 For more information about Cloudant and distributed system concepts, see the [CAP Theorem](guides.html#cap-theorem) guide. 
 
-<div id="replication"></div>
 ## Replication
 
 [Replication](api.html#ReplicationAPI) is a procedure followed by Cloudant, [CouchDB](http://couchdb.apache.org/), [PouchDB](http://pouchdb.com/), and others. It synchronizes the state of two databases so that their contents are identical.

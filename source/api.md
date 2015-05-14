@@ -1,5 +1,5 @@
 ---
-title: Cloudant Documentation
+title: Cloudant Documentation - API reference
 
 language_tabs:
   - http 
@@ -16,29 +16,32 @@ toc_footers:
 
 includes:
   - api/index
-  - api/http
-  - api/account
-  - api/authentication
-  - api/authorization
-  - api/cors
-  - api/database
-  - api/document
-  - api/attachments
-  - api/cloudant_query
-  - api/cqsearch
-  - api/design_documents
-  - api/creating_views
-  - api/using_views
-  - api/search
-  - api/replication
-  - api/advanced_replication
-  - api/active_tasks
-  - api/advanced
-  - api/backup
-  - api/try.md
 
 ---
 
-Next: [Guides](guides.html#-guides)
+<script>
+fragments = {
+  '#http': '/http.html',
+  '#account': '/account.html',
+  '#authentication': '/authentication.html',
+  '#authorization': '/authorization.html',
+  '#cors': '/cors.html',
+  '#databases': '/databases.html',
+  '#documents': '/documents.html',
+  '#attachments': '/attachments.html',
+  '#query': '/cloudant_query.html',
+  '#design-documents': '/design_documents.html',
+  '#creating-views': '/creating_views.html',
+  '#using-views': '/using_views.html',
+  '#search': '/search.html'
+}
+fragment = window.location.hash;
+console.log('fragment is ' + fragment);
+dest = fragments[fragment];
+console.log('dest is ' + dest);
+if (dest) {
+  window.location = dest;
+}
+</script>
 
 
