@@ -763,23 +763,57 @@ The Cloudant Query language is expressed as a JSON object describing documents o
 > A simple selector
 
 ```json
-{
+"selector": {
   "name": "Paul"
 }
 ```
 
 Elementary selector syntax requires you to specify one or more fields, and the corresponding values required for those fields. This selector matches all documents whose `"name"` field has the value `"Paul"`.
 
+<div></div>
+
+> A simple selector for a full text index
+
+```json
+"selector": {
+  "$text": "Bond"
+}
+```
+
+If you created a full text index by specifying `"type":"text"` when the index was created,
+you can use the `$text` operator to select matching documents.
+In this example,
+the full text index is inspected to find any document that includes the word "Bond".
+
+<div></div>
+
+> A simple selector, inspecting specific fields
+
+```json
+"selector": {
+  "$text": "Bond"
+},
+"fields": [
+  "title",
+  "character"
+]
+```
+
+In this example,
+the full text index is inspected to find any document that includes the word "Bond" in the fields `title` or `character`.
+
+<div></div>
 You can create more complex selector expressions by combining operators.
 However, you cannot use 'combination' or 'array logical' operators such as `$regex` as the *basis* of a query. Only the equality operators such as `$eq`, `$gt`, `$gte`, `$lt`, and `$lte` (but not `$ne`) can be used as the basis of a more complex query.
 For more information about creating complex selector expressions, see [Creating selector expressions](#creating-selector-expressions).
 
-###### selector with two fields
+<div></div>
+#### selector with two fields
 
 > A more complex selector
 
 ```json
-{
+"selector": {
   "name": "Paul",
   "location": "Boston"
 }
@@ -792,7 +826,7 @@ This selector matches any document with a `name` field containing "Paul", that a
 > Example of a field and subfield selector, using a standard JSON structure:
 
 ```json
-{
+"selector": {
   "location": {
     "city": "Omaha"
   }
@@ -807,7 +841,7 @@ For example, you might use the standard JSON structure for specifying a field an
 > Example of an equivalent dot-notation field and subfield selector:
 
 ```json
-{
+"selector": {
   "location.city": "Omaha"
 }
 ```
@@ -911,6 +945,42 @@ the required field `foo` in a matching document *must* also have a subfield `bar
 }
 ```
 
+> `$eq` operator used with full text indexing
+
+```json
+{
+  "selector": {
+    "year": {
+      "$eq": 2001
+    }
+  },
+  "sort": [
+    "title:string"
+  ],
+  "fields": [
+    "title"
+  ]
+}
+```
+
+> `$eq` operator used with database indexed on the field `"year"`
+
+```json
+{
+  "selector": {
+    "year": {
+      "$eq": 2001
+    }
+  },
+  "sort": [
+    "year"
+  ],
+  "fields": [
+    "year"
+  ]
+}
+```
+
 Again, you can make the equality operator explicit.
 
 <div id="combined-expressions"></div>
@@ -949,6 +1019,12 @@ In this example, the field `foo` must be present and contain the value `bar` _an
 
 You can make both the `and` operator and the equality operator explicit.
 
+### Explicit operators
+
+All operators,
+apart from 'Equality' and 'And',
+must always be stated explicitly.
+
 ### Combination Operators
 
 Combination operators are used to combine selectors.
@@ -968,6 +1044,294 @@ Operator | Argument | Purpose
 `$nor` | Array | Matches if none of the selectors in the array match.
 `$all` | Array | Matches an array value if it contains all the elements of the argument array.
 `$elemMatch` | Selector | Matches an array value if any of the elements in the array are matched by the argument to `$elemMatch`, then returns only the first match.
+
+<div></div>
+#### Examples of combination operators
+
+<div></div>
+##### The `$and` operator
+
+> `$and` operator used with full text indexing
+
+```json
+{
+  "selector": {
+    "$and": [
+      {
+        "$text": "schwarzenegger"
+      },
+      {
+        "year": {
+          "$in": [2005, 2010, 2015]
+        }
+      }
+    ]
+  },
+  "fields": [
+    "year",
+    "title",
+    "cast"
+  ]
+}
+```
+
+> `$and` operator used with primary index
+
+```json
+{
+  "selector": {
+    "$and": [
+      {
+        "_id": { "$gt": null }
+      },
+      {
+        "year": {
+          "$in": [2014, 2015]
+        }
+      }
+    ]
+  },
+  "fields": [
+    "year",
+    "_id",
+    "title"
+  ],
+  "limit": 10
+}
+```
+
+The `$and` operator matches if all the selectors in the array match.
+
+<div></div>
+##### The `$or` operator
+
+> `$or` operator used with full text indexing
+
+```json
+{
+  "selector": {
+    "$or": [
+      { "director": "George Lucas" },
+      { "director": "Steven Spielberg" }
+    ]
+  },
+  "fields": [
+    "title",
+    "director",
+    "year"
+  ]
+}
+```
+
+> `$or` operator used with database indexed on the field `"year"`
+
+```json
+{
+  "selector": {
+    "year": 1977,
+    "$or": [
+      { "director": "George Lucas" },
+      { "director": "Steven Spielberg" }
+    ]
+  },
+  "fields": [
+    "title",
+    "director",
+    "year"
+  ]
+}
+```
+
+The `$or` operator matches if any of the selectors in the array match.
+
+<div></div>
+##### The `$not` operator
+
+> `$not` operator used with full text indexing
+
+```json
+{
+  "selector": {
+    "year": {
+      "$gte": 1900
+    },
+    "year": {
+      "$lte": 1903
+    },
+    "$not": {
+      "year": 1901
+    }
+  },
+  "fields": [
+    "title",
+    "year"
+  ]
+}
+```
+
+> `$not` operator used with database indexed on the field `"year"`
+
+```json
+{
+  "selector": {
+    "year": {
+      "$gte": 1900
+    },
+    "year": {
+      "$lte": 1903
+    },
+    "$not": {
+      "year": 1901
+    }
+  },
+  "fields": [
+    "title",
+    "year"
+  ]
+}
+```
+
+The `$not` operator matches if the given selector does _not_ match.
+
+<div></div>
+##### The `$nor` operator
+
+> `$nor` operator used with full text indexing
+
+```json
+{
+  "selector": {
+    "year": {
+      "$gte": 1900
+    },
+    "year": {
+      "$lte": 1910
+    },
+    "$nor": [
+      { "year": 1901 },
+      { "year": 1905 },
+      { "year": 1907 }
+    ]
+  },
+  "fields": [
+    "title",
+    "year"
+  ]
+}
+```
+
+> `$nor` operator used with database indexed on the field `"year"`
+
+```json
+{
+  "selector": {
+    "year": {
+      "$gte": 1900
+    },
+    "year": {
+      "$lte": 1910
+    },
+    "$nor": [
+      { "year": 1901 },
+      { "year": 1905 },
+      { "year": 1907 }
+    ]
+  },
+  "fields": [
+    "title",
+    "year"
+  ]
+}
+```
+
+The `$nor` operator matches if the given selector does _not_ match.
+
+<div></div>
+##### The `$all` operator
+
+> `$all` operator used with full text indexing
+
+```json
+{
+  "selector": {
+    "genre": {
+      "$all": ["Comedy","Short"]
+      }
+  },
+  "fields": [
+    "title",
+    "genre"
+  ],
+  "sort": [
+    "title:string"
+  ]
+}
+```
+
+> `$all` operator used with primary database index
+
+```json
+{
+  "selector": {
+    "_id": {
+      "$gt": null
+    },
+    "genre": {
+      "$all": ["Comedy","Short"]
+      }
+  },
+  "fields": [
+    "title",
+    "genre"
+  ],
+  "limit": 10
+}
+```
+
+The `$all` operator matches an array value if it contains _all_ the elements of the argument array.
+
+<div></div>
+##### The `$elemMatch` operator
+
+> `$elemMatch` operator used with full text indexing
+
+```json
+{
+  "selector": {
+    "genre": {
+      "$elemMatch": {
+        "$eq": "Horror"
+      }
+    }
+  },
+  "fields": [
+    "title",
+    "genre"
+  ]
+}
+```
+
+> `$elemMatch` operator used with primary database index
+
+```json
+{
+  "selector": {
+    "_id": { "$gt": null },
+    "genre": {
+      "$elemMatch": {
+        "$eq": "Horror"
+      }
+    }
+  },
+  "fields": [
+    "title",
+    "genre"
+  ],
+  "limit": 10
+}
+```
+
+The `$elemMatch` operator matches an array value if any of the elements in the array are matched by the argument to `$elemMatch`, then returns only the first match.
 
 ### Condition Operators
 
@@ -992,6 +1356,565 @@ Miscellaneous | `$mod` | [Divisor, Remainder] | Divisor and Remainder are both p
  | `$regex` | String | A regular expression pattern to match against the document field. Only matches when the field is a string value and matches the supplied regular expression.
 
 <aside class="warning">Regular expressions do not work with indexes, so they should not be used to filter large data sets.</aside>
+
+<div></div>
+#### Examples of condition operators
+
+<div></div>
+##### The `$lt` operator
+
+> `$lt` operator used with full text indexing
+
+```json
+{
+  "selector": {
+    "year": {
+      "$lt": 1900
+    }
+  },
+  "sort": [
+    "year:number",
+    "title:string"
+  ],
+  "fields": [
+    "year",
+    "title"
+  ]
+}
+```
+
+> `$lt` operator used with database indexed on the field `"year"`
+
+```json
+{
+  "selector": {
+    "year": {
+      "$lt": 1900
+    }
+  },
+  "sort": [
+    "year"
+  ],
+  "fields": [
+    "year"
+  ]
+}
+```
+
+The `$lt` operator matches if the specified field content is less than the argument.
+
+<div></div>
+##### The `$lte` operator
+
+> `$lte` operator used with full text indexing
+
+```json
+{
+  "selector": {
+    "year": {
+      "$lte": 1900
+    }
+  },
+  "sort": [
+    "year:number",
+    "title:string"
+  ],
+  "fields": [
+    "year",
+    "title"
+  ]
+}
+```
+
+> `$lte` operator used with database indexed on the field `"year"`
+
+```json
+{
+  "selector": {
+    "year": {
+      "$lte": 1900
+    }
+  },
+  "sort": [
+    "year"
+  ],
+  "fields": [
+    "year"
+  ]
+}
+```
+
+The `$lte` operator matches if the specified field content is less than or equal to the argument.
+
+<div></div>
+##### The `$eq` operator
+
+> `$eq` operator used with full text indexing
+
+```json
+{
+  "selector": {
+    "year": {
+      "$eq": 2001
+    }
+  },
+  "sort": [
+    "title:string"
+  ],
+  "fields": [
+    "title"
+  ]
+}
+```
+
+> `$eq` operator used with database indexed on the field `"year"`
+
+```json
+{
+  "selector": {
+    "year": {
+      "$eq": 2001
+    }
+  },
+  "sort": [
+    "year"
+  ],
+  "fields": [
+    "year"
+  ]
+}
+```
+
+The `$eq` operator matches if the specified field content is equal to the supplied argument.
+
+<div></div>
+##### The `$ne` operator
+
+> `$ne` operator used with full text indexing
+
+```json
+{
+  "selector": {
+    "year": {
+      "$ne": 1892
+    }
+  },
+  "fields": [
+    "year"
+  ],
+  "sort": [
+    "year:number"
+  ]
+}
+```
+
+> `$ne` operator used with primary index
+
+```json
+{
+  "selector": {
+    "_id": {
+      "$gt": null
+    },
+    "year": {
+      "$ne": 1892
+    }
+  },
+  "fields": [
+    "year"
+  ],
+  "limit": 10
+}
+```
+
+The `$ne` operator matches if the specified field content is not equal to the supplied argument.
+<aside class="warning">The `$ne` operator cannot be the basis (lowest level) element in a selector.</aside>
+
+<div></div>
+##### The `$gte` operator
+
+> `$gte` operator used with full text indexing
+
+```json
+{
+  "selector": {
+    "year": {
+      "$gte": 2001
+    }
+  },
+  "sort": [
+    "year:number",
+    "title:string"
+  ],
+  "fields": [
+    "year",
+    "title"
+  ]
+}
+```
+
+> `$gte` operator used with database indexed on the field `"year"`
+
+```json
+{
+  "selector": {
+    "year": {
+      "$gte": 2001
+    }
+  },
+  "sort": [
+    "year"
+  ],
+  "fields": [
+    "year"
+  ]
+}
+```
+
+The `$gte` operator matches if the specified field content is greater than or equal to the argument.
+
+<div></div>
+##### The `$gt` operator
+
+> `$gte` operator used with full text indexing
+
+```json
+{
+  "selector": {
+    "year": {
+      "$gt": 2001
+    }
+  },
+  "sort": [
+    "year:number",
+    "title:string"
+  ],
+  "fields": [
+    "year",
+    "title"
+  ]
+}
+```
+
+> `$gt` operator used with database indexed on the field `"year"`
+
+```json
+{
+  "selector": {
+    "year": {
+      "$gt": 2001
+    }
+  },
+  "sort": [
+    "year"
+  ],
+  "fields": [
+    "year"
+  ]
+}
+```
+
+The `$gt` operator matches if the specified field content is greater than the argument.
+
+<div></div>
+##### The `$exists` operator
+
+> `$exists` operator used with full text indexing
+
+```json
+{
+  "selector": {
+    "year": 2015,
+    "title": {
+      "$exists": true
+    }
+  },
+  "fields": [
+    "year",
+    "_id",
+    "title"
+  ]
+}
+```
+
+> `$exists` operator used with database indexed on the field `"year"`
+
+```json
+{
+  "selector": {
+    "year": 2015,
+    "title": {
+      "$exists": true
+    }
+  },
+  "fields": [
+    "year",
+    "_id",
+    "title"
+  ]
+}
+```
+
+The `$exists` operator matches if the field exists, regardless of its value.
+
+<div></div>
+##### The `$type` operator
+
+> `$type` operator used with full text indexing
+
+```json
+{
+  "selector": {
+    "year": {
+      "$type": "number"
+    }
+  },
+  "fields": [
+    "year",
+    "_id",
+    "title"
+  ]
+}
+```
+
+> `$type` operator used with primary index
+
+```json
+{
+  "selector": {
+    "_id": { "$gt": null },
+    "year": {
+      "$type": "number"
+    }
+  },
+  "fields": [
+    "year",
+    "_id",
+    "title"
+  ]
+}
+```
+
+The `$type` operator requires that the specified document field is of the correct type.
+
+<div></div>
+##### The `$in` operator
+
+> `$in` operator used with full text indexing
+
+```json
+{
+  "selector": {
+    "year": {
+      "$in": [2010,2015]
+    }
+  },
+  "fields": [
+    "year",
+    "_id",
+    "title"
+  ],
+  "sort": [
+    "year:number"
+  ]
+}
+```
+
+> `$in` operator used with primary index
+
+```json
+{
+  "selector": {
+    "_id": { "$gt": null },
+    "year": {
+      "$in": [2010, 2015]
+    }
+  },
+  "fields": [
+    "year",
+    "_id",
+    "title"
+  ],
+  "limit": 10
+}
+```
+
+The `$in` operator requires that the document field _must_ exist in the list provided.
+
+<div></div>
+##### The `$nin` operator
+
+> `$nin` operator used with full text indexing
+
+```json
+{
+  "selector": {
+    "year": {
+      "$gt": 2009,
+      "$nin": [2010, 2015]
+    }
+  },
+  "fields": [
+    "year",
+    "_id",
+    "title"
+  ],
+  "sort": [
+    "year:number"
+  ]
+}
+```
+
+> `$nin` operator used with primary index
+
+```json
+{
+  "selector": {
+    "_id": { "$gt": null },
+    "year": {
+      "$nin": [2010, 2015]
+    }
+  },
+  "fields": [
+    "year",
+    "_id",
+    "title"
+  ],
+  "limit": 10
+}
+```
+
+The `$nin` operator requires that the document field must _not_ exist in the list provided.
+
+<div></div>
+##### The `$size` operator
+
+> `$size` operator used with full text indexing
+
+```json
+{
+  "selector": {
+    "genre": {
+      "$size": 4
+    }
+  },
+  "fields": [
+    "title",
+    "genre"
+  ],
+  "limit": 1000
+}
+```
+
+> `$size` operator used with primary index
+
+```json
+{
+  "selector": {
+    "_id": {
+      "$gt": null
+    },
+    "genre": {
+      "$size": 4
+    }
+  },
+  "fields": [
+    "title",
+    "genre"
+  ],
+  "limit": 25
+}
+```
+
+The `$size` operator matches the length of an array field in a document.
+
+<div></div>
+##### The `$mod` operator
+
+> `$mod` operator used with full text indexing
+
+```json
+{
+  "selector": {
+    "year": {
+      "$mod": [100,0]
+    }
+  },
+  "fields": [
+    "title",
+    "year"
+  ],
+  "limit": 50
+}
+```
+
+> `$mod` operator used with primary index
+
+```json
+{
+  "selector": {
+    "_id": {
+      "$gt": null
+    },
+    "year": {
+      "$mod": [100,0]
+    }
+  },
+  "fields": [
+    "title",
+    "year"
+  ],
+  "limit": 50
+}
+```
+
+The `$mod` operator matches documents where (field % Divisor == Remainder) is true. Always evaluates to false for any non-integer field.
+
+<div></div>
+##### The `$regex` operator
+
+> `$regex` operator used with full text indexing
+
+```json
+{
+  "selector": {
+    "cast": {
+      "$elemMatch": {
+        "$regex": "^Robert"
+      }
+    }
+  },
+  "fields": [
+    "title",
+    "cast"
+  ],
+  "limit": 10
+}
+```
+
+> `$regex` operator used with primary index
+
+```json
+{
+  "selector": {
+    "_id": {
+      "$gt": null
+    },
+    "cast": {
+      "$elemMatch": {
+        "$regex": "^Robert"
+      }
+    }
+  },
+  "fields": [
+    "title",
+    "cast"
+  ],
+  "limit": 10
+}
+```
+
+The `$regex` operator matches when the field is a string value _and_ matches the supplied regular expression.
 
 ### Creating selector expressions
 
