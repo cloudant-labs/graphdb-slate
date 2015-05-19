@@ -1,5 +1,5 @@
 ---
-title: Cloudant Documentation
+title: Cloudant Documentation - Guides
 
 language_tabs:
   - http 
@@ -16,16 +16,29 @@ toc_footers:
 
 includes:
   - guides/index
-  - guides/json
-  - guides/replication-guide
-  - guides/managing_tasks
-  - guides/mvcc
-  - guides/transactions
-  - guides/cap_theorem
-  - guides/acid
-  - guides/backups
-  - guides/couchapps
-  - guides/cloudant-geo
-  - guides/DesignDocumentManagement
 
 ---
+
+<script>
+fragments = {
+  '#json': '/json.html',
+  '#monitoring-replication28': '/managing_tasks.html',
+  '#managing-tasks': '/managing-tasks.html',
+  '#document-versioning-and-mvcc': '/mvcc.html',
+  '#transactions-in-cloudant': '/transactions.html',
+  '#cap-theorem': '/cap_theorem.html',
+  '#acid': '/acid.html',
+  '#back-up-your-data': '/backup-guide.html',
+  '#couchapps': '/couchapps.html',
+  '#cloudant-geospatial': '/geo.html',
+  '#design-document-management': '/design_document_management.html',
+  '#replication': '/replication_guide.html'
+}
+fragment = window.location.hash;
+console.log('fragment is ' + fragment);
+dest = fragments[fragment];
+console.log('dest is ' + dest);
+if (dest) {
+  window.location = dest;
+}
+</script>

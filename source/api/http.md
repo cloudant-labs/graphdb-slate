@@ -1,5 +1,5 @@
 ---
-title: Cloudant Documentation - API Basics
+title: Cloudant Documentation
 
 language_tabs:
   - http 
@@ -15,17 +15,30 @@ toc_footers:
   - <a href="https://github.com/cloudant-labs/slate">Documentation Source</a>
 
 includes:
-  - basics/index
+  - api/index
+  - api/http
+  - api/account
+  - api/authentication
+  - api/authorization
+  - api/cors
+  - api/database
+  - api/document
+  - api/attachments
+  - api/cloudant_query
+  - api/cqsearch
+  - api/design_documents
+  - api/creating_views
+  - api/using_views
+  - api/search
+  - api/replication
+  - api/advanced_replication
+  - api/active_tasks
+  - api/advanced
+  - api/backup
+  - api/try.md
 
 ---
 
-<style>
-.content h2 {
-  padding-top: 4em !important;
-  margin-top: 0 !important;
-}
-</style>
-
-
+Next: [Guides](guides.html#-guides)
 
 

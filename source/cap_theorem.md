@@ -1,5 +1,5 @@
 ---
-title: Cloudant Documentation - API Basics
+title: Cloudant Documentation - CAP Theorem
 
 language_tabs:
   - http 
@@ -15,17 +15,6 @@ toc_footers:
   - <a href="https://github.com/cloudant-labs/slate">Documentation Source</a>
 
 includes:
-  - basics/index
+  - guides/cap_theorem
 
 ---
-
-<style>
-.content h2 {
-  padding-top: 4em !important;
-  margin-top: 0 !important;
-}
-</style>
-
-
-
-

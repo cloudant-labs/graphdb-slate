@@ -1,5 +1,5 @@
 ---
-title: Cloudant Documentation - API Basics
+title: Cloudant Documentation - Full text search
 
 language_tabs:
   - http 
@@ -15,17 +15,9 @@ toc_footers:
   - <a href="https://github.com/cloudant-labs/slate">Documentation Source</a>
 
 includes:
-  - basics/index
+  - api/search
 
 ---
-
-<style>
-.content h2 {
-  padding-top: 4em !important;
-  margin-top: 0 !important;
-}
-</style>
-
 
 
 

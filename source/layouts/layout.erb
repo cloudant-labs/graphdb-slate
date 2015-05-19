@@ -79,10 +79,7 @@ under the License.
         $('#hideCodeButton').click(hideCode);
         $('#showCodeButton').click(showCode);
         
-        var headerSelectors = "h1,h2,h3";
-        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-          headerSelectors = "h1,h2";
-        }
+        var headerSelectors = "h3";
         var toc = $("#toc").tocify({
           selectors: headerSelectors,
           extendPage: false,
@@ -150,23 +147,95 @@ under the License.
         </form>
       </div>
       
-      <ul id="tocify-header0" class="tocify-header first-header">
-        <% [
-             ['index.html', 'Overview', 'index.html#-overview'],
-             ['basics.html', 'Cloudant Basics', 'basics.html#-cloudant-basics'],
-             ['libraries.html', 'Client Libraries', 'libraries.html#-client-libraries'],
-             ['api.html', 'API Reference', 'api.html#-api-reference'],
-             ['guides.html', 'Guides', 'guides.html#-guides']
-           ].each { |page| %>
-		          <% if request.path != page[0] %>
+      <ul class="tocify-header first-header">
+        <%
+          class Page
+            def initialize(name, link, subpages)
+              @name = name
+              @link = link
+              @subpages = subpages
+            end
+            attr_reader :subpages
+            attr_reader :name
+            attr_reader :link
+          end
+          [
+            Page.new('Overview', 'index.html', []),
+            Page.new('Cloudant Basics', 'basics.html', [
+              Page.new('Database as a Service', 'basics.html#database-as-a-service', []),
+              Page.new('HTTP API', 'basics.html#http-api', []),
+              Page.new('JSON', 'basics.html#json', []),
+              Page.new('Distributed', 'basics.html#distributed', []),
+              Page.new('Replication', 'basics.html#replication', []),
+              Page.new('Cloudant Local', 'basics.html#cloudant-local', [])
+            ]),
+            Page.new('Client Libraries', 'libraries.html', [
+              Page.new('Supported', 'libraries.html#supported-client-libraries', []),
+              Page.new('Third party', 'libraries.html#third-party-client-libraries', [])
+            
+            ]),
+            Page.new('API Reference', 'api.html', [
+              Page.new('HTTP', 'http.html', []),
+              Page.new('Account', 'account.html', []),
+              Page.new('Authentication', 'authentication.html', []),
+              Page.new('Authorization', 'authorization.html', []),
+              Page.new('CORS', 'cors.html', []),
+              Page.new('Databases', 'database.html', []),
+              Page.new('Documents', 'document.html', []),
+              Page.new('Attachments', 'attachments.html', []),
+              Page.new('Query', 'cloudant_query.html', []),
+              Page.new('Query Search', 'cqsearch.html', []),
+              Page.new('Design Documents', 'design_documents.html', []),
+              Page.new('Creating views', 'creating_views.html', []),
+              Page.new('Using views', 'using_views.html', []),
+              Page.new('Full text search', 'search.html', []),
+              Page.new('Replication', 'replication.html', []),
+              Page.new('Advanced Replication', 'advanced_replication.html', []),
+              Page.new('Active tasks', 'active_tasks.html', []),
+              Page.new('Advanced', 'advanced.html', []),
+              Page.new('Backup', 'backup.html', [])
+            ]),
+            Page.new('Guides', 'guides.html', [
+              Page.new('JSON', 'json.html', []),
+              Page.new('Replication', 'replication_guide.html', []),
+              Page.new('Managing tasks', 'managing_tasks.html', []),
+              Page.new('Document versioning and conflicts', 'mvcc.html', []),
+              Page.new('Event Sourcing', 'transactions.html', []),
+              Page.new('CAP theorem', 'cap_theorem.html', []),
+              Page.new('AcID', 'acid.html', []),
+              Page.new('Backups', 'backup-guide.html', []),
+              Page.new('Couchapps', 'couchapps.html', []),
+              Page.new('Geospatial', 'geo.html', []),
+              Page.new('Design document management', 'design_document_management.html', [])
+            ])
+          ].each { |page|
+            %>
+		        <li class="tocify-item">
+				      <a href="<%=page.link%>"><%=page.name%></a>
+				    </li>
+				    <%
+				    if !page.subpages.empty? && (page.subpages.any? { |subpage| subpage.link.split('#')[0] == request.path } || page.link.split('#')[0] == request.path)
+				      %> <ul class="tocify-subheader-styles" style="display: block;"> <%
+				      page.subpages.each { |subpage|
+				        %>
 		            <li class="tocify-item">
-				          <a href="<%=page[2]%>"><%=page[1]%></a>
+				          <a href="<%=subpage.link%>"><%=subpage.name%></a>
 				        </li>
-		          <% else %>
-		            <div id="toc"> </div>
-		          <% end %>
-        <% } %>
+				        <%
+				        if subpage.link == request.path
+				          %>
+				            <div id="toc"></div>
+				          <%
+				        end
+				      }
+				      %> </ul> <%
+				    end
+          } %>
       </ul>
+      
+    
+      
+      
       
       <ul class="toc-footer">
         <li><a href="https://cloudant.com/"><img src="images/cloudant_icon.png" alt="Cloudant icon"/></a></li>
@@ -188,7 +257,6 @@ under the License.
           <% end %>
         <% end %>
         <%= yield %>
-        
       </div>
       <div class="dark-box">
         <div id="lang-selector">
