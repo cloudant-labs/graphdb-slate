@@ -1765,8 +1765,8 @@ Host: user.cloudant.com
 Content-Type: application/json
 
 {
-  "source": "https://examples.cloudant.com/movies-demo",
-  "target": "https://<user:password>@<user>.cloudant.com/my-movies-demo",
+  "source": "https://examples.cloudant.com/query-movies",
+  "target": "https://<user:password>@<user>.cloudant.com/my-movies",
   "create_target": true,
   "use_checkpoints": false
 }
@@ -1777,8 +1777,8 @@ curl 'https://<user:password>@<user>.cloudant.com/_replicator' \
   -X POST \
   -H 'Content-Type: application/json' \
   -d '{
-    "source": "https://examples.cloudant.com/movies-demo",
-    "target": "https://<user:password>@<user>.cloudant.com/my-movies-demo",
+    "source": "https://examples.cloudant.com/query-movies",
+    "target": "https://<user:password>@<user>.cloudant.com/my-movies",
     "create_target": true,
     "use_checkpoints": false
 }'
@@ -1794,8 +1794,8 @@ curl 'https://<user:password>@<user>.cloudant.com/_replicator' \
 ```
 
 To describe FTI, it is helpful to have a large collection of data to work with.
-A suitable collection is available in the example Cloudant Query movie database: `movies-demo`.
-You can obtain a copy of this database in your database, with the name `my-movies-demo`,
+A suitable collection is available in the example Cloudant Query movie database: `query-movies`.
+You can obtain a copy of this database in your database, with the name `my-movies`,
 by running the command shown.
 
 The sample database contains approximately 3,000 documents, and is just under 1 MB in size.
@@ -1805,7 +1805,7 @@ The sample database contains approximately 3,000 documents, and is just under 1 
 > Creating a _text_ index for your sample database:
 
 ```http
-POST /my-movies-demo/_index HTTP/1.1
+POST /my-movies/_index HTTP/1.1
 Host: user.cloudant.com
 Content-Type: application/json
 
@@ -1816,7 +1816,7 @@ Content-Type: application/json
 ```
 
 ```shell
-curl 'https://<user:password>@<user>.cloudant.com/my-movies-demo/_index' \
+curl 'https://<user:password>@<user>.cloudant.com/my-movies/_index' \
   -X POST \
   -H 'Content-Type: application/json' \
   -d '{"index": {}, "type": "text"}'
@@ -1837,7 +1837,7 @@ Before we can search the content, we must index it. We do this by creating a tex
 > Searching for a specific document within the database:
 
 ```http
-POST /my-movies-demo/_find HTTP/1.1
+POST /my-movies/_find HTTP/1.1
 Host: user.cloudant.com
 Content-Type: application/json
 
@@ -1850,7 +1850,7 @@ Content-Type: application/json
 
 ```shell
 curl -X POST -H "Content-Type: application/json" \
-        https://<user:password>@<user>.cloudant.com/my-movies-demo/_find \
+        https://<user:password>@<user>.cloudant.com/my-movies/_find \
         -d '{"selector": {"Person_name":"Zoe Saldana"}}'
 ```
 
@@ -1889,7 +1889,7 @@ Using the `bookmark` enables you to specify which page of results you require.
 > Example of a slightly more complex search:
 
 ```http
-POST /my-movies-demo/_find HTTP/1.1
+POST /my-movies/_find HTTP/1.1
 Host: user.cloudant.com
 Content-Type: application/json
 
@@ -1903,7 +1903,7 @@ Content-Type: application/json
 
 ```shell
 curl -X POST -H "Content-Type: application/json" \
-        https://<user:password>@<user>.cloudant.com/my-movies-demo/_find \
+        https://<user:password>@<user>.cloudant.com/my-movies/_find \
         -d '{"selector": {"Person_name":"Robert De Niro", "Movie_year": 1978}}'
 ```
 
@@ -1932,7 +1932,7 @@ curl -X POST -H "Content-Type: application/json" \
 > Example of searching within a range:
 
 ```http
-POST /my-movies-demo/_find HTTP/1.1
+POST /my-movies/_find HTTP/1.1
 Host: user.cloudant.com
 Content-Type: application/json
 
@@ -1948,7 +1948,7 @@ Content-Type: application/json
 
 ```shell
 curl -X POST -H "Content-Type: application/json" \
-        https://<user:password>@<user>.cloudant.com/my-movies-demo/_find \
+        https://<user:password>@<user>.cloudant.com/my-movies/_find \
         -d '{"selector": {"Person_name":"Robert De Niro", "Movie_year": { "$in": [1974, 2009]}}}'
 ```
 
