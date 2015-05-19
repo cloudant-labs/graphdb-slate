@@ -113,8 +113,5 @@ for filename in [
 'using_views'
 ]:
 	index_file(filename)
-		
-		
-#with open('docs.json', 'wb') as jsonfile:
-	#json.dump(docs, jsonfile)
+
 				
