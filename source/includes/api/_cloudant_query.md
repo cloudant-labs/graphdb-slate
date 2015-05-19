@@ -1,6 +1,21 @@
 <div id="query"></div>
 ## Querying Cloudant databases
 
+Whenever you are looking for information in a database,
+you always need an index.
+The way that the index is created depends on your requirement.
+
+If you know exactly what data you want to look for,
+or you want to keep storage and processing requirements to a minimum,
+you can specify how the index is created,
+by making it of type `json`.
+
+But for maximum possible flexibility when looking for data,
+you would typically create an index of type `text`.
+
+<aside class="warning">While more flexible,
+`text` indexes might take longer to create and require more storage resources than `json` indexes.</aside>
+
 Cloudant databases have support for [creating indexes](api.html#creating-a-new-index)
 using [Apache Lucene](http://lucene.apache.org/).
 This capability provides several benefits, including:
@@ -575,7 +590,7 @@ Method | Path | Description
 `DELETE` | `/db/_index` | Delete an index
 `POST`| `/db/_find` | Find documents using an index
 
-### Creating a non-Full Text index
+### Creating an index
 
 > Example of creating a new index for the field called `foo`:
 
