@@ -1,9 +1,9 @@
-<div id="query"></div>
-## Querying Cloudant databases
+## Query
 
-Whenever you are looking for information in a database,
-you always need an index.
-The way that the index is created depends on your requirement.
+Cloudant Query is a declarative JSON querying syntax for Cloudant databases.
+Cloudant Query wraps several index types, starting with the Primary Index out-of-the-box.
+Cloudant Query indexes can also be built using MapReduce Views (where the index type is `json`),
+and Search Indexes (where the index type is `text`).
 
 If you know exactly what data you want to look for,
 or you want to keep storage and processing requirements to a minimum,
@@ -16,114 +16,64 @@ you would typically create an index of type `text`.
 <aside class="warning">While more flexible,
 `text` indexes might take longer to create and require more storage resources than `json` indexes.</aside>
 
-Cloudant databases have support for [creating indexes](api.html#creating-a-new-index)
-using [Apache Lucene](http://lucene.apache.org/).
-This capability provides several benefits, including:
+### Creating an index
 
--	Full Text Indexing (FTI)
--	Simple 'ad hoc' queries across multiple fields, without restrictions
+You can create an index with one of two types:
 
-To get the benefits from Full Text Indexing (FTI),
-you should already be familiar with the basics of using Cloudant.
+-	`"type": "json"`
+-	`"type": "text"`
 
-### Overview
+#### Creating a "type=json" index
 
-There are four basic steps to work with FTI:
+> Example of creating a new index for the field called `foo`:
 
-1.	Create a database, or use an existing database.
-2.	Create a text index.
-3.	Add content.
-4.	Search for the content.
-
-<div id="step02"></div>
-#### Creating a text index
-
-> Example command to create a text index within the database:
-
-```http
-POST /dbname/_index HTTP/1.1
+```shell
+POST /db/_index HTTP/1.1
 Content-Type: application/json
-Host: user.cloudant.com
+```
 
+```json
 {
-  "index": {},
-  "type": "text"
+    "index": {
+        "fields": ["foo"]
+    },
+    "name" : "foo-index",
+    "type" : "json"
 }
 ```
 
-```shell
-curl -X POST -H "Content-Type: application/json" \
-  https://user.cloudant.com/dbname/_index \
-  -d '{"index":{}, "type": "text"}'
-```
+> The returned JSON confirms the index has been created:
 
-To use FTI,
-you must create an index of type `text`.
-The simplest index is also the most flexible,
-and is created by indexing every field in the database content:
-
-  `... "index": {}, ...`
-
-<aside class="warning">Although simple and flexible,
-a full text index takes much longer to create,
-and is likely to require much more storage.</aside>
-
-<div id="step04"></div>
-#### Searching for content
-
-> Example command to query for a document that has a field containing the text "Frodo", using a case-insensitive match:
-
-```http
-POST /dbname/_find HTTP/1.1
-HOST: user.cloudant.com
-Content-Type: application/json
-
+```json
 {
-  "selector": {
-    "$text": "Frodo"
-  }
+    "result": "created"
 }
 ```
 
-```shell
-curl -X POST -H "Content-Type: application/json" \
-  https://user.cloudant.com/dbname/_find \
-  -d '{"selector":{"$text": "Frodo"}}'
-```
+-   **Method**: `POST`
+-   **URL Path**: `/db/_index`
+-   **Request Body**: JSON object describing the index to be created
+-   **Response Body**: JSON object indicating successful creation of the index or describing an error
+-   **Roles permitted**: \_writer
 
-> Example command to query for a document that matches a condition:
+Creates a new index in the specified database using the information supplied in the request body.
 
-```http
-POST /dbname/_find HTTP/1.1
-HOST: user.cloudant.com
-Content-Type: application/json
+##### Request Body
 
-{
-  "selector": {
-    "$or": [
-      {
-	"type": "Orc"
-      },
-      {
-	"height": {
-	  "$lt": 4.5
-	}
-      }
-    ]
-  }
-}
-```
+-   **index**:
+    -   **fields**: A JSON array of field names following the [sort syntax](#sort-syntax). Nested fields are also allowed, e.g. `"person.name"`.
+-   **ddoc (optional)**: Name of the design document in which the index will be created. By default, each index will be created in its own design document. Indexes can be grouped into design documents for efficiency. However, a change to one index in a design document will invalidate all other indexes in the same document.
+-   **type (optional)**: Can be ``"json"`` or ``"text"``. Defaults to json. Geospatial indexes will be supported in the future.
+-   **name (optional)**: Name of the index. If no name is provided, one will be generated automatically.
 
-```shell
-curl -X POST -H "Content-Type: application/json" \
-  https://user.cloudant.com/dbname/_find \
-  -d '{"selector":{"$or": [{"type":"Orc"}, {"height": {"$lt":4.5}}]}}'
-```
+##### Return Codes
 
-Once you have created a FTI,
-you can search for content using a variety of expressions and conditions.
+Code | Description
+-----|------------
+200 | Index has been created successfully or already existed
+400 | Bad request: the request body does not have the specified format
 
-### Index Creation Parameters
+#### Creating a "type=text" index
 
 > Example index creation request
 
@@ -172,7 +122,7 @@ the index immediately after use, it can be useful to set this to `3`, so that a 
 used for the creation. It does not affect anything other than index creation.
 -->
 
-#### The `index` field
+##### The `index` field
 
 The `index` field contains settings specific to text indexes.
 
@@ -186,7 +136,7 @@ See the [Cloudant Search documentation](./api.html#analyzers) for alternative an
 You might choose to use an alternative analyzer when documents are indexed in languages other than English,
 or when you have other special requirements for the analyser such as matching email addresses.
 
-#### The `selector` field
+##### The `selector` field
 
 The `selector` field can be used to limit the index to a specific set of documents that match a query.
 It uses the same syntax used for selectors in queries.
@@ -195,7 +145,7 @@ or if some documents should not be indexed at all.
 If you only need to distinguish documents by type,
 it is easier to use one index and add the type to the search query.
 
-#### The `fields` array
+##### The `fields` array
 
 The `fields` array contains a list of fields that should be indexed for each document.
 If you know that an index queries only on specific fields,
@@ -257,322 +207,6 @@ It is invalid to place this operator in the context of a field name.
 The `fields` array is a list of fields that should be returned for each document. The provided
 field names can use dotted notation to access subfields.
 
-The `sort` field contains a list of field name and direction pairs. For field names in text search sorts, it is
-sometimes necessary for a field type to be specified, as shown in the example. If possible, an
-attempt is made to discover the field type based on the selector. In ambiguous cases the field type must
-be provided explicitly.
-
-<aside class="warning">
-The sorting order is undefined when fields contain different data types. This is an important difference between text and view indexes. Sorting behavior for fields with different data types might change in future versions.
-</aside>
-
-The `bookmark` field is used for paging through result sets. Every query returns an opaque
-string under the `bookmark` key that can then be passed back in a query to get the next page of
-results. If any part of the query other than `bookmark` changes between requests, the results are
-undefined.
-
-The `limit` and `skip` values are exactly as you would expect. While `skip` exists, it is not
-intended to be used for paging. The reason is that the `bookmark` feature
-is more efficient.
-
-### Example: Movies Demo Database
-
-> Obtaining a copy of the Cloudant Query movie database:
-
-```http
-POST /_replicator HTTP/1.1
-Host: user.cloudant.com
-Content-Type: application/json
-
-{
-  "source": "https://examples.cloudant.com/movies-demo",
-  "target": "https://<user:password>@<user>.cloudant.com/my-movies-demo",
-  "create_target": true,
-  "use_checkpoints": false
-}
-```
-
-```shell
-curl 'https://<user:password>@<user>.cloudant.com/_replicator' \
-  -X POST \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "source": "https://examples.cloudant.com/movies-demo",
-    "target": "https://<user:password>@<user>.cloudant.com/my-movies-demo",
-    "create_target": true,
-    "use_checkpoints": false
-}'
-```
-
-> Results after successful replication of the Cloudant Query movie database:
-
-```json
-{
-  "ok": true,
-  "use_checkpoints": false
-}
-```
-
-To describe FTI, it is helpful to have a large collection of data to work with.
-A suitable collection is available in the example Cloudant Query movie database: `movies-demo`.
-You can obtain a copy of this database in your database, with the name `my-movies-demo`,
-by running the command shown.
-
-The sample database contains approximately 3,000 documents, and is just under 1 MB in size.
-
-<div></div>
-
-> Creating a _text_ index for your sample database:
-
-```http
-POST /my-movies-demo/_index HTTP/1.1
-Host: user.cloudant.com
-Content-Type: application/json
-
-{
-  "index": {},
-  "type": "text"
-}
-```
-
-```shell
-curl 'https://<user:password>@<user>.cloudant.com/my-movies-demo/_index' \
-  -X POST \
-  -H 'Content-Type: application/json' \
-  -d '{"index": {}, "type": "text"}'
-```
-
-> Response after creating a text index:
-
-```json
-{
-  "result": "created"
-}
-```
-
-Before we can search the content, we must index it. We do this by creating a text index for the documents.
-
-<div></div>
-
-> Searching for a specific document within the database:
-
-```http
-POST /my-movies-demo/_find HTTP/1.1
-Host: user.cloudant.com
-Content-Type: application/json
-
-{
-  "selector": {
-    "Person_name":"Zoe Saldana"
-  }
-}
-```
-
-```shell
-curl -X POST -H "Content-Type: application/json" \
-        https://<user:password>@<user>.cloudant.com/my-movies-demo/_find \
-        -d '{"selector": {"Person_name":"Zoe Saldana"}}'
-```
-
-> Example result from the search:
-
-```json
-{
-  "docs": [
-    {
-      "_id": "d9e6a7ae2363d6cfe81af75a3941110b",
-      "_rev": "1-556aec0e89fa13769fbf59d651411528",
-      "Movie_runtime": 162,
-      "Movie_rating": "PG-13",
-      "Person_name": "Zoe Saldana",
-      "Movie_genre": "AVYS",
-      "Movie_name": "Avatar",
-      "Movie_earnings_rank": "1",
-      "Person_pob": "New Jersey, USA",
-      "Movie_year": 2009,
-      "Person_dob": "1978-06-19"
-    }
-  ],
-  "bookmark": "g2wA ... Omo"
-}
-```
-
-The most obvious difference in the results you get when using FTI is the inclusion of a large `bookmark` field. The reason is that text indexes are different to view-based indexes. For more flexibility when working with the results obtained from an FTI query, you can supply the `bookmark` value as part of the request body. Using the `bookmark` enables you to specify which page of results you require.
-
-<aside class="warning">The actual `bookmark` value is very long, so the examples here are truncated for reasons of clarity.</aside>
-
-<div></div>
-
-> Example of a slightly more complex search:
-
-```http
-POST /my-movies-demo/_find HTTP/1.1
-Host: user.cloudant.com
-Content-Type: application/json
-
-{
-  "selector": {
-    "Person_name":"Robert De Niro",
-    "Movie_year": 1978
-  }
-}
-```
-
-```shell
-curl -X POST -H "Content-Type: application/json" \
-        https://<user:password>@<user>.cloudant.com/my-movies-demo/_find \
-        -d '{"selector": {"Person_name":"Robert De Niro", "Movie_year": 1978}}'
-```
-
-> Example result from the search:
-
-```json
-{
-  "docs": [
-    {
-      "_id": "d9e6a7ae2363d6cfe81af75a392eb9f2",
-      "_rev": "1-9faa75d7ea524448b1456a6c69a4391a",
-      "Movie_runtime": 183,
-      "Movie_rating": "R",
-      "Person_name": "Robert De Niro",
-      "Movie_genre": "DW",
-      "Movie_name": "Deer Hunter, The",
-      "Person_pob": "New York, New York, USA",
-      "Movie_year": 1978,
-      "Person_dob": "1943-08-17"
-    }
-  ],
-  "bookmark": "g2w ... c2o"
-}
-```
-
-> Example of searching within a range:
-
-```http
-POST /my-movies-demo/_find HTTP/1.1
-Host: user.cloudant.com
-Content-Type: application/json
-
-{
-  "selector": {
-    "Person_name":"Robert De Niro",
-    "Movie_year": {
-      "$in": [1974, 2009]
-    }
-  }
-}
-```
-
-```shell
-curl -X POST -H "Content-Type: application/json" \
-        https://<user:password>@<user>.cloudant.com/my-movies-demo/_find \
-        -d '{"selector": {"Person_name":"Robert De Niro", "Movie_year": { "$in": [1974, 2009]}}}'
-```
-
-> Example result from the search:
-
-```json
-{
-  "docs": [
-    {
-      "_id": "d9e6a7ae2363d6cfe81af75a392eb9f2",
-      "_rev": "1-9faa75d7ea524448b1456a6c69a4391a",
-      "Movie_runtime": 183,
-      "Movie_rating": "R",
-      "Person_name": "Robert De Niro",
-      "Movie_genre": "DW",
-      "Movie_name": "Deer Hunter, The",
-      "Person_pob": "New York, New York, USA",
-      "Movie_year": 1978,
-      "Person_dob": "1943-08-17"
-    }
-  ],
-  "bookmark": "g2w ... c2o"
-}
-```
-
-### Other information
-
-The basic premise for FTI is that a document is "expanded" into a list of key/value pairs that are indexed by Lucene. This allows us to make use of Lucene's search syntax as a basis for the query capability.
-
-While supporting enhanced searches, this technique does have certain limitations.
-
-For example, it might not always be clear whether content for an expanded document came from individual elements or an array.
-
-The query mechanism resolves this by preferring to return 'false positive' results. In other words, if a match would have be found as a result of searching for either an individual element, or an element from an array, then the match is considered to have succeeded.
-
-#### Selector Translation
-
-> Example query to be translated
-
-```json
-{"age": {"$gt": 5}}
-```
-
-> Corresponding Lucene query
-
-```
-(age_3anumber:{5 TO Infinity])
-```
-
-A standard Lucene search expression would not necessarily fully 'understand' Cloudant's JSON based query syntax. Therefore, a translation between the two formats takes place.
-
-In the example given, the JSON query approximates to the English phrase: "match if the age expressed
-as a number is greater than five and less than or equal to infinity". The Lucene query corresponds to that phrase, where the text `_3a` within the fieldname corresponds to the `age:number` field, and is an example of the document content expansion mentioned earlier.
-
-#### A more complex example
-
-> JSON query to be translated
-
-```json
-{
-  "$or": [
-  {"age": {"$gt": 5}},
-  {"twitter":{"$exists":true}},
-  {"type": {"$in": [
-    "starch",
-    "protein"
-  ]}}
-  ]
-}
-```
-
-> Corresponding Lucene query<br/>(the '#' comment is not valid Lucene syntax, but helps explain the query construction):
-
-```
-(
-# Search for age > 5
-(age_3anumber:{5 TO Infinity])
-# Search for documents containing the twitter field
-(($fieldnames:twitter_3a*) OR ($fieldnames:twitter_2e*))
-# Search for type = starch
-(
-((type_3astring:starch) OR (type_2e_5b_5d_3astring:starch))
-# Search for type = protein
-((type_3astring:protein) OR (type_2e_5b_5d_3astring:protein))
-)
-)
-```
-
-This example illustrates some important points.
-
-In the `{"$exists":true}` JSON query,
-we use a two clause `OR` query for the `twitter` field, ending in `_3a*` and `_2e*`. This clause
-searches the `$fieldnames` field for entries that contain either `twitter.*` or `twitter:*`. The
-reason is to match when the value is an array _or_ an object. Implementing
-this as two phrases instead of a single `twitter*` query prevents an accidental match
-with a field name such as `twitter_handle` or similar.
-
-The last of the three main clauses, where we search for `starch` or `protein`, is more complicated.
-The `$in` operator has some
-special semantics for array values that are inherited from MongoDB's documented behavior.
-In particular, the `$in` operator applies to the value **OR** any of the values contained in an array named by the
-given field. In our example, this means that both `"type":"starch"` **AND** `"type":["protein"]` would
-match the example argument to `$in`.
-We saw earlier that `type_3astring` translates to
-`type:string`. The second `type_2e_5b_5d_3astring` phrase translates to `type.[]:string`,
-which is an example of the expanded array indexing.
-
 ### Working with indexes
 
 Cloudant endpoints can be used to create,
@@ -589,56 +223,6 @@ Method | Path | Description
 `GET` | `/db/_index` | List all indexes
 `DELETE` | `/db/_index` | Delete an index
 `POST`| `/db/_find` | Find documents using an index
-
-### Creating an index
-
-> Example of creating a new index for the field called `foo`:
-
-```shell
-POST /db/_index HTTP/1.1
-Content-Type: application/json
-```
-
-```json
-{
-    "index": {
-        "fields": ["foo"]
-    },
-    "name" : "foo-index",
-    "type" : "json"
-}
-```
-
-> The returned JSON confirms the index has been created:
-
-```json
-{
-    "result": "created"
-}
-```
-
--   **Method**: `POST`
--   **URL Path**: `/db/_index`
--   **Request Body**: JSON object describing the index to be created
--   **Response Body**: JSON object indicating successful creation of the index or describing an error
--   **Roles permitted**: \_writer
-
-Creates a new index in the specified database using the information supplied in the request body.
-
-#### Request Body
-
--   **index**:
-    -   **fields**: A JSON array of field names following the [sort syntax](#sort-syntax). Nested fields are also allowed, e.g. `"person.name"`.
--   **ddoc (optional)**: Name of the design document in which the index will be created. By default, each index will be created in its own design document. Indexes can be grouped into design documents for efficiency. However, a change to one index in a design document will invalidate all other indexes in the same document.
--   **type (optional)**: Can be ``"json"`` or ``"text"``. Defaults to json. Geospatial indexes will be supported in the future.
--   **name (optional)**: Name of the index. If no name is provided, one will be generated automatically.
-
-#### Return Codes
-
-Code | Description
------|------------
-200 | Index has been created successfully or already existed
-400 | Bad request: the request body does not have the specified format
 
 ### List all indexes
 
@@ -726,6 +310,16 @@ and $name is the name of the index.
 -   **sort (optional, default: [])**: JSON array following [sort syntax](#sort-syntax)
 -   **fields (optional, default: null)**: JSON array following the field syntax, described below. This parameter lets you specify which fields of an object should be returned. If it is omitted, the entire object is returned.
 -   **r (optional, default: 1)**: Read quorum needed for the result. This defaults to 1, in which case the document found in the index is returned. If set to a higher value, each document is read from at least that many replicas before it is returned in the results. This is likely to take more time than using only the document stored locally with the index.
+-   **bookmark (optional, default: null)**: A string that enables you to specify which page of results you require. *Only for indexes of type `text`.*
+
+The `bookmark` field is used for paging through result sets. Every query returns an opaque
+string under the `bookmark` key that can then be passed back in a query to get the next page of
+results. If any part of the query other than `bookmark` changes between requests, the results are
+undefined.
+
+The `limit` and `skip` values are exactly as you would expect. While `skip` exists, it is not
+intended to be used for paging. The reason is that the `bookmark` feature
+is more efficient.
 
 #### Response body
 
@@ -756,7 +350,8 @@ and $name is the name of the index.
 
 The Cloudant Query language is expressed as a JSON object describing documents of interest. Within this structure, you can apply conditional logic using specially named fields.
 
-<aside class="notice">While the Cloudant Query language has some similarities with MongoDB query documents, these arise from a similarity of purpose and do not necessarily extend to commonality of function or result.</aside>
+<aside class="notice">While the Cloudant Query language has some similarities with MongoDB query documents,
+these arise from a similarity of purpose and do not necessarily extend to commonality of function or result.</aside>
 
 #### Selector basics
 
@@ -804,7 +399,9 @@ the full text index is inspected to find any document that includes the word "Bo
 
 <div></div>
 You can create more complex selector expressions by combining operators.
-However, you cannot use 'combination' or 'array logical' operators such as `$regex` as the *basis* of a query. Only the equality operators such as `$eq`, `$gt`, `$gte`, `$lt`, and `$lte` (but not `$ne`) can be used as the basis of a more complex query.
+However, for Cloudant Query indexes of type `json`,
+you cannot use 'combination' or 'array logical' operators such as `$regex` as the *basis* of a query.
+Only the equality operators such as `$eq`, `$gt`, `$gte`, `$lt`, and `$lte` (but not `$ne`) can be used as the basis of a more complex query.
 For more information about creating complex selector expressions, see [Creating selector expressions](#creating-selector-expressions).
 
 <div></div>
@@ -2000,13 +1597,19 @@ see the <a href="http://erlang.org/doc/man/re.html" target="_blank">Erlang Regul
 [{"fieldName1": "desc"}, {"fieldName2": "desc" }]
 ```
 
-The sort syntax uses a basic array of field name and direction pairs.
+The `sort` field contains a list of field name and direction pairs,
+expressed as a basic array.
 The first field name and direction pair is the topmost level of sort.
-The second pair, if provided is the next level of sort.
+The second pair,
+if provided,
+is the next level of sort.
 
-The `field` can be any field, using dotted notation if desired for sub-document fields.
+The field can be any field,
+using dotted notation if desired for sub-document fields.
+
 The direction value is `"asc"` for ascending, and `"desc"` for descending.
 
+<div></div>
 > A simple query, using sorting:
 
 ```json
@@ -2021,15 +1624,31 @@ then to sort the results according to the specified field, in the required direc
 
 To use sorting, ensure that:
 
-- At least one of the sort fields is included in the selector.
-- There is an index already defined, with all the sort fields in the same order.
-- Each object in the sort array has a single key.
+-	At least one of the sort fields is included in the selector.
+-	There is an index already defined, with all the sort fields in the same order.
+-	Each object in the sort array has a single key.
 
 <aside class="warning">If an object in the sort array does not have a single key, the resulting sort order is implementation specific and might change.</aside>
 
 <aside>Currently, Cloudant Query does not support multiple fields with different sort orders, so the directions must be either all ascending or all descending.</aside>
 
 If the direction is ascending, you can use a string instead of an object to specify the sort fields.
+
+For field names in text search sorts, it is
+sometimes necessary for a field type to be specified,
+for example:
+
+  `{ "<fieldname>:string": "asc"}`
+
+If possible,
+an attempt is made to discover the field type based on the selector.
+In ambiguous cases the field type must be provided explicitly.
+
+<aside class="warning">
+The sorting order is undefined when fields contain different data types.
+This is an important difference between text and view indexes.
+Sorting behavior for fields with different data types might change in future versions.
+</aside>
 
 ### Filtering fields
 
@@ -2053,4 +1672,305 @@ The fields returned are specified as an array.
 <aside>Only the specified filter fields are included, in the response.
 There is no automatic inclusion of the `_id` or other metadata fields when a field list is included.</aside>
 
+### Note about `text` indexes
+
+The basic premise for FTI is that a document is "expanded" into a list of key/value pairs that are indexed by Lucene.
+This allows us to make use of Lucene's search syntax as a basis for the query capability.
+
+While supporting enhanced searches, this technique does have certain limitations.
+
+For example, it might not always be clear whether content for an expanded document came from individual elements or an array.
+
+The query mechanism resolves this by preferring to return 'false positive' results. In other words, if a match would have be found as a result of searching for either an individual element, or an element from an array, then the match is considered to have succeeded.
+
+#### Selector Translation
+
+> Example query to be translated
+
+```json
+{"age": {"$gt": 5}}
+```
+
+> Corresponding Lucene query
+
+```
+(age_3anumber:{5 TO Infinity])
+```
+
+A standard Lucene search expression would not necessarily fully 'understand' Cloudant's JSON based query syntax. Therefore, a translation between the two formats takes place.
+
+In the example given, the JSON query approximates to the English phrase: "match if the age expressed
+as a number is greater than five and less than or equal to infinity". The Lucene query corresponds to that phrase, where the text `_3a` within the fieldname corresponds to the `age:number` field, and is an example of the document content expansion mentioned earlier.
+
+#### A more complex example
+
+> JSON query to be translated
+
+```json
+{
+  "$or": [
+  {"age": {"$gt": 5}},
+  {"twitter":{"$exists":true}},
+  {"type": {"$in": [
+    "starch",
+    "protein"
+  ]}}
+  ]
+}
+```
+
+> Corresponding Lucene query<br/>(the '#' comment is not valid Lucene syntax, but helps explain the query construction):
+
+```
+(
+# Search for age > 5
+(age_3anumber:{5 TO Infinity])
+# Search for documents containing the twitter field
+(($fieldnames:twitter_3a*) OR ($fieldnames:twitter_2e*))
+# Search for type = starch
+(
+((type_3astring:starch) OR (type_2e_5b_5d_3astring:starch))
+# Search for type = protein
+((type_3astring:protein) OR (type_2e_5b_5d_3astring:protein))
+)
+)
+```
+
+This example illustrates some important points.
+
+In the `{"$exists":true}` JSON query,
+we use a two clause `OR` query for the `twitter` field, ending in `_3a*` and `_2e*`. This clause
+searches the `$fieldnames` field for entries that contain either `twitter.*` or `twitter:*`. The
+reason is to match when the value is an array _or_ an object. Implementing
+this as two phrases instead of a single `twitter*` query prevents an accidental match
+with a field name such as `twitter_handle` or similar.
+
+The last of the three main clauses, where we search for `starch` or `protein`, is more complicated.
+The `$in` operator has some
+special semantics for array values that are inherited from MongoDB's documented behavior.
+In particular, the `$in` operator applies to the value **OR** any of the values contained in an array named by the
+given field. In our example, this means that both `"type":"starch"` **AND** `"type":["protein"]` would
+match the example argument to `$in`.
+We saw earlier that `type_3astring` translates to
+`type:string`. The second `type_2e_5b_5d_3astring` phrase translates to `type.[]:string`,
+which is an example of the expanded array indexing.
+
+### Example: Movies Demo Database
+
+> Obtaining a copy of the Cloudant Query movie database:
+
+```http
+POST /_replicator HTTP/1.1
+Host: user.cloudant.com
+Content-Type: application/json
+
+{
+  "source": "https://examples.cloudant.com/movies-demo",
+  "target": "https://<user:password>@<user>.cloudant.com/my-movies-demo",
+  "create_target": true,
+  "use_checkpoints": false
+}
+```
+
+```shell
+curl 'https://<user:password>@<user>.cloudant.com/_replicator' \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "source": "https://examples.cloudant.com/movies-demo",
+    "target": "https://<user:password>@<user>.cloudant.com/my-movies-demo",
+    "create_target": true,
+    "use_checkpoints": false
+}'
+```
+
+> Results after successful replication of the Cloudant Query movie database:
+
+```json
+{
+  "ok": true,
+  "use_checkpoints": false
+}
+```
+
+To describe FTI, it is helpful to have a large collection of data to work with.
+A suitable collection is available in the example Cloudant Query movie database: `movies-demo`.
+You can obtain a copy of this database in your database, with the name `my-movies-demo`,
+by running the command shown.
+
+The sample database contains approximately 3,000 documents, and is just under 1 MB in size.
+
+<div></div>
+
+> Creating a _text_ index for your sample database:
+
+```http
+POST /my-movies-demo/_index HTTP/1.1
+Host: user.cloudant.com
+Content-Type: application/json
+
+{
+  "index": {},
+  "type": "text"
+}
+```
+
+```shell
+curl 'https://<user:password>@<user>.cloudant.com/my-movies-demo/_index' \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{"index": {}, "type": "text"}'
+```
+
+> Response after creating a text index:
+
+```json
+{
+  "result": "created"
+}
+```
+
+Before we can search the content, we must index it. We do this by creating a text index for the documents.
+
+<div></div>
+
+> Searching for a specific document within the database:
+
+```http
+POST /my-movies-demo/_find HTTP/1.1
+Host: user.cloudant.com
+Content-Type: application/json
+
+{
+  "selector": {
+    "Person_name":"Zoe Saldana"
+  }
+}
+```
+
+```shell
+curl -X POST -H "Content-Type: application/json" \
+        https://<user:password>@<user>.cloudant.com/my-movies-demo/_find \
+        -d '{"selector": {"Person_name":"Zoe Saldana"}}'
+```
+
+> Example result from the search:
+
+```json
+{
+  "docs": [
+    {
+      "_id": "d9e6a7ae2363d6cfe81af75a3941110b",
+      "_rev": "1-556aec0e89fa13769fbf59d651411528",
+      "Movie_runtime": 162,
+      "Movie_rating": "PG-13",
+      "Person_name": "Zoe Saldana",
+      "Movie_genre": "AVYS",
+      "Movie_name": "Avatar",
+      "Movie_earnings_rank": "1",
+      "Person_pob": "New Jersey, USA",
+      "Movie_year": 2009,
+      "Person_dob": "1978-06-19"
+    }
+  ],
+  "bookmark": "g2wA ... Omo"
+}
+```
+
+The most obvious difference in the results you get when using FTI is the inclusion of a large `bookmark` field.
+The reason is that text indexes are different to view-based indexes.
+For more flexibility when working with the results obtained from an FTI query, you can supply the `bookmark` value as part of the request body.
+Using the `bookmark` enables you to specify which page of results you require.
+
+<aside class="warning">The actual `bookmark` value is very long, so the examples here are truncated for reasons of clarity.</aside>
+
+<div></div>
+
+> Example of a slightly more complex search:
+
+```http
+POST /my-movies-demo/_find HTTP/1.1
+Host: user.cloudant.com
+Content-Type: application/json
+
+{
+  "selector": {
+    "Person_name":"Robert De Niro",
+    "Movie_year": 1978
+  }
+}
+```
+
+```shell
+curl -X POST -H "Content-Type: application/json" \
+        https://<user:password>@<user>.cloudant.com/my-movies-demo/_find \
+        -d '{"selector": {"Person_name":"Robert De Niro", "Movie_year": 1978}}'
+```
+
+> Example result from the search:
+
+```json
+{
+  "docs": [
+    {
+      "_id": "d9e6a7ae2363d6cfe81af75a392eb9f2",
+      "_rev": "1-9faa75d7ea524448b1456a6c69a4391a",
+      "Movie_runtime": 183,
+      "Movie_rating": "R",
+      "Person_name": "Robert De Niro",
+      "Movie_genre": "DW",
+      "Movie_name": "Deer Hunter, The",
+      "Person_pob": "New York, New York, USA",
+      "Movie_year": 1978,
+      "Person_dob": "1943-08-17"
+    }
+  ],
+  "bookmark": "g2w ... c2o"
+}
+```
+
+> Example of searching within a range:
+
+```http
+POST /my-movies-demo/_find HTTP/1.1
+Host: user.cloudant.com
+Content-Type: application/json
+
+{
+  "selector": {
+    "Person_name":"Robert De Niro",
+    "Movie_year": {
+      "$in": [1974, 2009]
+    }
+  }
+}
+```
+
+```shell
+curl -X POST -H "Content-Type: application/json" \
+        https://<user:password>@<user>.cloudant.com/my-movies-demo/_find \
+        -d '{"selector": {"Person_name":"Robert De Niro", "Movie_year": { "$in": [1974, 2009]}}}'
+```
+
+> Example result from the search:
+
+```json
+{
+  "docs": [
+    {
+      "_id": "d9e6a7ae2363d6cfe81af75a392eb9f2",
+      "_rev": "1-9faa75d7ea524448b1456a6c69a4391a",
+      "Movie_runtime": 183,
+      "Movie_rating": "R",
+      "Person_name": "Robert De Niro",
+      "Movie_genre": "DW",
+      "Movie_name": "Deer Hunter, The",
+      "Person_pob": "New York, New York, USA",
+      "Movie_year": 1978,
+      "Person_dob": "1943-08-17"
+    }
+  ],
+  "bookmark": "g2w ... c2o"
+}
+```
 

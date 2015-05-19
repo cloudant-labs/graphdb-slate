@@ -1,5 +1,6 @@
 <div id="creating-views"></div>
-## Working with Views
+<div id="working-with-views"></div>
+## Views (MapReduce)
 
 Views are used to obtain data stored within a database.
 Views are written using Javascript functions.
