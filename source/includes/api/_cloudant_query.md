@@ -1,5 +1,5 @@
 <div id="query"></div>
-## Query
+## Querying Cloudant databases
 
 Cloudant databases have support for [creating indexes](api.html#creating-a-new-index)
 using [Apache Lucene](http://lucene.apache.org/).
@@ -11,11 +11,13 @@ This capability provides several benefits, including:
 To get the benefits from Full Text Indexing (FTI),
 you should already be familiar with the basics of using Cloudant.
 
+### Overview
+
 There are four basic steps to work with FTI:
 
-1.	Create a database, or use an existing database, as usual.
+1.	Create a database, or use an existing database.
 2.	Create a text index.
-3.	Add content, as usual.
+3.	Add content.
 4.	Search for the content.
 
 <div id="step02"></div>
@@ -47,8 +49,9 @@ and is created by indexing every field in the database content:
 
   `... "index": {}, ...`
 
-<aside class="warning">Although the simplest index is also the most flexible,
-it also takes much longer to create and is likely to require much more storage.</aside>
+<aside class="warning">Although simple and flexible,
+a full text index takes much longer to create,
+and is likely to require much more storage.</aside>
 
 <div id="step04"></div>
 #### Searching for content
@@ -132,7 +135,7 @@ you can search for content using a variety of expressions and conditions.
 While it is generally recommended that you create a single text index with the default values,
 there are a few useful index attributes that can be modified.
 
-Remember that for full text indexes,
+Remember that for Full Text Indexes (FTIs),
 `type` should be set to `text`.
 
 The `name` and `ddoc` attributes are for grouping indexes into design documents,
@@ -557,7 +560,11 @@ which is an example of the expanded array indexing.
 
 ### Working with indexes
 
-Cloudant endpoints can be used to create, list, update, and delete indexes in a database and to query data using these indexes.
+Cloudant endpoints can be used to create,
+list,
+update,
+and delete indexes in a database,
+and to query data using these indexes.
 
 A list of the available methods and endpoints is provided below:
 
