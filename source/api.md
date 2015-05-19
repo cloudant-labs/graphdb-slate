@@ -28,7 +28,7 @@ includes:
 #  - api/cqsearch
   - api/design_documents
   - api/creating_views
-  - api/using_views
+#  - api/using_views
   - api/search
   - api/replication
   - api/advanced_replication
