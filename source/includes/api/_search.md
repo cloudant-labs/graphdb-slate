@@ -23,16 +23,16 @@ Search indexes, defined in design documents, allow databases to be queried using
 function(doc){
   index("default", doc._id);
   if (doc.min_length){
-    index("min_length", doc.min_length, {"store": "yes"});
+    index("min_length", doc.min_length, {"store": "true"});
   }
   if (doc.diet){
-    index("diet", doc.diet, {"store": "yes"});
+    index("diet", doc.diet, {"store": "true"});
   }
   if (doc.latin_name){
-    index("latin_name", doc.latin_name, {"store": "yes"});
+    index("latin_name", doc.latin_name, {"store": "true"});
   }
   if (doc.class){
-    index("class", doc.class, {"store": "yes"});
+    index("class", doc.class, {"store": "true"});
   }
 }
 ```
@@ -40,7 +40,29 @@ function(doc){
 <aside class="warning">Attempting to index using a data field that does not exist will fail.
 To avoid this problem, use an appropriate [guard clause](#index-guard-clauses).</aside>
 
-The function contained in the index field is a Javascript function that is called for each document in the database. It takes the document as a parameter, extracts some data from it and then calls the `index` function to index that data. The `index` function takes 3 parameters, where the third parameter is optional. The first parameter is the name of the index. If the special value `"default"` is used, the data is stored in the default index, which is queried if no index name is specified in the search. The second parameter is the data to be indexed. The third parameter is an object that can contain the fields `store` and `index`. If the `store` field contains the value `yes`, the value will be returned in search results, otherwise, it will only be indexed. The `index` field can have the following values describing whether and how the data is indexed:
+The function contained in the index field is a Javascript function that is called for each document in the database. It takes the document as a parameter, extracts some data from it and then calls the `index` function to index that data.
+
+The `index` function takes three parameters, where the third parameter is optional.
+The first parameter is the name of the field used when querying the index,
+specified in the Lucene syntax portion of the query.
+For example,
+when querying:
+
+  `q=color:red`
+
+"color" is the Lucene field name.
+
+If the special value `"default"` is used,
+the field name is not specified at query time.
+The effect is that the query becomes:
+
+  `q=red`
+
+The second parameter is the data to be indexed. The third parameter is an object that can contain the fields `store` and `index`. If the `store` field contains the value `true`, the value will be returned in search results, otherwise, it will only be indexed. 
+
+<!-- Removed next paragraph as part of FB46834.
+
+The `index` field can have the following values describing whether and how the data is indexed:
 
 -   `analyzed`: Index the tokens produced by running the field's value through an analyzer.
 -   `analyzed_no_norms`: Index the tokens produced by running the field's value through an analyzer, and also separately disable the storing of norms.
@@ -50,56 +72,15 @@ The function contained in the index field is a Javascript function that is calle
 
 This index function indexes only a single field in the document. You, however, compute the value to be indexed from several fields or index only part of a field (rather than its entire value).
 
-The `index` function also provides a third, options parameter that receives a JavaScript Object with the following possible values and defaults:
+-->
 
-<table>
-<colgroup>
-<col width="3%" />
-<col width="63%" />
-<col width="26%" />
-<col width="6%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">Option</th>
-<th align="left">Description</th>
-<th align="left">Values</th>
-<th align="left">Default</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left"><code>boost</code></td>
-<td align="left">Analogous to the <code>boost</code> query string parameter, but done at index time rather than query time.</td>
-<td align="left">Float</td>
-<td align="left"><code>1.0</code> (no boosting)</td>
-</tr>
-<tr class="even">
-<td align="left"><code>index</code></td>
-<td align="left">Whether (and how) the data is indexed. The options available are explained in the <a href="http://lucene.apache.org/core/3_6_2/api/core/org/apache/lucene/document/Field.Index.html#enum_constant_summary">Lucene documentation</a>.</td>
-<td align="left"><code>analyzed</code>, <code>analyzed_no_norms</code>, <code>no</code>, <code>not_analyzed</code>, <code>not_analyzed_no_norms</code></td>
-<td align="left"><code>analyzed</code></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>store</code></td>
-<td align="left">If <code>true</code>, the value will be returned in the search result; if <code>false</code>, the value will not be returned in the search result.</td>
-<td align="left"><code>true</code>, <code>false</code></td>
-<td align="left"><code>false</code></td>
-</tr>
-<tr class="even">
-<td align="left"><code>facet</code></td>
-<td align="left">If <code>true</code>, faceting will be turned on for the data being indexed. Faceting is off by default.</td>
-<td align="left"><code>true</code>, <code>false</code></td>
-<td align="left"><code>false</code></td>
-</tr>
-</tbody>
-</table>
+The `index` function also provides a third 'options' parameter that receives a JavaScript Object with the following possible values and defaults:
 
 Option | Description | Values | Default
 -------|-------------|--------|---------
-store | If `true`, the value will be returned in the search result; otherwise, it will not be. | `true`, `false` | `false`
-index | whether (and how) the data is indexed. See [Analyzers](#analyzers) for more info. | `analyzed`, `analyzed_no_norms`, `no`, `not_analyzed`, `not_analyzed_no_norms` | analyzed
-facet | creates a faceted index. See [Faceting](#faceting) for more info. | `true`, `false` | `false`
+`index` | Whether the data is indexed, and if so, how. If set to `false`, the data cannot be used for searches, but can still be retrieved from the index if `store` is set to `true`. See [Analyzers](#analyzers) for more information. | `analyzed`, `analyzed_no_norms`, `no`, `not_analyzed`, `not_analyzed_no_norms` | `analyzed`
+`facet` | Creates a faceted index. See [Faceting](#faceting) for more information. | `true`, `false` | `false`
+`store` | If `true`, the value is returned in the search result; otherwise, the value is not returned. | `true`, `false` | `false`
 
 #### Index Guard Clauses
 
@@ -107,7 +88,7 @@ facet | creates a faceted index. See [Faceting](#faceting) for more info. | `tru
 
 ```
 if (doc.min_length) {
-  index("min_length", doc.min_length, {"store": "yes"});
+  index("min_length", doc.min_length, {"store": "true"});
 }
 ```
 
@@ -123,7 +104,7 @@ _before_ attempting to create the corresponding index.
 
 ```
 if (typeof(doc.min_length) === 'number') {
-  index("min_length", doc.min_length, {"store": "yes"});
+  index("min_length", doc.min_length, {"store": "true"});
 }
 ```
 
@@ -158,13 +139,14 @@ Here's the list of generic analyzers supported by Cloudant search:
 
 Analyzer | Description
 ---------|------------
-standard | Default analyzer; implements the Word Break rules from the [Unicode Text Segmentation algorithm](http://www.unicode.org/reports/tr29/)
-email | Like standard but tries harder to match an email address as a complete token.
-keyword | Input is not tokenized at all.
-simple | Divides text at non-letters.
-whitespace | Divides text at whitespace boundaries.
-classic | The standard Lucene analyzer circa release 3.1. You'll know if you need it.
+`classic` | The standard Lucene analyzer, circa release 3.1. You'll know if you need it.
+`email` | Like the `standard` analyzer, but tries harder to match an email address as a complete token.
+`keyword` | Input is not tokenized at all.
+`simple` | Divides text at non-letters.
+`standard` | The default analyzer. It implements the Word Break rules from the [Unicode Text Segmentation algorithm](http://www.unicode.org/reports/tr29/).
+`whitespace` | Divides text at whitespace boundaries.
 
+<div></div>
 #### Language-Specific Analyzers
 
 These analyzers will omit very common words in the specific language, and many also [remove prefixes and suffixes](http://en.wikipedia.org/wiki/Stemming). The name of the language is also the name of the analyzer.
@@ -204,6 +186,7 @@ These analyzers will omit very common words in the specific language, and many a
 * thai
 * turkish
 
+<div></div>
 #### Per-Field Analyzers
 
 > Example of defining different analyzers for different fields:
@@ -229,7 +212,7 @@ These analyzers will omit very common words in the specific language, and many a
 
 The `perfield` analyzer configures multiple analyzers for different fields.
 
-<h3></h3>
+<div></div>
 #### Stop Words
 
 > Example of defining non-indexed ('stop') words:
@@ -256,6 +239,60 @@ The `perfield` analyzer configures multiple analyzers for different fields.
 Stop words are words that do not get indexed. You define them within a design document by turning the analyzer string into an object.
 
 <aside>The `keyword`, `simple` and `whitespace` analyzers do not support stop words.</aside>
+
+<div></div>
+#### Testing analyzer tokenization
+
+> Example test of the `keyword` analyzer
+
+```shell
+curl 'https://<account>.cloudant.com/_search_analyze' -H 'Content-Type: application/json'
+  -d '{"analyzer":"keyword", "text":"ablanks@renovations.com"}'
+```
+
+```http
+Host: <account>.cloudant.com
+POST /_search_analyze HTTP/1.1
+Content-Type: application/json
+{"analyzer":"keyword", "text":"ablanks@renovations.com"}
+```
+
+> Result of testing the `keyword` analyzer
+
+```json
+{
+  "tokens": [
+    "ablanks@renovations.com"
+  ]
+}
+```
+
+> Example test of the `standard` analyzer
+
+```shell
+curl 'https://<account>.cloudant.com/_search_analyze' -H 'Content-Type: application/json'
+  -d '{"analyzer":"standard", "text":"ablanks@renovations.com"}'
+```
+
+```http
+Host: <account>.cloudant.com
+POST /_search_analyze HTTP/1.1
+Content-Type: application/json
+{"analyzer":"standard", "text":"ablanks@renovations.com"}
+```
+
+> Result of testing the `standard` analyzer
+
+```json
+{
+  "tokens": [
+    "ablanks",
+    "renovations.com"
+  ]
+}
+```
+
+You can test the results of analyzer tokenization by posting sample data to the `_search_analyze` endpoint.
 
 ### Queries
 
