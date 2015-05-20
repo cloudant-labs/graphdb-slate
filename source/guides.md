@@ -30,7 +30,6 @@ fragments = {
   '#acid': '/acid.html',
   '#back-up-your-data': '/backup-guide.html',
   '#couchapps': '/couchapps.html',
-  '#cloudant-geospatial': '/geo.html',
   '#design-document-management': '/design_document_management.html',
   '#replication': '/replication_guide.html'
 }

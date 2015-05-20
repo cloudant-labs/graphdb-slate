@@ -33,7 +33,8 @@ fragments = {
   '#design-documents': '/design_documents.html',
   '#creating-views': '/creating_views.html',
   '#using-views': '/using_views.html',
-  '#search': '/search.html'
+  '#search': '/search.html',
+  '#cloudant-geospatial': '/geo.html'
 }
 fragment = window.location.hash;
 console.log('fragment is ' + fragment);
