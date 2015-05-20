@@ -470,8 +470,14 @@ function(doc) {
 }
 ```
 
-Cloudant Search also supports faceted searching, which allows you to discover aggregate information about all your matches quickly and easily. You can match all documents using the special `?q=*:*` query syntax, and use the returned facets to refine your query. To indicate a field should be indexed for faceted queries, set `{"facet": true}` in its options.
+Cloudant Search also supports faceted searching,
+which allows you to discover aggregate information about all your matches quickly and easily.
+You can match all documents using the special `?q=*:*` query syntax,
+and use the returned facets to refine your query.
+To indicate a field should be indexed for faceted queries,
+set `{"facet": true}` in its options.
 
+<div></div>
 #### Counts
 
 > Example query
@@ -497,8 +503,20 @@ Cloudant Search also supports faceted searching, which allows you to discover ag
 }
 ```
 
-The count facet syntax takes a list of fields and returns the number of query results for each unique value of each named field.
+The count facet syntax takes a list of fields,
+and returns the number of query results for each unique value of each named field.
 
+<aside class="warning">The count operation works only if the indexed values are strings.
+The indexed values cannot be mixed types.
+For example,
+if 100 strings are indexed,
+and one number,
+then the index cannot be used for count operations.
+You can check the type using the `typeof` operator,
+and convert using `parseInt`, `parseFloat` and `.toString()` functions.
+</aside>
+
+<div></div>
 #### Ranges
 
 > Example query
@@ -523,7 +541,19 @@ The count facet syntax takes a list of fields and returns the number of query re
 }
 ```
 
-The range facet syntax reuses the standard Lucene syntax for ranges (inclusive range queries are denoted by square brackets, exclusive range queries are denoted by curly brackets) to return counts of results which fit into each specified category.
+The range facet syntax reuses the standard Lucene syntax for ranges to return counts of results which fit into each specified category.
+Inclusive range queries are denoted by square brackets (`[`, `]`).
+Exclusive range queries are denoted by curly brackets (`{`, `}`).
+
+<aside class="warning">The range operation works only if the indexed values are numbers.
+The indexed values cannot be mixed types.
+For example,
+if 100 strings are indexed,
+and one number,
+then the index cannot be used for range operations.
+You can check the type using the `typeof` operator,
+and convert using `parseInt`, `parseFloat` and `.toString()` functions.
+</aside>
 
 ### Geographical searches
 
