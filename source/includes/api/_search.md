@@ -211,6 +211,11 @@ These analyzers will omit very common words in the specific language, and many a
 * thai
 * turkish
 
+<aside class="information">Language-specific analyzers are optimized for the specified language.
+You cannot combine a generic analyzer with a language-specific analyzer.
+However,
+you could use the [`perfield` analyzer](#per-field-analyzers) to select different analyzers for different fields within the documents.</aside>
+
 <div></div>
 #### Per-Field Analyzers
 
