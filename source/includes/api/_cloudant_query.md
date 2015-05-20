@@ -201,7 +201,6 @@ or proximity detection.
 For more information on the available Lucene syntax,
 see [Cloudant Search documentation](#search).
 The `$text` operator applies to all strings found in the document.
-It must be placed at the very top level within the selector.
 It is invalid to place this operator in the context of a field name.
 
 The `fields` array is a list of fields that should be returned for each document. The provided
@@ -405,7 +404,7 @@ Only the equality operators such as `$eq`, `$gt`, `$gte`, `$lt`, and `$lte` (but
 For more information about creating complex selector expressions, see [Creating selector expressions](#creating-selector-expressions).
 
 <div></div>
-#### selector with two fields
+#### Selector with two fields
 
 > A more complex selector
 
@@ -416,7 +415,8 @@ For more information about creating complex selector expressions, see [Creating 
 }
 ```
 
-This selector matches any document with a `name` field containing "Paul", that also has a `location` field with the value "Boston".
+This selector matches any document with a `name` field containing "Paul",
+_and_ that also has a `location` field with the value "Boston".
 
 ### Subfields
 
@@ -431,7 +431,7 @@ This selector matches any document with a `name` field containing "Paul", that a
 ```
 
 A more complex selector enables you to specify the values for field of nested objects, or subfields.
-For example, you might use the standard JSON structure for specifying a field and subfield.
+For example, you might use a standard JSON structure for specifying a field and subfield.
 
 <div></div>
 
@@ -580,7 +580,7 @@ the required field `foo` in a matching document *must* also have a subfield `bar
 
 Again, you can make the equality operator explicit.
 
-<div id="combined-expressions"></div>
+<div></div>
 
 > Example of an implicit `$and` operator
 
@@ -593,7 +593,7 @@ Again, you can make the equality operator explicit.
 
 In this example, the field `foo` must be present and contain the value `bar` _and_ the field `baz` must exist and have the value `true`.
 
-<div></div>
+<div id="combined-expressions"></div>
 
 > Example of using explicit `$and` and `$eq` operators
 
@@ -614,13 +614,13 @@ In this example, the field `foo` must be present and contain the value `bar` _an
 }
 ```
 
-You can make both the `and` operator and the equality operator explicit.
+You can make both the `$and` operator and the equality operator explicit.
 
 ### Explicit operators
 
 All operators,
 apart from 'Equality' and 'And',
-must always be stated explicitly.
+must be stated explicitly.
 
 ### Combination Operators
 
@@ -1125,7 +1125,7 @@ The `$eq` operator matches if the specified field content is equal to the suppli
 ```
 
 The `$ne` operator matches if the specified field content is not equal to the supplied argument.
-<aside class="warning">The `$ne` operator cannot be the basis (lowest level) element in a selector.</aside>
+<aside class="warning">The `$ne` operator cannot be the basis (lowest level) element in a selector when using an index of type `json`.</aside>
 
 <div></div>
 ##### The `$gte` operator
@@ -1522,9 +1522,10 @@ whenever you have an operator that takes an argument,
 that argument can itself be another operator with arguments of its own.
 This enables us to build up more complex selector expressions.
 
-However, not all operators can be used as the base or starting point of the selector expression.
+However, not all operators can be used as the base or starting point of the selector expression when using indexes of type `json`.
 
-<aside class="warning">You cannot use combination or array logical operators such as `$regex` as the *basis* of a query. Only equality operators such as `$eq`, `$gt`, `$gte`, `$lt`, and `$lte` (but not `$ne`) can be used as the basis of a query.</aside>
+<aside class="warning">You cannot use combination or array logical operators such as `$regex` as the _basis_ of a query when using indexes of type `json`.
+Only equality operators such as `$eq`, `$gt`, `$gte`, `$lt`, and `$lte` (but not `$ne`) can be used as the basis of a query for `json` indexes.</aside>
 
 <div></div>
 
@@ -1674,14 +1675,17 @@ There is no automatic inclusion of the `_id` or other metadata fields when a fie
 
 ### Note about `text` indexes
 
-The basic premise for FTI is that a document is "expanded" into a list of key/value pairs that are indexed by Lucene.
+The basic premise for full text indexes is that a document is "expanded" into a list of key/value pairs that are indexed by Lucene.
 This allows us to make use of Lucene's search syntax as a basis for the query capability.
 
 While supporting enhanced searches, this technique does have certain limitations.
-
 For example, it might not always be clear whether content for an expanded document came from individual elements or an array.
 
-The query mechanism resolves this by preferring to return 'false positive' results. In other words, if a match would have be found as a result of searching for either an individual element, or an element from an array, then the match is considered to have succeeded.
+The query mechanism resolves this by preferring to return 'false positive' results.
+In other words,
+if a match would have be found as a result of searching for either an individual element,
+or an element from an array,
+then the match is considered to have succeeded.
 
 #### Selector Translation
 
@@ -1699,8 +1703,12 @@ The query mechanism resolves this by preferring to return 'false positive' resul
 
 A standard Lucene search expression would not necessarily fully 'understand' Cloudant's JSON based query syntax. Therefore, a translation between the two formats takes place.
 
-In the example given, the JSON query approximates to the English phrase: "match if the age expressed
-as a number is greater than five and less than or equal to infinity". The Lucene query corresponds to that phrase, where the text `_3a` within the fieldname corresponds to the `age:number` field, and is an example of the document content expansion mentioned earlier.
+In the example given,
+the JSON query approximates to the English phrase:
+"match if the age expressed as a number is greater than five and less than or equal to infinity".
+The Lucene query corresponds to that phrase,
+where the text `_3a` within the fieldname corresponds to the `age:number` field,
+and is an example of the document content expansion mentioned earlier.
 
 #### A more complex example
 
@@ -1793,7 +1801,8 @@ curl 'https://<user:password>@<user>.cloudant.com/_replicator' \
 }
 ```
 
-To describe FTI, it is helpful to have a large collection of data to work with.
+To describe full text indexes,
+it is helpful to have a large collection of data to work with.
 A suitable collection is available in the example Cloudant Query movie database: `query-movies`.
 You can obtain a copy of this database in your database, with the name `my-movies`,
 by running the command shown.
@@ -1877,9 +1886,9 @@ curl -X POST -H "Content-Type: application/json" \
 }
 ```
 
-The most obvious difference in the results you get when using FTI is the inclusion of a large `bookmark` field.
+The most obvious difference in the results you get when using full text indexes is the inclusion of a large `bookmark` field.
 The reason is that text indexes are different to view-based indexes.
-For more flexibility when working with the results obtained from an FTI query, you can supply the `bookmark` value as part of the request body.
+For more flexibility when working with the results obtained from a full text query, you can supply the `bookmark` value as part of the request body.
 Using the `bookmark` enables you to specify which page of results you require.
 
 <aside class="warning">The actual `bookmark` value is very long, so the examples here are truncated for reasons of clarity.</aside>
