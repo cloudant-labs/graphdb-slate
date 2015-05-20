@@ -28,8 +28,9 @@ includes:
 #  - api/cqsearch
   - api/design_documents
   - api/creating_views
-  - api/using_views
+#  - api/using_views
   - api/search
+  - api/cloudant-geo
   - api/replication
   - api/advanced_replication
   - api/active_tasks
