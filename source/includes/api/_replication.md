@@ -9,6 +9,9 @@ Depending on your application requirements, you use replication to share and agg
 This overview explains how replication works:<br/>
 <iframe width="280" height="158" src="https://www.youtube.com/embed/OPW8bomFcDY?rel=0" frameborder="0" allowfullscreen title="Replication overview video"></iframe>
 
+This video shows you how to replicate a Cloudant sample database:<br/>
+<iframe width="280" height="158" src="https://www.youtube.com/embed/TDvzZ887tGI?rel=0" frameborder="0" allowfullscreen title="Video showing how to replicate a sample database"></iframe>
+
 Replication takes place in one direction only.
 To keep two databases synchronized with each other, you must replicate in both directions.
 This means that you must replicate from `databasea` to `databaseb`, and separately from `databaseb` to `databasea`.

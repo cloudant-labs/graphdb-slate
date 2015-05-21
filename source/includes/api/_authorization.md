@@ -78,8 +78,12 @@ The `cloudant` field in the response object contains an object with keys that ar
 The `nobody` username indicates what rights are available to unauthenticated users -- that is, any request made without authentication credentials.
 In the example response, for instance, `nobody` has `_reader` permissions, making the database publicly readable.
 
-
 ### Modifying Permissions
+
+A video overview about changing database permissions is available:<br/>
+<iframe width="280" height="158" src="https://www.youtube.com/embed/uxlbbdAvawU?rel=0" frameborder="0" allowfullscreen title="Changing database permissions, video overview"></iframe>
+
+<div></div>
 
 > Modification request:
 
