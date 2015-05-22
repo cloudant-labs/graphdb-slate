@@ -188,6 +188,9 @@ The response is an array with all database names.
 
 ### Get Documents
 
+A video explaining how to get all documents from a Cloudant database is available here:<br/>
+<iframe width="280" height="158" src="https://www.youtube.com/embed/Zoaifed-fWQ?rel=0" frameborder="0" allowfullscreen title="Using the primary index, overview video"></iframe>
+
 > Getting all documents in a database
 
 ```http
@@ -212,7 +215,7 @@ db.list(function (err, body, headers) {
 
 To list all the documents in a database, make a GET request against `https://$USERNAME.cloudant.com/$DATABASE/_all_docs`.
 
-The method accepts these query arguments:
+The `_all_docs` endpoint accepts these query arguments:
 
 Argument | Description | Optional | Type | Default
 ---------|-------------|----------|------|--------

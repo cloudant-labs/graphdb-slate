@@ -69,6 +69,15 @@ Cloudant stores documents using JSON (JavaScript Object Notion) encoding, so any
 
 More information about JSON can be found in the [Guides](guides.html#json).
 
+<div id="FindingData"></div>
+## How do I find data?
+
+There are many ways to search for and retrieve data stored in Cloudant.
+This overview explains the different techniques,
+and how to decide which one to use:<br/>
+<iframe width="280" height="158" src="https://www.youtube.com/embed/b0t0uf75WgE?rel=0" frameborder="0" allowfullscreen title="Index and queries overview video"></iframe>
+
+<div id="distributed"></div>
 ## Distributed
 Cloudant's API enables you to interact with a collaboration of numerous machines, called a cluster. The machines in a cluster must be in the same datacenter, but can be within different 'pods' in that datacenter. Using different pods helps improve the High Availability characteristics of Cloudant.
 

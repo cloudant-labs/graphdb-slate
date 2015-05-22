@@ -15,6 +15,15 @@
 
 Search indexes, defined in design documents, allow databases to be queried using [Lucene Query Parser Syntax](http://lucene.apache.org/core/4_3_0/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#Overview). Search indexes are defined by an index function, similar to a map function in MapReduce views. The index function decides what data to index and store in the index.
 
+This video explains how to create search indexes:<br/>
+<iframe width="280" height="158" src="https://www.youtube.com/embed/QWeOQXe_Ofc?rel=0" frameborder="0" allowfullscreen title="Video on creating search indexes"></iframe>
+
+This video explains how to query search indexes:<br/>
+<iframe width="280" height="158" src="https://www.youtube.com/embed/8_knCoGbYbI?rel=0" frameborder="0" allowfullscreen title="Video on querying search indexes"></iframe>
+
+This video explains how to perform group, facet, and geo searches using search indexes:<br/>
+<iframe width="280" height="158" src="https://www.youtube.com/embed/e92mHTWaAJM?rel=0" frameborder="0" allowfullscreen title="Video on performing group, facet, and geo searches using search indexes"></iframe>
+
 ### Index functions
 
 > Example search index function (see also [index guard clauses](#index-guard-clauses)):
