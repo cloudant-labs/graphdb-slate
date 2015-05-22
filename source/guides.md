@@ -22,6 +22,7 @@ includes:
 <script>
 fragments = {
   '#json': '/json.html',
+  '#replication': '/replication_guide.html',
   '#monitoring-replication28': '/managing_tasks.html',
   '#managing-tasks': '/managing-tasks.html',
   '#document-versioning-and-mvcc': '/mvcc.html',
@@ -30,8 +31,7 @@ fragments = {
   '#acid': '/acid.html',
   '#back-up-your-data': '/backup-guide.html',
   '#couchapps': '/couchapps.html',
-  '#design-document-management': '/design_document_management.html',
-  '#replication': '/replication_guide.html'
+  '#design-document-management': '/design_document_management.html'
 }
 fragment = window.location.hash;
 console.log('fragment is ' + fragment);

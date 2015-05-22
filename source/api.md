@@ -32,9 +32,12 @@ fragments = {
   '#query': '/cloudant_query.html',
   '#design-documents': '/design_documents.html',
   '#creating-views': '/creating_views.html',
-  '#using-views': '/using_views.html',
   '#search': '/search.html',
-  '#cloudant-geospatial': '/geo.html'
+  '#cloudant-geospatial': '/geo.html',
+  '#replication': '/replication.html',
+  '#advanced-replication': '/advanced_replication.html',
+  '#active_tasks': '/active_tasks.html',
+  '#advanced': '/advanced.html'
 }
 fragment = window.location.hash;
 console.log('fragment is ' + fragment);
