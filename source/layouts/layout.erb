@@ -160,7 +160,10 @@ under the License.
             attr_reader :link
           end
           [
-            Page.new('Overview', 'index.html', []),
+            Page.new('Overview', 'index.html', [
+              Page.new('Contents', 'index.html#contents', []),
+              Page.new('Contribute', 'index.html#contribute', [])
+            ]),
             Page.new('Cloudant Basics', 'basics.html', [
               Page.new('Database as a Service', 'basics.html#database-as-a-service', []),
               Page.new('HTTP API', 'basics.html#http-api', []),
