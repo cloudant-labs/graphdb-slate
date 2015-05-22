@@ -410,7 +410,7 @@ Instead of using the `GET` HTTP method, you can also use `POST`. The main advant
 
 <div> </div>
 
-### Lucene Query Syntax
+### Query Syntax
 
 > Example search query:
 
