@@ -153,15 +153,37 @@ The response tells you whether the update has been successful.
 
 ### Creating API Keys
 
+<aside class="warning">The earlier method of generating API keys by `POST`ing to `https://cloudant.com/api/generate_api_key` is now deprecated.</aside>
+
+API keys allow you to give access to a person or application without having to create a new Cloudant account.
+An API key consists of a randomly generated username and password.
+The key is given the desired access permissions.
+Once generated,
+the API key can be used in the same way as a normal user account,
+for example by granting read,
+write,
+or admin access permissions.
+
+<aside class="warning">If you choose to generate an API key through the dashboard,
+remember to record the key name and password.
+These are both randomly generated,
+and cannot be retrieved if lost or forgotten.</aside>
+
+<aside class="warning">IBM Cloudant Data Layer Local Edition ("Cloudant Local") does not support API Keys.
+For a similar capability,
+create "CouchDB" style users,
+as described in the [IBM Knowledge Center](http://www-01.ibm.com/support/knowledgecenter/SSTPQH_1.0.0/com.ibm.cloudant.local.install.doc/topics/clinstall_db_security.html).</aside>
+
+<div></div>
+
 > Example request to create an API key:
 
 ```http
-POST /api/generate_api_key HTTP/1.1
-Host: cloudant.com
+POST https://<username>.cloudant.com/_api/v2/api_keys HTTP/1.1
 ```
 
 ```shell
-curl -X POST https://$USERNAME:$PASSWORD@cloudant.com/api/generate_api_key
+curl -X POST https://$USERNAME:$PASSWORD@cloudant.com/_api/v2/api_keys
 ```
 
 ```javascript
@@ -169,8 +191,8 @@ var nano = require('nano');
 var account = nano("https://$USERNAME:$PASSWORD@cloudant.com");
 
 account.request({
-  db: 'api',
-  path: 'generate_api_ket',
+  db: '_api',
+  path: 'v2/api_keys',
   method: 'POST'
 }, function (err, body) {
   if (!err) {
@@ -179,23 +201,24 @@ account.request({
 });
 ```
 
-API keys allow you to give access to a person or application without having to create a new Cloudant account. An API key consists of a randomly generated username and password. The key is given the desired access permissions. Once generated, the API key can be used in the same way as a normal user account, for example by granting read, write, or admin access permissions.
-
-<aside class="warning">IBM Cloudant Data Layer Local Edition ("Cloudant Local") does not support API Keys. For a similar capability, create "CouchDB" style users, as described in the [IBM Knowledge Center](http://www-01.ibm.com/support/knowledgecenter/SSTPQH_1.0.0/com.ibm.cloudant.local.install.doc/topics/clinstall_db_security.html).</aside>
-
-To generate an API key, use `https://cloudant.com/api/generate_api_key`. The created API key has no permissions to anything by default, and must be given permissions explicitly.
-
-<div></div>
-
-> Response body:
+> Example response:
 
 ```json
 {
-  "password": "generatedPassword",
-  "ok": true,
-  "key": "generatedKey"
+  "password": "YPNCaIX1sJRX5upaL3eqvTfi", 
+  "ok": true, 
+  "key": "blentfortedsionstrindigl"
 }
 ```
 
-The response contains the generated key and password.
+To generate an API key,
+use `https://<username>.cloudant.com/_api/v2/api_keys`.
+Next,
+assign the API key to a database by using a `PUT` request to `https://<username>.cloudant.com/_api/v2/db/<database>/_security`.
+Once assigned to a database,
+the key can be granted access permissions.
+By default,
+an API key has no permissions for anything,
+and must be given permissions explicitly.
 
+The response contains the generated key and password.
