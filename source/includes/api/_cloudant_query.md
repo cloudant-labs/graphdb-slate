@@ -138,7 +138,7 @@ Do this by setting the value to `true`,
 or simply not including the `enabled` field.
 
 The `analyzer` key in the `default_field` can be used to choose how to analyze text included in the index.
-See the [Cloudant Search documentation](./api.html#analyzers) for alternative analyzers.
+See the [Cloudant Search documentation](search.html#analyzers) for alternative analyzers.
 You might choose to use an alternative analyzer when documents are indexed in languages other than English,
 or when you have other special requirements for the analyser such as matching email addresses.
 

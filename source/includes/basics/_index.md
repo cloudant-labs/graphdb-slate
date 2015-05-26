@@ -21,7 +21,7 @@ This overview explains how the HTTP API works:<br/>
 Several tools are available to help you work with the HTTP API:<br/>
 <iframe width="280" height="158" src="https://www.youtube.com/embed/Z3CxsM47a9U?rel=0" frameborder="0" allowfullscreen title="Tools for working with HTTP API, video"></iframe>
 
-Specific details about how Cloudant uses HTTP is provided in the [HTTP topic of the API Reference](api.html#http).
+Specific details about how Cloudant uses HTTP is provided in the [HTTP topic of the API Reference](http.html).
 
 Cloudant supports the following HTTP request methods:
 
@@ -62,12 +62,12 @@ If the client (such as some web browsers) does not support using these HTTP meth
 }
 ```
 
-If you use an unsupported HTTP request type with a URL that does not support the specified type, a [405](api.html#405) error is returned, listing the supported HTTP methods, as shown in the example.
+If you use an unsupported HTTP request type with a URL that does not support the specified type, a [405](http.html#405) error is returned, listing the supported HTTP methods, as shown in the example.
 
 ## JSON
 Cloudant stores documents using JSON (JavaScript Object Notion) encoding, so anything encoded into JSON can be stored as a document. Files like images, videos, and audio are called BLObs (binary large objects) and can be stored as attachments within documents.
 
-More information about JSON can be found in the [Guides](guides.html#json).
+More information about JSON can be found in the [JSON Guide](json.html).
 
 <div id="FindingData"></div>
 ## How do I find data?
@@ -83,11 +83,11 @@ Cloudant's API enables you to interact with a collaboration of numerous machines
 
 An advantage of clustering is that when you need more computing capacity, you just add more machines. This is often more cost-effective and fault-tolerant than scaling up or enhancing an existing single machine.
 
-For more information about Cloudant and distributed system concepts, see the [CAP Theorem](guides.html#cap-theorem) guide. 
+For more information about Cloudant and distributed system concepts, see the [CAP Theorem](cap_theorem.html) guide. 
 
 ## Replication
 
-[Replication](api.html#ReplicationAPI) is a procedure followed by Cloudant, [CouchDB](http://couchdb.apache.org/), [PouchDB](http://pouchdb.com/), and others. It synchronizes the state of two databases so that their contents are identical.
+[Replication](replication.html) is a procedure followed by Cloudant, [CouchDB](http://couchdb.apache.org/), [PouchDB](http://pouchdb.com/), and others. It synchronizes the state of two databases so that their contents are identical.
 
 You can continuously replicate. This means that a target database updates every time the source database changes. Testing for source changes involves ongoing internal calls.
 Continuous replication can be used for backups of data, aggregation across multiple databases, or for sharing data.

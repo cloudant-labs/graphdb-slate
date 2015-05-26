@@ -21,28 +21,36 @@ includes:
 
 <script>
 fragments = {
-  '#http': '/http.html',
-  '#account': '/account.html',
-  '#authentication': '/authentication.html',
-  '#authorization': '/authorization.html',
-  '#cors': '/cors.html',
-  '#databases': '/databases.html',
-  '#documents': '/documents.html',
-  '#attachments': '/attachments.html',
-  '#query': '/cloudant_query.html',
-  '#design-documents': '/design_documents.html',
-  '#creating-views': '/creating_views.html',
-  '#search': '/search.html',
-  '#cloudant-geospatial': '/geo.html',
-  '#replication': '/replication.html',
-  '#advanced-replication': '/advanced_replication.html',
-  '#active_tasks': '/active_tasks.html',
-  '#advanced': '/advanced.html'
+  '#http': 'http.html',
+  '#account': 'account.html',
+  '#authentication': 'authentication.html',
+  '#authorization': 'authorization.html',
+  '#cors': 'cors.html',
+  '#databases': 'databases.html',
+  '#documents': 'document.html',
+  '#attachments': 'attachments.html',
+  '#query': 'cloudant_query.html',
+  '#design-documents': 'design_documents.html',
+  '#creating-views': 'creating_views.html',
+  '#using-views': 'using_views.html',
+  '#search': 'search.html',
+  '#cloudant-geospatial': 'geo.html',
+  '#405': 'http.html#405',
+  '#replicationAPI': 'replication.html',
+  '#400': 'http.html#400',
+  '#404': 'http.html#404',
+  '#409': 'http.html#409',
+  '#503': 'http.html#503',
+  '#304': 'http.html#304',
+  '#misc': 'active_tasks.html',
+  '#update': 'document.html#update',
+  '#documentCreate': 'document.html#documentCreate',
+  '#analyzers': 'search.html#analyzers',
+  '#cloudant-query': 'query.html',
+  '#http-status-codes': 'http.html#http-status-codes'
 }
 fragment = window.location.hash;
-console.log('fragment is ' + fragment);
 dest = fragments[fragment];
-console.log('dest is ' + dest);
 if (dest) {
   window.location = dest;
 }

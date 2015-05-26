@@ -1,6 +1,6 @@
 ## Query Text Indexes
 
-Cloudant Query has support for [creating indexes](api.html#creating-a-new-index)
+Cloudant Query has support for [creating indexes](cloudant_query.html#creating-an-index)
 using [Apache Lucene](http://lucene.apache.org/).
 This capability provides several benefits, including:
 
@@ -156,7 +156,7 @@ almost all cases this should be left enabled. Do this by setting the value to `t
 or simply not including the enabled field.
 
 The `analyzer` key in the `default_field` can be used to choose how to analyze text included
-in the index. See the [Cloudant Search documentation](./api.html#analyzers) for alternative analyzers.
+in the index. See the [Cloudant Search documentation](./search.html#analyzers) for alternative analyzers.
 You might choose to use an alternative analyzer when documents are indexed in languages other than English,
 or when you have other special requirements for the analyser such as matching email addresses.
 
@@ -201,7 +201,7 @@ types are `"boolean"` , `"string"`, and `"number"`.
 }
 ```
 
-The format of the `selector` field is as described in the [Cloudant Query documentation](./api.html#cloudant-query) with the
+The format of the `selector` field is as described in the [Cloudant Query documentation](query.html) with the
 exception of the new `$text` operator. This operator applies to all strings found in the
 document. In the selector, it must be placed at the very top level. It is invalid to place this
 operator in the context of a field name.
@@ -453,7 +453,7 @@ curl -X POST -H "Content-Type: application/json" \
 The `$text` operator is based on a Lucene search with a standard analyzer. This means the operator is not case sensitive, and matches on any words.
 
 <aside class="note">The `$text` operator does not support full Lucene syntax, such as wildcards, fuzzy matches, or proximity detection.
-For more information on the available Lucene syntax, have a look at the [Cloudant Search documentation](./api.html#search).</aside>
+For more information on the available Lucene syntax, have a look at the [Cloudant Search documentation](search.html).</aside>
 
 The resulting query is `AND`'ed with the rest of the selector.
 
