@@ -14,7 +14,7 @@ notifications:
   on_success: always
 before_install:
 - sudo apt-get update
-- sudo apt-get install python python-pip
+- sudo apt-get install python python-pip jq
 - sudo pip install couchapp
 script:
 - bundle exec middleman build --verbose
