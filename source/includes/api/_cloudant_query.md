@@ -309,13 +309,14 @@ and $name is the name of the index.
 }
 ```
 
--   **selector**: JSON object describing criteria used to select documents. More information provided in the section on [selectors](#selector-syntax).
--   **limit (optional, default: 25)**: Maximum number of results returned.
--   **skip (optional, default: 0)**: Skip the first 'n' results, where 'n' is the value specified.
--   **sort (optional, default: [])**: JSON array following [sort syntax](#sort-syntax)
--   **fields (optional, default: null)**: JSON array following the field syntax, described below. This parameter lets you specify which fields of an object should be returned. If it is omitted, the entire object is returned.
--   **r (optional, default: 1)**: Read quorum needed for the result. This defaults to 1, in which case the document found in the index is returned. If set to a higher value, each document is read from at least that many replicas before it is returned in the results. This is likely to take more time than using only the document stored locally with the index.
--   **bookmark (optional, default: null)**: A string that enables you to specify which page of results you require. *Only for indexes of type `text`.*
+-	**selector**: JSON object describing criteria used to select documents. More information provided in the section on [selectors](#selector-syntax).
+-	**limit (optional, default: 25)**: Maximum number of results returned.
+-	**skip (optional, default: 0)**: Skip the first 'n' results, where 'n' is the value specified.
+-	**sort (optional, default: [])**: JSON array following [sort syntax](#sort-syntax)
+-	**fields (optional, default: null)**: JSON array following the field syntax, described below. This parameter lets you specify which fields of an object should be returned. If it is omitted, the entire object is returned.
+-	**r (optional, default: 1)**: Read quorum needed for the result. This defaults to 1, in which case the document found in the index is returned. If set to a higher value, each document is read from at least that many replicas before it is returned in the results. This is likely to take more time than using only the document stored locally with the index.
+-	**bookmark (optional, default: null)**: A string that enables you to specify which page of results you require. *Only for indexes of type `text`.*
+-	**use_index (optional)**: Use this option to identify a specific index for query to run against, rather than using the Cloudant Query algorithm to find the best index. For more information, see [Explain Plans](#explain-plans).
 
 The `bookmark` field is used for paging through result sets. Every query returns an opaque
 string under the `bookmark` key that can then be passed back in a query to get the next page of
@@ -1678,6 +1679,140 @@ The fields returned are specified as an array.
 
 <aside>Only the specified filter fields are included, in the response.
 There is no automatic inclusion of the `_id` or other metadata fields when a field list is included.</aside>
+
+### Explain Plans
+
+Cloudant Query chooses which index to use for responding to a query,
+unless you specify an index at query time.
+
+When choosing which index to use,
+Cloudant Query uses the following logic:
+
+-	If there are two or more `json` type indexes on the same fields, the index with the smallest number of fields in the index is preferred. If there are still two or more candidate indexes, the index with the first alphabetical name is chosen.
+-	If a `json` type index _and_ a `text` type index could both satisfy a selector, the `json` index is  chosen since it is faster.
+-	If a `json` type index _and_ a `text` type index the same field (for example `fieldone`), but the selector can only be satisfied by using a `text` type index, then the `text` type index is chosen.
+
+For example, assume you have a `text` type index and a `json` type index for the field `foo`,
+and you want to use a selector similar to the following:
+
+  `{"foo": {"$in": ["red","blue","green"]}}`
+
+Cloudant Query uses the `text` type index,
+because a `json` type index cannot satisfy the selector.
+This is because the `$in` operator is not available for `json` indexes.
+
+However,
+you might use a different selector with the same indexes:
+
+  `{"foo": {"$gt": 2}}`
+
+In this example,
+Cloudant Query uses the `json` type index because both types of indexes could satisfy the selector.
+
+<div></div>
+
+> Example showing how to identify the index used to answer a query:
+
+```http
+POST /movies/_explain HTTP/1.1
+Host: examples.cloudant.com
+Content-Type: application/json
+
+{
+  "selector": {
+    "$text": "Pacino",
+    "year": 2010
+  }
+}
+```
+
+```shell
+curl 'https://examples.cloudant.com/movies/_explain' \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{
+	"selector": {
+	  "$text": "Pacino",
+	  "year": 2010
+	}
+      }'
+```
+
+> Results showing which index was used to answer a query:
+
+```json
+{
+  "dbname": "examples/movies",
+  "index": {
+    "ddoc": "_design/32372935e14bed00cc6db4fc9efca0f1537d34a8",
+    "name": "32372935e14bed00cc6db4fc9efca0f1537d34a8",
+    "type": "text",
+    "def": {
+      "default_analyzer": "keyword",
+      "default_field": {},
+      "selector": {},
+      "fields": []
+    }
+  },
+  "selector": {
+    "$and": [
+      {
+	"$default": {
+	  "$text": "Pacino"
+	}
+      },
+      {
+	"year": {
+	  "$eq": 2010
+	}
+      }
+    ]
+  },
+  "opts": {
+    "use_index": [],
+    "bookmark": [],
+    "limit": 10000000000,
+    "skip": 0,
+    "sort": {},
+    "fields": "all_fields",
+    "r": [
+      49
+    ],
+    "conflicts": false
+  },
+  "limit": 200,
+  "skip": 0,
+  "fields": "all_fields",
+  "query": "(($default:Pacino) AND (year_3anumber:2010))",
+  "sort": "relevance"
+}
+```
+
+To identify which index is being used by a particular query,
+send a `POST` to the `_explain` endpoint for the database,
+with the query as data.
+The details of the index in use are shown in the `index` object within the result.
+
+<div></div>
+
+> Example query with instructions to use a specific index:
+
+```json
+{
+  "selector": {
+    "$text": "Pacino",
+    "year": 2010 
+  },
+  "use_index": "_design/32372935e14bed00cc6db4fc9efca0f1537d34a8"
+}
+```
+
+To instruct a query to use a specific index,
+add the `use_index` parameter to the query.
+The value of the `use_index` parameter takes one of two formats:
+
+-	`"use_index": "<design_document>"`
+-	`"use_index": ["<design_document>","<index_name"]`
 
 ### Note about `text` indexes
 
