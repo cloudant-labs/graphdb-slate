@@ -297,17 +297,9 @@ updates,
 and deletions.
 The list returned [might not be in chronological order](http://en.wikipedia.org/wiki/Clock_synchronization#Problems).
 
-Only the most recent change for a given document is guaranteed to be provided,
-for example if a document has had fields added,
-and then deleted,
-an API client checking for changes is not guaranteed to receive the intermediate state of documents with added fields.
-
-The results returned by `_changes` are partially ordered.
-In other words,
-the order is not guaranteed to be preserved for multiple calls.
-If you know that a database is not changing,
-You could get a current list using `_changes` which includes the [`last_seq` value](#changes_responses),
-then use this as the starting point for subsequent `_changes` lists by providing the `since` query argument.
+When a `_changes` request is received,
+one replica of each shard of the database is asked to provide a list of changes.
+These responses are combined and returned to the orginal requesting client.
 
 `_changes` accepts these query arguments:
 
@@ -372,7 +364,16 @@ Field | Description | Type
 `results` | Array of changes made to the database. | Array
 `seq` | Update sequence identifier | String
 
+When using `_changes`,
+you should be aware that:
+
+-	If a `since` value is specified, only changes that have arrived in the specified replicas of the shards are returned in the response.
+-	If the specified replicas of the shards in any given `since` value are unavailable, alternative replicas are selected, and the last known checkpoint between them is used. If this happens, you might see changes again that you have previously seen.
+-	The results returned by `_changes` are partially ordered. In other words, the order is not guaranteed to be preserved for multiple calls. If you know that a database is not changing, you could get a current list using `_changes` which includes the [`last_seq` value](#changes_responses), then use this as the starting point for subsequent `_changes` lists by providing the `since` query argument.
+
 <div></div>
+
+##### Continuous feed
 
 > Example response, continuous changes feed:
 
