@@ -1689,7 +1689,7 @@ When choosing which index to use,
 Cloudant Query uses the following logic:
 
 -	If there are two or more `json` type indexes on the same fields, the index with the smallest number of fields in the index is preferred. If there are still two or more candidate indexes, the index with the first alphabetical name is chosen.
--	If a `json` type index _and_ a `text` type index could both satisfy a selector, the `json` index is  chosen since it is faster.
+-	If a `json` type index _and_ a `text` type index could both satisfy a selector, the `json` index is chosen by default.
 -	If a `json` type index _and_ a `text` type index the same field (for example `fieldone`), but the selector can only be satisfied by using a `text` type index, then the `text` type index is chosen.
 
 For example, assume you have a `text` type index and a `json` type index for the field `foo`,
@@ -1699,7 +1699,6 @@ and you want to use a selector similar to the following:
 
 Cloudant Query uses the `text` type index,
 because a `json` type index cannot satisfy the selector.
-This is because the `$in` operator is not available for `json` indexes.
 
 However,
 you might use a different selector with the same indexes:
