@@ -18,6 +18,7 @@ by making it of type `json`.
 
 But for maximum possible flexibility when looking for data,
 you would typically create an index of type `text`.
+Indexes of type `text` have a simple mechanism for automatically indexing all the fields in the documents. 
 
 <aside class="warning">While more flexible,
 `text` indexes might take longer to create and require more storage resources than `json` indexes.</aside>
@@ -127,10 +128,33 @@ shouldn't have to worry about this, but if you create test or example scripts th
 the index immediately after use, it can be useful to set this to `3`, so that a complete quorum is
 used for the creation. It does not affect anything other than index creation.
 -->
-
+<div></div>
 ##### The `index` field
 
+> Example index creation request to index all fields in all documents
+
+```json
+{
+  "type": "text",
+  "index": {}
+}
+```
+
 The `index` field contains settings specific to text indexes.
+
+To index all fields in all documents automatically,
+use the simple syntax:
+
+  `"index": {}`
+  
+The indexing process traverses all of the fields in all the documents in the database.
+
+An example of creating a text index for all fields in all documents in a database is [available](#example:-movies-demo-database).
+
+<aside class="warning">Caution should be taken when indexing all fields in all documents for large data sets,
+as it might be a very resource-consuming activity.</aside>
+
+##### The `default_field` field
 
 The `default_field` value affects how the index for handling the `$text` operator is created.
 In almost all cases this should be left enabled.
@@ -138,7 +162,7 @@ Do this by setting the value to `true`,
 or simply not including the `enabled` field.
 
 The `analyzer` key in the `default_field` can be used to choose how to analyze text included in the index.
-See the [Cloudant Search documentation](./api.html#analyzers) for alternative analyzers.
+See the [Cloudant Search documentation](search.html#analyzers) for alternative analyzers.
 You might choose to use an alternative analyzer when documents are indexed in languages other than English,
 or when you have other special requirements for the analyser such as matching email addresses.
 
@@ -163,7 +187,8 @@ The acceptable types are:
 -	`"string"`
 -	`"number"`
 
-<!-- An explanation of what these types mean can be found in the implementation notes. -->
+For more details on how text indexes work,
+see the [note about `text` indexes](#note-about-text-indexes).
 
 ### Query Parameters
 
