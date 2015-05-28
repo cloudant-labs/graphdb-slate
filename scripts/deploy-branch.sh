@@ -6,7 +6,18 @@ then
   then
     echo "No USERNAME provided. Skipping..."
   else
+    rm -rf tmp
+    mkdir tmp
     python scripts/upload_documentation_as_docs.py "$TRAVIS_BRANCH"
+    for file in `ls tmp`; do
+			rev=$(curl "https://$USERNAME:$PASSWORD@docs-testb.cloudant.com/${TRAVIS_BRANCH}/${file}" | jq -r '._rev')
+			if [ $rev = null ]; then
+				curl "https://$USERNAME:$PASSWORD@docs-testb.cloudant.com/${TRAVIS_BRANCH}/${file}" -X PUT -H 'Content-Type: application/json' -d "@tmp/${file}"
+			else
+				curl "https://$USERNAME:$PASSWORD@docs-testb.cloudant.com/${TRAVIS_BRANCH}/${file}?rev=${rev}" -X PUT -H 'Content-Type: application/json' -d "@tmp/${file}"
+			fi
+		done
+
     #deploy with db name == branch name
     couchapp push couchapp "https://$1:$2@docs-testb.cloudant.com/${TRAVIS_BRANCH}"
     #give people read access and docs-testb admin access
