@@ -311,7 +311,7 @@ Argument | Description | Supported Values | Default
 `heartbeat` | Time in milliseconds after which an empty line is sent during longpoll or continuous if there have been no changes | any positive number | 60000 | 
 `include_docs` | Include the document with the result | boolean | false |
 `limit` | Maximum number of rows to return | any non-negative number | none |  
-`since` | Start the results from changes _after_ the specified sequence number. In other words, using `since` excludes from the list all changes up to and including the specified sequence identifier. If `since` is 0 (the default), or omitted, the request returns all changes. | string | 0 | 
+`since` | Start the results from changes _after_ the specified sequence identifier. In other words, using `since` excludes from the list all changes up to and including the specified sequence identifier. If `since` is 0 (the default), or omitted, the request returns all changes. | string | 0 | 
 `style` | Specifies how many revisions are returned in the changes array. The default, `main_only`, only returns the current "winning" revision; `all_docs` returns all leaf revisions, including conflicts and deleted former conflicts. | `main_only`, `all_docs` | `main_only` | 
 `timeout` | Number of milliseconds to wait for data before terminating the response. If heartbeat supersedes timeout if both are supplied. | any positive number | |
 
@@ -360,7 +360,7 @@ Field | Description | Type
 `changes` | Array, listing the changes made to the specific document. | Array
 `deleted` | Boolean indicating if the corresponding document was deleted. If present, it always has the value `true`. | Boolean
 `id` | Document identifier | String
-`last_seq` | Identifier for the last change sequence number. Currently this is the same as the sequence value of the last item in the results. | String
+`last_seq` | Identifier of the last of the sequence identifiers. Currently this is the same as the sequence identifier of the last item in the `results`. | String
 `results` | Array of changes made to the database. | Array
 `seq` | Update sequence identifier | String
 
@@ -369,7 +369,7 @@ you should be aware that:
 
 -	If a `since` value is specified, only changes that have arrived in the specified replicas of the shards are returned in the response.
 -	If the specified replicas of the shards in any given `since` value are unavailable, alternative replicas are selected, and the last known checkpoint between them is used. If this happens, you might see changes again that you have previously seen.
--	The results returned by `_changes` are partially ordered. In other words, the order is not guaranteed to be preserved for multiple calls. If you know that a database is not changing, you could get a current list using `_changes` which includes the [`last_seq` value](#changes_responses), then use this as the starting point for subsequent `_changes` lists by providing the `since` query argument.
+-	The results returned by `_changes` are partially ordered. In other words, the order is not guaranteed to be preserved for multiple calls. You might decide to get a current list using `_changes` which includes the [`last_seq` value](#changes_responses), then use this as the starting point for subsequent `_changes` lists by providing the `since` query argument.
 
 <div></div>
 
