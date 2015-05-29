@@ -685,3 +685,49 @@ body, html {
 
 .highlight .s, .highlight .sb, .highlight .sc, .highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx, .highlight .s1 {
   color: #00a69f; }
+  
+  
+////////////////////////////////////////////////////////////////////
+// Don't float pre and blockquote
+////////////////////////////////////////////////////////////////////
+
+.content {
+  pre, blockquote {
+    float: none;
+    top: 0;
+    margin: 10px 60px 10px 40px;
+    width: auto;
+    border-radius: 10px;
+    padding: 10px;
+    @include box-sizing(border-box);
+  }
+  blockquote {
+    border-top: 0;
+  }
+  
+  blockquote:before {
+    display:none;
+  }
+  
+  h1,h2,h3,h4,h5,p,table,ul,ol,aside,dl {
+    margin-right: 20px;
+  }
+} 
+
+.dark-box {
+  display: none;
+}
+
+#expand-collapse-code {
+  display: none;
+}  
+  
+//  $('.dark-box').css('width', '20px');
+  
+  
+//          var contentTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'p', 'table', 'ul', 'ol', 'aside', 'dl'];
+  //        for (var i in contentTags) {
+    //        $('.content > ' + contentTags[i]).css('margin-right', '20px');
+      //    }
+          
+
