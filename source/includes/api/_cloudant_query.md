@@ -158,8 +158,8 @@ as it might be a very resource-consuming activity.</aside>
 
 The `default_field` value affects how the index for handling the `$text` operator is created.
 In almost all cases this should be left enabled.
-Do this by setting the value to `true`,
-or simply not including the `enabled` field.
+If the `default_field` is not specified,
+it defaults to `true` and the standard analyzer is used.
 
 The `analyzer` key in the `default_field` can be used to choose how to analyze text included in the index.
 See the [Cloudant Search documentation](search.html#analyzers) for alternative analyzers.
