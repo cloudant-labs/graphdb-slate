@@ -8,12 +8,16 @@ then
   else
     rm -rf tmp
     mkdir tmp
+    echo curl "https://$USERNAME:$PASSWORD@docs-testb.cloudant.com/${TRAVIS_BRANCH}" -X PUT
+    curl "https://$USERNAME:$PASSWORD@docs-testb.cloudant.com/${TRAVIS_BRANCH}" -X PUT
     python scripts/upload_documentation_as_docs.py "$TRAVIS_BRANCH"
     for file in `ls tmp`; do
 			rev=$(curl "https://$USERNAME:$PASSWORD@docs-testb.cloudant.com/${TRAVIS_BRANCH}/${file}" | jq -r '._rev')
 			if [ $rev = null ]; then
+			  echo curl "https://$USERNAME:$PASSWORD@docs-testb.cloudant.com/${TRAVIS_BRANCH}/${file}" -X PUT -H 'Content-Type: application/json' -d "@tmp/${file}"
 				curl "https://$USERNAME:$PASSWORD@docs-testb.cloudant.com/${TRAVIS_BRANCH}/${file}" -X PUT -H 'Content-Type: application/json' -d "@tmp/${file}"
 			else
+			  echo curl "https://$USERNAME:$PASSWORD@docs-testb.cloudant.com/${TRAVIS_BRANCH}/${file}?rev=${rev}" -X PUT -H 'Content-Type: application/json' -d "@tmp/${file}"
 				curl "https://$USERNAME:$PASSWORD@docs-testb.cloudant.com/${TRAVIS_BRANCH}/${file}?rev=${rev}" -X PUT -H 'Content-Type: application/json' -d "@tmp/${file}"
 			fi
 		done
