@@ -7,7 +7,7 @@ All documents must have two fields:
 a unique `_id` field, and a `_rev` field.
 The `_id` field is either created by you,
 or generated automatically as a [UUID](http://en.wikipedia.org/wiki/Universally_unique_identifier) by Cloudant.
-The `_rev` field is a revision number, and is [essential to Cloudant's replication protocol](guides.html#document-versioning-and-mvcc).
+The `_rev` field is a revision number, and is [essential to Cloudant's replication protocol](mvcc.html).
 In addition to these two mandatory fields, documents can contain any other content expressed using JSON.
 
 <aside>Cloudant uses an [eventually consistent](./basics.html#consistency) model for data. This means that under some conditions, it is possible that if your application performs a document write or update, followed immediately by a read of the same document, older document content is retrieved. In other words, your application would see the document content as it was *before* the write or update occurred. For more information about this, see the topic on [Consistency](./basics.html#consistency).</aside>
@@ -68,7 +68,7 @@ To create a document, make a POST request with the document's JSON content to `h
 
 The response is a JSON document containing the ID of the created document, the revision string, and `"ok": true`. If you did not provide an `_id` field, Cloudant generates one automatically as a [UUID](http://en.wikipedia.org/wiki/Universally_unique_identifier). If creation of the document failed, the response contains a description of the error.
 
-<aside>If the write quorum cannot be met, a [`202` response](api.html#http-status-codes) is returned.</aside>
+<aside>If the write quorum cannot be met, a [`202` response](http.html#http-status-codes) is returned.</aside>
 
 ### Read
 
@@ -172,8 +172,8 @@ db.insert($JSON, $JSON._id, function (err, body, headers) {
 
 To update (or create) a document, make a PUT request with the updated JSON content *and* the latest `_rev` value (not needed for creating new documents) to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID`.
 
-<aside>If you fail to provide the latest `_rev`, Cloudant responds with a [409 error](api.html#http-status-codes).
-This error prevents you overwriting data changed by other processes. If the write quorum cannot be met, a [`202` response](api.html#http-status-codes) is returned.</aside>
+<aside>If you fail to provide the latest `_rev`, Cloudant responds with a [409 error](http.html#409).
+This error prevents you overwriting data changed by other processes. If the write quorum cannot be met, a [`202` response](http.html#http-status-codes) is returned.</aside>
 
 <div></div>
 
@@ -220,7 +220,7 @@ db.destroy($JSON._id, $REV, function (err, body, headers) {
 To delete a document, make a DELETE request with the document's latest `_rev` in the querystring, to `https://$USERNAME.cloudant.com/$DATABASE/$DOCUMENT_ID`.
 
 <aside>If you fail to provide the latest `_rev`, Cloudant responds with a [409 error](basics.html#http-status-codes).
-This error prevents you overwriting data changed by other clients. If the write quorum cannot be met, a [`202` response](api.html#http-status-codes) is returned.</aside>
+This error prevents you overwriting data changed by other clients. If the write quorum cannot be met, a [`202` response](http.html#http-status-codes) is returned.</aside>
 
 <aside class="warning">
 CouchDB doesn’t completely delete the specified document. Instead, it leaves a tombstone with very basic information about the document. The tombstone is required so that the delete action can be replicated. Since the tombstones stay in the database indefinitely, creating new documents and deleting them increases the disk space usage of a database and the query time for the primary index, which is used to look up documents by their ID.

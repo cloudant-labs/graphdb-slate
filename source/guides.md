@@ -21,22 +21,20 @@ includes:
 
 <script>
 fragments = {
-  '#json': '/json.html',
-  '#replication': '/replication_guide.html',
-  '#monitoring-replication28': '/managing_tasks.html',
-  '#managing-tasks': '/managing-tasks.html',
-  '#document-versioning-and-mvcc': '/mvcc.html',
-  '#transactions-in-cloudant': '/transactions.html',
-  '#cap-theorem': '/cap_theorem.html',
-  '#acid': '/acid.html',
-  '#back-up-your-data': '/backup-guide.html',
-  '#couchapps': '/couchapps.html',
-  '#design-document-management': '/design_document_management.html'
+  '#json': 'json.html',
+  '#monitoring-replication28': 'managing_tasks.html',
+  '#managing-tasks': 'managing-tasks.html',
+  '#document-versioning-and-mvcc': 'mvcc.html',
+  '#transactions-in-cloudant': 'transactions.html',
+  '#cap-theorem': 'cap_theorem.html',
+  '#acid': 'acid.html',
+  '#back-up-your-data': 'backup-guide.html',
+  '#couchapps': 'couchapps.html',
+  '#design-document-management': 'design_document_management.html',
+  '#replication': 'replication_guide.html'
 }
 fragment = window.location.hash;
-console.log('fragment is ' + fragment);
 dest = fragments[fragment];
-console.log('dest is ' + dest);
 if (dest) {
   window.location = dest;
 }

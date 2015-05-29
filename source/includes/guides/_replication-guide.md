@@ -431,7 +431,7 @@ Audit your “active replications” in the Cloudant Dashboard to ensure that th
 
 By default, Cloudant replication will run at a reasonable rate to get the data from the source to the target without adversely affecting performance. There is a trade-off between replication rate and cluster performance for other tasks; your use-case may require faster replication at the expense of other Cloudant services, or conversely, you may require cluster performance to take priority with replication being treated as a background process.
 
-There are advanced replication API options documented <a href="https://docs.cloudant.com/api.html#ReplicationAPI">here</a> which will allow you to increase or decrease the amount of computing power handed over to replication:
+There are advanced replication API options documented <a href="https://docs.cloudant.com/replication.html">here</a> which will allow you to increase or decrease the amount of computing power handed over to replication:
 
  * if your documents contain attachments, you may want to consider reducing the batch_size and increasing the worker_processes, to deal with the larger document size in smaller batches
  * if you have many tiny documents, then you may be able to increase the `worker_process` and `http_connections` safely
