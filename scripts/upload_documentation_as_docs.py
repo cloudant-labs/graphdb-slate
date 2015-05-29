@@ -61,19 +61,22 @@ def index_file(filename):
 		for heading in HEADINGS:
 			headers = soup.find_all(heading)
 			file_docs.update(make_docs(headers, filename))
-		alldocs = database.all_docs().post(params=dict(keys=file_docs.keys()))
-		alldocs.raise_for_status()
-		for row in alldocs.json()['rows']:
-			if 'id' not in row:
-				continue
-			_id = row['id']
-			rev = row['value']['rev']
-			file_docs[_id]['_rev'] = rev
-		response = database.bulk_docs(*file_docs.values())
-		response.raise_for_status()
-				
-				
-				
+		for topic in file_docs:
+			with open('tmp/' + topic.replace('/','%2F'), 'w') as out:
+			  out.write(json.dumps(file_docs[topic]))
+		#alldocs = database.all_docs().post(params=dict(keys=file_docs.keys()))
+		#alldocs.raise_for_status()
+		#for row in alldocs.json()['rows']:
+		#	if 'id' not in row:
+		#		continue
+		#	_id = row['id']
+		#	rev = row['value']['rev']
+		#	file_docs[_id]['_rev'] = rev
+		#response = database.bulk_docs(*file_docs.values())
+		#response.raise_for_status()
+	
+
+
 for filename in [
 'account',
 'acid',
