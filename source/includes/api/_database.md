@@ -295,7 +295,6 @@ Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE/_changes`
 including insertions,
 updates,
 and deletions.
-The list returned [might not be in chronological order](http://en.wikipedia.org/wiki/Clock_synchronization#Problems).
 
 When a `_changes` request is received,
 one replica of each shard of the database is asked to provide a list of changes.
@@ -308,7 +307,7 @@ Argument | Description | Supported Values | Default
 `descending` | Return the changes in sequential order | boolean | false | 
 `feed` | Type of feed | `"continuous"`, `"longpoll"`, `"normal"` | `"normal"`
 `filter` | Name of filter function from a design document to get updates | string | no filter
-`heartbeat` | Time in milliseconds after which an empty line is sent during longpoll or continuous if there have been no changes | any positive number | 60000 | 
+`heartbeat` | Time in milliseconds after which an empty line is sent during longpoll or continuous if there have been no changes | any positive number | no heartbeat | 
 `include_docs` | Include the document with the result | boolean | false |
 `limit` | Maximum number of rows to return | any non-negative number | none |  
 `since` | Start the results from changes _after_ the specified sequence identifier. In other words, using `since` excludes from the list all changes up to and including the specified sequence identifier. If `since` is 0 (the default), or omitted, the request returns all changes. | string | 0 | 
@@ -368,7 +367,7 @@ When using `_changes`,
 you should be aware that:
 
 -	If a `since` value is specified, only changes that have arrived in the specified replicas of the shards are returned in the response.
--	If the specified replicas of the shards in any given `since` value are unavailable, alternative replicas are selected, and the last known checkpoint between them is used. If this happens, you might see changes again that you have previously seen.
+-	If the specified replicas of the shards in any given `since` value are unavailable, alternative replicas are selected, and the last known checkpoint between them is used. If this happens, you might see changes again that you have previously seen. Therefore, an application making use of the `_changes` feed should be '[idempotent](http://www.eaipatterns.com/IdempotentReceiver.html)', that is, able to receive the same data multiple times, safely.
 -	The results returned by `_changes` are partially ordered. In other words, the order is not guaranteed to be preserved for multiple calls. You might decide to get a current list using `_changes` which includes the [`last_seq` value](#changes_responses), then use this as the starting point for subsequent `_changes` lists by providing the `since` query argument.
 
 <div></div>
