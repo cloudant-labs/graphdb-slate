@@ -18,6 +18,7 @@ by making it of type `json`.
 
 But for maximum possible flexibility when looking for data,
 you would typically create an index of type `text`.
+Indexes of type `text` have a simple mechanism for automatically indexing all the fields in the documents. 
 
 <aside class="warning">While more flexible,
 `text` indexes might take longer to create and require more storage resources than `json` indexes.</aside>
@@ -127,17 +128,40 @@ shouldn't have to worry about this, but if you create test or example scripts th
 the index immediately after use, it can be useful to set this to `3`, so that a complete quorum is
 used for the creation. It does not affect anything other than index creation.
 -->
-
+<div></div>
 ##### The `index` field
+
+> Example index creation request to index all fields in all documents
+
+```json
+{
+  "type": "text",
+  "index": {}
+}
+```
 
 The `index` field contains settings specific to text indexes.
 
-The `default_field` value affects how the index for handling the `$text` operator is created.
-In almost all cases this should be left enabled.
-Do this by setting the value to `true`,
-or simply not including the `enabled` field.
+To index all fields in all documents automatically,
+use the simple syntax:
 
-The `analyzer` key in the `default_field` can be used to choose how to analyze text included in the index.
+  `"index": {}`
+  
+The indexing process traverses all of the fields in all the documents in the database.
+
+An example of creating a text index for all fields in all documents in a database is [available](#example:-movies-demo-database).
+
+<aside class="warning">Caution should be taken when indexing all fields in all documents for large data sets,
+as it might be a very resource-consuming activity.</aside>
+
+##### The `default_field` field
+
+The `default_field` value specifies how the `$text` operator can be used with the index.
+If the `default_field` is not specified,
+it defaults to `true` and the standard analyzer is used.
+
+The `analyzer` key in the `default_field` specifies how the index analyzes text.
+The index can subsequently be queried using the `$text` operator.
 See the [Cloudant Search documentation](search.html#analyzers) for alternative analyzers.
 You might choose to use an alternative analyzer when documents are indexed in languages other than English,
 or when you have other special requirements for the analyser such as matching email addresses.
@@ -163,7 +187,8 @@ The acceptable types are:
 -	`"string"`
 -	`"number"`
 
-<!-- An explanation of what these types mean can be found in the implementation notes. -->
+For more details on how text indexes work,
+see the [note about `text` indexes](#note-about-text-indexes).
 
 ### Query Parameters
 
@@ -1689,7 +1714,7 @@ When choosing which index to use,
 Cloudant Query uses the following logic:
 
 -	If there are two or more `json` type indexes on the same fields, the index with the smallest number of fields in the index is preferred. If there are still two or more candidate indexes, the index with the first alphabetical name is chosen.
--	If a `json` type index _and_ a `text` type index could both satisfy a selector, the `json` index is  chosen since it is faster.
+-	If a `json` type index _and_ a `text` type index could both satisfy a selector, the `json` index is chosen by default.
 -	If a `json` type index _and_ a `text` type index the same field (for example `fieldone`), but the selector can only be satisfied by using a `text` type index, then the `text` type index is chosen.
 
 For example, assume you have a `text` type index and a `json` type index for the field `foo`,
@@ -1699,7 +1724,6 @@ and you want to use a selector similar to the following:
 
 Cloudant Query uses the `text` type index,
 because a `json` type index cannot satisfy the selector.
-This is because the `$in` operator is not available for `json` indexes.
 
 However,
 you might use a different selector with the same indexes:
