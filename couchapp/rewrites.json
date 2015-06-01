@@ -40,7 +40,6 @@
 {"from": "/using-cloudant-with/python.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "libraries.html#python"} },
 {"from": "/api/cors.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "api.html#cors"} },
 {"from": "/api/design-documents-get-put-delete-copy.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "api.html#rewrite-rules"} },
-{"from": "/guides.html#cloudant-geospatial", "to": "/_show/redirect", "method": "GET", "query": {"target": "api.html#cloudant-geospatial"} },
 {
     "from": "",
     "to": "index.html",
