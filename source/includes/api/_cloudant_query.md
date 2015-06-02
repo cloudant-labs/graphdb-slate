@@ -666,7 +666,7 @@ Operator | Argument | Purpose
 `$not` | Selector | Matches if the given selector does not match.
 `$nor` | Array | Matches if none of the selectors in the array match.
 `$all` | Array | Matches an array value if it contains all the elements of the argument array.
-`$elemMatch` | Selector | Matches an array value if any of the elements in the array are matched by the argument to `$elemMatch`, then returns only the first match.
+`$elemMatch` | Selector | Matches and returns all documents that contain an array field with at least one element that matches all the specified query criteria.
 
 <div></div>
 #### Examples of combination operators
@@ -954,7 +954,7 @@ The `$all` operator matches an array value if it contains _all_ the elements of 
 }
 ```
 
-The `$elemMatch` operator matches an array value if any of the elements in the array are matched by the argument to `$elemMatch`, then returns only the first match.
+The `$elemMatch` operator matches and returns all documents that contain an array field with at least one element matching the supplied query criteria.
 
 ### Condition Operators
 
