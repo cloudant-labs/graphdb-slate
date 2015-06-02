@@ -27,6 +27,7 @@
 {"from": "/guides/replication/replicator-database.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "api.html#ReplicationAPI"} },
 {"from": "/api", "to": "/_show/redirect", "method": "GET", "query": {"target": "api.html#-api-reference"} },
 {"from": "/api/search.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "api.html#search"} },
+{"from": "/query.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "cloudant_query.html"} },
 
 {"from": "/tutorials", "to": "/_show/redirect", "method": "GET", "query": {"target": "basics.html#-cloudant-basics"} },
 {"from": "/tutorials/basics/index.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "basics.html#-cloudant-basics"} },
