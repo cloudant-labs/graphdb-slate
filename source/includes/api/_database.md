@@ -291,6 +291,50 @@ account.db.changes($DATABASE, function (err, body, headers) {
 });
 ```
 
+Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE/_changes` returns a list of changes made to documents in the database,
+including insertions,
+updates,
+and deletions.
+
+When a `_changes` request is received,
+one replica of each shard of the database is asked to provide a list of changes.
+These responses are combined and returned to the orginal requesting client.
+
+`_changes` accepts these query arguments:
+
+Argument | Description | Supported Values | Default 
+---------|-------------|------------------|---------
+`descending` | Return the changes in sequential order | boolean | false | 
+`feed` | Type of feed | `"continuous"`, `"longpoll"`, `"normal"` | `"normal"`
+`filter` | Name of filter function from a design document to get updates | string | no filter
+`heartbeat` | Time in milliseconds after which an empty line is sent during longpoll or continuous if there have been no changes | any positive number | no heartbeat | 
+`include_docs` | Include the document with the result | boolean | false |
+`limit` | Maximum number of rows to return | any non-negative number | none |  
+`since` | Start the results from changes _after_ the specified sequence identifier. In other words, using `since` excludes from the list all changes up to and including the specified sequence identifier. If `since` is 0 (the default), or omitted, the request returns all changes. | string | 0 | 
+`style` | Specifies how many revisions are returned in the changes array. The default, `main_only`, only returns the current "winning" revision; `all_docs` returns all leaf revisions, including conflicts and deleted former conflicts. | `main_only`, `all_docs` | `main_only` | 
+`timeout` | Number of milliseconds to wait for data before terminating the response. If heartbeat supersedes timeout if both are supplied. | any positive number | |
+
+All arguments are optional.
+
+The `feed` argument changes how Cloudant sends the response.
+By default,
+`_changes` reports all changes,
+then the connection closes.
+
+If you set `feed=longpoll`,
+requests to the server remain open until changes are reported.
+This can help monitor changes specifically instead of continuously.
+
+If you set `feed=continuous`,
+new changes are reported without closing the connection.
+In this mode,
+the format of the report entries reflects the continuous nature of the changes,
+while ensuring validity of the JSON output.
+
+The `filter` parameter designates a pre-defined [filter function](design_documents.html#filter-functions) to apply to the changes feed.
+
+<div id="changes_responses"></div>
+
 > Example response:
 
 ```
@@ -306,6 +350,29 @@ account.db.changes($DATABASE, function (err, body, headers) {
   "pending": 0
 }
 ```
+
+The response is a JSON object containing a list of the changes made to documents within the database.
+The following table describes the meaning of the individual fields:
+
+Field | Description | Type
+------|-------------|------
+`changes` | Array, listing the changes made to the specific document. | Array
+`deleted` | Boolean indicating if the corresponding document was deleted. If present, it always has the value `true`. | Boolean
+`id` | Document identifier | String
+`last_seq` | Identifier of the last of the sequence identifiers. Currently this is the same as the sequence identifier of the last item in the `results`. | String
+`results` | Array of changes made to the database. | Array
+`seq` | Update sequence identifier | String
+
+When using `_changes`,
+you should be aware that:
+
+-	If a `since` value is specified, only changes that have arrived in the specified replicas of the shards are returned in the response.
+-	If the specified replicas of the shards in any given `since` value are unavailable, alternative replicas are selected, and the last known checkpoint between them is used. If this happens, you might see changes again that you have previously seen. Therefore, an application making use of the `_changes` feed should be '[idempotent](http://www.eaipatterns.com/IdempotentReceiver.html)', that is, able to receive the same data multiple times, safely.
+-	The results returned by `_changes` are partially ordered. In other words, the order is not guaranteed to be preserved for multiple calls. You might decide to get a current list using `_changes` which includes the [`last_seq` value](#changes_responses), then use this as the starting point for subsequent `_changes` lists by providing the `since` query argument.
+
+<div></div>
+
+##### Continuous feed
 
 > Example response, continuous changes feed:
 
@@ -342,31 +409,11 @@ account.db.changes($DATABASE, function (err, body, headers) {
 }
 ```
 
-Making a GET request against `https://$USERNAME.cloudant.com/$DATABASE/_changes` returns a list of changes made to documents in the database, including insertions, updates, and deletions. This log [might not be in chronological order](http://en.wikipedia.org/wiki/Clock_synchronization#Problems).
+If you request `feed=continuous`,
+the database connection stays open until explicitly closed.
+All changes are returned to the client as soon as possible after they occur.
 
-`_changes` accepts these query arguments:
-
-Argument | Description | Supported Values | Default 
----------|-------------|------------------|---------
-`descending` | Return the changes in sequential order | boolean | false | 
-`feed` | Type of feed | `"continuous"`, `"longpoll"`, `"normal"` | `"normal"`
-`filter` | Name of filter function from a design document to get updates | string | no filter
-`heartbeat` | Time in milliseconds after which an empty line is sent during longpoll or continuous if there have been no changes | any positive number | 60000 | 
-`include_docs` | Include the document with the result | boolean | false |
-`limit` | Maximum number of rows to return | any non-negative number | none |  
-`since` | Start the results from changes after the specified sequence number. If since is 0 (the default), the request will return all changes. | string | 0 | 
-`style` | Specifies how many revisions are returned in the changes array. The default, `main_only`, only returns the current "winning" revision; `all_docs` returns all leaf revisions, including conflicts and deleted former conflicts. | `main_only`, `all_docs` | `main_only` | 
-`timeout` | Number of milliseconds to wait for data before terminating the response. If heartbeat supersedes timeout if both are supplied. | any positive number | |
-
-All arguments are optional.
-
-The `feed` argument changes how Cloudant sends the response. By default, changes feed in entirety and the connection closes.
-
-If you set `feed=longpoll`, requests to the server remain open until changes are reported. This can help monitor changes specifically instead of continuously.
-
-If you set `feed=continuous`, new changes send without closing the connection. In this mode the format of changes accomodates the continuous nature while ensuring validity of the JSON output.
-
-The `filter` parameter designates a pre-defined [function to filter](#filter-functions) the changes feed.
+Each line in the continuous response is either empty or a JSON object representing a single change.
 
 ### Delete
 

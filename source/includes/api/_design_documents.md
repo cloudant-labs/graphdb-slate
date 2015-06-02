@@ -606,7 +606,7 @@ Where `$DESIGN_ID` is the `_id` of the document defining the update handler, `$U
 }
 ```
 
-Filter functions filter the [changes feed](#get-changes), removing changes you don't want to monitor.
+Filter functions filter the [changes feed](database.html#get-changes), removing changes you don't want to monitor.
 The filter function is run over every change in the changes feed, and only those for which the function returns `true` are returned to the client in the response.
 
 <div></div>
