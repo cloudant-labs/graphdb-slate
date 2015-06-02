@@ -1,11 +1,5 @@
 ## Query
 
-<aside class="warning">The Cloudant Query 'wrapper'
-for indexes of type `text` is a preview feature that is being rolled out to customers gradually.
-It might not be available for your database yet.
-Once the feature is generally available,
-this note will be removed.</aside>
-
 Cloudant Query is a declarative JSON querying syntax for Cloudant databases.
 Cloudant Query wraps several index types, starting with the Primary Index out-of-the-box.
 Cloudant Query indexes can also be built using MapReduce Views (where the index type is `json`),
