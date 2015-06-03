@@ -35,6 +35,7 @@
 {"from": "/tutorials/index.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "guides.html#-guides"} },
 {"from": "/tutorials/intro/index.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "basics.html#-cloudant-basics"} },
 {"from": "/tutorials/querying/index.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "cloudant_query.html"} },
+{"from": "/tutorials/querying/mapreduce/index.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "cloudant_query.html"} },
 {"from": "/using-cloudant-with/dotnet.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "libraries.html#c#-/-.net"} },
 {"from": "/using-cloudant-with/index.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "libraries.html#-client-libraries"} },
 {"from": "/using-cloudant-with/nodejs.html", "to": "/_show/redirect", "method": "GET", "query": {"target": "libraries.html#node.js"} },
