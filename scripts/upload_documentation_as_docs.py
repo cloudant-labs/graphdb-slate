@@ -76,6 +76,7 @@ def index_file(filename):
 		#response.raise_for_status()
 	
 
+# TODO replace with automatically generated list of files
 
 for filename in [
 'account',

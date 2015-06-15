@@ -1,7 +1,0 @@
-{
-  "views" : {
-    "hadtraining" : {
-      "map" : "function(employee) { if(employee.training) { emit(employee.number, employee.training); } }"
-    }
-  }
-}

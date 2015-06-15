@@ -1,9 +1,9 @@
 #!/bin/bash
 if [ -z $1 ]
 then
-  DEST='api-ref'
+  echo 'usage: deploy.sh DESTINATION'
 else
-  DEST=$1
+  couchapp push couchapp "$1"
 fi
 
-couchapp push couchapp $DEST
+
