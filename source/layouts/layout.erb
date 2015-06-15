@@ -21,7 +21,7 @@ under the License.
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
 
     <!-- Use title if it's in the page YAML frontmatter -->
-    <title><%= current_page.data.title || "API Documentation" %></title>
+    <title><%= current_page.data.title || "-" %></title>
 
     <%= stylesheet_link_tag "screen", media: 'screen' %>
     <%= stylesheet_link_tag "typeahead", media: 'screen' %>
@@ -29,7 +29,6 @@ under the License.
     <%= javascript_include_tag  "all" %>
 
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
     
     <script type="text/javascript">
    
@@ -133,7 +132,7 @@ under the License.
   <body class="<%= page_classes %>">
         
     <div class="main-header">
-      <img src="images/ibm_cloudant.png" alt="Cloudant logo"/>
+      <img src="images/logo.png" alt="logo"/>
       <div class="header-title">Documentation</div>
     </div>
     
@@ -160,55 +159,7 @@ under the License.
             attr_reader :link
           end
           [
-            Page.new('Overview', 'index.html', [
-              Page.new('Contents', 'index.html#contents', []),
-              Page.new('Contribute', 'index.html#contribute', [])
-            ]),
-            Page.new('Cloudant Basics', 'basics.html', [
-              Page.new('Database as a Service', 'basics.html#database-as-a-service', []),
-              Page.new('HTTP API', 'basics.html#http-api', []),
-              Page.new('JSON', 'basics.html#json', []),
-              Page.new('How do I find data?', 'basics.html#how-do-i-find-data?', []),
-              Page.new('Distributed', 'basics.html#distributed', []),
-              Page.new('Replication', 'basics.html#replication', []),
-              Page.new('Cloudant Local', 'basics.html#cloudant-local', [])
-            ]),
-            Page.new('Client Libraries', 'libraries.html', [
-              Page.new('Supported', 'libraries.html#supported-client-libraries', []),
-              Page.new('Third party', 'libraries.html#third-party-client-libraries', [])
-            
-            ]),
-            Page.new('API Reference', 'api.html', [
-              Page.new('HTTP', 'http.html', []),
-              Page.new('Account', 'account.html', []),
-              Page.new('Authentication', 'authentication.html', []),
-              Page.new('Authorization', 'authorization.html', []),
-              Page.new('CORS', 'cors.html', []),
-              Page.new('Databases', 'database.html', []),
-              Page.new('Documents', 'document.html', []),
-              Page.new('Attachments', 'attachments.html', []),
-              Page.new('Query', 'cloudant_query.html', []),
-              Page.new('Design Documents', 'design_documents.html', []),
-              Page.new('Views (MapReduce)', 'creating_views.html', []),
-              Page.new('Search', 'search.html', []),
-              Page.new('Cloudant Geospatial', 'geo.html', []),
-              Page.new('Replication', 'replication.html', []),
-              Page.new('Advanced Replication', 'advanced_replication.html', []),
-              Page.new('Active tasks', 'active_tasks.html', []),
-              Page.new('Advanced', 'advanced.html', [])
-            ]),
-            Page.new('Guides', 'guides.html', [
-              Page.new('JSON', 'json.html', []),
-              Page.new('Replication', 'replication_guide.html', []),
-              Page.new('Managing tasks', 'managing_tasks.html', []),
-              Page.new('Document versioning and conflicts', 'mvcc.html', []),
-              Page.new('Transactions in Cloudant', 'transactions.html', []),
-              Page.new('CAP theorem', 'cap_theorem.html', []),
-              Page.new('AcID', 'acid.html', []),
-              Page.new('Back up your data', 'backup-guide.html', []),
-              Page.new('CouchApps', 'couchapps.html', []),
-              Page.new('Design document management', 'design_document_management.html', [])
-            ])
+            Page.new('Overview', 'index.html', [])
           ].each { |page|
             %>
 		        <li class="tocify-item">
@@ -239,9 +190,7 @@ under the License.
       
       
       <ul class="toc-footer">
-        <li><a href="https://cloudant.com/"><img src="images/cloudant_icon.png" alt="Cloudant icon"/></a></li>
-        <li><a href="https://github.com/cloudant-labs/slate"><img src="images/github_icon.png" alt="Github icon"/></a></li>
-        <li><a href="http://stackoverflow.com/questions/tagged/cloudant"><img src="images/stackoverflow_icon.png" alt="Stackoverflow icon"/></a></li>
+
       </ul>
     </div>
     <div class="page-wrapper">
