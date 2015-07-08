@@ -1,15 +1,17 @@
 ---
-title: Slate
+title: GraphDB - Overview
 
 language_tabs:
-  - http 
-  - shell: curl
+#  - http 
+#  - shell: curl
 #  - javascript: node.js
 #  - python
 
 ---
 
-# Slate
+# GraphDB Overview
+
+TBD
 
 
 

@@ -1,19 +1,15 @@
-IBM Watson GraphDB Service Documentation
+---
+title: GraphDB - API
 
--   [Getting Started](#gettingStarted)
--   [Learn more](#learnMore)
--   [Example Java Code](#exampleJavaCode)
--   [Example Node.js Code](#exampleNodeCode)
--   [REST API](#restAPI)
-  -   [Vertex APIs](#vertexAPI)
-  -   [Edge APIs](#edgeAPI)
-  -   [Gremlin APIs](#gremlinAPI)
-  -   [Input/Output APIs](#ioAPI)
-  -   [Schema APIs](#schemaAPI)
-  -   [Cache Managemnt APIs](#cacheAPI)
+language_tabs:
+#  - http 
+#  - shell: curl
+#  - javascript: node.js
+#  - python
 
-Getting started with the GraphDB service
-========================================
+---
+
+## Getting started with the GraphDB service
 
 The GraphDB service provides a REST API that enables you to store your
 data in a [graph database](http://en.wikipedia.org/wiki/Graph_database).
@@ -22,32 +18,22 @@ the relationships in a property graph with index-free adjacency. The
 GraphDB service provides a graph-based NoSQL store that creates a rich
 and extensible representation of your data in an accessible way.
 
-To see a quick demo of the GraphDB service in action, click
-[here](http://shortestpathjs.stage1.mybluemix.net/).
+### Learn more
 
-Learn more
-----------
-
--   [Apache TinkerPop: An Open Source Graph Computing
-    Framework](http://tinkerpop.incubator.apache.org/)
+-   [Apache TinkerPop: An Open Source Graph Computing Framework](http://tinkerpop.incubator.apache.org/)
 
 -   [Titan: Distributed Graph Database](http://titan.thinkaurelius.com/)
 
--   [Gremlin: Graph Traversal
-    Steps](http://www.tinkerpop.com/docs/3.0.0.M7/#graph-traversal-steps)
-
-Example Code for a GraphDB Application
---------------------------------------
+-   [Gremlin: Graph Traversal Steps](http://www.tinkerpop.com/docs/3.0.0.M7/#graph-traversal-steps)
 
 ### Example Java Code
 
 The following example code shows a sample application written in Java
-that uses the GraphDB service. You can download the source code from
-[here](http://shortestpathjs.stage1.mybluemix.net/shortestpath-src.zip).
+that uses the GraphDB service. 
 
 #### Get the GraphDB service URL
 
-```
+```java
     String apiURL = null;
     CloseableHttpClient client = HttpClients.createDefault();
     Map envs = System.getenv();
@@ -70,7 +56,7 @@ that uses the GraphDB service. You can download the source code from
 
 #### Define graph schema
 
-```
+```java
     String schemaFileName = "/graph-schema.json";
     FileReader schemaFileReader = new FileReader(sc.getRealPath(schemaFileName));
     JSONObject postData = new JSONObject(schemaFileReader);
@@ -85,7 +71,7 @@ that uses the GraphDB service. You can download the source code from
                 
 #### Bulk load a GraphML file
 
-```
+```java
     HttpPost httpPost = new HttpPost(apiURL + "/bulkload/graphml");
     String fieldName = "graphml";
     String contentType = "application/xml";
@@ -106,7 +92,7 @@ that uses the GraphDB service. You can download the source code from
              
 #### Create a vertex
 
-```
+```java
     String postURL = apiURL + "/vertices";
     HttpPost httpPost = new HttpPost(postURL);
     HttpResponse httpResponse = client.execute(httpPost);
@@ -123,7 +109,7 @@ that uses the GraphDB service. You can download the source code from
                 
 #### Get all vertices
 
-```
+```java
     // this is generally a bad practice
     HttpGet httpGet = new HttpGet(apiURL + "/vertices");
     HttpResponse httpResponse = client.execute(httpGet);
@@ -136,7 +122,7 @@ that uses the GraphDB service. You can download the source code from
                 
 #### Get a vertex by id
 
-```
+```java
     HttpGet httpGet = new HttpGet(apiURL + "/vertices/" + vid);
     HttpResponse httpResponse = client.execute(httpGet);
     HttpEntity httpEntity = httpResponse.getEntity();
@@ -152,7 +138,7 @@ that uses the GraphDB service. You can download the source code from
                 
 #### Get a vertex by indexed property
 
-```
+```java
     HttpGet httpGet = new HttpGet(apiURL + "/vertices?code=" + code);
     HttpResponse httpResponse = client.execute(httpGet);
     HttpEntity httpEntity = httpResponse.getEntity();
@@ -168,7 +154,7 @@ that uses the GraphDB service. You can download the source code from
               
 #### Update a vertex
 
-```
+```java
     String vertexId = "256";
     String postURL = apiURL + "/vertices/" + vertexId;
     JSONObject postData = new JSONObject();
@@ -195,7 +181,7 @@ that uses the GraphDB service. You can download the source code from
              
 #### Delete a vertex
 
-```
+```java
     String vertexId = "256";
     HttpDelete httpDelete = new HttpDelete(apiURL + "/vertices/" + vertexId);
     httpResponse = client.execute(httpDelete);
@@ -206,7 +192,7 @@ that uses the GraphDB service. You can download the source code from
              
 #### Get all edges
 
-```
+```java
     // this is generally a bad practice
     HttpGet httpGet = new HttpGet(apiURL + "/edges");
     HttpResponse httpResponse = client.execute(httpGet);
@@ -220,7 +206,7 @@ that uses the GraphDB service. You can download the source code from
              
 #### Create an edge
 
-```
+```java
     String postURL = apiURL + "/edges";
     String vertexId1 = "256";
     String vertexId2 = "512";
@@ -246,7 +232,7 @@ that uses the GraphDB service. You can download the source code from
              
 #### Get an edge by id
 
-```
+```java
     String edgeId = "lc-74-36d-e8";
     HttpGet httpGet = new HttpGet(apiURL + "/edges/" + edgeId);
     HttpResponse httpResponse = client.execute(httpGet);
@@ -263,7 +249,7 @@ that uses the GraphDB service. You can download the source code from
              
 #### Update an edge
 
-```
+```java
     String edgeId = "lc-74-36d-e8";
     String postURL = apiURL + "/edges/" + edgeId;
     JSONObject postData = new JSONObject();
@@ -285,7 +271,7 @@ that uses the GraphDB service. You can download the source code from
              
 #### Delete an edge
 
-```
+```java
     String edgeId = "lc-74-36d-e8";
     HttpDelete httpDelete = new HttpDelete(apiURL + "/edges/" + edgeId);
     httpResponse = client.execute(httpDelete);
@@ -296,14 +282,11 @@ that uses the GraphDB service. You can download the source code from
              
 ### Example Node.js Code
 
-The following example code shows a sample application written for
-Node.js that uses the GraphDB service. You can download the source code
-from
-[here](http://shortestpathjs.stage1.mybluemix.net/shortestpathjs-src.zip).
+The following example code shows a sample Node.js application that uses the GraphDB service.
 
 #### Get the GraphDB service URL
 
-```
+```javascript
     if (process.env.VCAP_SERVICES) {
       var vcapServices = JSON.parse(process.env.VCAP_SERVICES);
       if (vcapServices['TinkerPop GraphDB']) {
@@ -315,7 +298,7 @@ from
              
 #### Define graph schema
 
-```
+```javascript
     var schemaData = fs.readFile('./public/graph-schema.json', function(err, data) {
       var schemaRequest = {
         uri: process.env.graphDBURL + '/schema',
@@ -331,7 +314,7 @@ from
              
 #### Bulk load a GraphML file
 
-```
+```javascript
     var request = require('request');
     var fs = require('fs');
     var bulkloadUrl = process.env.graphDBURL + '/bulkload/graphml';
@@ -348,7 +331,7 @@ from
              
 #### Create a vertex
 
-```
+```javascript
     var url2 = process.env.graphDBURL + '/vertices';
     var data = {
       code: "LAS",
@@ -372,7 +355,7 @@ from
              
 #### Get all vertices
 
-```
+```javascript
     // this is generally a bad practice
     var url = process.env.graphDBURL + '/vertices';
     request.get(url, function(error, resp, body) {
@@ -384,7 +367,7 @@ from
              
 #### Get a vertex by property
 
-```
+```javascript
     var url = process.env.graphDBURL + '/vertices?code=' + req.params.code;
     request.get(url, function(error, resp, body) {
       var obj = JSON.parse(body);
@@ -395,7 +378,7 @@ from
              
 #### Run a Gremlin traversal
 
-```
+```javascript
     var url = process.env.graphDBURL + '/gremlin';
     var existsQuery = "g.V().has('code','" + req.body.orig + "').out('route').has('code', '" + req.body.dest + "')";
     var existsOpts = { json: { gremlin: existsQuery } };
@@ -501,8 +484,8 @@ Two formats are supported for bulk input and output of graph data:
 |--------|-----|----------|-------------|
 | POST   |  /bulkload/graphml | | [ true ] | Submits the GraphML data to be loaded into the graph using the `multipart/form-data` encoding (e.g. with an HTML form) |
 | POST   |  /bulkload/graphson | [ true ] | Submits the GraphSON file to be loaded into the graph using the `multipart/form-data` encoding (e.g. with an HTML form) |
-| GET    |  /extract\ | \<xml version="1.0" ?\>\<graphml\>\<graph id="G" edgedefault="directed"\>\<node id="1"/\>\<node id="2"/\>\<edge id=3 source="1" target="2"/\>\</graph\>\</graphml\> | Returns the graph in GraphML format
-| GET    |  /extract\ | {"variables":{},"vertices":[{"id":1,"label":"vertex"}],"edges":[]} | Returns the graph in GraphSON format |
+| GET    |  /extract | \<xml version="1.0" ?\>\<graphml\>\<graph id="G" edgedefault="directed"\>\<node id="1"/\>\<node id="2"/\>\<edge id=3 source="1" target="2"/\>\</graph\>\</graphml\> | Returns the graph in GraphML format
+| GET    |  /extract | {"variables":{},"vertices":[{"id":1,"label":"vertex"}],"edges":[]} | Returns the graph in GraphSON format |
 
 ### Schema APIs
 

@@ -132,8 +132,8 @@ under the License.
   <body class="<%= page_classes %>">
         
     <div class="main-header">
-      <img src="images/logo.png" alt="logo"/>
-      <div class="header-title">Documentation</div>
+      <img src="images/graphdb-logo.png" alt="logo"/>
+      <div class="header-title">GraphDB Documentation</div>
     </div>
     
     <div class="tocify-wrapper">
@@ -159,13 +159,19 @@ under the License.
             attr_reader :link
           end
           [
-            Page.new('Overview', 'index.html', [])
+            Page.new('Overview', 'index.html', []),
+            Page.new('GraphDB API', 'graphdb.html', [])
           ].each { |page|
             %>
 		        <li class="tocify-item">
 				      <a href="<%=page.link%>"><%=page.name%></a>
 				    </li>
 				    <%
+				    if page.link == request.path
+				    %>
+				      <div id="toc"></div>
+				    <%
+				    end
 				    if !page.subpages.empty? && (page.subpages.any? { |subpage| subpage.link.split('#')[0] == request.path } || page.link.split('#')[0] == request.path)
 				      %> <ul class="tocify-subheader-styles" style="display: block;"> <%
 				      page.subpages.each { |subpage|

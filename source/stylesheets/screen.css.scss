@@ -53,7 +53,7 @@ html, body {
   img {
     display: inline-block;
     margin: $logo-margin;
-    width: 150px;
+    width: 32px;
     height: 32px;
   }
 
@@ -166,6 +166,10 @@ html, body {
     }
   }
   .tocify-subheader ul, .tocify-subheader-styles ul {
+    padding-left: $nav-indent;
+  }
+  
+  #toc {
     padding-left: $nav-indent;
   }
 
@@ -425,8 +429,8 @@ body, html {
 
   h2 {
     @extend %header-font;
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 18px;
+    font-weight: 800;
     margin-top: 4em;
     margin-bottom: 0;
     padding-top: 1.2em;
@@ -603,13 +607,6 @@ body, html {
       text-decoration: none;
       border-bottom: dashed 1px #ccc;
     }
-  }
-  pre.javascript {
-    display:none;
-  }
-
-  pre.python {
-    display:none;
   }
   pre {
     @extend %code-font;
