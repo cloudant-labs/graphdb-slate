@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# TODO: change
-HOST='docs-testb.cloudant.com'
+HOST='graphdb-docs.cloudant.com'
 
 if [[ "$TRAVIS_PULL_REQUEST" == "false" ]]
 then
@@ -27,7 +26,6 @@ then
 
     #deploy with db name == branch name
     couchapp push couchapp "https://$1:$2@${HOST}/${TRAVIS_BRANCH}"
-    #TODO give authorized people read access, remove nobody from default read access
     security='
       {
         "cloudant": {

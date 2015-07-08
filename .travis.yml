@@ -1,25 +1,25 @@
-rvm:
+rvm: 
 - 1.9.3
 - 2.0.0
-services:
+services: 
 - couchdb
-env:
-  global:
-  - secure: TODO
-  - secure: TODO
-notifications:
-  email:
-    - TODO
+env: 
+  global: 
+  - secure: PQykkH0ul2xv28pr0WNtbe48U7s2B8SNiB8Uvr01lEXAwnm1A5rPm5SvfFoRxSEc9KluBM9WazzrQEOuuMbtgymWxuwxRr8ldK4LFeV+T447f9YTkWsTapRUc1OZIyH1Yx4RaNBQFBQCrEjR3R5Pq4SO3jaWYdtVsBQeG1/lB5Y=
+  - secure: FR0waOP9siEZjdFjgXfsyF7dMSx9lvlNRWwAKC8WjkyNd9/wjcYEe/n+Kzt5Tp6d+A6Ei3Cs7oYpWjHs6c3ZYt7gzizNzaKo+O5DNu0OSOzhlos69ydOO8qFMCqCZq2POV9+cT6WtguJMWWzOferoaiIq2MXnZtyCP/88GoAEYg=
+notifications: 
+  email: 
+  - kim@cloudant.com
   on_success: always
-before_install:
+before_install: 
 - sudo apt-get update
 - sudo apt-get install python python-pip jq
 - sudo pip install couchapp
-script:
+script: 
 - bundle exec middleman build --verbose
 - mkdir couchapp/_attachments
 - cp -r build/* couchapp/_attachments
 - ./scripts/deploy.sh
-after_success:
+after_success: 
 - sudo pip install cloudant beautifulsoup4
 - ./scripts/deploy-branch.sh "$USERNAME" "$PASSWORD"

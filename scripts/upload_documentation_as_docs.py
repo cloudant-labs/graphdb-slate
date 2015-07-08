@@ -75,46 +75,9 @@ def index_file(filename):
 		#response = database.bulk_docs(*file_docs.values())
 		#response.raise_for_status()
 	
-
-# TODO replace with automatically generated list of files
-
 for filename in [
-'account',
-'acid',
-'active_tasks',
-'advanced',
-'advanced_replication',
-'api',
-'attachments',
-'authentication',
-'authorization',
-'backup-guide',
-'backup',
-'basics',
-'cap_theorem',
-'cloudant_query',
-'cors',
-'couchapps',
-'cqsearch',
-'creating_views',
-'database',
-'design_document_management',
-'design_documents',
-'document',
-'geo',
-'guides',
-'http',
 'index',
-'json',
-'libraries',
-'managing_tasks',
-'mvcc',
-'replication_guide',
-'replication',
-'search',
-'transactions',
-'try',
-'using_views'
+'graphdb'
 ]:
 	index_file(filename)
 
