@@ -2,16 +2,13 @@
 title: GraphDB - Overview
 
 language_tabs:
-#  - http 
+#  - http
 #  - shell: curl
 #  - javascript: node.js
 #  - python
 
 ---
 
-# GraphDB Overview
+# Graph Data Store Overivew
 
 TBD
-
-
-
