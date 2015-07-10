@@ -10,6 +10,7 @@ env:
 notifications: 
   email: 
   - kim@cloudant.com
+  - adrian.warman@cloudant.com
   on_success: always
 before_install: 
 - sudo apt-get update
