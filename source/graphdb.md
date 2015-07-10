@@ -507,16 +507,3 @@ used by the sample applcation.
 | GET    | /schema | - | [ { "edgeIndexes": [], "edgeLabels": [ {"directed": true, "multiplicity":"SIMPLE", "name":"route"} ], "propertyKeys": [ {"cardinality":"SINGLE", "dataType":"String", "name":"city"} ], "vertexIndexes": [ {"composite":false, "name":"cityIndex", "propertyKeys":[ "city" ], "unique":false} ], "vertexLabels": [ {"name": "location"} ] } ] | Returns the schema as a JSON document |
 | POST   |  /schema | { "edgeIndexes": [], "edgeLabels": [ {"directed": true, "multiplicity":"SIMPLE", "name":"route"} ], "propertyKeys": [ {"cardinality":"SINGLE", "dataType":"String", "name":"city"} ], "vertexIndexes": [ {"composite":false, "name":"cityIndex", "propertyKeys":[ "city" ], "unique":false} ], "vertexLabels": [ {"name": "location"} ] } | [ { "edgeIndexes": [], "edgeLabels": [ {"directed": true, "multiplicity":"SIMPLE", "name":"route"} ], "propertyKeys": [ {"cardinality":"SINGLE", "dataType":"String", "name":"city"} ], "vertexIndexes": [ {"composite":false, "name":"cityIndex", "propertyKeys":[ "city" ], "unique":false} ], "vertexLabels": [ {"name": "location"} ] } ] | Updates the schema. |
                                                                                                                       
-### Cache Management APIs
-
-Applications may wish to enable caching to improve graph traversal
-performance. Caching is disabled by default. Please refer to the Titan
-[configuration
-reference](http://s3.thinkaurelius.com/docs/titan/0.5.4/titan-config-ref.html#_cache)
-for more details on the cache options.
-
-| Method | URI | Request | Response | Description |
-|--------|-----|---------|----------|-------------|
-| GET    |  /cachemgmt | - | [ {"db-cache":false, "db-cache-size":0.3, "db-cache-clean-wait":50, "db-cache-time":10000, "tx-cache-size":20000} ] | Returns the cache management settings as a JSON document. |
-| POST / PUT  |  /cachemgmt | {"db-cache":true, "db-cache-size":0.5,"db-cache-clean-wait":50, "db-cache-time":10000, "tx-cache-size":20000} | [ {"db-cache":true, "db-cache-size":0.5, "db-cache-clean-wait":50, "db-cache-time":10000, "tx-cache-size":20000} ] | Updates the cache management settings. The server may be unavailable for a few moments after the cache settings are applied. |
-
