@@ -1,21 +1,19 @@
 ---
-title: GraphDB - API
+title: Graph Data Store - API
 
 language_tabs:
-#  - http 
+#  - http
 #  - shell: curl
 #  - javascript: node.js
 #  - python
 
 ---
 
-## Getting started with the GraphDB service
+## Getting started with the Graph Data Store
 
-The GraphDB service provides a REST API that enables you to store your
+The Graph Data Store service provides a REST API that enables you to store your
 data in a [graph database](http://en.wikipedia.org/wiki/Graph_database).
-With nodes, edges, and properties, you can easily discover and explore
-the relationships in a property graph with index-free adjacency. The
-GraphDB service provides a graph-based NoSQL store that creates a rich
+You can easily discover and explore the relationships in a property graph with index-free adjacency using vertices, edges, and properties. The Graph Data Store provides a graph-based NoSQL store that creates a rich
 and extensible representation of your data in an accessible way.
 
 ### Learn more
@@ -29,9 +27,9 @@ and extensible representation of your data in an accessible way.
 ### Example Java Code
 
 The following example code shows a sample application written in Java
-that uses the GraphDB service. 
+that uses the Graph Data Store.
 
-#### Get the GraphDB service URL
+#### Get the Graph Data Store URL
 
 ```java
     String apiURL = null;
@@ -52,7 +50,7 @@ that uses the GraphDB service.
             }
         }
     }
-```             
+```
 
 #### Define graph schema
 
@@ -68,7 +66,7 @@ that uses the GraphDB service.
     String content = EntityUtils.toString(httpEntity);
     EntityUtils.consume(httpEntity);
 ```
-                
+
 #### Bulk load a GraphML file
 
 ```java
@@ -89,7 +87,7 @@ that uses the GraphDB service.
     HttpEntity httpEntity = httpResponse.getEntity();
     EntityUtils.consume(httpEntity);
 ```
-             
+
 #### Create a vertex
 
 ```java
@@ -106,11 +104,11 @@ that uses the GraphDB service.
         JSONObject airport = data.getJSONObject(0);
     }
 ```
-                
+
 #### Get all vertices
 
 ```java
-    // this is generally a bad practice
+    // This operation is not recommended.
     HttpGet httpGet = new HttpGet(apiURL + "/vertices");
     HttpResponse httpResponse = client.execute(httpGet);
     HttpEntity httpEntity = httpResponse.getEntity();
@@ -119,7 +117,7 @@ that uses the GraphDB service.
     JSONObject jsonContent = new JSONObject(content);
     JSONArray airports = jsonContent.getJSONArray("result");
 ```
-                
+
 #### Get a vertex by id
 
 ```java
@@ -135,7 +133,7 @@ that uses the GraphDB service.
         JSONObject airport = data.getJSONObject(0);
     }
 ```
-                
+
 #### Get a vertex by indexed property
 
 ```java
@@ -151,7 +149,7 @@ that uses the GraphDB service.
         JSONObject airport = data.getJSONObject(0);
     }
 ```
-              
+
 #### Update a vertex
 
 ```java
@@ -178,7 +176,7 @@ that uses the GraphDB service.
         JSONObject airport = data.getJSONObject(0);
     }
 ```
-             
+
 #### Delete a vertex
 
 ```java
@@ -189,11 +187,11 @@ that uses the GraphDB service.
     content = EntityUtils.toString(httpEntity);
     EntityUtils.consume(httpEntity);
 ```
-             
+
 #### Get all edges
 
 ```java
-    // this is generally a bad practice
+    // This operation is not recommended.
     HttpGet httpGet = new HttpGet(apiURL + "/edges");
     HttpResponse httpResponse = client.execute(httpGet);
     HttpEntity httpEntity = httpResponse.getEntity();
@@ -203,7 +201,7 @@ that uses the GraphDB service.
     JSONObject result = jsonContent.getJSONObject("result");
     JSONArray data = result.getJSONArray("data");
 ```
-             
+
 #### Create an edge
 
 ```java
@@ -229,7 +227,7 @@ that uses the GraphDB service.
         JSONObject route = data.getJSONObject(0);
     }
 ```
-             
+
 #### Get an edge by id
 
 ```java
@@ -246,7 +244,7 @@ that uses the GraphDB service.
         JSONObject route = data.getJSONObject(0);
     }
 ```
-             
+
 #### Update an edge
 
 ```java
@@ -268,7 +266,7 @@ that uses the GraphDB service.
         JSONObject route = data.getJSONObject(0);
     }
 ```
-             
+
 #### Delete an edge
 
 ```java
@@ -279,12 +277,12 @@ that uses the GraphDB service.
     content = EntityUtils.toString(httpEntity);
     EntityUtils.consume(httpEntity);
 ```
-             
+
 ### Example Node.js Code
 
-The following example code shows a sample Node.js application that uses the GraphDB service.
+The following example code shows a sample Node.js application that uses the Graph Data Store.
 
-#### Get the GraphDB service URL
+#### Get the Graph Data Store URL
 
 ```javascript
     if (process.env.VCAP_SERVICES) {
@@ -295,7 +293,7 @@ The following example code shows a sample Node.js application that uses the Grap
       }
     }
 ```
-             
+
 #### Define graph schema
 
 ```javascript
@@ -311,7 +309,7 @@ The following example code shows a sample Node.js application that uses the Grap
       });
     });
 ```
-             
+
 #### Bulk load a GraphML file
 
 ```javascript
@@ -328,7 +326,7 @@ The following example code shows a sample Node.js application that uses the Grap
       res.send(result);
     });
 ```
-             
+
 #### Create a vertex
 
 ```javascript
@@ -352,11 +350,11 @@ The following example code shows a sample Node.js application that uses the Grap
       res.send(result2);
     });
 ```
-             
+
 #### Get all vertices
 
 ```javascript
-    // this is generally a bad practice
+    // This operation is not recommended.
     var url = process.env.graphDBURL + '/vertices';
     request.get(url, function(error, resp, body) {
       var obj = JSON.parse(body);
@@ -364,7 +362,7 @@ The following example code shows a sample Node.js application that uses the Grap
       res.send(result);
     });
 ```
-             
+
 #### Get a vertex by property
 
 ```javascript
@@ -375,7 +373,7 @@ The following example code shows a sample Node.js application that uses the Grap
       res.send(result);
     });
 ```
-             
+
 #### Run a Gremlin traversal
 
 ```javascript
@@ -390,120 +388,99 @@ The following example code shows a sample Node.js application that uses the Grap
       }
     });
 ```
-             
+
 REST API
 --------
 
-The GraphDB service provides a REST API for manipulating the graph.
+The Graph Data Store provides a REST API for manipulating the graph.
 
 ### Vertex APIs
 
-Vertices are the most basic objects in a graph. A vertex may have
-properties and a label associated with it. Starting from any vertex, a
-traversal explores the graph structure by the incident edges to visit
+Vertices are the most basic objects in a graph. A vertex can contain
+properties and an associated label. Beginning from any vertex, a
+traversal explores the graph structure via the incident edges to visit
 the connected vertices.
 
 | Method |  URI |  Request | Response  | Description |
 | -------|------|----------|-----------|-------------|
-| POST   |  /vertices | - | [ {"id":"256"} ] | Creates a vertex |
-| POST   |  /vertices | { "key1":"A", "key2":"B" } | [ {"id":"256", "key1":"A", "key2":"B"} ] | Creates a vertex with properties specified as key-value pairs |
-| POST   |  /vertices/\<v0\> | { "key1":"C", "key3":"D" } | [ {"id":"256", "key1":"C", "key2":"B", "key3":"D"} ] | Updates existing vertex v0 with properties specfied as key-value pairs |
-| PUT    |  /vertices/\<v0\> | { "key8":"Y", "key9":"Z" } | [ {"id":"256", "key8":"Y", "key9":"Z"} ] | Updates existing vertex v0 by deleting previous properties and replacing with properties specfied as key-value pairs |
-| GET    |  /vertices | - | [ {"id":"256", "key":"value"}, {"id":"512"}, {"id":"768", "key":"value"}, {"id":"1024"}, {"id":"1280", "key":"value"} ] | Get all vertices and their properties. Global graph operations like this will perform slowly. Indexes should be utilized for performance. |
-| GET    |  /vertices?\<key\>=\<value\> | - | [ {"id":"256", "key":"value"}, {"id":"768", "key":"value"}, {"id":"1280", "key":"value"} ] | Get all vertices for a key index that have the specified properties. |
-| GET    |  /vertices/\<v0\> | - | [ {"id":"256", "key":"value"} ] | Get a vertex by id and all of its properties |
-| GET    |  /vertices/\<v0\>/out | - | [ {"id":"512"}, {"id":"768", "key":"value"} ] | Get the adjacent out vertices and all of their properties for vertex v0 |
-| GET    |  /vertices/\<v0\>/in  | - | [ {"id":"1024"}, {"id":"1280", "key":"value"} ] | Get the adjacent in vertices and all of their properties for vertex v0 |
-| GET    |  /vertices/\<v0\>/both | - | [ {"id":"512"}, {"id":"768", "key":"value"}, {"id":"1024"}, {"id":"1280", "key":"value"} ] | Get the adjacent in and out vertices and all of their properties for vertex v0 |
-| GET    |  /vertices/\<v0\>/outCount | - | [ 2 ] | Get the adjacent out vertex count for vertex v0 |
-| GET    |  /vertices/\<v0\>/inCount | - | [ 2 ] | Get the adjacent in vertex count for vertex v0 |
-| GET    |  /vertices/\<v0\>/bothCount | - | [ 4 ] | Get the adjacent in and out vertex count for vertex v0 |
-| GET    |  /vertices/\<v0\>/outIds | - | [ 512, 768 ] | Get the adjacent out vertex ids for vertex v0 |
-| GET    |  /vertices/\<v0\>/inIds | - | [ 1024, 1280 ] | Get the adjacent in vertex ids for vertex v0 |
-| GET    |  /vertices/\<v0\>/bothIds | - | [ 512, 768, 1024, 1280 ] | Get the adjacent in and out vertex ids for vertex v0 |
-| DELETE |  /vertices/\<v0\> | - | [ true ] | Deletes the vertex v0. Edges connected to the vertex are also deleted. |
-| DELETE |  /vertices/\<v0\>?\<key\> | - | [ true ] | Deletes properties by key on vertex v0. Edges connected to the vertex are also deleted. |
+| `POST`   | `/vertices` | `-` | `[ {"id":"256"} ]` | Creates a vertex |
+| `POST`   |  `/vertices` | `{ "key1":"A", "key2":"B" }` | `[ {"id":"256", "key1":"A", "key2":"B"} ]` | Creates a vertex with properties specified as key-value pairs. |
+| `POST`   |  `/vertices/\<v0\>` | `{ "key1":"C", "key3":"D" }` | `[ {"id":"256", "key1":"C", "key2":"B", "key3":"D"} ]` | Updates existing vertex `v0` with properties specified as key-value pairs. |
+| `PUT`    |  `/vertices/\<v0\>` | `{ "key8":"Y", "key9":"Z" }` | `[ {"id":"256", "key8":"Y", "key9":"Z"}` ] | Updates existing vertex `v0` by deleting previous properties and replacing them with properties specified as key-value pairs. |
+| `GET`    |  `/vertices` | `-` | `[ {"id":"256", "key":"value"}, {"id":"512"}, {"id":"768", "key":"value"}, {"id":"1024"}, {"id":"1280", "key":"value"} ]` | Get all vertices and their properties. Global graph operations like this can perform slowly. Indices should be utilized for performance. |
+| `GET`    |  `/vertices?\<key\>=\<value\>` | `-` | `[ {"id":"256", "key":"value"}, {"id":"768", "key":"value"}, {"id":"1280", "key":"value"} ]` | Get all vertices for a key index that has the specified properties. |
+| `GET`    |  `/vertices/\<v0\>` | `-` | `[ {"id":"256", "key":"value"} ]` | Get a vertex by id and all of its properties. |
+| `GET`    |  `/vertices/\<v0\>/out` | `-` | `[ {"id":"512"}, {"id":"768", "key":"value"} ]` | Get the adjacent out vertices and all of their properties for vertex `v0`. |
+| `GET`    |  `/vertices/\<v0\>/in`  | `-` | `[ {"id":"1024"}, {"id":"1280", "key":"value"} ]` | Get the adjacent in vertices and all of their properties for vertex `v0`. |
+| `GET`    |  `/vertices/\<v0\>/both` | `-` | `[ {"id":"512"}, {"id":"768", "key":"value"}, {"id":"1024"}, {"id":"1280", "key":"value"} ]` | Get the adjacent in and out vertices and all of their properties for vertex `v0`. |
+| `GET`    |  `/vertices/\<v0\>/outCount` | `-` | `[ 2 ]` | Get the adjacent out vertex count for vertex `v0`. |
+| `GET`    |  `/vertices/\<v0\>/inCount` | `-` | `[ 2 ]` | Get the adjacent in vertex count for vertex `v0`. |
+| `GET`    |  `/vertices/\<v0\>/bothCount` | `-` | `[ 4 ]` | Get the adjacent in and out vertex count for vertex `v0`. |
+| `GET`    |  `/vertices/\<v0\>/outIds` | `-` | `[ 512, 768 ]` | Get the adjacent out vertex ids for vertex `v0`. |
+| `GET`    |  `/vertices/\<v0\>/inIds` | `-` | `[ 1024, 1280 ]` | Get the adjacent in vertex ids for vertex `v0`. |
+| `GET`    |  `/vertices/\<v0\>/bothIds` | `-` | `[ 512, 768, 1024, 1280 ]` | Get the adjacent in and out vertex ids for vertex `v0`. |
+| `DELETE` |  `/vertices/\<v0\>` | `-` | `[ true ]` | Delete vertex `v0` and the connected edges. |
+| `DELETE` |  `/vertices/\<v0\>?\<key\>` | `-` | `[ true ]` | Delete properties by key on vertex `v0` and the connected edges. |
 
   -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ### Edge APIs
 
-Edges are a labeled relationship that connects two vertices. An edge
-typically has a direction associated with it, from vertex 'outV' to
-vertex 'inV'. Edges may have properties associated with them also.
+Edges represent a connection or relationship between two vertices. An edge
+might include a direction (`from vertex 'outV' to
+vertex 'inV'`), properties, and an associated label.
 
 | Method | URI | Request | Response | Description |
 |--------|-----|---------|----------|-------------|
-| POST   |  /edges | { "outV": 256, "label": "knows", "inV": 512 } | [ {"id":"lc-74-36d-e8", "outV": 256, "inV": 512, "label": "knows"} ] | Creates an edge from vertex with id 256 to vertex with id 512 using 'knows' as the edge label |
-| POST   |  /edges | { "outV": 256, "label": "knows", "inV": 512, "key1": "A", "key2": "B" } | [ {"id":"lc-74-36d-e8", "outV": 256, "inV": 512, "label": "knows", "key1": "A", "key2": "B"} ] | Creates an edge from vertex with id 256 to vertex with id 512 using 'knows' as the edge label. Properties for the edge are specified as key-value pairs. |
-| POST   |  /edges/\<e0\> | { "key1": "C", "key3": "D" } | [ {"id":"lc-74-36d-e8", "outV": 256, "inV": 512, "label": "knows", "key1": "C", "key2": "B", "key3": "D"} ] | Updates existing edge e0 with properties specified key-value pairs. The incident vertices and labels cannot be changed. |
-| PUT    |  /edges/\<e0\> | { "key8": "Y", "key9": "Z" } | [ {"id":"lc-74-36d-e8", "outV": 256, "inV": 512, "label": "knows", "key8": "Y", "key9": "Z"} ] | Updates existing edge e0 by deleting previous properties and and replacing with the properties specified by key-value pairs. The incident vertices and labels cannot be changed. |
-| GET    |  /edges | - | [ {"id":"lc-74-36d-e8", "key":"value"} ] | Get all edges and their properties. Global graph operations like this will perform slowly. Indexes should be utilized for performance. |
-| GET    |  /edges/\<e0\> | - | [ {"id":"lc-74-36d-e8", "key":"value"} ] | Get an edge by id and all of its properties |
-| DELETE |  /edges/\<e0\> | - | [ true ] | Deletes the edge e0 |
-| DELETE |  /edges/\<e0\>?\<key\> | - | [ true ] | Deletes properties by key on edge e0 |
+| `POST`   |  `/edges` | `{ "outV": 256, "label": "knows", "inV": 512 }` | `[ {"id":"lc-74-36d-e8", "outV": 256, "inV": 512, "label": "knows"} ]` | Creates an edge from vertex with `id 256` to vertex with `id 512` using 'knows' as the edge label. |
+| `POST`   |  `/edges` | `{ "outV": 256, "label": "knows", "inV": 512, "key1": "A", "key2": "B" }` | `[ {"id":"lc-74-36d-e8", "outV": 256, "inV": 512, "label": "knows", "key1": "A", "key2": "B"} ]` | Creates an edge from vertex with `id 256` to vertex with `id 512` using 'knows' as the edge label. Properties for the edge are specified as key-value pairs. |
+| `POST`   |  `/edges/\<e0\>` | `{ "key1": "C", "key3": "D" }` | `[ {"id":"lc-74-36d-e8", "outV": 256, "inV": 512, "label": "knows", "key1": "C", "key2": "B", "key3": "D"} ]` | Updates existing edge `e0` with properties specified as key-value pairs. The incident vertices and labels cannot be changed. |
+| `PUT`   |  `/edges/\<e0\>` | `{ "key8": "Y", "key9": "Z" }` | `[ {"id":"lc-74-36d-e8", "outV": 256, "inV": 512, "label": "knows", "key8": "Y", "key9": "Z"} ]` | Updates existing edge `e0` by deleting previous properties and replacing them with the properties specified by key-value pairs. The incident vertices and labels cannot be changed. |
+| `GET`    |  `/edges` | `-` | `[ {"id":"lc-74-36d-e8", "key":"value"} ]` | Get all edges and their properties. Global graph operations like this can perform slowly. Indexes must be utilized for performance. |
+| `GET`    |  `/edges/\<e0\>` | `-` | `[ {"id":"lc-74-36d-e8", "key":"value"} ]` | Get an edge by id and all of its properties. |
+| `DELETE` |  `/edges/\<e0\>` | `-` | `[ true ]` | Deletes the edge `e0`. |
+| `DELETE` |  `/edges/\<e0\>?\<key\>` | `-` | `[ true ]` | Deletes properties by key on edge `e0`. |
 
 ### Gremlin APIs
 
-Gremlin is a domain-specific language for graph traversals. Gremlin
-gives you the power to express deep or complex graph traversals that
-cannot be performantly with the basic vertex and edge APIs. To use
-Gremlin with your graph, simply POST the Gremlin traversal inside a JSON
-object to the Gremlin endpoint. Please refer to the [Gremlin 3.0.0.M7
-documentation](http://www.tinkerpop.com/docs/3.0.0.M7/#graph-traversal-steps)
-for details on the specific graph traversal steps that are currently
-supported.
+Gremlin is a domain-specific language for graph traversals. Using Gremlin,
+you can express complex graph traversals that cannot be performed with basic vertex and edge APIs. To use
+Gremlin with a graph, POST the Gremlin traversal inside a JSON object to the Gremlin endpoint. See [Gremlin 3.0.0.M7 documentation](http://www.tinkerpop.com/docs/3.0.0.M7/#graph-traversal-steps)
+for more information about supported graph traversal steps.
 
 | Method | URI | Request | Response | Description |
 |--------|-----|---------|----------|-------------|
-| POST   |  /gremlin | {"gremlin": "g.V(256).out().out()"} | [ {"id":"768"}, {"id":"1024"}, {"id":"1280"} ] | Performs a traversal from the starting node out to its second degree neighbors |
+| `POST`   |  `/gremlin` | `{"gremlin": "g.V(256).out().out()"}` | `[ {"id":"768"}, {"id":"1024"}, {"id":"1280"} ]` | Performs a traversal from the starting node to its second degree neighbors. |
 
 ### Input/Output APIs
 
-Two formats are supported for bulk input and output of graph data:
+Graph Data Store supports two formats of bulk input and output graph data: GraphML and GraphSON.
 
-1.  [GraphML](http://graphml.graphdrawing.org/) is a simple file format
-    that is used to describe a graph using XML. Here is an [example
-    file](https://raw.githubusercontent.com/tinkerpop/tinkerpop3/master/data/tinkerpop-classic.xml)
-    provided by TinkerPop 3. To bulkload a GraphML file into your graph,
-    simply POST the GraphML (either as a form text input named 'graphml'
-    or as a file input named 'graphml' in a multi-part form) to the
-    GraphML bulkload endpoint. One advantage of the GraphML format is
-    that it supported by many tools, such as Gephi for graph
-    visualization. Some disadvantages are that GraphML is a lossy
-    format, in that it only supports primitive data types, and it lacks
-    support for graph variables and nested properties.
-2.  [GraphSON](http://tinkerpop.incubator.apache.org/docs/3.0.0-SNAPSHOT/#graphson-reader-writer)
-    is a JSON-based format that TinkerPop has evolved over several
-    releases. As a JSON-based format, it is easily consumed in modern
-    web and RESTful applications. Here is an [example
-    file](https://raw.githubusercontent.com/tinkerpop/tinkerpop3/master/data/tinkerpop-classic.json)
-    provided by TinkerPop 3.
+[GraphML](http://graphml.graphdrawing.org/) is a simple file format used to describe a graph using XML. Multiple tools, such as Gephi for graph visualization, support the GraphML format. However, GraphML is a lossy format that only supports primitive data types. It also lacks support for graph variables and nested properties.
+
+Here is a Tinkerpop 3 [example file](https://raw.githubusercontent.com/tinkerpop/tinkerpop3/master/data/tinkerpop-classic.xml). To bulk load a GraphML file into your graph, POST the GraphML (as either form text input named ‘graphml’ or as a file input named ‘graphml’ in a multi-part form) to the GraphML bulk load endpoint.
+
+[GraphSON](http://tinkerpop.incubator.apache.org/docs/3.0.0-SNAPSHOT/#graphson-reader-writer) is a JSON-based format extended from earlier versions of TinkerPop. As a JSON-based format, it is easily consumed in modern Web and RESTful applications. Here is a Tinkerpop 3 [example file](https://raw.githubusercontent.com/tinkerpop/tinkerpop3/master/data/tinkerpop-classic.json).
 
 | Method | URI | Response | Description |
 |--------|-----|----------|-------------|
-| POST   |  /bulkload/graphml | | [ true ] | Submits the GraphML data to be loaded into the graph using the `multipart/form-data` encoding (e.g. with an HTML form) |
-| POST   |  /bulkload/graphson | [ true ] | Submits the GraphSON file to be loaded into the graph using the `multipart/form-data` encoding (e.g. with an HTML form) |
-| GET    |  /extract | \<xml version="1.0" ?\>\<graphml\>\<graph id="G" edgedefault="directed"\>\<node id="1"/\>\<node id="2"/\>\<edge id=3 source="1" target="2"/\>\</graph\>\</graphml\> | Returns the graph in GraphML format
-| GET    |  /extract | {"variables":{},"vertices":[{"id":1,"label":"vertex"}],"edges":[]} | Returns the graph in GraphSON format |
+| `POST`   |  `/bulkload/graphml` | | `[ true ]` |
+| `POST`   |  `/bulkload/graphson` | `[ true ]` | Submits the GraphSON file to be loaded into the graph using the `multipart/form-data` encoding with an HTML form. |
+| `GET`    |  `/extract` | `\<xml version="1.0" ?\>\<graphml\>\<graph id="G" edgedefault="directed"\>\<node id="1"/\>\<node id="2"/\>\<edge id=3 source="1" target="2"/\>\</graph\>\</graphml\>` | Returns the graph in GraphML format.|
+| `GET`    |  `/extract` | `{"variables":{},"vertices":[{"id":1,"label":"vertex"}],"edges":[]}` | Returns the graph in GraphSON format. |
 
 ### Schema APIs
 
 A graph schema is defined by its edge labels, vertex labels, and
-property keys. You can build a graph without defining a schema
-explicity, however doing so can improve query performance by leveraging
-graph indexes, simplify the model by restricting cardinalities, and
-optimize query filtering by using data types. When using a schema, the
-best practice is to define it before populating the graph with data.
-Please refer to the Titan documentation on
+property keys. You can build a graph without explicitly defining a schema. However, if you define a schema, it improves query performance by leveraging
+graph indices, simplifying the model by restricting cardinalities, and
+optimizing query filtering by using data types. As a best practice, you define the schema before populating the graph with data. See the Titan documentation on
 [schema](http://s3.thinkaurelius.com/docs/titan/0.5.4/schema.html) and
 [indexing](http://s3.thinkaurelius.com/docs/titan/0.5.4/indexes.html)
-for more details on the options. Here is an [example
-schema](http://shortestpathjs.stage1.mybluemix.net/graph-schema.json)
-used by the sample applcation.
+for more information. The sample application uses this [example
+schema](http://shortestpathjs.stage1.mybluemix.net/graph-schema.json).
 
 | Method | URI | Request | Response | Description |
 |--------|-----|---------|----------|-------------|
-| GET    | /schema | - | [ { "edgeIndexes": [], "edgeLabels": [ {"directed": true, "multiplicity":"SIMPLE", "name":"route"} ], "propertyKeys": [ {"cardinality":"SINGLE", "dataType":"String", "name":"city"} ], "vertexIndexes": [ {"composite":false, "name":"cityIndex", "propertyKeys":[ "city" ], "unique":false} ], "vertexLabels": [ {"name": "location"} ] } ] | Returns the schema as a JSON document |
-| POST   |  /schema | { "edgeIndexes": [], "edgeLabels": [ {"directed": true, "multiplicity":"SIMPLE", "name":"route"} ], "propertyKeys": [ {"cardinality":"SINGLE", "dataType":"String", "name":"city"} ], "vertexIndexes": [ {"composite":false, "name":"cityIndex", "propertyKeys":[ "city" ], "unique":false} ], "vertexLabels": [ {"name": "location"} ] } | [ { "edgeIndexes": [], "edgeLabels": [ {"directed": true, "multiplicity":"SIMPLE", "name":"route"} ], "propertyKeys": [ {"cardinality":"SINGLE", "dataType":"String", "name":"city"} ], "vertexIndexes": [ {"composite":false, "name":"cityIndex", "propertyKeys":[ "city" ], "unique":false} ], "vertexLabels": [ {"name": "location"} ] } ] | Updates the schema. |
-                                                                                                                      
+| `GET`    | `/schema` | `-` | `[ { "edgeIndexes": [], "edgeLabels": [ {"directed": true, "multiplicity":"SIMPLE", "name":"route"} ], "propertyKeys": [ {"cardinality":"SINGLE", "dataType":"String", "name":"city"} ], "vertexIndexes": [ {"composite":false, "name":"cityIndex", "propertyKeys":[ "city" ], "unique":false} ], "vertexLabels": [ {"name": "location"} ] } ]` | Returns the schema as a JSON document. |
+| `POST`   |  `/schema` | `{ "edgeIndexes": [], "edgeLabels": [ {"directed": true, "multiplicity":"SIMPLE", "name":"route"} ], "propertyKeys": [ {"cardinality":"SINGLE", "dataType":"String", "name":"city"} ], "vertexIndexes": [ {"composite":false, "name":"cityIndex", "propertyKeys":[ "city" ], "unique":false} ], "vertexLabels": [ {"name": "location"} ] }` | `[ { "edgeIndexes": [], "edgeLabels": [ {"directed": true, "multiplicity":"SIMPLE", "name":"route"} ], "propertyKeys": [ {"cardinality":"SINGLE", "dataType":"String", "name":"city"} ], "vertexIndexes": [ {"composite":false, "name":"cityIndex", "propertyKeys":[ "city" ], "unique":false} ], "vertexLabels": [ {"name": "location"} ] } ]` | Updates the schema. |
