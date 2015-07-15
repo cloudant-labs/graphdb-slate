@@ -18,13 +18,13 @@ for some problems,
 it's not what you know,
 it's who you know.
 In other words,
-it's relationships that enable extra value.
+it's relationships as well as the data that enable extra value for you.
 
 You can describe collections of Information,
 and the Relationships between the collections,
 using a [Graph Database](http://en.wikipedia.org/wiki/Graph_database).
 
-A graph database is designed to help you answer questions about large networks of inter-related data.
+A graph database is designed to help you answer questions about large or complex networks of inter-related data.
 They represent data as 'vertices',
 sometimes called 'nodes'.
 The relationships between vertices are represented by connections called 'edges'.
@@ -39,12 +39,6 @@ IBM Graph Data Store enables you to build and work with powerful applications,
 using a fully-managed graph database service,
 accessible through a REST-based HTTP API interface.
 
-In particular,
-IBM Graph Data Store offers an Apache TinkerPop&trade; v3 compatible API,
-giving you flexibility and capabilities based on a familiar environment.
-Using the Bluemix dashboard,
-you can bind the Graph Data Store to your applications easily.
-
 <aside class="warning">IBM Graph Data Store is an experimental service.
 This means that data held in the Graph Data Store is not necessarily being backed up.
 In particular,
@@ -53,8 +47,17 @@ high performance, or production applications.</aside>
 
 ### Powered by Apache TinkerPop
 
-The IBM Graph Data Store service is based on the [Apache TinkerPop](http://tinkerpop.incubator.apache.org/)
+The IBM Graph Data Store service is based on the
+[Apache TinkerPop&trade;](http://tinkerpop.incubator.apache.org/)
 stack for building high-performance graph applications.
+
+This means that the service provides you with a set of simplified Graph Data Store API commands,
+an Apache TinkerPop v3 compatible API,
+and the full Apache TinkerPop v3 query language.
+The service gives you flexibility and capabilities,
+based on a familiar environment.
+Using the Bluemix dashboard,
+you can bind the Graph Data Store to your applications easily.
 
 ### Connectivity
 
