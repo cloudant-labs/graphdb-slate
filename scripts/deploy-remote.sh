@@ -5,8 +5,8 @@ mkdir couchapp/_attachments
 cp -r build/* couchapp/_attachments
 export TRAVIS_PULL_REQUEST=false
 export TRAVIS_BRANCH="$1"
-export USERNAME='graphdb-docs'
-export PASSWORD="${2}"
+export USERNAME="${2}"
+export PASSWORD="${3}"
 rm -rf tmp
 ./scripts/deploy-branch.sh "$USERNAME" "$PASSWORD"
 rm -rf tmp
