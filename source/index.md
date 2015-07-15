@@ -59,7 +59,7 @@ based on a familiar environment.
 Using the Bluemix dashboard,
 you can bind the Graph Data Store to your applications easily.
 
-### Connectivity
+### Connecting to Graph Data Store services
 
 The Graph Data Store service provides a REST API that enables you to store your
 data in a [graph database]().
@@ -71,7 +71,7 @@ IBM Graph Data Store features are available using HTTP REST endpoints.
 These endpoints provide an easy way to connect to the graph data store,
 making it ideal for web and mobile applications.
 
-### Expressive
+### Working with Graph Data Store services
 
 You can perform tasks with the IBM Graph Data Store in two ways:
 
@@ -80,4 +80,16 @@ You can perform tasks with the IBM Graph Data Store in two ways:
 
 Whichever route you choose to access and query your data,
 IBM Graph Data Store helps you create powerful applications
-that work with simple or complex collections of data and relationships.  
+that work with simple or complex collections of data and relationships.
+
+### Roadmap
+
+-	To understand more about graph databases,
+	and the IBM Graph Data Store in particular,
+	visit the [Getting started](gettingstarted.html) section.
+-	For extensive details of the available commands and endpoints,
+	see the information in the [API reference](api.html) section.
+-	To find illustrative samples to help you use the Graph Data Store service,
+	explore the [Examples](examples.html) section.
+-	To study details about the technologies within the Graph Data Store service,
+	[Learn more](learnmore.html).
