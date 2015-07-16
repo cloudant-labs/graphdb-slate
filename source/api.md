@@ -75,9 +75,9 @@ Graph Data Store supports two formats of bulk input and output graph data: Graph
 
 [GraphML](http://graphml.graphdrawing.org/) is a simple file format used to describe a graph using XML. Multiple tools, such as Gephi for graph visualization, support the GraphML format. However, GraphML is a lossy format that only supports primitive data types. It also lacks support for graph variables and nested properties.
 
-Here is a Tinkerpop 3 [example file](https://raw.githubusercontent.com/tinkerpop/tinkerpop3/master/data/tinkerpop-classic.xml). To bulk load a GraphML file into your graph, POST the GraphML (as either form text input named ‘graphml’ or as a file input named ‘graphml’ in a multi-part form) to the GraphML bulk load endpoint.
+Here is a Tinkerpop 3 [example file](https://github.com/apache/incubator-tinkerpop/blob/master/data/tinkerpop-classic.xml). To bulk load a GraphML file into your graph, POST the GraphML (as either form text input named ‘graphml’ or as a file input named ‘graphml’ in a multi-part form) to the GraphML bulk load endpoint.
 
-[GraphSON](http://tinkerpop.incubator.apache.org/docs/3.0.0-SNAPSHOT/#graphson-reader-writer) is a JSON-based format extended from earlier versions of TinkerPop. As a JSON-based format, it is easily consumed in modern Web and RESTful applications. Here is a Tinkerpop 3 [example file](https://raw.githubusercontent.com/tinkerpop/tinkerpop3/master/data/tinkerpop-classic.json).
+[GraphSON](http://tinkerpop.incubator.apache.org/docs/3.0.0-SNAPSHOT/#graphson-reader-writer) is a JSON-based format extended from earlier versions of TinkerPop. As a JSON-based format, it is easily consumed in modern Web and RESTful applications. Here is a Tinkerpop 3 [example file](https://github.com/apache/incubator-tinkerpop/blob/master/data/tinkerpop-crew.json).
 
 | Method | URI | Response | Description |
 |--------|-----|----------|-------------|
