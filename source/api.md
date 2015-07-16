@@ -24,22 +24,22 @@ the connected vertices.
 | -------|------|----------|-----------|-------------|
 | `POST`   | `/vertices` | `-` | `[ {"id":"256"} ]` | Creates a vertex |
 | `POST`   |  `/vertices` | `{ "key1":"A", "key2":"B" }` | `[ {"id":"256", "key1":"A", "key2":"B"} ]` | Creates a vertex with properties specified as key-value pairs. |
-| `POST`   |  `/vertices/\<v0\>` | `{ "key1":"C", "key3":"D" }` | `[ {"id":"256", "key1":"C", "key2":"B", "key3":"D"} ]` | Updates existing vertex `v0` with properties specified as key-value pairs. |
-| `PUT`    |  `/vertices/\<v0\>` | `{ "key8":"Y", "key9":"Z" }` | `[ {"id":"256", "key8":"Y", "key9":"Z"}` ] | Updates existing vertex `v0` by deleting previous properties and replacing them with properties specified as key-value pairs. |
+| `POST`   |  `/vertices/<v0>` | `{ "key1":"C", "key3":"D" }` | `[ {"id":"256", "key1":"C", "key2":"B", "key3":"D"} ]` | Updates existing vertex `v0` with properties specified as key-value pairs. |
+| `PUT`    |  `/vertices/<v0>` | `{ "key8":"Y", "key9":"Z" }` | `[ {"id":"256", "key8":"Y", "key9":"Z"}` ] | Updates existing vertex `v0` by deleting previous properties and replacing them with properties specified as key-value pairs. |
 | `GET`    |  `/vertices` | `-` | `[ {"id":"256", "key":"value"}, {"id":"512"}, {"id":"768", "key":"value"}, {"id":"1024"}, {"id":"1280", "key":"value"} ]` | Get all vertices and their properties. Global graph operations like this can perform slowly. Indices should be utilized for performance. |
-| `GET`    |  `/vertices?\<key\>=\<value\>` | `-` | `[ {"id":"256", "key":"value"}, {"id":"768", "key":"value"}, {"id":"1280", "key":"value"} ]` | Get all vertices for a key index that has the specified properties. |
-| `GET`    |  `/vertices/\<v0\>` | `-` | `[ {"id":"256", "key":"value"} ]` | Get a vertex by id and all of its properties. |
-| `GET`    |  `/vertices/\<v0\>/out` | `-` | `[ {"id":"512"}, {"id":"768", "key":"value"} ]` | Get the adjacent out vertices and all of their properties for vertex `v0`. |
-| `GET`    |  `/vertices/\<v0\>/in`  | `-` | `[ {"id":"1024"}, {"id":"1280", "key":"value"} ]` | Get the adjacent in vertices and all of their properties for vertex `v0`. |
-| `GET`    |  `/vertices/\<v0\>/both` | `-` | `[ {"id":"512"}, {"id":"768", "key":"value"}, {"id":"1024"}, {"id":"1280", "key":"value"} ]` | Get the adjacent in and out vertices and all of their properties for vertex `v0`. |
-| `GET`    |  `/vertices/\<v0\>/outCount` | `-` | `[ 2 ]` | Get the adjacent out vertex count for vertex `v0`. |
-| `GET`    |  `/vertices/\<v0\>/inCount` | `-` | `[ 2 ]` | Get the adjacent in vertex count for vertex `v0`. |
-| `GET`    |  `/vertices/\<v0\>/bothCount` | `-` | `[ 4 ]` | Get the adjacent in and out vertex count for vertex `v0`. |
-| `GET`    |  `/vertices/\<v0\>/outIds` | `-` | `[ 512, 768 ]` | Get the adjacent out vertex ids for vertex `v0`. |
-| `GET`    |  `/vertices/\<v0\>/inIds` | `-` | `[ 1024, 1280 ]` | Get the adjacent in vertex ids for vertex `v0`. |
-| `GET`    |  `/vertices/\<v0\>/bothIds` | `-` | `[ 512, 768, 1024, 1280 ]` | Get the adjacent in and out vertex ids for vertex `v0`. |
-| `DELETE` |  `/vertices/\<v0\>` | `-` | `[ true ]` | Delete vertex `v0` and the connected edges. |
-| `DELETE` |  `/vertices/\<v0\>?\<key\>` | `-` | `[ true ]` | Delete properties by key on vertex `v0` and the connected edges. |
+| `GET`    |  `/vertices?<key>=<value>` | `-` | `[ {"id":"256", "key":"value"}, {"id":"768", "key":"value"}, {"id":"1280", "key":"value"} ]` | Get all vertices for a key index that has the specified properties. |
+| `GET`    |  `/vertices/<v0>` | `-` | `[ {"id":"256", "key":"value"} ]` | Get a vertex by id and all of its properties. |
+| `GET`    |  `/vertices/<v0>/out` | `-` | `[ {"id":"512"}, {"id":"768", "key":"value"} ]` | Get the adjacent out vertices and all of their properties for vertex `v0`. |
+| `GET`    |  `/vertices/<v0>/in`  | `-` | `[ {"id":"1024"}, {"id":"1280", "key":"value"} ]` | Get the adjacent in vertices and all of their properties for vertex `v0`. |
+| `GET`    |  `/vertices/<v0>/both` | `-` | `[ {"id":"512"}, {"id":"768", "key":"value"}, {"id":"1024"}, {"id":"1280", "key":"value"} ]` | Get the adjacent in and out vertices and all of their properties for vertex `v0`. |
+| `GET`    |  `/vertices/<v0>/outCount` | `-` | `[ 2 ]` | Get the adjacent out vertex count for vertex `v0`. |
+| `GET`    |  `/vertices/<v0>/inCount` | `-` | `[ 2 ]` | Get the adjacent in vertex count for vertex `v0`. |
+| `GET`    |  `/vertices/<v0>/bothCount` | `-` | `[ 4 ]` | Get the adjacent in and out vertex count for vertex `v0`. |
+| `GET`    |  `/vertices/<v0>/outIds` | `-` | `[ 512, 768 ]` | Get the adjacent out vertex ids for vertex `v0`. |
+| `GET`    |  `/vertices/<v0>/inIds` | `-` | `[ 1024, 1280 ]` | Get the adjacent in vertex ids for vertex `v0`. |
+| `GET`    |  `/vertices/<v0>/bothIds` | `-` | `[ 512, 768, 1024, 1280 ]` | Get the adjacent in and out vertex ids for vertex `v0`. |
+| `DELETE` |  `/vertices/<v0>` | `-` | `[ true ]` | Delete vertex `v0` and the connected edges. |
+| `DELETE` |  `/vertices/<v0>?<key>` | `-` | `[ true ]` | Delete properties by key on vertex `v0` and the connected edges. |
 
 ### Edge APIs
 
@@ -51,12 +51,12 @@ vertex 'inV'`), properties, and an associated label.
 |--------|-----|---------|----------|-------------|
 | `POST`   |  `/edges` | `{ "outV": 256, "label": "knows", "inV": 512 }` | `[ {"id":"lc-74-36d-e8", "outV": 256, "inV": 512, "label": "knows"} ]` | Creates an edge from vertex with `id 256` to vertex with `id 512` using 'knows' as the edge label. |
 | `POST`   |  `/edges` | `{ "outV": 256, "label": "knows", "inV": 512, "key1": "A", "key2": "B" }` | `[ {"id":"lc-74-36d-e8", "outV": 256, "inV": 512, "label": "knows", "key1": "A", "key2": "B"} ]` | Creates an edge from vertex with `id 256` to vertex with `id 512` using 'knows' as the edge label. Properties for the edge are specified as key-value pairs. |
-| `POST`   |  `/edges/\<e0\>` | `{ "key1": "C", "key3": "D" }` | `[ {"id":"lc-74-36d-e8", "outV": 256, "inV": 512, "label": "knows", "key1": "C", "key2": "B", "key3": "D"} ]` | Updates existing edge `e0` with properties specified as key-value pairs. The incident vertices and labels cannot be changed. |
-| `PUT`   |  `/edges/\<e0\>` | `{ "key8": "Y", "key9": "Z" }` | `[ {"id":"lc-74-36d-e8", "outV": 256, "inV": 512, "label": "knows", "key8": "Y", "key9": "Z"} ]` | Updates existing edge `e0` by deleting previous properties and replacing them with the properties specified by key-value pairs. The incident vertices and labels cannot be changed. |
+| `POST`   |  `/edges/<e0>` | `{ "key1": "C", "key3": "D" }` | `[ {"id":"lc-74-36d-e8", "outV": 256, "inV": 512, "label": "knows", "key1": "C", "key2": "B", "key3": "D"} ]` | Updates existing edge `e0` with properties specified as key-value pairs. The incident vertices and labels cannot be changed. |
+| `PUT`   |  `/edges/<e0>` | `{ "key8": "Y", "key9": "Z" }` | `[ {"id":"lc-74-36d-e8", "outV": 256, "inV": 512, "label": "knows", "key8": "Y", "key9": "Z"} ]` | Updates existing edge `e0` by deleting previous properties and replacing them with the properties specified by key-value pairs. The incident vertices and labels cannot be changed. |
 | `GET`    |  `/edges` | `-` | `[ {"id":"lc-74-36d-e8", "key":"value"} ]` | Get all edges and their properties. Global graph operations like this can perform slowly. Indexes must be utilized for performance. |
-| `GET`    |  `/edges/\<e0\>` | `-` | `[ {"id":"lc-74-36d-e8", "key":"value"} ]` | Get an edge by id and all of its properties. |
-| `DELETE` |  `/edges/\<e0\>` | `-` | `[ true ]` | Deletes the edge `e0`. |
-| `DELETE` |  `/edges/\<e0\>?\<key\>` | `-` | `[ true ]` | Deletes properties by key on edge `e0`. |
+| `GET`    |  `/edges/<e0>` | `-` | `[ {"id":"lc-74-36d-e8", "key":"value"} ]` | Get an edge by id and all of its properties. |
+| `DELETE` |  `/edges/<e0>` | `-` | `[ true ]` | Deletes the edge `e0`. |
+| `DELETE` |  `/edges/<e0>?<key>` | `-` | `[ true ]` | Deletes properties by key on edge `e0`. |
 
 ### Gremlin APIs
 
@@ -97,7 +97,7 @@ optimizing query filtering by using data types. As a best practice, you define t
 for more information. The sample application uses this [example
 schema](http://shortestpathjs.stage1.mybluemix.net/graph-schema.json).
 
-| Method | URI | Request | Response | Description |
+| Method | URI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Request | Response | Description |
 |--------|-----|---------|----------|-------------|
 | `GET`    | `/schema` | `-` | `[ { "edgeIndexes": [], "edgeLabels": [ {"directed": true, "multiplicity":"SIMPLE", "name":"route"} ], "propertyKeys": [ {"cardinality":"SINGLE", "dataType":"String", "name":"city"} ], "vertexIndexes": [ {"composite":false, "name":"cityIndex", "propertyKeys":[ "city" ], "unique":false} ], "vertexLabels": [ {"name": "location"} ] } ]` | Returns the schema as a JSON document. |
 | `POST`   |  `/schema` | `{ "edgeIndexes": [], "edgeLabels": [ {"directed": true, "multiplicity":"SIMPLE", "name":"route"} ], "propertyKeys": [ {"cardinality":"SINGLE", "dataType":"String", "name":"city"} ], "vertexIndexes": [ {"composite":false, "name":"cityIndex", "propertyKeys":[ "city" ], "unique":false} ], "vertexLabels": [ {"name": "location"} ] }` | `[ { "edgeIndexes": [], "edgeLabels": [ {"directed": true, "multiplicity":"SIMPLE", "name":"route"} ], "propertyKeys": [ {"cardinality":"SINGLE", "dataType":"String", "name":"city"} ], "vertexIndexes": [ {"composite":false, "name":"cityIndex", "propertyKeys":[ "city" ], "unique":false} ], "vertexLabels": [ {"name": "location"} ] } ]` | Updates the schema. |
