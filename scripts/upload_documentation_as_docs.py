@@ -76,8 +76,11 @@ def index_file(filename):
 		#response.raise_for_status()
 	
 for filename in [
-'index',
-'graphdb'
+'api'
+'examples'
+'gettingstarted'
+'index'
+'learnmore'
 ]:
 	index_file(filename)
 
