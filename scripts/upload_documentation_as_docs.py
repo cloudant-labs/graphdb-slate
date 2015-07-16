@@ -76,10 +76,10 @@ def index_file(filename):
 		#response.raise_for_status()
 	
 for filename in [
-'api'
-'examples'
-'gettingstarted'
-'index'
+'api',
+'examples',
+'gettingstarted',
+'index',
 'learnmore'
 ]:
 	index_file(filename)
