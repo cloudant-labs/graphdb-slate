@@ -3,7 +3,7 @@ $(function () {
   var query_input = search_box + ' input[name="search"]';
   var query_url = '_search/docs';
   if (window.location.host == 'graph-data-store-docs.ng.bluemix.net') { //different search url for production
-    query_url = '//graphdb-docs.cloudant.com/master/_design/couchapp/_search/docs';
+    query_url = 'https://graphdb-docs.cloudant.com/master/_design/couchapp/_search/docs';
   }
 
   var typeahead_opts = {
