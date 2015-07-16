@@ -59,6 +59,84 @@ The following list describes the components of a graph database.
 <li>Process – use traversal to analyze the structure or graph. A traversal visits all the elements in a graph and checks and updates their values, usually in a specific order.</li>
 </ul>
 
+#### Vertices
+
+In IBM Graph Data Store,
+a vertex is simply an object that has,
+as a minimum,
+an `id` and a `label`.
+Optionally,
+you can have some properties.
+
+To be useful,
+a vertex must be connected to other vertices using [edges](#edges).
+
+In the following example,
+there are two vertices,
+both labelled as `person`,
+and distinguished from each other by having unique IDs.
+Each vertex also has some properties,
+consisting of the name of the person,
+and their job.
+
+![Diagram with two example vertices](GDS001.png)
+
+In Graph Data Store,
+you create vertices using the [Vertex APIs](api.html#vertex-apis).
+
+#### Edges
+
+An edge is a connection between two vertices.
+
+In Graph Data Store,
+an edge is unidirectional.
+In other words,
+an edge goes _from_ one vertex _to_ another vertex.
+If you require an edge to go _back_ to the first vertex,
+you would need a second edge.
+
+In the following diagram,
+we have added two more vertices,
+and also created two edges,
+with the IDs 3699 and 7736,
+respectively.
+However,
+the edges are not yet connected to any vertices.
+In other words,
+we have not yet indicated how the edges help define relationships between any of the vertices.
+
+![Diagram with two example edges](GDS002.png)
+
+#### Connecting two vertices using edges
+
+First we define edge 3699 as being an input to vertex f7456.
+
+![Diagram where edge 3699 is an input to vertex f7456](GDS003.png)
+
+Next we define edge 3699 as an output from vertex a6773.
+
+![Diagram where edge 3699 is an output from vertex a6773](GDS004.png)
+
+We now have a uni-directional relationship from an actor to a movie.
+Next,
+we need a similar uni-directional relationship from the movie to the actor.
+This time,
+we use edge 7736.
+
+As before,
+we first define edge 7736 as being an input to vertex a6773.
+
+![Diagram where edge 7736 is an input to vertex a6773](GDS005.png)
+
+Finally,
+we define edge 7736 as being an output from vertex f7456.
+
+![Diagram where edge 7736 is an output from vertex f7456](GDS006.png)
+
+
+In Graph Data Store,
+you create edges and connect them to vertices using the [Edge APIs](api.html#edge-apis).
+
 ### Using a Bluemix service
 
 IBM Graph Data Store is a service provided within the Bluemix platform.
@@ -107,3 +185,8 @@ You should ensure that your application is configured to use:
 -	Graph Data Store endpoints, identifed by the `apiURL` value.
 -	The service instance username, identified by the `username` value.
 -	The service instance password, identified by the `password` value.
+
+With these configuration changes made,
+your application should be able to interact with your Graph Data Store instance.
+
+### Loading data into a Graph Data Store
