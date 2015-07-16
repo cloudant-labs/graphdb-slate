@@ -1,4 +1,4 @@
-# documentation project using slate
+# Graph Data Store documentation
 
 The documentation site, built using [slate](https://github.com/cloudant-labs/slate).
 
@@ -14,6 +14,10 @@ If you want to work on the docs locally, install [Ruby](https://www.ruby-lang.or
 Now, your docs are live at <http://localhost:4567/>.
 
 Note that the search bar will not work locally because it uses Cloudant's search handler, so to work it must run on Cloudant.
+
+## Deploy to bluemix
+
+See https://github.com/KimStebel/graphdb-slate-bluemix
 
 ## Contribute
 
