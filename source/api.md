@@ -69,7 +69,7 @@ for more information about supported graph traversal steps.
 |--------|-----|---------|----------|-------------|
 | `POST`   |  `/gremlin` | `{"gremlin": "g.V(256).out().out()"}` | `[ {"id":"768"}, {"id":"1024"}, {"id":"1280"} ]` | Performs a traversal from the starting node to its second degree neighbors. |
 
-### Input/Output APIs
+### Bulk Input/Output APIs
 
 Graph Data Store supports two formats of bulk input and output graph data: GraphML and GraphSON.
 
@@ -77,7 +77,9 @@ Graph Data Store supports two formats of bulk input and output graph data: Graph
 
 Here is a Tinkerpop 3 [example file](https://github.com/apache/incubator-tinkerpop/blob/master/data/tinkerpop-classic.xml). To bulk load a GraphML file into your graph, POST the GraphML (as either form text input named ‘graphml’ or as a file input named ‘graphml’ in a multi-part form) to the GraphML bulk load endpoint.
 
-[GraphSON](http://tinkerpop.incubator.apache.org/docs/3.0.0-SNAPSHOT/#graphson-reader-writer) is a JSON-based format extended from earlier versions of TinkerPop. As a JSON-based format, it is easily consumed in modern Web and RESTful applications. Here is a Tinkerpop 3 [example file](https://github.com/apache/incubator-tinkerpop/blob/master/data/tinkerpop-crew.json).
+[GraphSON](http://tinkerpop.incubator.apache.org/docs/3.0.0-SNAPSHOT/#graphson-reader-writer) is a text format based on JSON, although GraphSON documents are not valid JSON documents. Instead, each line of a GraphSON document contains a separate JSON object and there can be no line breaks within these JSON documents. Here is a Tinkerpop 3 [example file](https://github.com/apache/incubator-tinkerpop/blob/master/data/tinkerpop-crew.json). A common issue is that all edges have to be specified twice, once as part of each vertex they connect. If an edge is only specified once, it will be ignored.
+
+ID attributes in GraphSON or GraphML documents are ignored. Instead, new unique IDs are created by the database. This also implies that this endpoint can only be used to create vertices and edges, *not* to update existing vertices or edges. To do that, you can use the Vertex, Edge, or Gremlin APIs.
 
 | Method | URI | Response | Description |
 |--------|-----|----------|-------------|
