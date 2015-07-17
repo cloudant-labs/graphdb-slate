@@ -17,7 +17,7 @@ Note that the search bar will not work locally because it uses Cloudant's search
 
 ## Deploy to bluemix
 
-See https://github.com/KimStebel/graphdb-slate-bluemix
+Merge your changes into the production brnach and then follow  instructions here: https://github.com/KimStebel/graphdb-slate-bluemix
 
 ## Contribute
 
