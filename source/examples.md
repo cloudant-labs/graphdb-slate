@@ -287,110 +287,122 @@ EntityUtils.consume(httpEntity);
 
 The following example code shows a sample Node.js application that uses the Graph Data Store.
 
-#### Get the Graph Data Store URL
+#### Get the Graph Data Store URL and credentials
 
 ```javascript
-    if (process.env.VCAP_SERVICES) {
-      var vcapServices = JSON.parse(process.env.VCAP_SERVICES);
-      if (vcapServices['TinkerPop GraphDB']) {
-        var tp3 = vcapServices['TinkerPop GraphDB'][0];
-        process.env.graphDBURL = tp3.credentials.apiURL;
-      }
-    }
+if (process.env.VCAP_SERVICES) {
+	var vcapServices = JSON.parse(process.env.VCAP_SERVICES);
+	var graphService = 'GraphDataStore'
+	if (vcapServices[graphService] && vcapServices[graphService].length > 0) {
+		var tp3 = vcapServices[graphService][0];
+		process.env.graphDBURL = tp3.credentials.apiURL;
+		process.env.username = tp3.credentials.username;
+		process.env.password = tp3.credentials.password;
+	}
+}
 ```
 
 #### Define graph schema
 
 ```javascript
-    var schemaData = fs.readFile('./public/graph-schema.json', function(err, data) {
-      var schemaRequest = {
-        uri: process.env.graphDBURL + '/schema',
-        method: 'POST',
-        json: JSON.parse(data.toString())
-      };
-      request.post(schemaRequest, function(error, resp, body) {
-        var robj = JSON.parse(body);
-        var result = (robj.result && robj.result.data && robj.result.data.length > 0) ? robj.result.data[0] : {};
-      });
-    });
+var schemaData = fs.readFile('./public/graph-schema.json', function(err, data) {
+	var schemaRequest = {
+		uri: process.env.graphDBURL + '/schema',
+		method: 'POST',
+		auth: { user: process.env.username, pass: process.env.password },
+		json: JSON.parse(data.toString())
+	};
+	request(schemaRequest, function(error, resp, body) {
+		var robj = JSON.parse(body);
+		var result = (robj.result && robj.result.data && robj.result.data.length > 0) ? robj.result.data[0] : {};
+	});
+});
 ```
 
 #### Bulk load a GraphML file
 
 ```javascript
-    var request = require('request');
-    var fs = require('fs');
-    var bulkloadUrl = process.env.graphDBURL + '/bulkload/graphml';
-    var bulkloadOpts = { formData: {
-      'graphml': fs.createReadStream(__dirname + '/../public/seed-airports-routes.xml'),
-      'type': 'application/xml',
-    }};
-    request.post(bulkloadUrl, bulkloadOpts, function(error2, resp2, obj2) {
-      var robj = JSON.parse(obj2);
-      var result = (robj.result && robj.result.data && robj.result.data.length > 0) ? robj.result.data[0] : {};
-      res.send(result);
-    });
+var request = require('request');
+var fs = require('fs');
+var bulkloadUrl = process.env.graphDBURL + '/bulkload/graphml';
+var bulkloadOpts = {
+	auth: { user: process.env.username, pass: process.env.password },
+	formData: {
+		'graphml': fs.createReadStream(__dirname + '/../public/seed-airports-routes.xml'),
+		'type': 'application/xml',
+	}
+};
+request.post(bulkloadUrl, bulkloadOpts, function(error2, resp2, obj2) {
+	var robj = JSON.parse(obj2);
+	var result = (robj.result && robj.result.data && robj.result.data.length > 0) ? robj.result.data[0] : {};
+	res.send(result);
+});
 ```
 
 #### Create a vertex
 
 ```javascript
-    var url2 = process.env.graphDBURL + '/vertices';
-    var data = {
-      code: "LAS",
-      name: "McCarran International Airport",
-      city: "Las Vegas",
-      state: "NV",
-      lat: 36.084143,
-      lon: -115.15368
-    };
-    var requestOpts = {
-      uri: url2,
-      method: 'POST',
-      json: data
-    };
-    request.post(url2, function(error2, resp2, body2) {
-      var obj2 = JSON.parse(body2);
-      var result2 = (obj2.result && obj2.result.data && obj2.result.data.length > 0) ? obj2.result.data[0] : {};
-      res.send(result2);
-    });
+var url2 = process.env.graphDBURL + '/vertices';
+var data = {
+	code: "LAS",
+	name: "McCarran International Airport",
+	city: "Las Vegas",
+	state: "NV",
+	lat: 36.084143,
+	lon: -115.15368
+};
+var requestOpts = {
+	uri: url2,
+	method: 'POST',
+	auth: { user: process.env.username, pass: process.env.password },
+	json: data
+};
+request.post(url2, function(error2, resp2, body2) {
+	var obj2 = JSON.parse(body2);
+	var result2 = (obj2.result && obj2.result.data && obj2.result.data.length > 0) ? obj2.result.data[0] : {};
+	res.send(result2);
+});
 ```
 
 #### Get all vertices
 
 ```javascript
-    // This operation is not recommended.
-    var url = process.env.graphDBURL + '/vertices';
-    request.get(url, function(error, resp, body) {
-      var obj = JSON.parse(body);
-      var result = (obj.result && obj.result.data) ? obj.result.data : [];
-      res.send(result);
-    });
+var url = process.env.graphDBURL + '/vertices';
+var opts = { auth: { user: process.env.username, pass: process.env.password } };
+request.get(url, opts, function(error, resp, body) {
+	var obj = JSON.parse(body);
+	var data = (obj.result && obj.result.data) ? obj.result.data : [];
+	res.send(data);
+});
 ```
 
 #### Get a vertex by property
 
 ```javascript
-    var url = process.env.graphDBURL + '/vertices?code=' + req.params.code;
-    request.get(url, function(error, resp, body) {
-      var obj = JSON.parse(body);
-      var result = (obj.result && obj.result.data && obj.result.data.length > 0) ? obj.result.data[0] : {};
-      res.send(result);
-    });
+var url = process.env.graphDBURL + '/vertices?code=' + req.params.code;
+var opts = { auth: { user: process.env.username, pass: process.env.password } };
+request.get(url, opts, function(error, resp, body) {
+	var obj = JSON.parse(body);
+	var result = (obj.result && obj.result.data && obj.result.data.length > 0) ? obj.result.data[0] : {};
+	res.send(result);
+});
 ```
 
 #### Run a Gremlin traversal
 
 ```javascript
-    var url = process.env.graphDBURL + '/gremlin';
-    var existsQuery = "g.V().has('code','" + req.body.orig + "').out('route').has('code', '" + req.body.dest + "')";
-    var existsOpts = { json: { gremlin: existsQuery } };
-    request.post(url, existsOpts, function(error, resp, obj) {
-      var result = (obj.result && obj.result.data && obj.result.data.length > 0) ? obj.result.data[0] : null;
-      if (result) {
-        // found a route from orig to dest
-        console.log('route exists from ' + req.body.orig + ' to ' + req.body.dest);
-      }
-    });
+var url = process.env.graphDBURL + '/gremlin';
+var query = "g.V().has('code','" + req.body.orig + "').out('route').has('code', '" + req.body.dest + "')";
+var opts = {
+	auth: { user: process.env.username, pass: process.env.password },
+	json: { gremlin: query }
+};
+request.post(url, opts, function(error, resp, obj) {
+	var result = (obj.result && obj.result.data && obj.result.data.length > 0) ? obj.result.data[0] : null;
+	if (result) {
+		// found a route from orig to dest
+		console.log('route exists from ' + req.body.orig + ' to ' + req.body.dest);
+	}
+});
 ```
 
