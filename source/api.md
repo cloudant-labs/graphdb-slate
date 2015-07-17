@@ -12,6 +12,41 @@ language_tabs:
 # API reference
 
 IBM Graph Data Store provides a REST API for manipulating the graph.
+The responses from a REST API call are provided in JSON format.
+
+### Example JSON response
+
+The response column in the API reference tables is abbreviated for simplicity.
+The full JSON format is similar to the following:
+
+``` json
+{
+	"requestId": "95195d94-3496-4fcb-9efb-9210543ec60b",
+	"status": {
+		"message": "",
+		"code": 200,
+		"attributes": { }
+	},
+	"result": {
+		"data": [
+			{
+				"id": 8376,
+				"label": "vertex",
+				"type": "vertex",
+				"properties": {
+					"code": [
+						{
+							"id": "2s7-6go-8p1",
+							"value": "LAS"
+						}
+					]
+				}
+			}
+		],
+    	"meta": { }
+	}
+}
+```
 
 ### Vertex APIs
 
@@ -60,9 +95,12 @@ vertex 'inV'`), properties, and an associated label.
 
 ### Gremlin APIs
 
-Gremlin is a domain-specific language for graph traversals. Using Gremlin,
-you can express complex graph traversals that cannot be performed with basic vertex and edge APIs. To use
-Gremlin with a graph, POST the Gremlin traversal inside a JSON object to the Gremlin endpoint. See [Gremlin 3.0.0.M7 documentation](http://www.tinkerpop.com/docs/3.0.0.M7/#graph-traversal-steps)
+Gremlin is a domain-specific language for graph traversals.
+Using Gremlin,
+you can express complex graph traversals that cannot be performed with basic vertex and edge APIs.
+To use Gremlin with a graph,
+`POST` the Gremlin traversal inside a JSON object to the Gremlin endpoint.
+See the [TinkerPop3 documentation](http://tinkerpop.incubator.apache.org/docs/3.0.0-incubating/#graph-traversal-steps)
 for more information about supported graph traversal steps.
 
 | Method | URI | Request | Response | Description |
@@ -73,13 +111,39 @@ for more information about supported graph traversal steps.
 
 Graph Data Store supports two formats of bulk input and output graph data: GraphML and GraphSON.
 
-[GraphML](http://graphml.graphdrawing.org/) is a simple file format used to describe a graph using XML. Multiple tools, such as Gephi for graph visualization, support the GraphML format. However, GraphML is a lossy format that only supports primitive data types. It also lacks support for graph variables and nested properties.
+[GraphML](http://tinkerpop.incubator.apache.org/docs/3.0.0-incubating/#_graphml_reader_writer) is a simple file format used to describe a graph using XML.
+Multiple tools,
+such as Gephi for graph visualization,
+support the GraphML format.
+However,
+GraphML is a lossy format that only supports primitive data types.
+It also lacks support for graph variables and nested properties.
 
-Here is a Tinkerpop 3 [example file](https://github.com/apache/incubator-tinkerpop/blob/master/data/tinkerpop-classic.xml). To bulk load a GraphML file into your graph, POST the GraphML (as either form text input named ‘graphml’ or as a file input named ‘graphml’ in a multi-part form) to the GraphML bulk load endpoint.
+Here is a Tinkerpop 3 [example file](https://github.com/apache/incubator-tinkerpop/blob/master/data/tinkerpop-classic.xml).
+To bulk load a GraphML file into your graph,
+`POST` the GraphML  to the GraphML bulk load endpoint.
+You do this either as form text input named `graphml`,
+or as a file input named `graphml` in a multi-part form.
 
-[GraphSON](http://tinkerpop.incubator.apache.org/docs/3.0.0-SNAPSHOT/#graphson-reader-writer) is a text format based on JSON, although GraphSON documents are not valid JSON documents. Instead, each line of a GraphSON document contains a separate JSON object and there can be no line breaks within these JSON documents. Here is a Tinkerpop 3 [example file](https://github.com/apache/incubator-tinkerpop/blob/master/data/tinkerpop-crew.json). A common issue is that all edges have to be specified twice, once as part of each vertex they connect. If an edge is only specified once, it will be ignored.
+[GraphSON](http://tinkerpop.incubator.apache.org/docs/3.0.0-incubating/#graphson-reader-writer) is a text format based on JSON,
+although GraphSON documents are not valid JSON documents.
+Instead,
+each line of a GraphSON document contains a separate JSON object.
+There can be no line breaks within these JSON documents.
+Here is a Tinkerpop 3 [example file](https://github.com/apache/incubator-tinkerpop/blob/master/data/tinkerpop-crew.json).
+A common issue is that all edges have to be specified twice,
+once as part of each vertex they connect.
+If an edge is specified just once,
+it is ignored.
 
-ID attributes in GraphSON or GraphML documents are ignored. Instead, new unique IDs are created by the database. This also implies that this endpoint can only be used to create vertices and edges, *not* to update existing vertices or edges. To do that, you can use the Vertex, Edge, or Gremlin APIs.
+ID attributes in GraphSON or GraphML documents are ignored.
+Instead,
+new and unique IDs are created by the database.
+This means that bulk input/output API endpoint can be used only to create vertices and edges,
+but *not* to update existing vertices or edges.
+If you want to update existing vertices or edges,
+use the [Vertex](api.html#vertex-apis), [Edge](api.html#edge-apis),
+or [Gremlin](api.html#gremlin-apis) APIs.
 
 | Method | URI | Response | Description |
 |--------|-----|----------|-------------|
@@ -90,14 +154,22 @@ ID attributes in GraphSON or GraphML documents are ignored. Instead, new unique 
 
 ### Schema APIs
 
-A graph schema is defined by its edge labels, vertex labels, and
-property keys. You can build a graph without explicitly defining a schema. However, if you define a schema, it improves query performance by leveraging
-graph indices, simplifying the model by restricting cardinalities, and
-optimizing query filtering by using data types. As a best practice, you define the schema before populating the graph with data. See the Titan documentation on
-[schema](http://s3.thinkaurelius.com/docs/titan/0.5.4/schema.html) and
-[indexing](http://s3.thinkaurelius.com/docs/titan/0.5.4/indexes.html)
-for more information. The sample application uses this [example
-schema](http://shortestpathjs.stage1.mybluemix.net/graph-schema.json).
+A graph schema is defined by its edge labels,
+vertex labels,
+and property keys.
+You can build a graph without explicitly defining a schema.
+However,
+if you define a schema,
+it improves query performance in three ways:
+
+-	Leveraging graph indices.
+-	Simplifying the model by restricting cardinalities.
+-	Optimizing query filtering by using data types.
+
+As a best practice,
+define the schema before populating the graph with data.
+
+See the Titan documentation on [schema](http://s3.thinkaurelius.com/docs/titan/0.9.0-M2/schema.html) and [indexing](http://s3.thinkaurelius.com/docs/titan/0.9.0-M2/indexes.html) for more information.
 
 | Method | URI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Request | Response | Description |
 |--------|-----|---------|----------|-------------|
