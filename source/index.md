@@ -35,7 +35,7 @@ constructing and developing recommendation engines,
 and 'optimal route' challenges such as finding the [shortest path](https://en.wikipedia.org/wiki/Shortest_path_problem)
 or solving the [vehicle routing problem](https://en.wikipedia.org/wiki/Vehicle_routing_problem).
 
-IBM Graph Data Store enables you to build and work with powerful applications,
+IBM&reg; Graph Data Store enables you to build and work with powerful applications,
 using a fully-managed graph database service,
 accessible through a REST-based HTTP API interface.
 
@@ -93,3 +93,7 @@ that work with simple or complex collections of data and relationships.
 	explore the [Examples](examples.html) section.
 -	To study details about the technologies within the Graph Data Store service,
 	[Learn more](learnmore.html).
+
+### Acknowledgements
+
+&copy; "Apache", "TinkerPop", and "Apache TinkerPop" are trademarks or registered trademarks of The Apache Software Foundation. All other brands and trademarks are the property of their respective owners.
