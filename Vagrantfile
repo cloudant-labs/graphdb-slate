@@ -72,7 +72,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", run: "always", inline: <<-MIDDLEMAN
     cd /slate
     bundle install
-    bash -c 'bundle exec middleman server &'
+    bash -c 'bundle exec middleman server --force-polling &'
   MIDDLEMAN
   
 end
