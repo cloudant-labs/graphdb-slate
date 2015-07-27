@@ -157,11 +157,15 @@ you create vertices using the [Vertex APIs](api.html#vertex-apis).
 An edge is a connection between two vertices.
 
 In Graph Data Store,
-an edge is unidirectional.
+it is perfectly possible to have a bidirectional edge.
+This means that the edge describes a relationship in both directions between the connected vertices.
+However,
+for clarity and simplicity,
+it is often easier for you to consider an edge to be unidirectional.
 In other words,
 an edge goes _from_ one vertex _to_ another vertex.
 If you require an edge to go _back_ to the first vertex,
-you would need a second edge.
+you would create and use a second edge.
 
 In the following diagram,
 we have added two more vertices,
@@ -205,6 +209,118 @@ we define edge 7736 as being an outgoing edge from vertex f7456.
 In Graph Data Store,
 you create edges and connect them to vertices using the [Edge APIs](api.html#edge-apis).
 
+#### Creating a simple graph database using Graph Data Store
+
+We now have enough background to explore how to create a simple graph database.
+
+First,
+we create the `Clint` vertex using the [Vertex API](api.html#vertex-apis):
+
+``` shell
+curl http://<graphdatastore.bluemix.url>/vertices \
+	-X POST \
+	-H "Content-Type: application/json" \
+	-d '{"label":"person","Name":"Clint","Type":"Actor"}'
+```
+
+A successful result would be a JSON response similar to the following:
+
+``` json
+{
+	"requestId":"9b749024-cd52-40a6-b25d-a90c09239c64",
+	"status":{
+		"message":"",
+		"code":200,
+		"attributes":{}
+	},
+	"result":{
+		"data":[
+			{
+				"id":4296,
+				"label":"vertex",
+				"type":"vertex",
+				"properties":{
+					"Type":[
+						{
+							"id":"1ll-3bc-2dh",
+							"value":
+							"Actor"
+						}
+					],
+					"Label":[
+						{
+							"id":"t5-3bc-sl",
+							"value":"person"
+						}
+					],
+					"Name":[
+						{
+							"id":"17d-3bc-1l1",
+							"value":"Clint"
+						}
+					]
+				}
+			}
+		],
+		"meta":{}
+	}
+}
+```
+
+Notice that the IDs for the vertex and its three defined properties are each generated automatically.
+
+We can then create the `Million Dollar Baby` vertex using a similar call:
+
+``` shell
+curl http://<graphdatastore.bluemix.url>/vertices \
+	-X POST \
+	-H "Content-Type: application/json" \
+	-d '{"Label":"film","Name":"Million Dollar Baby","Type":"Movie"}'
+```
+
+Optionally, we can check which vertices are present in the graph database by using a simple `GET` call:
+
+``` shell
+curl http://<graphdatastore.bluemix.url>/vertices \
+	-X GET
+```
+
+Now we can create an edge that connects the actor and the movie vertices,
+using the [Edge API](api.html#edge-apis):
+
+``` shell
+curl http://<graphdatastore.bluemix.url>/edges \
+	-X POST \
+	-H "Content-Type: application/json" \
+	-d '{"outV":"4296","label":"stars in","inV":"4216"}'
+```
+A successful result returns JSON similar to the following:
+
+``` json
+{
+	"requestId":"cf9a2633-9c5f-4a26-91cd-f3a409c1c6c2",
+	"status":{
+		"message":"",
+		"code":200,
+		"attributes":{}
+	},
+	"result":{
+		"data":[
+			{
+				"id":"1zt-3bc-36d-394",
+				"label":"stars in",
+				"type":"edge",
+				"inVLabel":"vertex",
+				"outVLabel":"vertex",
+				"inV":4216,
+				"outV":4296
+			}
+		],
+		"meta":{}
+	}
+}
+```
+
 #### Bulk loading data into Graph Data Store
 
 While individual vertices and edges can be created in a Graph Data Store
@@ -225,29 +341,85 @@ and therefore is the format used in this documentation.
 
 ``` json
 {
-  "vertices":[
-    {"name":"marko","age":29,"_id":1,"_type":"vertex"},
-    {"name":"vadas","age":27,"_id":2,"_type":"vertex"},
-    {"name":"lop","lang":"java","_id":3,"_type":"vertex"},
-    {"name":"josh","age":32,"_id":4,"_type":"vertex"},
-    {"name":"ripple","lang":"java","_id":5,"_type":"vertex"},
-    {"name":"peter","age":35,"_id":6,"_type":"vertex"}
-  ],
-  "edges":[
-    {"weight":0.5,"_id":7,"_type":"edge","_outV":1,"_inV":2,"_label":"knows"},
-    {"weight":1.0,"_id":8,"_type":"edge","_outV":1,"_inV":4,"_label":"knows"},
-    {"weight":0.4,"_id":9,"_type":"edge","_outV":1,"_inV":3,"_label":"created"},
-    {"weight":1.0,"_id":10,"_type":"edge","_outV":4,"_inV":5,"_label":"created"},
-    {"weight":0.4,"_id":11,"_type":"edge","_outV":4,"_inV":3,"_label":"created"},
-    {"weight":0.2,"_id":12,"_type":"edge","_outV":6,"_inV":3,"_label":"created"}
-  ]
+	"id":4216,
+	"label":"vertex",
+	"inE":{
+		"stars in":[
+			{
+				"id":"1zt-3bc-36d-394",
+				"outV":4296
+			}
+		]
+	},
+	"properties":{
+		"Type":[
+			{
+				"id":"1lb-394-2dh",
+				"value":"Movie"
+			}
+		],
+		"Label":[
+			{
+				"id":"sv-394-sl",
+				"value":"film"
+			}
+		],
+		"Name":[
+			{
+				"id":"173-394-1l1",
+				"value":"Million Dollar Baby"
+			}
+		]
+	}
+}
+{
+	"id":4296,
+	"label":"vertex",
+	"outE":{
+		"stars in":[
+			{
+				"id":"1zt-3bc-36d-394",
+				"inV":4216
+			}
+		]
+	},
+	"properties":{
+		"Type":[
+			{
+				"id":"1ll-3bc-2dh",
+				"value":"Actor"
+			}
+		],
+		"Label":[
+			{
+				"id":"t5-3bc-sl",
+				"value":"person"
+			}
+		],
+		"Name":[
+			{
+				"id":"17d-3bc-1l1",
+				"value":"Clint"
+			}
+		]
+	}
 }
 ```
 
 In the example GraphSON data,
-you can see that six vertices are defined,
-with IDs from 1 to 6.
-Each vertex has two properties: a name field and an age field.
+you can see the two example vertices defined earlier in this topic:
+the `Actor` called `Clint` and the `Movie` called `Million Dollar Baby`.
 
-The data also defines six edges.
-The key aspect to note is that each edge connects into an 'incoming vertex' and 'outgoing vertex'.
+The two vertices are related by an edge with the automatically-generated ID `1zt-3bc-36d-394`.
+
+For the `Actor` vertex,
+the edge is an _outgoing_ edge `outE`.
+
+For the `Movie` vertex,
+the edge is an _incoming_ edge `inE`.
+
+<aside class="warning">GraphSON is not a pure JSON format.
+In particular,
+notice that each 'line' of the GraphSON data,
+which describes a vertex,
+is *not* separated by the comma (`,`) character you would normally expect to separate peer JSON data entries.</aside>
