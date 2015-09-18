@@ -24,8 +24,8 @@ language_tabs:
         queryInput: $('form.gremlin .query'),
         form: $('form.gremlin'),
         queries: {
-          'actor-is-zoe-saldana': {query: '{\n  "selector": {\n    "cast": {\n      "$in": ["Zoe Saldana"]\n    }\n  },\n  "limit": 10\n}'},
-          'default': 'actor-is-zoe-saldana'
+          'six-degrees': { query: "{\n  \"gremlin\": \"g.V().hasLabel('person').has('type','Actor').has('name','Kevin Bacon').repeat(__.outE().inV().dedup().simplePath()).until(__.hasLabel('person').has('name','Bill Paxton')).limit(12).path()\"\n}" },
+          'default': 'six-degrees'
         },
         renderHttpRequest: function() {
           return 'POST /gremlin HTTP/1.1\nHost: example.com\n\n' + this.queryInput.val();
@@ -36,11 +36,12 @@ language_tabs:
         submitForm: function(event){
           var query = this.queryInput.val();
           jQuery.ajax({
-            url: '/tryit/gremlin',
+            url: 'https://slate-backend.mybluemix.net/graph',
             type: 'POST',
             data: query,
             beforeSend: function(xhr) {
               //xhr.setRequestHeader("Authorization", "Basic " + btoa('thereencespedgetytolisir:c1IimpBSAC3b3A66N8LHKwKF'));
+              xhr.setRequestHeader("Content-Type", "application/json");
             },
             error: function(one, two) {},
             complete: displayResult
@@ -175,7 +176,7 @@ You can try out requests and output will be shown in the code column to the righ
   <form action="#" class="gremlin">
     <label for="predefined">Predefined queries</label>
     <select name="predefined" class="predefined">
-      <option selected="selected" value="actor-is-zoe-saldana">Movies with Zoe Saldana</option>
+      <option selected="selected" value="six-degrees">6 degrees of Kevin Bacon</option>
     </select>
     <textarea rows="10" class="query" cols="80" id="requestBody"></textarea><br /><br />
   </form>
