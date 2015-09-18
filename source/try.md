@@ -25,13 +25,15 @@ language_tabs:
         form: $('form.gremlin'),
         queries: {
           'six-degrees': { query: "{\n  \"gremlin\": \"g.V().hasLabel('person').has('type','Actor').has('name','Kevin Bacon').repeat(__.outE().inV().dedup().simplePath()).until(__.hasLabel('person').has('name','Bill Paxton')).limit(12).path()\"\n}" },
+          'films-with-kevin-bacon': { query: "{\n  \"gremlin\": \"g.V().hasLabel('person').has('type','Actor').has('name','Kevin Bacon').outE().inV()\"\n}" },
+          'actors-starring-in-apollo-13': { query: "{\n  \"gremlin\": \"g.V().hasLabel('film').has('type','Film').has('name','Apollo 13').outE().inV()\"\n}" },
           'default': 'six-degrees'
         },
         renderHttpRequest: function() {
           return 'POST /gremlin HTTP/1.1\nHost: example.com\n\n' + this.queryInput.val();
         },
         renderCurlRequest: function() {
-          return "curl 'https://example.com/gremlin' -X POST -d '" + this.queryInput.val() + "'";
+          return "curl 'https://example.com/gremlin' -X POST -d \"" + this.queryInput.val().replace(/"/g, '\\"') + '"';
         },
         submitForm: function(event){
           var query = this.queryInput.val();
@@ -113,7 +115,7 @@ language_tabs:
     }
     for (var rt in requestTypes) {
       var createFunc = function(rtp) { return function(){requestChanged(rtp)}}
-      requestTypes[rt].form.on('keyup', $.debounce(createFunc(rt), 300));
+      requestTypes[rt].form.on('keyup', $.debounce(createFunc(rt), 500));
     }
     //init form from query param values
     function getParameterByName(name) {
@@ -177,6 +179,8 @@ You can try out requests and output will be shown in the code column to the righ
     <label for="predefined">Predefined queries</label>
     <select name="predefined" class="predefined">
       <option selected="selected" value="six-degrees">6 degrees of Kevin Bacon</option>
+      <option value="films-with-kevin-bacon">Films with Kevin Bacon</option>
+      <option value="actors-starring-in-apollo-13">Actors starring in Apollo 13</option>
     </select>
     <textarea rows="10" class="query" cols="80" id="requestBody"></textarea><br /><br />
   </form>
