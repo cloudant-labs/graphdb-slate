@@ -25,3 +25,4 @@ couchapp/_attachments
 
 # build artifacts
 build/
+/Gemfile.lock

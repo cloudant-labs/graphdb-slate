@@ -169,7 +169,7 @@ it improves query performance in three ways:
 As a best practice,
 define the schema before populating the graph with data.
 
-See the Titan documentation on [schema](http://s3.thinkaurelius.com/docs/titan/0.9.0-M2/schema.html) and [indexing](http://s3.thinkaurelius.com/docs/titan/0.9.0-M2/indexes.html) for more information.
+See the Titan documentation on [schema](http://s3.thinkaurelius.com/docs/titan/1.0.0/schema.html) and [indexing](http://s3.thinkaurelius.com/docs/titan/1.0.0/indexes.html) for more information.
 
 | Method | URI&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Request | Response | Description |
 |--------|-----|---------|----------|-------------|
